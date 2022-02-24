@@ -1,7 +1,7 @@
 {
-    "name": "spirit-animals",
+    "name": "monks-and-mages",
     "version": "0.0.0",
-    "description": "Spirit Animals",
+    "description": "Monks and Mages",
     "main": "dist/server.bundle.js",
     "private": true,
     "scripts": {
