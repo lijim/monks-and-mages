@@ -38,6 +38,7 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'import/extensions': 'off',
     'no-restricted-exports': 'off',
-    'arrow-body-style': 'off'
+    'arrow-body-style': 'off',
+    'no-param-reassign': 'off',
   },
 };
