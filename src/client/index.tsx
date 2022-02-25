@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 // import { io, Socket } from 'socket.io-client';
 
 import { App } from './components/App';
+import { store } from './redux/store';
 /*
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
 
@@ -28,7 +30,9 @@ socket.on('chatMessage', (msg: string) => {
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <Provider store={store}>
+            <App />
+        </Provider>
     </React.StrictMode>,
     document.getElementById('root')
 );
