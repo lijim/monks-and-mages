@@ -9,6 +9,7 @@ import { CompactDeckList } from '../CompactDeckList';
 import { makeSampleDeck1 } from '@/factories/deck';
 import { disconnectUser, initializeUser } from '@/client/redux/user';
 import { AppDispatch, history } from '@/client/redux/store';
+import { IntroScreen } from '../IntroScreen';
 
 export const App: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -26,6 +27,7 @@ export const App: React.FC = () => {
 
     return (
         <div>
+            <IntroScreen />
             <Router history={history}>
                 <React.Fragment>
                     <Link to="/">Deck List 1</Link>
