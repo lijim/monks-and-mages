@@ -10,20 +10,35 @@ const { createReduxHistory, routerMiddleware, routerReducer } =
         history: createBrowserHistory(),
     });
 
-const createRootReducer = () =>
+export const createRootReducer = () =>
     combineReducers({
         router: routerReducer,
         user: userReducer,
     });
 
+const preloadedState = {
+    user: userSlice.getInitialState(),
+};
+
 export const store = configureStore({
     reducer: createRootReducer(),
     devTools: true,
     enhancers: [applyMiddleware(routerMiddleware)],
-    preloadedState: {
-        user: userSlice.getInitialState(),
-    },
+    preloadedState,
 });
+
+export const configureStoreWithMiddlewares = (stateOverrides = {}) => {
+    return configureStore({
+        reducer: createRootReducer(),
+        devTools: true,
+        enhancers: [applyMiddleware(routerMiddleware)],
+        preloadedState: {
+            ...preloadedState,
+            ...stateOverrides,
+        },
+    });
+};
+
 export const history = createReduxHistory(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

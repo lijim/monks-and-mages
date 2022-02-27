@@ -1,17 +1,18 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { fireEvent, screen, render } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
+import { render } from '@/test-utils';
 
 import { App } from './App';
-import { store } from '@/client/redux/store';
+import { RootState } from '@/client/redux/store';
 
 describe('App', () => {
     it('goes to the compact decklist view', () => {
-        render(
-            <Provider store={store}>
-                <App />
-            </Provider>
-        );
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Grestch',
+            },
+        };
+        render(<App />, { preloadedState });
         expect(
             screen.queryByText('Deal 3 damage to any target')
         ).toBeInTheDocument();

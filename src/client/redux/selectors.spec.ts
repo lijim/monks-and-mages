@@ -15,7 +15,7 @@ describe('selectors', () => {
                 isUserInitialized({
                     user: { name: '' },
                 })
-            ).toBe(true);
+            ).toBe(false);
         });
     });
 });
