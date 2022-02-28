@@ -1,8 +1,11 @@
-import React, { createContext } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
-import { chooseName as chooseNameReducer } from '@/client/redux/user';
+import {
+    chooseName as chooseNameReducer,
+    initializeUser,
+} from '@/client/redux/user';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
@@ -25,23 +28,31 @@ type WebSocketValue = {
  * https://www.pluralsight.com/guides/using-web-sockets-in-your-reactredux-app
  * */
 export const WebSocketProvider: React.FC = ({ children }) => {
-    let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
-    let ws: WebSocketValue;
+    const [socket, setSocket] =
+        useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
+    const [ws, setWs] = useState<WebSocketValue>(null);
 
     // WebSocketProvider needs to go 1 layer beneath the Redux layer
     const dispatch = useDispatch();
 
-    const chooseName = (name: string) => {
-        socket.emit('chooseName', name);
-    };
-
     if (!socket) {
-        socket = io();
+        const newSocket = io();
 
-        socket.on('confirmName', (name: string) => {
+        newSocket.on('confirmName', (name: string) => {
             dispatch(chooseNameReducer({ name }));
         });
-        ws = { socket, chooseName };
+
+        newSocket.on('connect', () => {
+            dispatch(initializeUser({ id: newSocket.id }));
+        });
+
+        const chooseName = (name: string) => {
+            if (!newSocket) return;
+            newSocket.emit('chooseName', name);
+        };
+
+        setSocket(newSocket);
+        setWs({ socket, chooseName });
     }
 
     /**
