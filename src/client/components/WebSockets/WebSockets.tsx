@@ -36,7 +36,8 @@ export const WebSocketProvider: React.FC = ({ children }) => {
     const dispatch = useDispatch();
 
     if (!socket) {
-        const newSocket = io();
+        const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> =
+            io();
 
         newSocket.on('confirmName', (name: string) => {
             dispatch(chooseNameReducer({ name }));
