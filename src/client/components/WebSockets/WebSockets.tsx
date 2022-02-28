@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
@@ -47,7 +47,6 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         });
 
         const chooseName = (name: string) => {
-            if (!newSocket) return;
             newSocket.emit('chooseName', name);
         };
 
