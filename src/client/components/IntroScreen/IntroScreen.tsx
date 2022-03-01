@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/client/redux/store';
 import { NameChanger } from '../NameChanger';
 import { WebSocketContext } from '../WebSockets';
+import { Rooms } from '../Rooms';
 
 /**
  * The Intro Screen is where people set their names / see games in
@@ -11,7 +12,7 @@ import { WebSocketContext } from '../WebSockets';
  * @returns {JSX.Element} Intro screen component
  */
 export const IntroScreen: React.FC = () => {
-    const name = useSelector<RootState>((state) => state.user.name);
+    const name = useSelector<RootState, string>((state) => state.user.name);
     const webSocket = useContext(WebSocketContext);
 
     const handleSubmit = (newName: string) => {
@@ -29,6 +30,7 @@ export const IntroScreen: React.FC = () => {
                     <button type="button" onClick={logOut}>
                         Logout
                     </button>
+                    <Rooms />
                 </>
             ) : (
                 <NameChanger handleSubmit={handleSubmit} />

@@ -1,17 +1,17 @@
 interface ServerToClientEvents {
-    basicEmit: (a: number, b: string, c: Buffer) => void;
-    chatMessage: (input: string) => void;
     confirmName: (name: string) => void;
-    noArg: () => void;
-    withAck: (d: string, callback: (e: number) => void) => void;
+    listRooms: (rooms: DetailedRoom[]) => void;
 }
 
 interface ClientToServerEvents {
-    chatMessage: (input: string) => void;
     chooseName: (name: string) => void;
-    hello: () => void;
+    getRooms: () => void;
+    joinRoom: (roomName: string) => void;
+    startGame: () => void;
 }
 
-interface InterServerEvents {
-    ping: () => void;
-}
+type DetailedRoom = {
+    hasStartedGame?: boolean;
+    players: string[];
+    roomName: string;
+};
