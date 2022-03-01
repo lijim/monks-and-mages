@@ -2,11 +2,21 @@ import express from 'express';
 import http from 'http';
 import path from 'path';
 import { Server, Socket } from 'socket.io';
+import { instrument } from '@socket.io/admin-ui';
 
 const app = express();
 const port = 3000;
 const server = http.createServer(app);
-const io = new Server<ClientToServerEvents, ServerToClientEvents>(server);
+const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
+    cors: {
+        origin: ['https://admin.socket.io'],
+        credentials: true,
+    },
+});
+
+instrument(io, {
+    auth: false,
+});
 
 const namesToIds = new Map<string, string>();
 const clearName = (idToMatch: string) => {

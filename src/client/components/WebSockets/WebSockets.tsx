@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
@@ -36,7 +36,8 @@ export const WebSocketProvider: React.FC = ({ children }) => {
     const dispatch = useDispatch();
 
     if (!socket) {
-        const newSocket = io();
+        const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> =
+            io();
 
         newSocket.on('confirmName', (name: string) => {
             dispatch(chooseNameReducer({ name }));
@@ -47,7 +48,6 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         });
 
         const chooseName = (name: string) => {
-            if (!newSocket) return;
             newSocket.emit('chooseName', name);
         };
 

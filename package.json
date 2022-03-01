@@ -14,6 +14,7 @@
     },
     "dependencies": {
         "@reduxjs/toolkit": "^1.7.2",
+        "@socket.io/admin-ui": "^0.2.0",
         "@types/lodash.clonedeep": "^4.5.6",
         "express": "^4.17.2",
         "history": "^5.3.0",
@@ -59,7 +60,8 @@
         "typescript": "^4.5.4",
         "typescript-plugin-styled-components": "^2.0.0",
         "webpack": "^5.66.0",
-        "webpack-cli": "^4.9.1"
+        "webpack-cli": "^4.9.1",
+        "webpack-node-externals": "^3.0.0"
     },
     "license": "MIT"
 }
