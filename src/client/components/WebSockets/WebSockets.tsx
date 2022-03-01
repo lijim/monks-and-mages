@@ -6,13 +6,13 @@ import {
     chooseName as chooseNameReducer,
     initializeUser,
 } from '@/client/redux/user';
+import { updateRoomsAndPlayers } from '@/client/redux/room';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
-type WebSocketValue = {
-    chooseName: ClientToServerEvents['chooseName'];
+interface WebSocketValue extends Partial<ClientToServerEvents> {
     socket: Socket<ServerToClientEvents, ClientToServerEvents>;
-};
+}
 
 /**
  * Redux-Integrated WebSockets Provider.  The need for this arises b/c
@@ -47,12 +47,20 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             dispatch(initializeUser({ id: newSocket.id }));
         });
 
+        newSocket.on('listRooms', (detailedRooms) => {
+            dispatch(updateRoomsAndPlayers(detailedRooms));
+        });
+
+        const joinRoom = (roomName: string) => {
+            newSocket.emit('joinRoom', roomName);
+        };
+
         const chooseName = (name: string) => {
             newSocket.emit('chooseName', name);
         };
 
         setSocket(newSocket);
-        setWs({ socket, chooseName });
+        setWs({ socket, chooseName, joinRoom });
     }
 
     /**

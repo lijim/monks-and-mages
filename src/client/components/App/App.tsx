@@ -10,6 +10,7 @@ import { history, RootState } from '@/client/redux/store';
 import { DeckList } from '../DeckList';
 import { CompactDeckList } from '../CompactDeckList';
 import { IntroScreen } from '../IntroScreen';
+import { Rooms } from '../Rooms';
 import { WebSocketProvider } from '../WebSockets';
 
 export const App: React.FC = () => {

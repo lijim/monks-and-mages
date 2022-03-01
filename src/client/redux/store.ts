@@ -3,6 +3,7 @@ import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
 import { applyMiddleware } from 'redux';
 
+import { roomsReducer } from './room';
 import { userReducer, userSlice } from './user';
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
@@ -13,6 +14,7 @@ const { createReduxHistory, routerMiddleware, routerReducer } =
 export const createRootReducer = () =>
     combineReducers({
         router: routerReducer,
+        rooms: roomsReducer,
         user: userReducer,
     });
 

@@ -11,6 +11,8 @@ export type Player = {
     health: number;
     isActivePlayer: boolean;
     isAlive: boolean;
+    // TODO: add name
+    // TODO: add factory method to make a player
     numCardsInDeck: number;
     numCardsInHand: number;
     resourcePool: PartialRecord<Resource, number>;
