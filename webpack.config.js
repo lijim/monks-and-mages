@@ -1,6 +1,7 @@
 const path = require('path');
 const { addDisplayNameTransformer } = require('ts-react-display-name')
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
+const nodeExternals = require('webpack-node-externals');
 
 const styledComponentsTransformer = createStyledComponentsTransformer({
     getDisplayName: (_,bindingName) => `[${bindingName}]`,
@@ -28,6 +29,7 @@ const serverConfig = {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
     },
+    externals: [nodeExternals()],
 };
 
 const clientConfig = {
