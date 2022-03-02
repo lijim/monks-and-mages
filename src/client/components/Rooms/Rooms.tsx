@@ -14,9 +14,12 @@ export const Rooms: React.FC = () => {
         webSocket.joinRoom(roomName);
     };
 
+    const startGame = () => {
+        webSocket.startGame();
+    };
+
     // TODO:
     // only allow 1 room at a time to be joined
-    // add start button in for game when 2+ players are in a room
 
     return (
         <div>
@@ -24,6 +27,7 @@ export const Rooms: React.FC = () => {
                 <RoomSquare
                     detailedRoom={detailedRoom}
                     key={detailedRoom.roomName}
+                    onStartGameClicked={startGame}
                 />
             ))}
             <button onClick={() => joinRoom('room 1')}>Room 1 join</button>
