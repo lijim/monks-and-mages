@@ -43,7 +43,10 @@ export function render(
         history,
     });
 
-    const store = configureStoreWithMiddlewares(preloadedState);
+    const store = configureStoreWithMiddlewares(
+        preloadedState,
+        routerMiddleware
+    );
 
     function Wrapper({ children }: { children?: ReactNode }): ReactElement {
         return <Provider store={store}>{children}</Provider>;

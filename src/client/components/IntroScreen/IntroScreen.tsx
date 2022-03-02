@@ -5,7 +5,7 @@ import { RootState } from '@/client/redux/store';
 import { NameChanger } from '../NameChanger';
 import { WebSocketContext } from '../WebSockets';
 
-// TODO: rename IntroScreen to LoginBar
+// TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
 
 /**
  * The Intro Screen is where people set their names / see games in
