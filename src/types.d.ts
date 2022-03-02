@@ -1,6 +1,7 @@
 interface ServerToClientEvents {
     confirmName: (name: string) => void;
     listRooms: (rooms: DetailedRoom[]) => void;
+    startGame: () => void;
 }
 
 interface ClientToServerEvents {

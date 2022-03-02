@@ -29,11 +29,14 @@ export const store = configureStore({
     preloadedState,
 });
 
-export const configureStoreWithMiddlewares = (stateOverrides = {}) => {
+export const configureStoreWithMiddlewares = (
+    stateOverrides = {},
+    routerMiddlewareOveride = routerMiddleware
+) => {
     return configureStore({
         reducer: createRootReducer(),
         devTools: true,
-        enhancers: [applyMiddleware(routerMiddleware)],
+        enhancers: [applyMiddleware(routerMiddlewareOveride)],
         preloadedState: {
             ...preloadedState,
             ...stateOverrides,

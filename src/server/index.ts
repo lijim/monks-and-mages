@@ -111,6 +111,7 @@ io.on(
                     roomName,
                     makeNewBoard(getNamesFromIds([...socketIds]))
                 );
+                io.to(roomName).emit('startGame');
             });
             io.emit('listRooms', getDetailedRooms());
         });
