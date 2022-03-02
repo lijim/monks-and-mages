@@ -17,7 +17,7 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
             <div>
                 <ul>
                     {players.map((player) => (
-                        <li>{player}</li>
+                        <li key={player}>{player}</li>
                     ))}
                 </ul>
             </div>

@@ -30,7 +30,7 @@ const clearName = (idToMatch: string) => {
     idsToNames.delete(idToMatch);
 };
 
-const boards = new Map<string, Board>();
+const startedBoards = new Map<string, Board>();
 
 // TODO: use adapters instead to get rooms => games
 // implement one that just retrieves shallowly all the rooms
@@ -95,7 +95,7 @@ io.on(
 
         socket.on('startGame', () => {
             socket.rooms.forEach((roomName) => {
-                boards.get(roomName);
+                startedBoards.get(roomName);
             });
         });
 
