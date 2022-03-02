@@ -24,6 +24,9 @@ const serverConfig = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            '@': path.resolve(__dirname, 'src'),
+        }
     },
     output: {
         filename: '[name].bundle.js',

@@ -2,6 +2,7 @@ import React from 'react';
 
 type RoomSquareProps = {
     detailedRoom: DetailedRoom;
+    onStartGameClicked?: () => void;
 };
 
 /**
@@ -9,11 +10,17 @@ type RoomSquareProps = {
  * Rooms component.  Should show the name of the group + players
  */
 export const RoomSquare: React.FC<RoomSquareProps> = ({
-    detailedRoom: { roomName, players },
+    detailedRoom: { hasStartedGame, roomName, players },
+    onStartGameClicked,
 }) => {
+    const normalizedRoomName = roomName.replace('public-', '');
     return (
         <div>
-            <h1>{roomName}</h1>
+            <h1>{normalizedRoomName}</h1>
+            {hasStartedGame && <span>Started</span>}
+            {!hasStartedGame && players.length > 1 && (
+                <button onClick={onStartGameClicked}>Start Game</button>
+            )}
             <div>
                 <ul>
                     {players.map((player) => (

@@ -39,6 +39,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> =
             io();
 
+        // Server-to-client events
         newSocket.on('confirmName', (name: string) => {
             dispatch(chooseNameReducer({ name }));
         });
@@ -51,6 +52,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             dispatch(updateRoomsAndPlayers(detailedRooms));
         });
 
+        // Client-to-server events
         const joinRoom = (roomName: string) => {
             newSocket.emit('joinRoom', roomName);
         };
@@ -59,8 +61,12 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('chooseName', name);
         };
 
+        const startGame = () => {
+            newSocket.emit('startGame');
+        };
+
         setSocket(newSocket);
-        setWs({ socket, chooseName, joinRoom });
+        setWs({ socket, chooseName, joinRoom, startGame });
     }
 
     /**

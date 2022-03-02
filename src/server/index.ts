@@ -4,6 +4,7 @@ import path from 'path';
 import { Server, Socket } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
 import { Board } from '@/types/board';
+import { makeNewBoard } from '@/factories/board/makeNewBoard';
 
 const app = express();
 const port = 3000;
@@ -19,8 +20,8 @@ instrument(io, {
     auth: false,
 });
 
-const idsToNames = new Map<string, string>();
-const namesToIds = new Map<string, string>();
+const idsToNames = new Map<string, string>(); // mapping of socket ids to user-chosen names
+const namesToIds = new Map<string, string>(); // reverse map of idsToNames
 const clearName = (idToMatch: string) => {
     const matchingName = [...namesToIds.entries()].find(
         ([, id]) => id === idToMatch
@@ -28,6 +29,16 @@ const clearName = (idToMatch: string) => {
     if (!matchingName) return;
     namesToIds.delete(matchingName[0]);
     idsToNames.delete(idToMatch);
+};
+
+const getNamesFromIds = (ids: string[]): string[] => {
+    const names = [] as string[];
+    ids.forEach((id) => {
+        if (idsToNames.has(id)) {
+            names.push(idsToNames.get(id));
+        }
+    });
+    return names;
 };
 
 const startedBoards = new Map<string, Board>();
@@ -43,12 +54,11 @@ const getDetailedRooms = () => {
     [...roomsAndIds.entries()].forEach(([roomName, socketIds]) => {
         if (!roomName.startsWith('public-')) return; // skip private rooms
 
-        const room = { roomName, players: [] as string[] };
-        socketIds.forEach((socketId) => {
-            if (idsToNames.has(socketId)) {
-                room.players.push(idsToNames.get(socketId));
-            }
-        });
+        const room = {
+            roomName,
+            players: getNamesFromIds([...socketIds]),
+            hasStartedGame: startedBoards.has(roomName),
+        };
         detailedRooms.push(room);
     });
     return detailedRooms;
@@ -94,9 +104,15 @@ io.on(
         });
 
         socket.on('startGame', () => {
+            // TODO: handle race condition where 2 people start game at same time
             socket.rooms.forEach((roomName) => {
-                startedBoards.get(roomName);
+                const socketIds = io.sockets.adapter.rooms.get(roomName);
+                startedBoards.set(
+                    roomName,
+                    makeNewBoard(getNamesFromIds([...socketIds]))
+                );
             });
+            io.emit('listRooms', getDetailedRooms());
         });
 
         socket.on('disconnect', () => {
