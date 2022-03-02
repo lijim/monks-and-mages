@@ -2,6 +2,7 @@ import React, { createContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
+import { push } from 'redux-first-history';
 import {
     chooseName as chooseNameReducer,
     initializeUser,
@@ -50,6 +51,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
 
         newSocket.on('listRooms', (detailedRooms) => {
             dispatch(updateRoomsAndPlayers(detailedRooms));
+        });
+
+        newSocket.on('startGame', () => {
+            dispatch(push('/ingame'));
         });
 
         // Client-to-server events

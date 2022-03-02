@@ -21,6 +21,9 @@ export const Rooms: React.FC = () => {
     // TODO:
     // only allow 1 room at a time to be joined
 
+    // TODO:
+    // don't allow players outside a room to start a room
+
     return (
         <div>
             {rooms.map((detailedRoom) => (

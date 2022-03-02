@@ -1,14 +1,14 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
-import { Link, Route, Routes } from 'react-router-dom';
+import { push } from 'redux-first-history';
+import { Route, Routes } from 'react-router-dom';
 
 import { makeSampleDeck1 } from '@/factories/deck';
 import { isUserInitialized } from '@/client/redux/selectors';
 import { history, RootState } from '@/client/redux/store';
 
 import { DeckList } from '../DeckList';
-import { CompactDeckList } from '../CompactDeckList';
 import { IntroScreen } from '../IntroScreen';
 import { Rooms } from '../Rooms';
 import { WebSocketProvider } from '../WebSockets';
@@ -18,31 +18,38 @@ export const App: React.FC = () => {
 
     const isUserPastIntroScreen = useSelector<RootState>(isUserInitialized);
 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (history.location.pathname !== '/') {
+            dispatch(push('/'));
+        }
+    }, []);
+
     return (
         <WebSocketProvider>
             <div>
-                <IntroScreen />
-                <br />
                 <Router history={history}>
-                    {isUserPastIntroScreen && (
+                    {
                         <React.Fragment>
-                            <Link to="/">Deck List 1</Link>
-                            <br />
-                            <Link to="/compact">Compact Deck List</Link>
-
+                            <IntroScreen />
                             <Routes>
                                 <Route
                                     path="/"
-                                    element={<DeckList deck={deck} />}
+                                    element={
+                                        <>
+                                            {isUserPastIntroScreen && <Rooms />}
+                                        </>
+                                    }
                                 />
                                 <Route
-                                    path="/compact"
-                                    element={<CompactDeckList deck={deck} />}
+                                    path="/ingame"
+                                    element={<div>IN-GAME</div>}
                                 />
                                 <Route element={<DeckList deck={deck} />} />
                             </Routes>
                         </React.Fragment>
-                    )}
+                    }
                 </Router>
             </div>
         </WebSocketProvider>
