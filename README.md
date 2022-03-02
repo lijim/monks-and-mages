@@ -50,6 +50,7 @@ Unit testing is covered via [Jest](https://jestjs.io/) and [React Testing Librar
 
 -   Players come with a deck of at least 50 cards
 -   2-4 players can play against each other
+-   7 cards to start, 1 card drawn per turn (unless starting player)
 -   Players start with 15 life
 -   Players lose when they either reach 0 or less life or attempt to draw from an empty deck
 -   Cards come in 3 flavors: _Resources_, _Units_, and _Spells_
