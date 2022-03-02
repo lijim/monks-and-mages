@@ -11,8 +11,7 @@ export type Player = {
     health: number;
     isActivePlayer: boolean;
     isAlive: boolean;
-    // TODO: add name
-    // TODO: add factory method to make a player
+    name: string;
     numCardsInDeck: number;
     numCardsInHand: number;
     resourcePool: PartialRecord<Resource, number>;
@@ -22,11 +21,11 @@ export type Player = {
     units: UnitCard[];
 };
 
-enum GameState {
-    PLAYING,
-    PLAYER_1_WIN,
-    PLAYER_2_WIN,
-    TIE,
+export enum GameState {
+    PLAYER_1_WIN = 'PLAYER_1_WIN',
+    PLAYER_2_WIN = 'PLAYER_2_WIN',
+    PLAYING = 'PLAYING',
+    TIE = 'TIE',
 }
 
 // Board as it's experienced by server / client
