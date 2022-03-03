@@ -4,7 +4,7 @@ import { render } from '@/test-utils';
 
 import { GameBoard } from './GameBoard';
 import { RootState } from '@/client/redux/store';
-import { makeNewBoard } from '@/factories/board/makeNewBoard';
+import { makeNewBoard } from '@/factories/board';
 
 describe('GameBoard', () => {
     it('renders player names', () => {

@@ -1,6 +1,6 @@
 import { Board, GameState } from '@/types/board';
 import { SAMPLE_DECKLIST_1 } from '../deck';
-import { makeNewPlayer } from '../player/makeNewPlayer';
+import { makeNewPlayer } from '../player';
 
 export const makeNewBoard = (playerNames: string[]): Board => {
     return {
