@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
+import { DetailedRoom } from '@/types';
 
 export const roomsSlice = createSlice({
     name: 'rooms',

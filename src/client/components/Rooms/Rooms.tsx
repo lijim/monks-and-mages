@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { RoomSquare } from '../RoomSquare/RoomSquare';
 import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
+import { DetailedRoom } from '@/types';
 
 export const Rooms: React.FC = () => {
     const rooms = useSelector<RootState, DetailedRoom[]>(

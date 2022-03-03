@@ -8,6 +8,7 @@ import {
     initializeUser,
 } from '@/client/redux/user';
 import { updateRoomsAndPlayers } from '@/client/redux/room';
+import { ClientToServerEvents, ServerToClientEvents } from '@/types';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
