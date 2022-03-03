@@ -5,6 +5,11 @@ import { Server, Socket } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
 import { Board } from '@/types/board';
 import { makeNewBoard } from '@/factories/board/makeNewBoard';
+import {
+    ClientToServerEvents,
+    DetailedRoom,
+    ServerToClientEvents,
+} from '@/types';
 
 const app = express();
 const port = 3000;

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { DetailedRoom } from '@/types';
+
 type RoomSquareProps = {
     detailedRoom: DetailedRoom;
     onStartGameClicked?: () => void;
