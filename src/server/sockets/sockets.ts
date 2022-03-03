@@ -2,7 +2,8 @@ import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
 import { Board } from '@/types/board';
-import { makeNewBoard } from '@/factories/board/makeNewBoard';
+import { makeNewBoard } from '@/factories/board';
+import { obscureBoardInfo } from '../obscureBoardInfo';
 
 import {
     ClientToServerEvents,
@@ -44,6 +45,17 @@ export const configureIo = (server: HttpServer) => {
     };
 
     const startedBoards = new Map<string, Board>();
+
+    const sendBoardForRoom = (roomName: string): void => {
+        const board = startedBoards.get(roomName);
+        const socketIds = io.sockets.adapter.rooms.get(roomName);
+        if (!socketIds?.size || !board) return;
+        socketIds.forEach((socketId) => {
+            const name = idsToNames.get(socketId);
+            if (!name) return;
+            io.to(socketId).emit('updateBoard', obscureBoardInfo(board, name));
+        });
+    };
 
     // TODO: use adapters instead to get rooms => games
     // implement one that just retrieves shallowly all the rooms
@@ -103,7 +115,7 @@ export const configureIo = (server: HttpServer) => {
                     const board = makeNewBoard(getNamesFromIds([...socketIds]));
                     startedBoards.set(roomName, board);
                     io.to(roomName).emit('startGame');
-                    io.to(roomName).emit('updateBoard', board);
+                    sendBoardForRoom(roomName);
                 });
                 io.emit('listRooms', getDetailedRooms());
             });
