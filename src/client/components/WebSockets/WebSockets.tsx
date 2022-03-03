@@ -8,6 +8,7 @@ import {
     initializeUser,
 } from '@/client/redux/user';
 import { updateRoomsAndPlayers } from '@/client/redux/room';
+import { updateBoardState } from '@/client/redux/board';
 import { ClientToServerEvents, ServerToClientEvents } from '@/types';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
@@ -56,6 +57,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
 
         newSocket.on('startGame', () => {
             dispatch(push('/ingame'));
+        });
+
+        newSocket.on('updateBoard', (board) => {
+            dispatch(updateBoardState(board));
         });
 
         // Client-to-server events

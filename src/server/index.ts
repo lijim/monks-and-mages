@@ -112,11 +112,10 @@ io.on(
             // TODO: handle race condition where 2 people start game at same time
             socket.rooms.forEach((roomName) => {
                 const socketIds = io.sockets.adapter.rooms.get(roomName);
-                startedBoards.set(
-                    roomName,
-                    makeNewBoard(getNamesFromIds([...socketIds]))
-                );
+                const board = makeNewBoard(getNamesFromIds([...socketIds]));
+                startedBoards.set(roomName, board);
                 io.to(roomName).emit('startGame');
+                io.to(roomName).emit('updateBoard', board);
             });
             io.emit('listRooms', getDetailedRooms());
         });
