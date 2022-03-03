@@ -41,6 +41,7 @@ This project runs on a few core technologies:
 -   [socket.io](https://socket.io/)
 -   [React](https://reactjs.org/)
 -   [React Drag and Drop](https://react-dnd.github.io/react-dnd/about)
+-   [React Router v6](https://reactrouter.com)
 
 Linting on this project is done via a combination of typescript, [prettier](https://prettier.io/), and [eslint](https://eslint.org/)
 
