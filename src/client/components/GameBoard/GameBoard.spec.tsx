@@ -17,5 +17,6 @@ describe('GameBoard', () => {
         render(<GameBoard />, { preloadedState });
         expect(screen.queryByText('Tommy')).toBeInTheDocument();
         expect(screen.queryByText('Timmy')).toBeInTheDocument();
+        expect(screen.queryAllByText('Active Player')).toHaveLength(1);
     });
 });
