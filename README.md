@@ -9,25 +9,37 @@ This game can be run locally if you have [node](https://nodejs.org/en/download/)
 To get started:
 
 ```
+yarn install
 yarn start
 ```
 
 or alternatively, to get automatic builds via watchmode:
 
 ```
+yarn install
 yarn dev
+```
+
+To see sockets.io debug screen:
+
+```
+open https://admin.socket.io/#/sockets while running the app
 ```
 
 This project also strives for extensive TDD and unit testing. To run tests in watch mode:
 
-```
+````
+
 yarn test
+
 ```
 
 To run tests once through:
 
 ```
+
 yarn ci
+
 ```
 
 # Core technologies
@@ -67,3 +79,5 @@ Unit testing is covered via [Jest](https://jestjs.io/) and [React Testing Librar
     -   **Spells** have an effect that is deployed immediately upon casting, such as:
         -   Ember Spear (🔥) deal 3 damage to any target
         -   A gentle gust (🔥)(🌊) buffs the team's stats by 1
+```
+````

@@ -22,10 +22,9 @@ export type Player = {
 };
 
 export enum GameState {
-    PLAYER_1_WIN = 'PLAYER_1_WIN',
-    PLAYER_2_WIN = 'PLAYER_2_WIN',
     PLAYING = 'PLAYING',
     TIE = 'TIE',
+    WIN = 'WIN',
 }
 
 // Board as it's experienced by server / client
