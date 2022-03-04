@@ -13,8 +13,12 @@ app.use('/client.bundle.js', (_, res) => {
 });
 
 // Serves the base page
-app.get('*', (_, res) => {
+app.get('/', (_, res) => {
     res.sendFile(path.join(__dirname, 'homepage.html'));
+});
+
+app.get('*', (_, res) => {
+    res.redirect('/');
 });
 
 configureIo(server);

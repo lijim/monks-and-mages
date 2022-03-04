@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
-import { push } from 'redux-first-history';
 import { Route, Routes } from 'react-router-dom';
 
 import { makeSampleDeck1 } from '@/factories/deck';
@@ -18,14 +17,6 @@ export const App: React.FC = () => {
     const deck = makeSampleDeck1();
 
     const isUserPastIntroScreen = useSelector<RootState>(isUserInitialized);
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (history.location.pathname !== '/') {
-            dispatch(push('/'));
-        }
-    }, []);
 
     return (
         <WebSocketProvider>

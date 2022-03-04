@@ -39,6 +39,9 @@ const clientConfig = {
     entry: {
         client: './src/client/index.tsx',
     },
+    optimization: {
+        minimize: false
+    },
     target: 'web',
     mode: 'production',
     module: {
