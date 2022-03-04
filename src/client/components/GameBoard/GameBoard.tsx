@@ -18,9 +18,11 @@ const CurrentPlayerBoard: React.FC<CurrentPlayerBoardProps> = ({
         <>
             <li>
                 <b>{currentPlayer.name}</b>
+                {currentPlayer.isActivePlayer && <div>Active Player</div>}
             </li>
-            {currentPlayer.hand.map((card) => (
-                <CardGridItem card={card} />
+            {/* TODO: make cards have unique id's and use that as the key instead of index */}
+            {currentPlayer.hand.map((card, index) => (
+                <CardGridItem key={index} card={card} />
             ))}
         </>
     );
@@ -33,7 +35,10 @@ interface OtherPlayerBoardProps {
 const OtherPlayerBoard: React.FC<OtherPlayerBoardProps> = ({ player }) => {
     return (
         <li>
-            <b>{player.name}</b>
+            <b>
+                {player.name}
+                {player.isActivePlayer && <div>Active Player</div>}
+            </b>
             <br />
             Cards in Hand: {player.numCardsInHand}
         </li>

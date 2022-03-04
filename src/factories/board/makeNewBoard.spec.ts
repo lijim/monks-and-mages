@@ -9,5 +9,19 @@ describe('Make New Board', () => {
         expect(board.players[1].health).toEqual(15);
     });
 
+    it('makes a random player the starting player', () => {
+        const board = makeNewBoard(['Hal', 'Orin', 'Samus']);
+        expect(
+            board.players[0].isActivePlayer ||
+                board.players[1].isActivePlayer ||
+                board.players[2].isActivePlayer
+        ).toEqual(true);
+        expect(
+            board.players[0].isActivePlayer &&
+                board.players[1].isActivePlayer &&
+                board.players[2].isActivePlayer
+        ).toEqual(false);
+    });
+
     it.todo('caps at 4 players and makes everyone else a spectator');
 });
