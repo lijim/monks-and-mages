@@ -1,4 +1,5 @@
 import { Board } from './types/board';
+import { GameAction } from './types/gameActions';
 
 export interface ServerToClientEvents {
     confirmName: (name: string) => void;
@@ -12,6 +13,7 @@ export interface ClientToServerEvents {
     getRooms: () => void;
     joinRoom: (roomName: string) => void;
     startGame: () => void;
+    takeGameAction: (gameAction: GameAction) => void;
 }
 
 export type DetailedRoom = {
