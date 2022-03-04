@@ -10,6 +10,7 @@ import {
     DetailedRoom,
     ServerToClientEvents,
 } from '@/types';
+import { applyGameAction } from '../gameEngine';
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -55,6 +56,21 @@ export const configureIo = (server: HttpServer) => {
             if (!name) return;
             io.to(socketId).emit('updateBoard', obscureBoardInfo(board, name));
         });
+    };
+
+    const getRoomForSocket = (socket: Socket): string | null => {
+        const firstRoomName = [...socket.rooms].filter((room) =>
+            room.startsWith('public-')
+        )[0];
+        return firstRoomName || null;
+    };
+
+    const getBoardForSocket = (socket: Socket): Board | null => {
+        const firstRoomName = getRoomForSocket(socket);
+        if (!firstRoomName) return null;
+        const board = startedBoards.get(firstRoomName);
+        console.log(board);
+        return board;
     };
 
     // TODO: use adapters instead to get rooms => games
@@ -118,6 +134,26 @@ export const configureIo = (server: HttpServer) => {
                     sendBoardForRoom(roomName);
                 });
                 io.emit('listRooms', getDetailedRooms());
+            });
+
+            socket.on('takeGameAction', (gameAction) => {
+                const board = getBoardForSocket(socket);
+                const roomName = getRoomForSocket(socket);
+                const playerName = idsToNames.get(socket.id);
+                console.log(playerName);
+                if (!board || !playerName) {
+                    // TODO: add error handling emits down to the client, display via error toasts
+                    return;
+                }
+                const newBoardState = applyGameAction({
+                    board,
+                    gameAction,
+                    playerName,
+                }); // calculate new state after actions is taken
+                console.log(newBoardState);
+                // TODO: add error handling when user tries to take an invalid action
+                startedBoards.set(roomName, newBoardState); // apply state changes to in-memory storage of boards
+                sendBoardForRoom(roomName); // update clients with changes
             });
 
             socket.on('disconnect', () => {

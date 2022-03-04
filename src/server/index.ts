@@ -1,7 +1,7 @@
 import express from 'express';
 import http from 'http';
 import path from 'path';
-import { configureIo } from './sockets/sockets';
+import { configureIo } from './sockets';
 
 const app = express();
 const port = 3000;
