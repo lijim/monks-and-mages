@@ -16,6 +16,7 @@
         "@reduxjs/toolkit": "^1.7.2",
         "@socket.io/admin-ui": "^0.2.0",
         "@types/lodash.clonedeep": "^4.5.6",
+        "@types/uuid": "^8.3.4",
         "express": "^4.17.2",
         "history": "^5.3.0",
         "lodash.clonedeep": "^4.5.0",
@@ -29,7 +30,8 @@
         "redux-first-history": "^5.0.8",
         "socket.io": "^4.4.1",
         "socket.io-client": "^4.4.1",
-        "styled-components": "^5.3.3"
+        "styled-components": "^5.3.3",
+        "uuid": "^8.3.2"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^5.16.2",

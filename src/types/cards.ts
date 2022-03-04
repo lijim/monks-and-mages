@@ -10,6 +10,7 @@ export enum CardType {
 
 export type ResourceCard = {
     cardType: CardType.RESOURCE;
+    id?: string;
     isUsed: boolean;
     name: string;
     resourceType: Resource; // if true, player has currently used up this resource for turn
@@ -51,6 +52,7 @@ export interface UnitCard extends UnitBase {
     cardType: CardType.UNIT;
     hp: number;
     hpBuff: number;
+    id?: string;
     // number of attack left this turn - starts at 0
     isSelected: boolean;
     // current hp
@@ -66,6 +68,7 @@ export type SpellBase = {
 
 export interface SpellCard extends SpellBase {
     cardType: CardType.SPELL;
+    id?: string;
     isSelected: boolean;
 }
 
