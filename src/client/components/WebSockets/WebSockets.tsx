@@ -10,6 +10,7 @@ import {
 import { updateRoomsAndPlayers } from '@/client/redux/room';
 import { updateBoardState } from '@/client/redux/board';
 import { ClientToServerEvents, ServerToClientEvents } from '@/types';
+import { GameAction } from '@/types/gameActions';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
@@ -76,8 +77,12 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('startGame');
         };
 
+        const takeGameAction = (gameAction: GameAction) => {
+            newSocket.emit('takeGameAction', gameAction);
+        };
+
         setSocket(newSocket);
-        setWs({ socket, chooseName, joinRoom, startGame });
+        setWs({ socket, chooseName, joinRoom, startGame, takeGameAction });
     }
 
     /**
