@@ -4,7 +4,7 @@ import { Resource } from '@/types/resources';
 import { makeCard, makeResourceCard } from './makeCards';
 
 it('makes a resource card', () => {
-    expect(makeResourceCard(Resource.BAMBOO)).toEqual({
+    expect(makeResourceCard(Resource.BAMBOO)).toMatchObject({
         cardType: CardType.RESOURCE,
         name: Resource.BAMBOO,
         resourceType: Resource.BAMBOO,
