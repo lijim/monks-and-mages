@@ -5,7 +5,7 @@ export const isUserInitialized = (state: Partial<RootState>): boolean =>
     !!state.user.name;
 
 // get the Player
-export const getCurrentPlayer = (state: Partial<RootState>): Player | null => {
+export const getSelfPlayer = (state: Partial<RootState>): Player | null => {
     if (!state.board?.players) return null;
 
     return (state.board.players || []).find(
@@ -17,13 +17,13 @@ export const getCurrentPlayer = (state: Partial<RootState>): Player | null => {
 export const getOtherPlayers = (state: Partial<RootState>): Player[] => {
     if (!state.board?.players) return [];
 
-    const indexOfCurrentPlayer = state.board.players.findIndex(
+    const indexOfSelfPlayer = state.board.players.findIndex(
         (player) => player?.name === state.user.name
     );
-    if (indexOfCurrentPlayer === -1) {
+    if (indexOfSelfPlayer === -1) {
         return state.board.players;
     }
-    const nextPlayers = state.board.players.slice(indexOfCurrentPlayer + 1);
-    const prevPlayers = state.board.players.slice(0, indexOfCurrentPlayer);
+    const nextPlayers = state.board.players.slice(indexOfSelfPlayer + 1);
+    const prevPlayers = state.board.players.slice(0, indexOfSelfPlayer);
     return [...nextPlayers, ...prevPlayers];
 };

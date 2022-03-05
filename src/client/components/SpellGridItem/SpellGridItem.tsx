@@ -23,7 +23,7 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({ card }) => {
 
     return (
         <CardFrame
-            data-testid="ResourceGridItem"
+            data-testid="SpellGridItem"
             primaryColor={getColorForCard(card)}
         >
             <CardHeader>

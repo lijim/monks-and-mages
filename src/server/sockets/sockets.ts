@@ -69,7 +69,6 @@ export const configureIo = (server: HttpServer) => {
         const firstRoomName = getRoomForSocket(socket);
         if (!firstRoomName) return null;
         const board = startedBoards.get(firstRoomName);
-        console.log(board);
         return board;
     };
 
@@ -140,7 +139,6 @@ export const configureIo = (server: HttpServer) => {
                 const board = getBoardForSocket(socket);
                 const roomName = getRoomForSocket(socket);
                 const playerName = idsToNames.get(socket.id);
-                console.log(playerName);
                 if (!board || !playerName) {
                     // TODO: add error handling emits down to the client, display via error toasts
                     return;
@@ -150,7 +148,6 @@ export const configureIo = (server: HttpServer) => {
                     gameAction,
                     playerName,
                 }); // calculate new state after actions is taken
-                console.log(newBoardState);
                 // TODO: add error handling when user tries to take an invalid action
                 startedBoards.set(roomName, newBoardState); // apply state changes to in-memory storage of boards
                 sendBoardForRoom(roomName); // update clients with changes
