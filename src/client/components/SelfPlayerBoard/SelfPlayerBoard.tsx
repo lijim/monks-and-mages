@@ -7,6 +7,7 @@ import { Player } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
 import { CardGridItem } from '../CardGridItem';
 import { WebSocketContext } from '../WebSockets';
+import { PlayerBriefInfo } from '../PlayerBriefInfo';
 
 /**
  * @returns {JSX.Element} - represents everything deployed (units and resources)
@@ -22,15 +23,10 @@ export const SelfPlayerBoard: React.FC = () => {
     if (!selfPlayer) return null;
     return (
         <>
-            <li>
-                <b>{selfPlayer.name}</b>
-                {selfPlayer.isActivePlayer && (
-                    <>
-                        <div>Active Player</div>
-                        <button onClick={passTurn}>Pass Turn</button>
-                    </>
-                )}
-            </li>
+            <PlayerBriefInfo player={selfPlayer} />
+            {selfPlayer.isActivePlayer && (
+                <button onClick={passTurn}>Pass Turn</button>
+            )}
             {/* TODO: make cards have unique id's and use that as the key instead of index */}
             {selfPlayer.hand.map((card, index) => (
                 <CardGridItem key={index} card={card} />

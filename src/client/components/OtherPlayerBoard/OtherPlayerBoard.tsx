@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Player } from '@/types/board';
+import { PlayerBriefInfo } from '../PlayerBriefInfo';
 
 interface OtherPlayerBoardProps {
     player: Player;
@@ -13,14 +14,5 @@ interface OtherPlayerBoardProps {
 export const OtherPlayerBoard: React.FC<OtherPlayerBoardProps> = ({
     player,
 }) => {
-    return (
-        <li>
-            <b>
-                {player.name}
-                {player.isActivePlayer && <div>Active Player</div>}
-            </b>
-            <br />
-            Cards in Hand: {player.numCardsInHand}
-        </li>
-    );
+    return <PlayerBriefInfo player={player}></PlayerBriefInfo>;
 };
