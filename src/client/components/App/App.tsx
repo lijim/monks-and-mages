@@ -24,12 +24,12 @@ export const App: React.FC = () => {
                 <Router history={history}>
                     {
                         <React.Fragment>
-                            <IntroScreen />
                             <Routes>
                                 <Route
                                     path="/"
                                     element={
                                         <>
+                                            <IntroScreen />
                                             {isUserPastIntroScreen && <Rooms />}
                                         </>
                                     }
