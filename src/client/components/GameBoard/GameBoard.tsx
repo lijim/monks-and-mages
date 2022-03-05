@@ -5,23 +5,7 @@ import { getOtherPlayers } from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
 import { Player } from '@/types/board';
 import { SelfPlayerBoard } from '../SelfPlayerBoard';
-
-interface OtherPlayerBoardProps {
-    player: Player;
-}
-
-const OtherPlayerBoard: React.FC<OtherPlayerBoardProps> = ({ player }) => {
-    return (
-        <li>
-            <b>
-                {player.name}
-                {player.isActivePlayer && <div>Active Player</div>}
-            </b>
-            <br />
-            Cards in Hand: {player.numCardsInHand}
-        </li>
-    );
-};
+import { OtherPlayerBoard } from '../OtherPlayerBoard';
 
 export const GameBoard: React.FC = () => {
     const otherPlayers = useSelector<RootState, Player[]>(getOtherPlayers);
@@ -29,10 +13,10 @@ export const GameBoard: React.FC = () => {
     return (
         <div>
             Game started
-            <SelfPlayerBoard />
             {otherPlayers.map((player) => (
                 <OtherPlayerBoard key={player.name} player={player} />
             ))}
+            <SelfPlayerBoard />
         </div>
     );
 };
