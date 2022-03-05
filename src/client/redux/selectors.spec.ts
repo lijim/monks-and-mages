@@ -1,9 +1,5 @@
 import { makeNewBoard } from '@/factories/board';
-import {
-    getCurrentPlayer,
-    getOtherPlayers,
-    isUserInitialized,
-} from './selectors';
+import { getSelfPlayer, getOtherPlayers, isUserInitialized } from './selectors';
 
 describe('selectors', () => {
     describe('isUserInitialized', () => {
@@ -24,13 +20,13 @@ describe('selectors', () => {
         });
     });
 
-    describe('getCurrentPlayer', () => {
+    describe('getSelfPlayer', () => {
         it('returns the player that matches the name', () => {
             const state = {
                 user: { name: 'Bruno' },
                 board: makeNewBoard(['Bruno', 'Carla']),
             };
-            expect(getCurrentPlayer(state).name).toBe('Bruno');
+            expect(getSelfPlayer(state).name).toBe('Bruno');
         });
     });
 
