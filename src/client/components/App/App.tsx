@@ -12,6 +12,7 @@ import { DeckList } from '../DeckList';
 import { IntroScreen } from '../IntroScreen';
 import { Rooms } from '../Rooms';
 import { GameDisplay } from '../GameDisplay';
+import { GameManager } from '../GameManager';
 
 export const App: React.FC = () => {
     const deck = makeSampleDeck1();
@@ -19,26 +20,31 @@ export const App: React.FC = () => {
     const isUserPastIntroScreen = useSelector<RootState>(isUserInitialized);
 
     return (
-        <div>
-            <Router history={history}>
-                {
-                    <React.Fragment>
-                        <Routes>
-                            <Route
-                                path="/"
-                                element={
-                                    <>
-                                        <IntroScreen />
-                                        {isUserPastIntroScreen && <Rooms />}
-                                    </>
-                                }
-                            />
-                            <Route path="/ingame" element={<GameDisplay />} />
-                            <Route element={<DeckList deck={deck} />} />
-                        </Routes>
-                    </React.Fragment>
-                }
-            </Router>
-        </div>
+        <GameManager>
+            <div>
+                <Router history={history}>
+                    {
+                        <React.Fragment>
+                            <Routes>
+                                <Route
+                                    path="/"
+                                    element={
+                                        <>
+                                            <IntroScreen />
+                                            {isUserPastIntroScreen && <Rooms />}
+                                        </>
+                                    }
+                                />
+                                <Route
+                                    path="/ingame"
+                                    element={<GameDisplay />}
+                                />
+                                <Route element={<DeckList deck={deck} />} />
+                            </Routes>
+                        </React.Fragment>
+                    }
+                </Router>
+            </div>
+        </GameManager>
     );
 };
