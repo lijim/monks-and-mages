@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { Route, Routes } from 'react-router-dom';
+import 'react-popper-tooltip/dist/styles.css';
 
 import { makeSampleDeck1 } from '@/factories/deck';
 import { isUserInitialized } from '@/client/redux/selectors';
