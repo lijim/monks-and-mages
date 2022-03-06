@@ -16,8 +16,7 @@ const GameGrid = styled.div`
     grid-auto-rows: 1fr 1fr;
 `;
 
-// TODO: reanme to GameDisplay
-export const GameBoard: React.FC = () => {
+export const GameDisplay: React.FC = () => {
     const otherPlayers = useSelector<RootState, Player[]>(getOtherPlayers);
 
     return (
