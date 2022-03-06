@@ -45,10 +45,12 @@ const CardInHand: React.FC<CardInHandProps> = ({ card }) => {
 
     return (
         <WidthLessContainer key={card.id}>
+            {/* The card itself */}
             <div style={{ width: 220 }} ref={setTriggerRef}>
-                <CardGridItem key={card.id} card={card} />
+                <CardGridItem key={card.id} card={card} hasOnClick />
             </div>
 
+            {/* Tooltip when card is hovered */}
             {visible && (
                 <div
                     ref={setTooltipRef}

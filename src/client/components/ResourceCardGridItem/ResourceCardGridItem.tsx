@@ -7,16 +7,19 @@ import { CastingCostFrame } from '../CastingCost';
 
 interface ResourceCardGridItemProps {
     card: ResourceCard;
+    onClick?: () => void;
 }
 
 export const ResourceCardGridItem: React.FC<ResourceCardGridItemProps> = ({
     card,
+    onClick,
 }) => {
     const { name, icon, primaryColor } = RESOURCE_GLOSSARY[card.resourceType];
     return (
         <CardFrame
             primaryColor={primaryColor}
             data-testid="ResourceCard-GridItem"
+            onClick={onClick}
         >
             <CardHeader>
                 <NameCell>{name}</NameCell>
