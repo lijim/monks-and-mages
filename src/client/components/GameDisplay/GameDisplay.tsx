@@ -20,6 +20,8 @@ const GameGrid = styled.div`
 
 const LeftColumn = styled.div`
     display: grid;
+    grid-template-rows: 1fr 1fr 100px;
+    place-items: center;
 `;
 
 const CenterColumn = styled.div`
@@ -55,6 +57,7 @@ export const GameDisplay: React.FC = () => {
                 <section>
                     <SelfPlayerBoard />
                 </section>
+                <section></section>
             </LeftColumn>
             <CenterColumn>
                 <OtherPlayerBoardSection>
