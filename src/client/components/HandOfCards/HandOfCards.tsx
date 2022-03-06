@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { usePopperTooltip } from 'react-popper-tooltip';
 import { useSelector } from 'react-redux';
 
 import { getSelfPlayer } from '@/client/redux/selectors';
 import { CardGridItem } from '../CardGridItem';
+import { Card } from '@/types/cards';
 
 interface HandContainerProps {
     handSize: number;
@@ -28,6 +30,44 @@ const WidthLessContainer = styled.div`
     width: 0;
 `;
 
+interface CardInHandProps {
+    card: Card;
+}
+// one of the cards in the hand of cards
+const CardInHand: React.FC<CardInHandProps> = ({ card }) => {
+    const {
+        getArrowProps,
+        getTooltipProps,
+        setTooltipRef,
+        setTriggerRef,
+        visible,
+    } = usePopperTooltip();
+
+    return (
+        <WidthLessContainer key={card.id}>
+            <div style={{ width: 220 }} ref={setTriggerRef}>
+                <CardGridItem key={card.id} card={card} />
+            </div>
+
+            {visible && (
+                <div
+                    ref={setTooltipRef}
+                    {...getTooltipProps({
+                        className: 'tooltip-container',
+                    })}
+                >
+                    <CardGridItem key={card.id} card={card} />
+                    <div
+                        {...getArrowProps({
+                            className: 'tooltip-arrow',
+                        })}
+                    />
+                </div>
+            )}
+        </WidthLessContainer>
+    );
+};
+
 export const HandOfCards: React.FC = () => {
     const selfPlayer = useSelector(getSelfPlayer);
     const handSize = selfPlayer?.hand?.length;
@@ -35,9 +75,7 @@ export const HandOfCards: React.FC = () => {
     return (
         <HandContainer handSize={handSize}>
             {selfPlayer.hand.map((card) => (
-                <WidthLessContainer key={card.id}>
-                    <CardGridItem key={card.id} card={card} />
-                </WidthLessContainer>
+                <CardInHand key={card.id} card={card} />
             ))}
         </HandContainer>
     );
