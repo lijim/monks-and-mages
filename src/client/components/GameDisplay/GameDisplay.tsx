@@ -2,13 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { getOtherPlayers } from '@/client/redux/selectors';
+import { getOtherPlayers, getSelfPlayer } from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
 import { Colors } from '@/constants/colors';
 import { Player } from '@/types/board';
-import { SelfPlayerBoard } from '../SelfPlayerBoard';
-import { OtherPlayerBoard } from '../OtherPlayerBoard';
+import { SelfPlayerInfo } from '../SelfPlayerInfo';
+import { OtherPlayerInfo } from '../OtherPlayerInfo';
 import { HandOfCards } from '../HandOfCards';
+import { PlayerBoardSection } from '../PlayerBoardSection';
 
 const GameGrid = styled.div`
     width: 100%;
@@ -29,21 +30,12 @@ const CenterColumn = styled.div`
     grid-template-rows: 1fr 1fr 100px;
 `;
 
-// TODO: rename OtherPlayerBoard to OtherPlayerInfo, rename OtherPlayerBoardSection to OtherPlayerBoard
-const OtherPlayerBoardSection = styled.div`
-    background-color: ${Colors.FELT_GREEN};
-`;
-
-// TODO: rename SelfPlayerBoard to SelfPlayerInfo, rename SelfPlayerBoardSection to SelfPlayerBoard
-const SelfPlayerBoardSection = styled.div`
-    background-color: ${Colors.FELT_GREEN_ALT};
-`;
-
 const RightColumn = styled.div`
     border: 1px solid ${Colors.DARK_BROWN};
 `;
 
 export const GameDisplay: React.FC = () => {
+    const selfPlayer = useSelector<RootState, Player>(getSelfPlayer);
     const otherPlayers = useSelector<RootState, Player[]>(getOtherPlayers);
 
     return (
@@ -51,21 +43,19 @@ export const GameDisplay: React.FC = () => {
             <LeftColumn>
                 <section>
                     {otherPlayers.map((player) => (
-                        <OtherPlayerBoard key={player.name} player={player} />
+                        <OtherPlayerInfo key={player.name} player={player} />
                     ))}
                 </section>
                 <section>
-                    <SelfPlayerBoard />
+                    <SelfPlayerInfo />
                 </section>
                 <section></section>
             </LeftColumn>
             <CenterColumn>
-                <OtherPlayerBoardSection>
-                    Other Player Board
-                </OtherPlayerBoardSection>
-                <SelfPlayerBoardSection>
-                    Self Player Board
-                </SelfPlayerBoardSection>
+                {otherPlayers.map((player) => (
+                    <PlayerBoardSection key={player.name} player={player} />
+                ))}
+                <PlayerBoardSection player={selfPlayer} isSelfPlayer />
                 <HandOfCards />
             </CenterColumn>
             <RightColumn>Right Chat Column</RightColumn>
