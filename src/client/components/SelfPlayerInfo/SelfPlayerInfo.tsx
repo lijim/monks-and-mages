@@ -9,10 +9,9 @@ import { WebSocketContext } from '../WebSockets';
 import { PlayerBriefInfo } from '../PlayerBriefInfo';
 
 /**
- * @returns {JSX.Element} - represents everything deployed (units and resources)
- * for the self-player's (aka your) side of the board
+ * @returns {JSX.Element} - your player info (health, cards, etc.) + the pass turn button
  */
-export const SelfPlayerBoard: React.FC = () => {
+export const SelfPlayerInfo: React.FC = () => {
     const selfPlayer = useSelector<RootState, Player | null>(getSelfPlayer);
 
     const webSocket = useContext(WebSocketContext);

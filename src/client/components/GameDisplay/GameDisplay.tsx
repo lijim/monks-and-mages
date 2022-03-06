@@ -6,7 +6,7 @@ import { getOtherPlayers } from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
 import { Colors } from '@/constants/colors';
 import { Player } from '@/types/board';
-import { SelfPlayerBoard } from '../SelfPlayerBoard';
+import { SelfPlayerInfo } from '../SelfPlayerInfo';
 import { OtherPlayerInfo } from '../OtherPlayerInfo';
 import { HandOfCards } from '../HandOfCards';
 
@@ -55,7 +55,7 @@ export const GameDisplay: React.FC = () => {
                     ))}
                 </section>
                 <section>
-                    <SelfPlayerBoard />
+                    <SelfPlayerInfo />
                 </section>
                 <section></section>
             </LeftColumn>

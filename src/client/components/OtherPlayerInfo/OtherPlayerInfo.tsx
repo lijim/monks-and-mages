@@ -8,8 +8,8 @@ interface OtherPlayerInfoProps {
 }
 
 /**
- * @returns {JSX.Element} - returns another player's section of the board (not the self-player),
- * including all their units and resources
+ * @returns {JSX.Element} - the other player's information (for the left hand side
+ * of the GameDisplay)
  */
 export const OtherPlayerInfo: React.FC<OtherPlayerInfoProps> = ({ player }) => {
     return <PlayerBriefInfo player={player}></PlayerBriefInfo>;
