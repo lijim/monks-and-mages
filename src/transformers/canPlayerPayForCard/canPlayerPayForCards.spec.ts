@@ -1,0 +1,29 @@
+import { makeCard, UnitCards } from '@/cardDb/units';
+import { SAMPLE_DECKLIST_1 } from '@/factories/deck';
+import { makeNewPlayer } from '@/factories/player';
+import { Resource } from '@/types/resources';
+import { canPlayerPayForCard } from './canPlayerPayForCard';
+
+describe('can player pay for card', () => {
+    it('returns true if the player has enough resources (including for the generic cost)', () => {
+        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        player.resourcePool = {
+            [Resource.FIRE]: 3,
+            [Resource.IRON]: 2,
+        };
+        expect(canPlayerPayForCard(player, makeCard(UnitCards.CANNON))).toBe(
+            true
+        ); // costs 1 fire, 2 iron, 2 generic
+    });
+
+    it('returns false if the player lacks the resources', () => {
+        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        player.resourcePool = {
+            [Resource.FIRE]: 4,
+            [Resource.IRON]: 1,
+        };
+        expect(canPlayerPayForCard(player, makeCard(UnitCards.CANNON))).toBe(
+            false
+        ); // costs 1 fire, 2 iron, 2 generic
+    });
+});
