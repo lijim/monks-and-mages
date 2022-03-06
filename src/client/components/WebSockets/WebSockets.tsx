@@ -1,5 +1,5 @@
-import React, { createContext, useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { createContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
 import { push } from 'redux-first-history';
@@ -8,19 +8,16 @@ import {
     initializeUser,
 } from '@/client/redux/user';
 import { updateRoomsAndPlayers } from '@/client/redux/room';
-import { AppDispatch, RootState } from '@/client/redux/store';
+import { AppDispatch } from '@/client/redux/store';
 import { updateBoardState } from '@/client/redux/board';
 import { ClientToServerEvents, ServerToClientEvents } from '@/types';
 import { GameAction } from '@/types/gameActions';
-import { handleClickOnCard } from './handleClickOnCard';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
 interface WebSocketValue extends Partial<ClientToServerEvents> {
     socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 }
-
-export const ClickOnCardContext = createContext<(cardId: string) => void>(null);
 
 /**
  * Redux-Integrated WebSockets Provider.  The need for this arises b/c
@@ -39,21 +36,9 @@ export const WebSocketProvider: React.FC = ({ children }) => {
     const [socket, setSocket] =
         useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
     const [ws, setWs] = useState<WebSocketValue>(null);
-    const rootState = useSelector<RootState, RootState>((state) => state);
 
     // WebSocketProvider needs to go 1 layer beneath the Redux layer
     const dispatch = useDispatch<AppDispatch>();
-
-    const handleCardClick = useCallback(
-        (cardId: string) => {
-            handleClickOnCard({
-                cardId,
-                state: rootState,
-                socket,
-            });
-        },
-        [rootState, socket]
-    );
 
     if (!socket) {
         const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> =
@@ -99,7 +84,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
 
         setSocket(newSocket);
         setWs({
-            socket,
+            socket: newSocket,
             chooseName,
             joinRoom,
             startGame,
@@ -114,9 +99,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
      */
     return (
         <WebSocketContext.Provider value={ws}>
-            <ClickOnCardContext.Provider value={handleCardClick}>
-                {children}
-            </ClickOnCardContext.Provider>
+            {children}
         </WebSocketContext.Provider>
     );
 };

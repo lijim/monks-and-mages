@@ -4,7 +4,7 @@ import { Card, CardType } from '@/types/cards';
 import { ResourceCardGridItem } from '../ResourceCardGridItem';
 import { SpellGridItem } from '../SpellGridItem';
 import { UnitGridItem } from '../UnitGridItem';
-import { ClickOnCardContext } from '../WebSockets';
+import { GameManagerContext } from '../GameManager';
 
 interface CardGridItemProps {
     card: Card;
@@ -15,7 +15,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
     card,
     hasOnClick,
 }) => {
-    const handleClickCard = useContext(ClickOnCardContext);
+    const { handleClickCard } = useContext(GameManagerContext) || {};
     const onClick = () => {
         handleClickCard(card.id);
     };
