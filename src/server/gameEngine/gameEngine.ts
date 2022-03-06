@@ -2,6 +2,7 @@ import cloneDeep from 'lodash.clonedeep';
 
 import { Board, GameState, Player } from '@/types/board';
 import { GameAction, GameActionTypes } from '@/types/gameActions';
+import { CardType, ResourceCard } from '@/types/cards';
 
 const getNextPlayer = (board: Board): Player => {
     const { players } = board;
@@ -69,8 +70,10 @@ export const applyGameAction = ({
                         return clonedBoard;
                     activePlayer = nextPlayer;
                 } else {
+                    // proceed to next turn
                     nextPlayer.numCardsInDeck -= 1;
                     nextPlayer.numCardsInHand += 1;
+                    nextPlayer.resourcesLeftToDeploy = 1;
                     nextPlayer.hand.push(nextPlayer.deck.pop());
                     return clonedBoard;
                 }
@@ -78,7 +81,25 @@ export const applyGameAction = ({
 
             return clonedBoard;
         }
+        case GameActionTypes.DEPLOY_RESOURCE: {
+            const { cardId } = gameAction;
+            const { hand, resourcesLeftToDeploy, resources } = activePlayer;
+            const matchingCardIndex = hand.findIndex(
+                (card) =>
+                    card.id === cardId && card.cardType === CardType.RESOURCE
+            );
+            if (matchingCardIndex === -1) return clonedBoard;
+            if (resourcesLeftToDeploy <= 0) {
+                return clonedBoard;
+            }
+            activePlayer.resourcesLeftToDeploy -= 1;
+
+            resources.push(
+                hand.splice(matchingCardIndex, 1)[0] as ResourceCard
+            );
+            return clonedBoard;
+        }
         default:
-            return board;
+            return clonedBoard;
     }
 };

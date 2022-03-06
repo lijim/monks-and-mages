@@ -11,7 +11,6 @@ import { history, RootState } from '@/client/redux/store';
 import { DeckList } from '../DeckList';
 import { IntroScreen } from '../IntroScreen';
 import { Rooms } from '../Rooms';
-import { WebSocketProvider } from '../WebSockets';
 import { GameDisplay } from '../GameDisplay';
 
 export const App: React.FC = () => {
@@ -20,31 +19,26 @@ export const App: React.FC = () => {
     const isUserPastIntroScreen = useSelector<RootState>(isUserInitialized);
 
     return (
-        <WebSocketProvider>
-            <div>
-                <Router history={history}>
-                    {
-                        <React.Fragment>
-                            <Routes>
-                                <Route
-                                    path="/"
-                                    element={
-                                        <>
-                                            <IntroScreen />
-                                            {isUserPastIntroScreen && <Rooms />}
-                                        </>
-                                    }
-                                />
-                                <Route
-                                    path="/ingame"
-                                    element={<GameDisplay />}
-                                />
-                                <Route element={<DeckList deck={deck} />} />
-                            </Routes>
-                        </React.Fragment>
-                    }
-                </Router>
-            </div>
-        </WebSocketProvider>
+        <div>
+            <Router history={history}>
+                {
+                    <React.Fragment>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={
+                                    <>
+                                        <IntroScreen />
+                                        {isUserPastIntroScreen && <Rooms />}
+                                    </>
+                                }
+                            />
+                            <Route path="/ingame" element={<GameDisplay />} />
+                            <Route element={<DeckList deck={deck} />} />
+                        </Routes>
+                    </React.Fragment>
+                }
+            </Router>
+        </div>
     );
 };
