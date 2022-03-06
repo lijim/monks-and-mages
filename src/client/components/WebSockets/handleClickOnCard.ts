@@ -46,5 +46,21 @@ export const handleClickOnCard = ({
                 cardId,
             });
         }
+        return;
+    }
+
+    const matchingCardInResources = selfPlayer.resources.find(
+        (card) => card.id === cardId
+    );
+    if (matchingCardInResources) {
+        if (
+            matchingCardInResources.cardType === CardType.RESOURCE &&
+            !matchingCardInResources.isUsed
+        ) {
+            socket.emit('takeGameAction', {
+                type: GameActionTypes.TAP_RESOURCE,
+                cardId,
+            });
+        }
     }
 };
