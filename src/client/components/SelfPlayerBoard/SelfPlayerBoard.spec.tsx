@@ -7,19 +7,25 @@ import { render } from '@/test-utils';
 import { SelfPlayerBoard } from './SelfPlayerBoard';
 
 describe('Self Player Board', () => {
-    it('renders your hand', () => {
+    it("renders the pass turn button, if you're the active player", () => {
         const preloadedState: Partial<RootState> = {
             user: {
                 name: 'Melvin',
             },
-            board: makeNewBoard(['Melvin', 'Melissa']),
+            board: makeNewBoard(['Melvin', 'Melissa'], 0),
         };
         render(<SelfPlayerBoard />, { preloadedState });
-        const unitCards = screen.queryAllByTestId('UnitGridItem');
-        const resourceCards = screen.queryAllByTestId('ResourceCard-GridItem');
-        const spellCards = screen.queryAllByTestId('SpellGridItem');
-        expect(
-            unitCards.length + resourceCards.length + spellCards.length
-        ).toEqual(preloadedState.board.players[0].numCardsInHand);
+        expect(screen.getByText('Pass Turn')).toBeInTheDocument();
+    });
+
+    it("hides the pass turn button, if you're not the active player", () => {
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Melvin',
+            },
+            board: makeNewBoard(['Melvin', 'Melissa'], 1),
+        };
+        render(<SelfPlayerBoard />, { preloadedState });
+        expect(screen.queryByText('Pass Turn')).not.toBeInTheDocument();
     });
 });

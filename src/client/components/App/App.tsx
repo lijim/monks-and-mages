@@ -11,7 +11,7 @@ import { DeckList } from '../DeckList';
 import { IntroScreen } from '../IntroScreen';
 import { Rooms } from '../Rooms';
 import { WebSocketProvider } from '../WebSockets';
-import { GameBoard } from '../GameBoard';
+import { GameDisplay } from '../GameDisplay';
 
 export const App: React.FC = () => {
     const deck = makeSampleDeck1();
@@ -34,7 +34,10 @@ export const App: React.FC = () => {
                                         </>
                                     }
                                 />
-                                <Route path="/ingame" element={<GameBoard />} />
+                                <Route
+                                    path="/ingame"
+                                    element={<GameDisplay />}
+                                />
                                 <Route element={<DeckList deck={deck} />} />
                             </Routes>
                         </React.Fragment>

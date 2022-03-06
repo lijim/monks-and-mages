@@ -5,7 +5,6 @@ import { getSelfPlayer } from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
 import { Player } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
-import { CardGridItem } from '../CardGridItem';
 import { WebSocketContext } from '../WebSockets';
 import { PlayerBriefInfo } from '../PlayerBriefInfo';
 
@@ -27,10 +26,6 @@ export const SelfPlayerBoard: React.FC = () => {
             {selfPlayer.isActivePlayer && (
                 <button onClick={passTurn}>Pass Turn</button>
             )}
-            {/* TODO: make cards have unique id's and use that as the key instead of index */}
-            {selfPlayer.hand.map((card, index) => (
-                <CardGridItem key={index} card={card} />
-            ))}
         </>
     );
 };
