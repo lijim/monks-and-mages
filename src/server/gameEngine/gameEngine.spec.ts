@@ -22,6 +22,16 @@ describe('Game Action', () => {
     });
 
     describe('Pass Turn', () => {
+        it("resets the active player's resource pool", () => {
+            board.players[0].resourcePool = { [Resource.CRYSTAL]: 1 };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: { type: GameActionTypes.PASS_TURN },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].resourcePool).toEqual({});
+        });
+
         it('passes the turn over to the next player', () => {
             const newBoardState = applyGameAction({
                 board,
@@ -30,6 +40,20 @@ describe('Game Action', () => {
             });
             expect(newBoardState.players[0].isActivePlayer).toEqual(false);
             expect(newBoardState.players[1].isActivePlayer).toEqual(true);
+        });
+
+        it("untaps the next player's resources", () => {
+            const resourceCard = makeResourceCard(Resource.FIRE);
+            board.players[1].resources = [resourceCard];
+            resourceCard.isUsed = true;
+
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: { type: GameActionTypes.PASS_TURN },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.players[1].resources[0].isUsed).toEqual(false);
         });
 
         it('makes the next player draw a card', () => {
@@ -142,6 +166,41 @@ describe('Game Action', () => {
             });
             expect(newBoardState.players[0].resources).toHaveLength(1);
             expect(newBoardState.players[0].resourcesLeftToDeploy).toBe(0);
+        });
+    });
+
+    describe('Tap Resource', () => {
+        it('taps a resource', () => {
+            const resourceCard = makeResourceCard(Resource.BAMBOO);
+            board.players[0].resources = [resourceCard];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.TAP_RESOURCE,
+                    cardId: resourceCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].resources[0].isUsed).toBe(true);
+            expect(newBoardState.players[0].resourcePool).toEqual({
+                [Resource.BAMBOO]: 1,
+            });
+        });
+
+        it('does nothing if the resource is tapped', () => {
+            const resourceCard = makeResourceCard(Resource.BAMBOO);
+            resourceCard.isUsed = true;
+            board.players[0].resources = [resourceCard];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.TAP_RESOURCE,
+                    cardId: resourceCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].resources[0].isUsed).toBe(true);
+            expect(newBoardState.players[0].resourcePool).toEqual({});
         });
     });
 });

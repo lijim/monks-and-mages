@@ -31,12 +31,20 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
         <PlayerBoardSectionContainer isSelfPlayer={isSelfPlayer}>
             <div>
                 {units.map((unitCard) => (
-                    <CardGridItem card={unitCard} key={unitCard.id} />
+                    <CardGridItem
+                        card={unitCard}
+                        key={unitCard.id}
+                        hasOnClick
+                    />
                 ))}
             </div>
             <div>
                 {resources.map((resourceCard) => (
-                    <CardGridItem card={resourceCard} key={resourceCard.id} />
+                    <CardGridItem
+                        card={resourceCard}
+                        key={resourceCard.id}
+                        hasOnClick
+                    />
                 ))}
             </div>
         </PlayerBoardSectionContainer>

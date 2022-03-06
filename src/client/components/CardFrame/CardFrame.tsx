@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 interface CardFrameProps {
+    isRotated?: boolean;
     primaryColor?: string;
 }
 /**
@@ -28,6 +29,7 @@ export const CardFrame = styled.div<CardFrameProps>`
     border-radius: 4%;
     padding: 10px;
     color: white;
+    ${({ isRotated }) => (isRotated ? 'transform: rotate(90deg)' : '')};
     background-color: ${({ primaryColor }) => primaryColor || '#5c4d50'};
 `;
 

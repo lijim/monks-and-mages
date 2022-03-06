@@ -20,6 +20,7 @@ export const ResourceCardGridItem: React.FC<ResourceCardGridItemProps> = ({
             primaryColor={primaryColor}
             data-testid="ResourceCard-GridItem"
             onClick={onClick}
+            isRotated={card.isUsed}
         >
             <CardHeader>
                 <NameCell>{name}</NameCell>

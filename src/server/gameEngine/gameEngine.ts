@@ -55,12 +55,18 @@ export const applyGameAction = ({
 
     switch (gameAction.type) {
         case GameActionTypes.PASS_TURN: {
+            activePlayer.resourcePool = {};
             // tries to loop through all players, in case one draws out of their deck
             // and loses the game
             for (let i = 0; i < players.length; i += 1) {
                 const nextPlayer = getNextPlayer(clonedBoard);
                 activePlayer.isActivePlayer = false;
                 nextPlayer.isActivePlayer = true;
+
+                // Untap
+                nextPlayer.resources.forEach((resource) => {
+                    resource.isUsed = false;
+                });
 
                 // If you draw out of the deck, you lose the game
                 if (nextPlayer.deck.length === 0) {
@@ -97,6 +103,23 @@ export const applyGameAction = ({
             resources.push(
                 hand.splice(matchingCardIndex, 1)[0] as ResourceCard
             );
+            return clonedBoard;
+        }
+        case GameActionTypes.TAP_RESOURCE: {
+            const { cardId } = gameAction;
+            const { resources, resourcePool } = activePlayer;
+            const matchingCard = resources.find(
+                (card) =>
+                    card.id === cardId && card.cardType === CardType.RESOURCE
+            );
+            if (!matchingCard) return clonedBoard;
+            if (matchingCard.isUsed) {
+                return clonedBoard;
+            }
+
+            const { resourceType } = matchingCard;
+            resourcePool[resourceType] = (resourcePool[resourceType] || 0) + 1;
+            matchingCard.isUsed = true;
             return clonedBoard;
         }
         default:
