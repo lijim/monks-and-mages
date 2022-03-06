@@ -29,13 +29,11 @@ const CenterColumn = styled.div`
     grid-template-rows: 1fr 1fr 100px;
 `;
 
-// TODO: rename OtherPlayerBoard to OtherPlayerInfo, rename OtherPlayerBoardSection to OtherPlayerBoard
-const OtherPlayerBoardSection = styled.div`
+const OtherPlayerBoard = styled.div`
     background-color: ${Colors.FELT_GREEN};
 `;
 
-// TODO: rename SelfPlayerBoard to SelfPlayerInfo, rename SelfPlayerBoardSection to SelfPlayerBoard
-const SelfPlayerBoardSection = styled.div`
+const SelfPlayerBoard = styled.div`
     background-color: ${Colors.FELT_GREEN_ALT};
 `;
 
@@ -60,12 +58,8 @@ export const GameDisplay: React.FC = () => {
                 <section></section>
             </LeftColumn>
             <CenterColumn>
-                <OtherPlayerBoardSection>
-                    Other Player Board
-                </OtherPlayerBoardSection>
-                <SelfPlayerBoardSection>
-                    Self Player Board
-                </SelfPlayerBoardSection>
+                <OtherPlayerBoard />
+                <SelfPlayerBoard />
                 <HandOfCards />
             </CenterColumn>
             <RightColumn>Right Chat Column</RightColumn>
