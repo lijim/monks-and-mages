@@ -3,7 +3,7 @@ import React from 'react';
 import { Player } from '@/types/board';
 import { PlayerBriefInfo } from '../PlayerBriefInfo';
 
-interface OtherPlayerBoardProps {
+interface OtherPlayerInfoProps {
     player: Player;
 }
 
@@ -11,8 +11,6 @@ interface OtherPlayerBoardProps {
  * @returns {JSX.Element} - returns another player's section of the board (not the self-player),
  * including all their units and resources
  */
-export const OtherPlayerBoard: React.FC<OtherPlayerBoardProps> = ({
-    player,
-}) => {
+export const OtherPlayerInfo: React.FC<OtherPlayerInfoProps> = ({ player }) => {
     return <PlayerBriefInfo player={player}></PlayerBriefInfo>;
 };

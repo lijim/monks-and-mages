@@ -7,7 +7,7 @@ import { RootState } from '@/client/redux/store';
 import { Colors } from '@/constants/colors';
 import { Player } from '@/types/board';
 import { SelfPlayerBoard } from '../SelfPlayerBoard';
-import { OtherPlayerBoard } from '../OtherPlayerBoard';
+import { OtherPlayerInfo } from '../OtherPlayerInfo';
 import { HandOfCards } from '../HandOfCards';
 
 const GameGrid = styled.div`
@@ -51,7 +51,7 @@ export const GameDisplay: React.FC = () => {
             <LeftColumn>
                 <section>
                     {otherPlayers.map((player) => (
-                        <OtherPlayerBoard key={player.name} player={player} />
+                        <OtherPlayerInfo key={player.name} player={player} />
                     ))}
                 </section>
                 <section>
