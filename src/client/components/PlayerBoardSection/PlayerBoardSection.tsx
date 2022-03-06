@@ -1,0 +1,44 @@
+import React from 'react';
+import styled from 'styled-components';
+
+import { Player } from '@/types/board';
+import { Colors } from '@/constants/colors';
+import { CardGridItem } from '../CardGridItem';
+
+interface PlayerBoardSectionProps {
+    isSelfPlayer?: boolean;
+    player: Player;
+}
+
+interface PlayerBoardSectionContainerProps {
+    isSelfPlayer: boolean;
+}
+
+const PlayerBoardSectionContainer = styled.div<PlayerBoardSectionContainerProps>`
+    background-color: ${({ isSelfPlayer }) =>
+        isSelfPlayer ? Colors.FELT_GREEN_ALT : Colors.FELT_GREEN};
+`;
+
+export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
+    isSelfPlayer,
+    player,
+}) => {
+    if (!player?.units || !player?.resources) {
+        return <PlayerBoardSectionContainer isSelfPlayer={isSelfPlayer} />;
+    }
+    const { units, resources } = player;
+    return (
+        <PlayerBoardSectionContainer isSelfPlayer={isSelfPlayer}>
+            <div>
+                {units.map((unitCard) => (
+                    <CardGridItem card={unitCard} />
+                ))}
+            </div>
+            <div>
+                {resources.map((resourceCard) => (
+                    <CardGridItem card={resourceCard} />
+                ))}
+            </div>
+        </PlayerBoardSectionContainer>
+    );
+};
