@@ -1,5 +1,10 @@
 import { makeNewBoard } from '@/factories/board';
-import { getSelfPlayer, getOtherPlayers, isUserInitialized } from './selectors';
+import {
+    getSelfPlayer,
+    getOtherPlayers,
+    isUserInitialized,
+    getAttackingUnit,
+} from './selectors';
 
 describe('selectors', () => {
     describe('isUserInitialized', () => {
@@ -69,6 +74,17 @@ describe('selectors', () => {
             expect(getOtherPlayers(state).map((player) => player.name)).toEqual(
                 ['Alex', 'Bruno', 'Carla']
             );
+        });
+    });
+
+    describe('getAttackingUnit', () => {
+        it('returns the attacking unit', () => {
+            const state = {
+                clientSideGameExtras: {
+                    attackingUnit: '432-e1f',
+                },
+            };
+            expect(getAttackingUnit(state)).toEqual('432-e1f');
         });
     });
 });

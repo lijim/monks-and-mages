@@ -1,18 +1,16 @@
 import { Socket } from 'socket.io-client';
 
-import {
-    // AppDispatch,
-    RootState,
-} from '@/client/redux/store';
+import { AppDispatch, RootState } from '@/client/redux/store';
 import { ClientToServerEvents, ServerToClientEvents } from '@/types';
 import { getSelfPlayer } from '@/client/redux/selectors';
 import { CardType } from '@/types/cards';
 import { GameActionTypes } from '@/types/gameActions';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
+import { selectAttackingUnit } from '@/client/redux/clientSideGameExtras';
 
 interface HandleClickOnCardParams {
     cardId: string;
-    // dispatch: AppDispatch
+    dispatch: AppDispatch;
     socket: Socket<ServerToClientEvents, ClientToServerEvents>;
     state: RootState;
 }
@@ -27,6 +25,7 @@ interface HandleClickOnCardParams {
  */
 export const handleClickOnCard = ({
     cardId,
+    dispatch,
     state,
     socket,
 }: HandleClickOnCardParams) => {
@@ -59,6 +58,7 @@ export const handleClickOnCard = ({
         return;
     }
 
+    // Match Resources
     const matchingCardInResources = selfPlayer.resources.find(
         (card) => card.id === cardId
     );
@@ -72,5 +72,13 @@ export const handleClickOnCard = ({
                 cardId,
             });
         }
+    }
+
+    // Match Units (Self Player)
+    const matchingCardInUnits = selfPlayer.units.find(
+        (card) => card.id === cardId
+    );
+    if (matchingCardInUnits) {
+        dispatch(selectAttackingUnit(cardId));
     }
 };

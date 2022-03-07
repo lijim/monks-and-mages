@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 interface CardFrameProps {
+    isRaised?: boolean;
     isRotated?: boolean;
     primaryColor?: string;
 }
@@ -18,6 +19,16 @@ interface CardFrameProps {
  */
 
 export const CardFrame = styled.div<CardFrameProps>`
+    ${({ isRaised }) =>
+        isRaised
+            ? `
+            position: relative;
+            top: -6px;
+            left: -6px;
+            box-shadow: 8px 8px rgb(0 0 0 / 50%);
+        
+    `
+            : ''}
     zoom: 0.75;
     cursor: pointer;
     font-size: 14px;

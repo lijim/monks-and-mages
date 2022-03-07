@@ -15,6 +15,8 @@ import {
 } from '../CardFrame';
 import { getColorForCard } from '@/transformers/getColorForCard';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
+import { useSelector } from 'react-redux';
+import { getAttackingUnit } from '@/client/redux/selectors';
 
 interface UnitGridItemProps {
     card: UnitCard;
@@ -27,11 +29,13 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
     isOnBoard = false,
     onClick,
 }) => {
+    const attackUnitId = useSelector(getAttackingUnit);
     const {
         attack,
         cost,
         enterEffects,
         hp,
+        id,
         imgSrc,
         isMagical,
         isRanged,
@@ -47,6 +51,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
 
     return (
         <CardFrame
+            isRaised={attackUnitId === id}
             data-testid="UnitGridItem"
             primaryColor={getColorForCard(card)}
             onClick={onClick}

@@ -27,3 +27,7 @@ export const getOtherPlayers = (state: Partial<RootState>): Player[] => {
     const prevPlayers = state.board.players.slice(0, indexOfSelfPlayer);
     return [...nextPlayers, ...prevPlayers];
 };
+
+export const getAttackingUnit = (
+    state: Partial<RootState>
+): string | undefined => state.clientSideGameExtras?.attackingUnit;
