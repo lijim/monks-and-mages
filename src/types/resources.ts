@@ -1,3 +1,5 @@
+import { Colors } from '@/constants/colors';
+
 export enum Resource {
     BAMBOO = 'Bamboo', // 🎋
     CRYSTAL = 'Crystal', // 🔮 - magic primary resource
@@ -35,7 +37,11 @@ export const RESOURCE_GLOSSARY: Record<Resource, GlossaryEntry> = {
         name: 'Crystal',
         primaryColor: '#b384d1',
     },
-    [Resource.FIRE]: { icon: '🔥', name: 'Fire', primaryColor: '#f57322' },
+    [Resource.FIRE]: {
+        icon: '🔥',
+        name: 'Fire',
+        primaryColor: Colors.FIRE_ORANGE,
+    },
     [Resource.IRON]: { icon: '🛠️', name: 'Iron', primaryColor: '#5c5955' },
     [Resource.WATER]: { icon: '🌊', name: 'Water', primaryColor: '#2ccdf5' },
 };

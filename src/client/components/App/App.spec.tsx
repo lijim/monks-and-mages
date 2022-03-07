@@ -13,7 +13,7 @@ describe('App', () => {
             },
         };
         render(<App />, { preloadedState });
-        expect(screen.queryByText('Select a Name')).toBeInTheDocument();
+        expect(screen.queryByText('Choose a Name')).toBeInTheDocument();
     });
 
     it('renders a particular name if already selected', () => {
