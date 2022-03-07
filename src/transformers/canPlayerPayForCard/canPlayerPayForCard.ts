@@ -21,13 +21,13 @@ export const canPlayerPayForCard = (
     ORDERED_RESOURCES.forEach((resource) => {
         if (resource === Resource.GENERIC) return;
         if (!cost[resource]) return;
-        if (cost[resource] > resourcePool[resource] || 0) canCast = false;
+        if (cost[resource] > (resourcePool[resource] || 0)) canCast = false;
         else resourcePool[resource] -= cost[resource];
         remainingForGeneric += resourcePool[resource];
     });
 
-    if (cost[Resource.GENERIC]) {
-        canCast = cost[Resource.GENERIC] >= remainingForGeneric;
+    if (cost[Resource.GENERIC] && canCast) {
+        canCast = cost[Resource.GENERIC] <= remainingForGeneric;
     }
     return canCast;
 };

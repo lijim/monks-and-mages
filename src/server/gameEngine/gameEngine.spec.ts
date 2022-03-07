@@ -228,5 +228,26 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].numCardsInHand).toBe(0);
             expect(newBoardState.players[0].units[0]).toEqual(unitCard);
         });
+
+        it('does not deploy a unit when the player cannot pay for it', () => {
+            const unitCard = makeCard(UnitCards.CANNON);
+            board.players[0].hand = [unitCard];
+            board.players[0].numCardsInHand = 1;
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.IRON]: 2,
+            };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_UNIT,
+                    cardId: unitCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].hand).toEqual([unitCard]);
+            expect(newBoardState.players[0].numCardsInHand).toBe(1);
+            expect(newBoardState.players[0].units).toHaveLength(0);
+        });
     });
 });

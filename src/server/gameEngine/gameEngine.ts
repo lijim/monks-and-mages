@@ -139,10 +139,10 @@ export const applyGameAction = ({
                     activePlayer,
                     matchingCard
                 ).resourcePool;
+                activePlayer.units.push(matchingCard);
+                activePlayer.numCardsInHand -= 1;
+                activePlayer.hand.splice(matchingCardIndex, 1);
             }
-            activePlayer.units.push(matchingCard);
-            activePlayer.numCardsInHand -= 1;
-            activePlayer.hand.splice(matchingCardIndex, 1);
             return clonedBoard;
         }
         default:

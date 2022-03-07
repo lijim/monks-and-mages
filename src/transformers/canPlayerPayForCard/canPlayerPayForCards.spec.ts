@@ -26,4 +26,15 @@ describe('can player pay for card', () => {
             false
         ); // costs 1 fire, 2 iron, 2 generic
     });
+
+    it('returns false if the player lacks the resources (test case 2)', () => {
+        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        player.resourcePool = {
+            [Resource.FIRE]: 2,
+            [Resource.IRON]: 2,
+        };
+        expect(canPlayerPayForCard(player, makeCard(UnitCards.CANNON))).toBe(
+            false
+        ); // costs 1 fire, 2 iron, 2 generic
+    });
 });
