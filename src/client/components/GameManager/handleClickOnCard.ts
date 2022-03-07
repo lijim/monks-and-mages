@@ -78,7 +78,7 @@ export const handleClickOnCard = ({
     const matchingCardInUnits = selfPlayer.units.find(
         (card) => card.id === cardId
     );
-    if (matchingCardInUnits) {
+    if (matchingCardInUnits && matchingCardInUnits.numAttacksLeft > 0) {
         dispatch(selectAttackingUnit(cardId));
     }
 };
