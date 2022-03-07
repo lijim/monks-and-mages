@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getSelfPlayer } from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
+import { passTurn as passTurnGameExtras } from '@/client/redux/clientSideGameExtras';
+
 import { Player } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
 import { WebSocketContext } from '../WebSockets';
@@ -14,9 +16,11 @@ import { PrimaryColorButton } from '../Button';
  */
 export const SelfPlayerInfo: React.FC = () => {
     const selfPlayer = useSelector<RootState, Player | null>(getSelfPlayer);
+    const dispatch = useDispatch();
 
     const webSocket = useContext(WebSocketContext);
     const passTurn = () => {
+        dispatch(passTurnGameExtras());
         webSocket.takeGameAction({ type: GameActionTypes.PASS_TURN });
     };
     if (!selfPlayer) return null;

@@ -6,6 +6,7 @@ import { applyMiddleware } from 'redux';
 import { boardReducer } from './board';
 import { roomsReducer } from './room';
 import { userReducer, userSlice } from './user';
+import { clientSideGameExtrasReducer } from './clientSideGameExtras';
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
     createReduxHistoryContext({
@@ -15,6 +16,7 @@ const { createReduxHistory, routerMiddleware, routerReducer } =
 export const createRootReducer = () =>
     combineReducers({
         board: boardReducer,
+        clientSideGameExtras: clientSideGameExtrasReducer,
         router: routerReducer,
         rooms: roomsReducer,
         user: userReducer,

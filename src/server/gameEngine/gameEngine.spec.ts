@@ -57,6 +57,16 @@ describe('Game Action', () => {
             expect(newBoardState.players[1].resources[0].isUsed).toEqual(false);
         });
 
+        it("resets the number of attacks for the next player's units", () => {
+            board.players[1].units.push(makeCard(UnitCards.SQUIRE));
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: { type: GameActionTypes.PASS_TURN },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[1].units[0].numAttacksLeft).toEqual(1);
+        });
+
         it('makes the next player draw a card', () => {
             const cardsInDeckBefore = board.players[1].deck;
             const cardsInHandBefore = board.players[1].hand;

@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
@@ -13,12 +13,14 @@ export const GameManagerContext = createContext<GameManagerContextValue>(null);
 
 export const GameManager: React.FC = ({ children }) => {
     const { socket } = useContext(WebSocketContext) || {};
+    const dispatch = useDispatch();
     const rootState = useSelector<RootState, RootState>((state) => state);
 
     const handleClickCard = useCallback(
         (cardId: string) => {
             handleClickOnCard({
                 cardId,
+                dispatch,
                 state: rootState,
                 socket,
             });

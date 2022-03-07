@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '@/test-utils';
 
 import { DeckList } from './DeckList';
 import { makeSampleDeck1 } from '@/factories/deck';

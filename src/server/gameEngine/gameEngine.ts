@@ -70,6 +70,11 @@ export const applyGameAction = ({
                     resource.isUsed = false;
                 });
 
+                // give each unit it's starting number of attacks
+                nextPlayer.units.forEach((unit) => {
+                    unit.numAttacksLeft = unit.numAttacks;
+                });
+
                 // If you draw out of the deck, you lose the game
                 if (nextPlayer.deck.length === 0) {
                     nextPlayer.isAlive = false;
