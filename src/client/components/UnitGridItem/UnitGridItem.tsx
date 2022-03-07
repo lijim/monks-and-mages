@@ -19,11 +19,13 @@ import { transformEffectToRulesText } from '@/transformers/transformEffectsToRul
 interface UnitGridItemProps {
     card: UnitCard;
     isOnBoard?: boolean;
+    onClick?: () => void;
 }
 
 export const UnitGridItem: React.FC<UnitGridItemProps> = ({
     card,
     isOnBoard = false,
+    onClick,
 }) => {
     const {
         attack,
@@ -47,6 +49,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         <CardFrame
             data-testid="UnitGridItem"
             primaryColor={getColorForCard(card)}
+            onClick={onClick}
         >
             <CardHeader>
                 <NameCell>{name}</NameCell>

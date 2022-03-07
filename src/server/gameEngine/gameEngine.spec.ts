@@ -1,3 +1,4 @@
+import { makeCard, UnitCards } from '@/cardDb/units';
 import { makeNewBoard } from '@/factories/board';
 import { makeResourceCard } from '@/factories/cards';
 import { Board, GameState } from '@/types/board';
@@ -131,6 +132,7 @@ describe('Game Action', () => {
         it('deploys a resource', () => {
             const resourceCard = makeResourceCard(Resource.BAMBOO);
             board.players[0].hand = [resourceCard];
+            board.players[0].numCardsInHand = 1;
             const newBoardState = applyGameAction({
                 board,
                 gameAction: {
@@ -140,6 +142,7 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
             expect(newBoardState.players[0].resources).toHaveLength(1);
+            expect(newBoardState.players[0].numCardsInHand).toEqual(0);
             expect(newBoardState.players[0].resourcesLeftToDeploy).toBe(0);
         });
 
@@ -201,6 +204,29 @@ describe('Game Action', () => {
             });
             expect(newBoardState.players[0].resources[0].isUsed).toBe(true);
             expect(newBoardState.players[0].resourcePool).toEqual({});
+        });
+    });
+
+    describe('Deploy Unit', () => {
+        it('deploys a unit', () => {
+            const unitCard = makeCard(UnitCards.CANNON);
+            board.players[0].hand = [unitCard];
+            board.players[0].numCardsInHand = 1;
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.IRON]: 3,
+            };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_UNIT,
+                    cardId: unitCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].hand).toEqual([]);
+            expect(newBoardState.players[0].numCardsInHand).toBe(0);
+            expect(newBoardState.players[0].units[0]).toEqual(unitCard);
         });
     });
 });
