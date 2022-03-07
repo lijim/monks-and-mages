@@ -55,6 +55,5 @@ export const Button = styled.button.attrs(
 
 export const PrimaryColorButton = styled(Button).attrs({
     backgroundColor: Colors.FIRE_ORANGE,
-    emoji: '▶️',
     hoverBackgroundColor: Colors.FIRE_ORANGE_EMPHASIZED,
 })``;

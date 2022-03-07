@@ -7,6 +7,7 @@ import { Player } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
 import { WebSocketContext } from '../WebSockets';
 import { PlayerBriefInfo } from '../PlayerBriefInfo';
+import { PrimaryColorButton } from '../Button';
 
 /**
  * @returns {JSX.Element} - your player info (health, cards, etc.) + the pass turn button
@@ -23,7 +24,9 @@ export const SelfPlayerInfo: React.FC = () => {
         <>
             <PlayerBriefInfo player={selfPlayer} />
             {selfPlayer.isActivePlayer && (
-                <button onClick={passTurn}>Pass Turn</button>
+                <PrimaryColorButton onClick={passTurn}>
+                    Pass Turn
+                </PrimaryColorButton>
             )}
         </>
     );

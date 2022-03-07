@@ -59,6 +59,7 @@ export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
                 </div>
                 <div>
                     <PrimaryColorButton
+                        emoji="▶️"
                         role="button"
                         type="submit"
                         disabled={!name}
