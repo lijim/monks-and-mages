@@ -17,6 +17,7 @@ interface PlayerBoardSectionContainerProps {
 const PlayerBoardSectionContainer = styled.div<PlayerBoardSectionContainerProps>`
     background-color: ${({ isSelfPlayer }) =>
         isSelfPlayer ? Colors.FELT_GREEN_ALT : Colors.FELT_GREEN};
+    zoom: 0.6;
 `;
 
 export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
