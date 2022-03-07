@@ -5,7 +5,7 @@ import { Resource } from '@/types/resources';
 import { payForCard } from './payForCard';
 
 describe('pay for card', () => {
-    it('returns true if the player has enough resources (including for the generic cost)', () => {
+    it('pays for the card if the player has enough resources (including for the generic cost)', () => {
         const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
         player.resourcePool = {
             [Resource.FIRE]: 3,
@@ -18,7 +18,7 @@ describe('pay for card', () => {
         });
     });
 
-    it('returns false if the player lacks the resources', () => {
+    it('does not pay if the player lacks the resources', () => {
         const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
         player.resourcePool = {
             [Resource.FIRE]: 4,
@@ -28,6 +28,19 @@ describe('pay for card', () => {
         expect(payForCard(player, cannonCard).resourcePool).toEqual({
             [Resource.FIRE]: 4,
             [Resource.IRON]: 1,
+        });
+    });
+
+    it('does not pay if the player lacks the resources (2)', () => {
+        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        player.resourcePool = {
+            [Resource.FIRE]: 2,
+            [Resource.IRON]: 2,
+        };
+        const cannonCard = makeCard(UnitCards.CANNON); // costs 1 fire, 2 iron, 2 generic
+        expect(payForCard(player, cannonCard).resourcePool).toEqual({
+            [Resource.FIRE]: 2,
+            [Resource.IRON]: 2,
         });
     });
 });

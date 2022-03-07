@@ -23,7 +23,7 @@ export const payForCard = (
     ORDERED_RESOURCES.forEach((resource) => {
         if (resource === Resource.GENERIC) return;
         if (!cost[resource]) return;
-        if (cost[resource] > resourcePool[resource] || 0) canCast = false;
+        if (cost[resource] > (resourcePool[resource] || 0)) canCast = false;
         else resourcePool[resource] -= cost[resource];
         const remainingForGeneric = Math.min(
             costLeftForGeneric,
