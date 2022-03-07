@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { UnitCard } from '@/types/cards';
 import { CastingCost } from '../CastingCost';
@@ -15,7 +16,6 @@ import {
 } from '../CardFrame';
 import { getColorForCard } from '@/transformers/getColorForCard';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
-import { useSelector } from 'react-redux';
 import { getAttackingUnit } from '@/client/redux/selectors';
 
 interface UnitGridItemProps {
