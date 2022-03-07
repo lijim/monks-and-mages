@@ -8,6 +8,7 @@ import { ClientToServerEvents, ServerToClientEvents } from '@/types';
 import { getSelfPlayer } from '@/client/redux/selectors';
 import { CardType } from '@/types/cards';
 import { GameActionTypes } from '@/types/gameActions';
+import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 
 interface HandleClickOnCardParams {
     cardId: string;
@@ -43,6 +44,15 @@ export const handleClickOnCard = ({
         if (matchingCardInHand.cardType === CardType.RESOURCE) {
             socket.emit('takeGameAction', {
                 type: GameActionTypes.DEPLOY_RESOURCE,
+                cardId,
+            });
+        }
+        if (
+            matchingCardInHand.cardType === CardType.UNIT &&
+            canPlayerPayForCard(selfPlayer, matchingCardInHand)
+        ) {
+            socket.emit('takeGameAction', {
+                type: GameActionTypes.DEPLOY_UNIT,
                 cardId,
             });
         }

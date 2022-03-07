@@ -3,6 +3,8 @@ import cloneDeep from 'lodash.clonedeep';
 import { Board, GameState, Player } from '@/types/board';
 import { GameAction, GameActionTypes } from '@/types/gameActions';
 import { CardType, ResourceCard } from '@/types/cards';
+import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
+import { payForCard } from '@/transformers/payForCard';
 
 const getNextPlayer = (board: Board): Player => {
     const { players } = board;
@@ -98,6 +100,7 @@ export const applyGameAction = ({
             if (resourcesLeftToDeploy <= 0) {
                 return clonedBoard;
             }
+            activePlayer.numCardsInHand -= 1;
             activePlayer.resourcesLeftToDeploy -= 1;
 
             resources.push(
@@ -120,6 +123,26 @@ export const applyGameAction = ({
             const { resourceType } = matchingCard;
             resourcePool[resourceType] = (resourcePool[resourceType] || 0) + 1;
             matchingCard.isUsed = true;
+            return clonedBoard;
+        }
+        case GameActionTypes.DEPLOY_UNIT: {
+            const { cardId } = gameAction;
+            const { hand } = activePlayer;
+            const matchingCard = hand.find((card) => card.id === cardId);
+            const matchingCardIndex = hand.findIndex(
+                (card) => card.id === cardId
+            );
+            if (!matchingCard || matchingCard.cardType !== CardType.UNIT)
+                return clonedBoard;
+            if (canPlayerPayForCard(activePlayer, matchingCard)) {
+                activePlayer.resourcePool = payForCard(
+                    activePlayer,
+                    matchingCard
+                ).resourcePool;
+            }
+            activePlayer.units.push(matchingCard);
+            activePlayer.numCardsInHand -= 1;
+            activePlayer.hand.splice(matchingCardIndex, 1);
             return clonedBoard;
         }
         default:
