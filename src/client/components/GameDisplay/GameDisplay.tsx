@@ -23,6 +23,8 @@ const LeftColumn = styled.div`
     display: grid;
     grid-template-rows: 1fr 1fr 100px;
     place-items: center;
+    z-index: 1;
+    background: white;
 `;
 
 const CenterColumn = styled.div`
