@@ -2,12 +2,21 @@ import { Socket } from 'socket.io-client';
 
 import { AppDispatch, RootState } from '@/client/redux/store';
 import { ClientToServerEvents, ServerToClientEvents } from '@/types';
-import { getSelfPlayer } from '@/client/redux/selectors';
-import { CardType } from '@/types/cards';
+import {
+    getAttackingUnit,
+    getOtherPlayers,
+    getSelfPlayer,
+} from '@/client/redux/selectors';
+import { CardType, UnitCard } from '@/types/cards';
 import { GameActionTypes } from '@/types/gameActions';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
-import { selectAttackingUnit } from '@/client/redux/clientSideGameExtras';
+import {
+    performAttack,
+    selectAttackingUnit,
+} from '@/client/redux/clientSideGameExtras';
 
+// TODO: make it take just the card instead and add a param for target area
+// (your hand, your board, other players' board)
 interface HandleClickOnCardParams {
     cardId: string;
     dispatch: AppDispatch;
@@ -31,6 +40,8 @@ export const handleClickOnCard = ({
 }: HandleClickOnCardParams) => {
     // Match the card ID to see what, if anything to emit
     const selfPlayer = getSelfPlayer(state);
+    const otherPlayers = getOtherPlayers(state);
+    const attackingUnit = getAttackingUnit(state);
     if (!selfPlayer?.hand) {
         return;
     }
@@ -72,6 +83,7 @@ export const handleClickOnCard = ({
                 cardId,
             });
         }
+        return;
     }
 
     // Match Units (Self Player)
@@ -80,5 +92,24 @@ export const handleClickOnCard = ({
     );
     if (matchingCardInUnits && matchingCardInUnits.numAttacksLeft > 0) {
         dispatch(selectAttackingUnit(cardId));
+        return;
+    }
+
+    // Matching Units (Other Players)
+    let matchingCardInOtherUnits: UnitCard = null;
+    otherPlayers.forEach((player) => {
+        player.units.forEach((unitCard) => {
+            if (unitCard.id === cardId) {
+                matchingCardInOtherUnits = unitCard;
+            }
+        });
+    });
+    if (matchingCardInOtherUnits && attackingUnit) {
+        dispatch(performAttack());
+        socket.emit('takeGameAction', {
+            type: GameActionTypes.PERFORM_ATTACK,
+            cardId: attackingUnit,
+            unitTarget: cardId,
+        });
     }
 };

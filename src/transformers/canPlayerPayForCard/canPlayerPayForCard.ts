@@ -20,9 +20,10 @@ export const canPlayerPayForCard = (
 
     ORDERED_RESOURCES.forEach((resource) => {
         if (resource === Resource.GENERIC) return;
-        if (!cost[resource]) return;
-        if (cost[resource] > (resourcePool[resource] || 0)) canCast = false;
-        else resourcePool[resource] -= cost[resource];
+        const resourceCost = cost[resource] || 0;
+        const currentResources = resourcePool[resource] || 0;
+        if (resourceCost > currentResources) canCast = false;
+        else resourcePool[resource] = currentResources - resourceCost;
         remainingForGeneric += resourcePool[resource];
     });
 

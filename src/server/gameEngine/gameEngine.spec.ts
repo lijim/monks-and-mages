@@ -1,6 +1,6 @@
-import { makeCard, UnitCards } from '@/cardDb/units';
+import { UnitCards } from '@/cardDb/units';
 import { makeNewBoard } from '@/factories/board';
-import { makeResourceCard } from '@/factories/cards';
+import { makeCard, makeResourceCard } from '@/factories/cards';
 import { Board, GameState } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
 import { Resource } from '@/types/resources';
@@ -258,6 +258,211 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].hand).toEqual([unitCard]);
             expect(newBoardState.players[0].numCardsInHand).toBe(1);
             expect(newBoardState.players[0].units).toHaveLength(0);
+        });
+    });
+
+    describe('Perform Attack', () => {
+        it("doesn't attack if it has no attacks left", () => {
+            const attacker = makeCard(UnitCards.SQUIRE);
+            attacker.numAttacksLeft = 0;
+            const defender = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState).toEqual(board);
+        });
+
+        it('performs a melee attack (non-lethal)', () => {
+            const attacker = makeCard(UnitCards.SQUIRE);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].units[0].hp).toEqual(1);
+            expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
+            expect(newBoardState.players[1].units[0].hp).toEqual(1);
+        });
+
+        it('performs a melee attack (lethal for both)', () => {
+            const attacker = makeCard(UnitCards.LANCER);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.MARTIAL_TRAINER);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].cemetery[0].name).toEqual(
+                attacker.name
+            );
+            expect(newBoardState.players[0].units).toHaveLength(0);
+            expect(newBoardState.players[1].cemetery[0].name).toEqual(
+                defender.name
+            );
+            expect(newBoardState.players[1].units).toHaveLength(0);
+        });
+
+        it('performs a melee attack (lethal for attacker)', () => {
+            const attacker = makeCard(UnitCards.LANCER);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.CANNON);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].cemetery[0].name).toEqual(
+                attacker.name
+            );
+            expect(newBoardState.players[0].units).toHaveLength(0);
+            expect(newBoardState.players[1].units[0].hp).toEqual(
+                defender.hp - attacker.attack
+            );
+        });
+
+        it('performs a melee attack (lethal for defender)', () => {
+            const attacker = makeCard(UnitCards.KNIGHT_TEMPLAR);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.LANCER);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.players[0].units[0].hp).toEqual(
+                attacker.hp - defender.attack
+            );
+            expect(newBoardState.players[1].cemetery[0].name).toEqual(
+                defender.name
+            );
+            expect(newBoardState.players[1].units).toHaveLength(0);
+        });
+
+        it('performs a ranged attack (lethal vs. melee)', () => {
+            const attacker = makeCard(UnitCards.STONE_SLINGER);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.MARTIAL_TRAINER);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].units[0].hp).toEqual(attacker.hp);
+            expect(newBoardState.players[1].cemetery[0].name).toEqual(
+                defender.name
+            );
+            expect(newBoardState.players[1].units).toHaveLength(0);
+        });
+
+        it('performs a ranged attack (lethal for both vs. ranged)', () => {
+            const attacker = makeCard(UnitCards.STONE_SLINGER);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.SHADOW_STRIKER);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].cemetery[0].name).toEqual(
+                attacker.name
+            );
+            expect(newBoardState.players[0].units).toHaveLength(0);
+            expect(newBoardState.players[1].cemetery[0].name).toEqual(
+                defender.name
+            );
+            expect(newBoardState.players[1].units).toHaveLength(0);
+        });
+
+        it('prevents non-magical attacks vs. non-soldiers (if soldiers are present for defender)', () => {
+            const attacker = makeCard(UnitCards.STONE_SLINGER);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.SHADOW_STRIKER);
+            const defender2 = makeCard(UnitCards.LANCER);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender, defender2];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState).toEqual(board);
+        });
+
+        it('does not prevent magical attacks vs. non-soldiers', () => {
+            const attacker = makeCard(UnitCards.WATER_GUARDIAN);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.LONGBOWMAN);
+            const defender2 = makeCard(UnitCards.LANCER);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender, defender2];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].units[0].hp).toEqual(
+                attacker.hp - defender.attack
+            );
+            expect(newBoardState.players[1].cemetery[0].name).toEqual(
+                defender.name
+            );
+            expect(newBoardState.players[1].units).toHaveLength(1);
         });
     });
 });

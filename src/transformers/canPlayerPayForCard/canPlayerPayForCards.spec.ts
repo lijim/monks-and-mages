@@ -16,6 +16,17 @@ describe('can player pay for card', () => {
         ); // costs 1 fire, 2 iron, 2 generic
     });
 
+    it('returns true if the player has exactly enough resources (including for the generic cost)', () => {
+        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        player.resourcePool = {
+            [Resource.BAMBOO]: 1,
+            [Resource.IRON]: 1,
+        };
+        expect(
+            canPlayerPayForCard(player, makeCard(UnitCards.LONGBOWMAN))
+        ).toBe(true); // costs 1 bamboo, 1 generic
+    });
+
     it('returns false if the player lacks the resources', () => {
         const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
         player.resourcePool = {

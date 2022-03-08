@@ -12,9 +12,22 @@ describe('pay for card', () => {
             [Resource.IRON]: 2,
         };
         const cannonCard = makeCard(UnitCards.CANNON); // costs 1 fire, 2 iron, 2 generic
-        expect(payForCard(player, cannonCard).resourcePool).toEqual({
+        expect(payForCard(player, cannonCard).resourcePool).toMatchObject({
             [Resource.FIRE]: 0,
             [Resource.IRON]: 0,
+        });
+    });
+
+    it('pays for the card if the player has exactly enough resources', () => {
+        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        player.resourcePool = {
+            [Resource.IRON]: 1,
+            [Resource.BAMBOO]: 1,
+        };
+        const cannonCard = makeCard(UnitCards.LONGBOWMAN); // costs 1 bamboo, 1 generic
+        expect(payForCard(player, cannonCard).resourcePool).toMatchObject({
+            [Resource.IRON]: 0,
+            [Resource.BAMBOO]: 0,
         });
     });
 
