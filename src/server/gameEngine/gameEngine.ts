@@ -152,7 +152,7 @@ export const applyGameAction = ({
             return clonedBoard;
         }
         case GameActionTypes.PERFORM_ATTACK: {
-            const { cardId, unitTarget } = gameAction;
+            const { cardId, playerTarget, unitTarget } = gameAction;
             const attacker = activePlayer.units.find(
                 (unitCard) => unitCard.id === cardId
             );
@@ -210,6 +210,25 @@ export const applyGameAction = ({
                         (card) => card.id !== unitTarget
                     );
                 }
+                return clonedBoard;
+            }
+
+            if (playerTarget) {
+                const defendingPlayer = otherPlayers.filter(
+                    (player) => player.name === playerTarget
+                )[0];
+                if (!defendingPlayer) return clonedBoard;
+                const defendingPlayerHasSoldier = defendingPlayer.units.some(
+                    (unit) => unit.isSoldier
+                );
+                if (defendingPlayerHasSoldier && !attacker.isMagical)
+                    return clonedBoard;
+                defendingPlayer.health -= attacker.attack;
+                if (defendingPlayer.health < 0) {
+                    defendingPlayer.isAlive = false;
+                    applyWinState(board);
+                }
+                attacker.numAttacksLeft -= 1;
                 return clonedBoard;
             }
 

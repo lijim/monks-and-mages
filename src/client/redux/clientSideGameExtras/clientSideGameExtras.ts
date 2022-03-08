@@ -9,7 +9,7 @@ interface ClientSideGameExtras {
 }
 
 export const clientSideGameExtrasSlice = createSlice({
-    name: 'board',
+    name: 'clientSideExtras',
     initialState: { attackingUnit: undefined },
     reducers: {
         selectAttackingUnit(state, action: PayloadAction<string>) {
