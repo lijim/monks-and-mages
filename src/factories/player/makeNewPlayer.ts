@@ -3,6 +3,7 @@ import shuffle from 'lodash.shuffle';
 import { Player } from '@/types/board';
 import { DeckList } from '@/types/cards';
 import { makeDeck } from '../deck';
+import { PlayerConstants } from '@/constants/gameConstants';
 
 export const makeNewPlayer = (
     playerName: string,
@@ -17,7 +18,7 @@ export const makeNewPlayer = (
         deck: activeDeck,
         effectQueue: [],
         hand,
-        health: 15,
+        health: PlayerConstants.STARTING_HEALTH,
         isActivePlayer: false,
         isAlive: true,
         name: playerName,

@@ -1,20 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { Player } from '@/types/board';
 import { Colors } from '@/constants/colors';
 import { CastingCostFrame } from '../CastingCost';
 import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
+import { GameManagerContext } from '../GameManager';
 
 interface PlayerBriefInfoProps {
     player: Player;
 }
 
-interface PlayerBriefBorderProps {
+interface PlayerBriefContainerProps {
     isActivePlayer: boolean;
 }
 
-const PlayerBriefBorder = styled.div<PlayerBriefBorderProps>`
+const PlayerBriefContainer = styled.div<PlayerBriefContainerProps>`
     width: 170px;
     height: 220px;
     border: 6px solid
@@ -22,6 +23,7 @@ const PlayerBriefBorder = styled.div<PlayerBriefBorderProps>`
             isActivePlayer ? Colors.FOCUS_BLUE : Colors.DARK_BROWN};
     display: grid;
     grid-auto-rows: auto 1fr auto;
+    cursor: pointer;
 `;
 
 const UpperSection = styled.div`
@@ -75,12 +77,19 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
         isActivePlayer,
     } = player;
 
+    const { handleClickPlayer } = useContext(GameManagerContext) || {};
+
     const shouldShowResourcePool =
         Object.entries(resourcePool)
             .map(([, quantity]) => quantity)
             .reduce((a, b) => a + b, 0) > 0;
     return (
-        <PlayerBriefBorder isActivePlayer={isActivePlayer}>
+        <PlayerBriefContainer
+            isActivePlayer={isActivePlayer}
+            onClick={() => {
+                handleClickPlayer(player);
+            }}
+        >
             <UpperSection>
                 <div>
                     <b>{numCardsInDeck}</b> <span>🂡 (Deck)</span>
@@ -113,6 +122,6 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
             </UpperSection>
             <MiddleSection>{`${health}`}</MiddleSection>
             <LowerSection>{name}</LowerSection>
-        </PlayerBriefBorder>
+        </PlayerBriefContainer>
     );
 };

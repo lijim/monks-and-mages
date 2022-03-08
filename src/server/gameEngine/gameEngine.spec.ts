@@ -1,4 +1,5 @@
 import { UnitCards } from '@/cardDb/units';
+import { PlayerConstants } from '@/constants/gameConstants';
 import { makeNewBoard } from '@/factories/board';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import { Board, GameState } from '@/types/board';
@@ -463,6 +464,84 @@ describe('Game Action', () => {
                 defender.name
             );
             expect(newBoardState.players[1].units).toHaveLength(1);
+        });
+
+        it('attacks the opposing player', () => {
+            const attacker = makeCard(UnitCards.WATER_GUARDIAN);
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH - attacker.attack
+            );
+            expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
+        });
+
+        it('deals lethal damage to opposing player', () => {
+            const attacker = makeCard(UnitCards.WATER_GUARDIAN);
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            board.players[1].health = 1;
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[1].isAlive).toBe(false);
+        });
+
+        it('blocks an attack vs player with soldiers', () => {
+            const attacker = makeCard(UnitCards.LANCER);
+            const defender = makeCard(UnitCards.LANCER);
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH
+            );
+            expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(1);
+        });
+
+        it('does not block an attack vs player with soldiers (magical units)', () => {
+            const attacker = makeCard(UnitCards.FIRE_MAGE);
+            const defender = makeCard(UnitCards.LANCER);
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH - UnitCards.FIRE_MAGE.attack
+            );
+            expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });
     });
 });
