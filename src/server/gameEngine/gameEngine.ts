@@ -2,7 +2,7 @@ import cloneDeep from 'lodash.clonedeep';
 
 import { Board, GameState, Player } from '@/types/board';
 import { GameAction, GameActionTypes } from '@/types/gameActions';
-import { CardType, ResourceCard } from '@/types/cards';
+import { CardType, ResourceCard, UnitCard } from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 
@@ -49,6 +49,7 @@ export const applyGameAction = ({
     const clonedBoard = cloneDeep(board);
     const { players } = clonedBoard;
     let activePlayer = players.find((player) => player.isActivePlayer);
+    const otherPlayers = players.filter((player) => !player.isActivePlayer);
 
     // Error out when event is being emitted by the non-active player
     if (activePlayer?.name !== playerName) {
@@ -148,6 +149,70 @@ export const applyGameAction = ({
                 activePlayer.numCardsInHand -= 1;
                 activePlayer.hand.splice(matchingCardIndex, 1);
             }
+            return clonedBoard;
+        }
+        case GameActionTypes.PERFORM_ATTACK: {
+            const { cardId, unitTarget } = gameAction;
+            const attacker = activePlayer.units.find(
+                (unitCard) => unitCard.id === cardId
+            );
+            if (!attacker?.numAttacksLeft) {
+                return clonedBoard;
+            }
+
+            if (unitTarget) {
+                let defender: UnitCard = null;
+                let defendingPlayer: Player = null;
+                otherPlayers.forEach((player) => {
+                    player.units.forEach((unitCard) => {
+                        if (unitCard.id === unitTarget) {
+                            defender = unitCard;
+                            defendingPlayer = player;
+                        }
+                    });
+                });
+                if (!defender) return clonedBoard;
+
+                // Soldiers prevent attacks vs. non-soldiers (unless magical)
+                const defendingPlayerHasSoldier = defendingPlayer.units.some(
+                    (unit) => unit.isSoldier
+                );
+                if (
+                    defendingPlayerHasSoldier &&
+                    !defender.isSoldier &&
+                    !attacker.isMagical
+                )
+                    return clonedBoard;
+
+                // Resolve Combat
+                attacker.numAttacksLeft -= 1;
+
+                const { attack, hp } = attacker;
+                const { attack: defenderAttack, hp: defenderHp } = defender;
+                if (
+                    (attacker.isRanged && defender.isRanged) ||
+                    !attacker.isRanged
+                )
+                    attacker.hp = Math.max(0, hp - defenderAttack);
+                defender.hp = Math.max(0, defenderHp - attack);
+
+                // Resolve units going to the cemetery
+                if (attacker.hp === 0) {
+                    activePlayer.cemetery.push(attacker);
+                    activePlayer.units = activePlayer.units.filter(
+                        (card) => card.id !== cardId
+                    );
+                }
+
+                if (defender.hp === 0) {
+                    defendingPlayer.cemetery.push(defender);
+                    defendingPlayer.units = defendingPlayer.units.filter(
+                        (card) => card.id !== unitTarget
+                    );
+                }
+                return clonedBoard;
+            }
+
             return clonedBoard;
         }
         default:

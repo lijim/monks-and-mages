@@ -88,21 +88,25 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
                 <div>
                     <b>{numCardsInHand}</b> <span>🂡 (Hand)</span>
                 </div>
+                <div>
+                    <b>{player.cemetery.length}</b> <span>🂡 (Cemetery)</span>
+                </div>
                 {shouldShowResourcePool && (
                     <div>
                         {Object.entries(resourcePool).map(
-                            ([resource, quantity]) => (
-                                <span key={resource}>
-                                    {quantity}
-                                    <CastingCostFrame>
-                                        {
-                                            RESOURCE_GLOSSARY[
-                                                resource as Resource
-                                            ].icon
-                                        }
-                                    </CastingCostFrame>
-                                </span>
-                            )
+                            ([resource, quantity]) =>
+                                !!quantity && (
+                                    <span key={resource}>
+                                        {quantity}
+                                        <CastingCostFrame>
+                                            {
+                                                RESOURCE_GLOSSARY[
+                                                    resource as Resource
+                                                ].icon
+                                            }
+                                        </CastingCostFrame>
+                                    </span>
+                                )
                         )}
                     </div>
                 )}

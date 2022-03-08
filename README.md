@@ -34,6 +34,12 @@ yarn test
 
 ```
 
+To run tests for a particular file:
+
+```
+yarn test src/server/gameEngine/gameEngine.spec.ts
+```
+
 To run tests once through:
 
 ```

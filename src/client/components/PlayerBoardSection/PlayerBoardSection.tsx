@@ -36,6 +36,7 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
                         card={unitCard}
                         key={unitCard.id}
                         hasOnClick
+                        isOnBoard
                     />
                 ))}
             </div>

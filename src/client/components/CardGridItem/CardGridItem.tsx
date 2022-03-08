@@ -9,11 +9,13 @@ import { GameManagerContext } from '../GameManager';
 interface CardGridItemProps {
     card: Card;
     hasOnClick?: boolean;
+    isOnBoard?: boolean;
 }
 
 export const CardGridItem: React.FC<CardGridItemProps> = ({
     card,
     hasOnClick,
+    isOnBoard,
 }) => {
     const { handleClickCard } = useContext(GameManagerContext) || {};
     const onClick = () => {
@@ -35,6 +37,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
             <UnitGridItem
                 card={card}
                 onClick={hasOnClick ? onClick : undefined}
+                isOnBoard={isOnBoard}
             />
         );
     }
