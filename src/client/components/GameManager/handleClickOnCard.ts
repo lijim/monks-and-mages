@@ -66,6 +66,15 @@ export const handleClickOnCard = ({
                 cardId,
             });
         }
+        if (
+            matchingCardInHand.cardType === CardType.SPELL &&
+            canPlayerPayForCard(selfPlayer, matchingCardInHand)
+        ) {
+            socket.emit('takeGameAction', {
+                type: GameActionTypes.CAST_SPELL,
+                cardId,
+            });
+        }
         return;
     }
 

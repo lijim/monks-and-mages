@@ -16,15 +16,20 @@ import { getColorForCard } from '@/transformers/getColorForCard';
 
 interface SpellGridItemProps {
     card: SpellCard;
+    onClick?: () => void;
 }
 
-export const SpellGridItem: React.FC<SpellGridItemProps> = ({ card }) => {
+export const SpellGridItem: React.FC<SpellGridItemProps> = ({
+    card,
+    onClick,
+}) => {
     const { cost, imgSrc, name, effects } = card;
 
     return (
         <CardFrame
             data-testid="SpellGridItem"
             primaryColor={getColorForCard(card)}
+            onClick={onClick}
         >
             <CardHeader>
                 <NameCell>{name}</NameCell>

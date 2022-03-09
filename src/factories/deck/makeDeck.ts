@@ -42,3 +42,15 @@ export const makeSampleDeck1 = (): Card[] => {
     const decklist = SAMPLE_DECKLIST_1;
     return makeDeck(decklist);
 };
+
+export const SAMPLE_DECKLIST_2 = [
+    { card: makeResourceCard(Resource.FIRE), quantity: 10 },
+    { card: makeResourceCard(Resource.WATER), quantity: 10 },
+    { card: makeCard(SpellCards.EMBER_SPEAR), quantity: 4 },
+    { card: makeCard(SpellCards.LIGHTNING_SLICK), quantity: 4 },
+    { card: makeCard(SpellCards.CURSE_HAND), quantity: 4 },
+    { card: makeCard(SpellCards.SUMMON_DEMONS), quantity: 4 },
+    { card: makeCard(SpellCards.BUBBLE_BLAST), quantity: 4 },
+    { card: makeCard(SpellCards.GENEROUS_GEYSER), quantity: 4 },
+    { card: makeCard(SpellCards.CONSTANT_REFILL), quantity: 4 },
+];

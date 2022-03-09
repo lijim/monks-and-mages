@@ -9,16 +9,17 @@ export const makeNewPlayer = (
     playerName: string,
     decklist: DeckList
 ): Player => {
+    const { STARTING_HAND_SIZE, STARTING_HEALTH } = PlayerConstants;
     const deck = makeDeck(decklist);
     const shuffledDeck = shuffle(deck);
-    const activeDeck = shuffledDeck.slice(7);
-    const hand = shuffledDeck.slice(0, 7);
+    const activeDeck = shuffledDeck.slice(STARTING_HAND_SIZE);
+    const hand = shuffledDeck.slice(0, STARTING_HAND_SIZE);
     return {
         cemetery: [],
         deck: activeDeck,
         effectQueue: [],
         hand,
-        health: PlayerConstants.STARTING_HEALTH,
+        health: STARTING_HEALTH,
         isActivePlayer: false,
         isAlive: true,
         name: playerName,

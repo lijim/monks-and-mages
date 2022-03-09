@@ -29,7 +29,8 @@ const LIGHTNING_SLICK = makeCard({
     effects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            strength: 4,
+            target: TargetTypes.OPPOSING_UNIT,
+            strength: 5,
         },
     ],
 });
