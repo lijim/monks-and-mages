@@ -12,6 +12,7 @@ import {
     performAttack,
     selectAttackingUnit,
 } from '@/client/redux/clientSideGameExtras';
+import { SpellCards } from '@/cardDb/spells';
 
 describe('handle click on card', () => {
     let dispatch: AppDispatch;
@@ -137,6 +138,24 @@ describe('handle click on card', () => {
                 cardId: unitCard.id,
                 unitTarget: defender.id,
             });
+        });
+    });
+
+    describe('Effects resolutions', () => {
+        it('blocks clicking on a card if an effect is in play', () => {
+            const unitCard = makeResourceCard(Resource.BAMBOO);
+            const spellCard = makeCard(SpellCards.A_GENTLE_GUST);
+            state.board.players[0].hand = [unitCard];
+            state.board.players[0].effectQueue = spellCard.effects;
+
+            handleClickOnCard({
+                cardId: unitCard.id,
+                dispatch,
+                state,
+                socket,
+            });
+
+            expect(socket.emit).toHaveBeenCalledTimes(0);
         });
     });
 });
