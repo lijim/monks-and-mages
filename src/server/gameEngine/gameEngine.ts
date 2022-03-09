@@ -234,6 +234,33 @@ export const applyGameAction = ({
 
             return clonedBoard;
         }
+        case GameActionTypes.CAST_SPELL: {
+            const { cardId } = gameAction;
+            const { hand, cemetery } = activePlayer;
+            const matchingCard = hand.find((card) => card.id === cardId);
+            const matchingCardIndex = hand.findIndex(
+                (card) => card.id === cardId
+            );
+
+            if (matchingCard.cardType !== CardType.SPELL) {
+                return clonedBoard;
+            }
+            if (!canPlayerPayForCard(activePlayer, matchingCard)) {
+                return clonedBoard;
+            }
+
+            activePlayer.resourcePool = payForCard(
+                activePlayer,
+                matchingCard
+            ).resourcePool;
+            activePlayer.effectQueue = activePlayer.effectQueue.concat(
+                cloneDeep(matchingCard.effects)
+            );
+            activePlayer.numCardsInHand -= 1;
+            cemetery.push(hand.splice(matchingCardIndex, 1)[0]);
+
+            return clonedBoard;
+        }
         default:
             return clonedBoard;
     }

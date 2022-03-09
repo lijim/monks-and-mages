@@ -1,3 +1,4 @@
+import { SpellCards } from '@/cardDb/spells';
 import { UnitCards } from '@/cardDb/units';
 import { PlayerConstants } from '@/constants/gameConstants';
 import { makeNewBoard } from '@/factories/board';
@@ -542,6 +543,51 @@ describe('Game Action', () => {
                 PlayerConstants.STARTING_HEALTH - UnitCards.FIRE_MAGE.attack
             );
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
+        });
+    });
+
+    describe('cast spell', () => {
+        it('casts a spell', () => {
+            const spellCard = makeCard(SpellCards.EMBER_SPEAR);
+            board.players[0].hand.push(spellCard);
+            board.players[0].resourcePool = { [Resource.FIRE]: 1 };
+
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.CAST_SPELL,
+                    cardId: spellCard.id,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.players[0].effectQueue).toEqual(
+                spellCard.effects
+            );
+            expect(newBoardState.players[0].cemetery).toEqual([spellCard]);
+            expect(newBoardState.players[0].numCardsInHand).toEqual(
+                PlayerConstants.STARTING_HAND_SIZE - 1
+            );
+        });
+
+        it("won't cast a spell that's too expensive", () => {
+            const spellCard = makeCard(SpellCards.EMBER_SPEAR);
+            board.players[0].hand.push(spellCard);
+
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.CAST_SPELL,
+                    cardId: spellCard.id,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.players[0].effectQueue).toHaveLength(0);
+            expect(newBoardState.players[0].cemetery).toHaveLength(0);
+            expect(newBoardState.players[0].numCardsInHand).toEqual(
+                PlayerConstants.STARTING_HAND_SIZE
+            );
         });
     });
 });

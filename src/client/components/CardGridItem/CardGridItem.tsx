@@ -30,7 +30,12 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
         );
     }
     if (card.cardType === CardType.SPELL) {
-        return <SpellGridItem card={card} />;
+        return (
+            <SpellGridItem
+                card={card}
+                onClick={hasOnClick ? onClick : undefined}
+            />
+        );
     }
     if (card.cardType === CardType.UNIT) {
         return (
