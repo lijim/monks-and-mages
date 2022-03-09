@@ -14,6 +14,15 @@ export enum TargetTypes {
     UNIT = 'UNIT',
 }
 
+const AutoResolvingTargets = [
+    TargetTypes.ALL_OPPONENTS,
+    TargetTypes.ALL_OPPOSING_UNITS,
+    TargetTypes.ALL_PLAYERS,
+    TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+    TargetTypes.ALL_UNITS,
+    TargetTypes.SELF_PLAYER,
+];
+
 /**
  * Effects that a card can have (both spells and units)
  */
@@ -38,6 +47,14 @@ export enum EffectType {
     BUFF_TEAM_HP, // increases maxHp and hp for whole team
     BUFF_HAND_ATTACK, // buffs all creatures in hand
 }
+
+/**
+ * Default targets of effects, e.g.
+ */
+const getDefaultTargetForEffect = {
+    [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
+    [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
+};
 
 /**
  * Passive effects of a unit

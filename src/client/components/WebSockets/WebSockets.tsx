@@ -10,12 +10,16 @@ import {
 import { updateRoomsAndPlayers } from '@/client/redux/room';
 import { AppDispatch } from '@/client/redux/store';
 import { updateBoardState } from '@/client/redux/board';
-import { ClientToServerEvents, ServerToClientEvents } from '@/types';
+import {
+    ClientToServerEvents,
+    ResolveEffectsParams,
+    ServerToClientEvents,
+} from '@/types';
 import { GameAction } from '@/types/gameActions';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
-interface WebSocketValue extends Partial<ClientToServerEvents> {
+export interface WebSocketValue extends Partial<ClientToServerEvents> {
     socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 }
 
@@ -74,6 +78,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('chooseName', name);
         };
 
+        const resolveEffect = (params: ResolveEffectsParams) => {
+            newSocket.emit('resolveEffect', params);
+        };
+
         const startGame = () => {
             newSocket.emit('startGame');
         };
@@ -87,6 +95,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             socket: newSocket,
             chooseName,
             joinRoom,
+            resolveEffect,
             startGame,
             takeGameAction,
         });

@@ -42,6 +42,12 @@ export const handleClickOnCard = ({
     const selfPlayer = getSelfPlayer(state);
     const otherPlayers = getOtherPlayers(state);
     const attackingUnit = getAttackingUnit(state);
+    const { effectQueue } = selfPlayer;
+
+    if (effectQueue.length > 0) {
+        return;
+    }
+
     if (!selfPlayer?.hand) {
         return;
     }

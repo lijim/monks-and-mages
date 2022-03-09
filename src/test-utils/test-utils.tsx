@@ -10,8 +10,18 @@ import React, { ReactElement, ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
+import { io, Socket } from 'socket.io-client';
 
-import { configureStoreWithMiddlewares, RootState } from '@/client/redux/store';
+import {
+    AppDispatch,
+    configureStoreWithMiddlewares,
+    RootState,
+} from '@/client/redux/store';
+import {
+    WebSocketContext,
+    WebSocketValue,
+} from '@/client/components/WebSockets';
+import { ClientToServerEvents, ServerToClientEvents } from '@/types';
 
 type ReduxRenderOptions = {
     preloadedState?: Partial<RootState>;
@@ -20,12 +30,35 @@ type ReduxRenderOptions = {
     // store?: Store // for non-toolkit
 };
 
+interface WebSocketContextMockProviderProps {
+    ws: WebSocketValue;
+}
+
+const WebSocketContextMockProvider: React.FC<
+    WebSocketContextMockProviderProps
+> = ({ children, ws }) => (
+    <WebSocketContext.Provider value={ws}>{children}</WebSocketContext.Provider>
+);
+
+interface RenderValue {
+    dispatch: AppDispatch;
+    render: RenderResult;
+    webSocket: {
+        chooseName: jest.Mock;
+        joinRoom: jest.Mock;
+        resolveEffect: jest.Mock;
+        socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+        startGame: jest.Mock;
+        takeGameAction: jest.Mock;
+    };
+}
+
 // a verison of RTL's render that is a reusable way to
 // incorporate redux state into tests
 export function render(
     ui: ReactElement,
     { preloadedState = {}, ...renderOptions }: ReduxRenderOptions = {}
-): RenderResult {
+): RenderValue {
     const originalHistory = createBrowserHistory();
 
     // history-mocking test utils from:
@@ -48,8 +81,33 @@ export function render(
         routerMiddleware
     );
 
+    store.dispatch = jest.fn();
+
+    const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
+
+    const mockWebSocket = {
+        socket: newSocket,
+        chooseName: jest.fn(),
+        joinRoom: jest.fn(),
+        resolveEffect: jest.fn(),
+        startGame: jest.fn(),
+        takeGameAction: jest.fn(),
+    };
+
+    mockWebSocket.socket.emit = jest.fn();
+
     function Wrapper({ children }: { children?: ReactNode }): ReactElement {
-        return <Provider store={store}>{children}</Provider>;
+        return (
+            <Provider store={store}>
+                <WebSocketContextMockProvider ws={mockWebSocket}>
+                    {children}
+                </WebSocketContextMockProvider>
+            </Provider>
+        );
     }
-    return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
+    return {
+        render: rtlRender(ui, { wrapper: Wrapper, ...renderOptions }),
+        dispatch: store.dispatch,
+        webSocket: mockWebSocket,
+    };
 }

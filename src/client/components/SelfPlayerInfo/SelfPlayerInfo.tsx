@@ -28,7 +28,10 @@ export const SelfPlayerInfo: React.FC = () => {
         <>
             <PlayerBriefInfo player={selfPlayer} />
             {selfPlayer.isActivePlayer && (
-                <PrimaryColorButton onClick={passTurn}>
+                <PrimaryColorButton
+                    onClick={passTurn}
+                    disabled={selfPlayer?.effectQueue?.length > 0}
+                >
                     Pass Turn
                 </PrimaryColorButton>
             )}
