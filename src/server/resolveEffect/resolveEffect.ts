@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash.clonedeep';
 
-import { ResolveEffectsParams } from '@/types';
+import { ResolveEffectParams } from '@/types';
 import { Board, Player } from '@/types/board';
 import {
     EffectType,
@@ -11,7 +11,7 @@ import { UnitCard } from '@/types/cards';
 
 export const resolveEffect = (
     board: Board,
-    { effect, playerNames, unitCardIds }: ResolveEffectsParams,
+    { effect, playerNames, unitCardIds }: ResolveEffectParams,
     playerName: string
 ): Board | null => {
     const clonedBoard = cloneDeep(board);
@@ -30,7 +30,7 @@ export const resolveEffect = (
 
     // Determine targets to apply effects to
     let playerTargets: Player[];
-    let unitTargets: { player: Player; unit: UnitCard }[];
+    const unitTargets: { player: Player; unitCard: UnitCard }[] = [];
     const target = effect.target || getDefaultTargetForEffect(effect.type);
 
     if (playerNames) {
@@ -57,7 +57,17 @@ export const resolveEffect = (
         }
     }
 
-    playerTargets = playerTargets.filter((player) => player.isAlive);
+    playerTargets = playerTargets?.filter((player) => player.isAlive) || [];
+
+    if (unitCardIds) {
+        players.forEach((player) => {
+            player.units.forEach((unitCard) => {
+                if (unitCardIds.indexOf(unitCard.id) > -1) {
+                    unitTargets.push({ player, unitCard });
+                }
+            });
+        });
+    }
 
     switch (effect.type) {
         case EffectType.DRAW: {
@@ -72,8 +82,25 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.DEAL_DAMAGE: {
+            unitTargets.forEach(({ player, unitCard }) => {
+                const { units } = player;
+                unitCard.hp -= effectStrength;
+                if (unitCard.hp <= 0) {
+                    unitCard.hp = 0;
+                    player.cemetery.push(
+                        units.splice(units.indexOf(unitCard), 1)[0]
+                    );
+                }
+            });
+
+            playerTargets.forEach((player) => {
+                player.health -= effectStrength;
+                if (player.health <= 0) player.isAlive = false;
+            });
+            return clonedBoard;
+        }
         default:
             return null;
     }
-    return null;
 };

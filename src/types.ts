@@ -9,7 +9,7 @@ export interface ServerToClientEvents {
     updateBoard: (board: Board) => void;
 }
 
-export interface ResolveEffectsParams {
+export interface ResolveEffectParams {
     effect: Effect;
     playerNames?: string[];
     unitCardIds?: string[];
@@ -23,7 +23,7 @@ export interface ClientToServerEvents {
         effect,
         playerNames,
         unitCardIds,
-    }: ResolveEffectsParams) => void;
+    }: ResolveEffectParams) => void;
     startGame: () => void;
     takeGameAction: (gameAction: GameAction) => void;
 }
