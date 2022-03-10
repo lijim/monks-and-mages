@@ -12,7 +12,7 @@ import { AppDispatch } from '@/client/redux/store';
 import { updateBoardState } from '@/client/redux/board';
 import {
     ClientToServerEvents,
-    ResolveEffectsParams,
+    ResolveEffectParams,
     ServerToClientEvents,
 } from '@/types';
 import { GameAction } from '@/types/gameActions';
@@ -78,7 +78,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('chooseName', name);
         };
 
-        const resolveEffect = (params: ResolveEffectsParams) => {
+        const resolveEffect = (params: ResolveEffectParams) => {
             newSocket.emit('resolveEffect', params);
         };
 

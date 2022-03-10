@@ -8,7 +8,7 @@ import { obscureBoardInfo } from '../obscureBoardInfo';
 import {
     ClientToServerEvents,
     DetailedRoom,
-    ResolveEffectsParams,
+    ResolveEffectParams,
     ServerToClientEvents,
 } from '@/types';
 import { applyGameAction } from '../gameEngine';
@@ -155,7 +155,7 @@ export const configureIo = (server: HttpServer) => {
                 sendBoardForRoom(roomName); // update clients with changes
             });
 
-            socket.on('resolveEffect', (effectParams: ResolveEffectsParams) => {
+            socket.on('resolveEffect', (effectParams: ResolveEffectParams) => {
                 const board = getBoardForSocket(socket);
                 const roomName = getRoomForSocket(socket);
                 const playerName = idsToNames.get(socket.id);

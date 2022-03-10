@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '@/client/redux/store';
 import { ClientToServerEvents, ServerToClientEvents } from '@/types';
 import {
     getAttackingUnit,
+    getLastEffect,
     getOtherPlayers,
     getSelfPlayer,
 } from '@/client/redux/selectors';
@@ -14,6 +15,7 @@ import {
     performAttack,
     selectAttackingUnit,
 } from '@/client/redux/clientSideGameExtras';
+import { getDefaultTargetForEffect, TargetTypes } from '@/types/effects';
 
 // TODO: make it take just the card instead and add a param for target area
 // (your hand, your board, other players' board)
@@ -42,9 +44,68 @@ export const handleClickOnCard = ({
     const selfPlayer = getSelfPlayer(state);
     const otherPlayers = getOtherPlayers(state);
     const attackingUnit = getAttackingUnit(state);
-    const { effectQueue } = selfPlayer;
+    const lastEffect = getLastEffect(state);
 
-    if (effectQueue.length > 0) {
+    const matchingCardInHand = selfPlayer.hand.find(
+        (card) => card.id === cardId
+    );
+    const matchingCardInResources = selfPlayer.resources.find(
+        (card) => card.id === cardId
+    );
+    const matchingCardInUnits = selfPlayer.units.find(
+        (card) => card.id === cardId
+    );
+    let matchingCardInOtherUnits: UnitCard = null;
+    otherPlayers.forEach((player) => {
+        player.units.forEach((unitCard) => {
+            if (unitCard.id === cardId) {
+                matchingCardInOtherUnits = unitCard;
+            }
+        });
+    });
+
+    if (lastEffect) {
+        const target =
+            lastEffect.target || getDefaultTargetForEffect(lastEffect.type);
+        switch (target) {
+            case TargetTypes.OPPOSING_UNIT: {
+                if (matchingCardInOtherUnits) {
+                    socket.emit('resolveEffect', {
+                        effect: lastEffect,
+                        unitCardIds: [matchingCardInOtherUnits.id],
+                    });
+                }
+                break;
+            }
+            case TargetTypes.OWN_UNIT: {
+                if (matchingCardInUnits) {
+                    socket.emit('resolveEffect', {
+                        effect: lastEffect,
+                        unitCardIds: [matchingCardInUnits.id],
+                    });
+                }
+                break;
+            }
+            case TargetTypes.ANY:
+            case TargetTypes.UNIT: {
+                if (matchingCardInOtherUnits) {
+                    socket.emit('resolveEffect', {
+                        effect: lastEffect,
+                        unitCardIds: [matchingCardInOtherUnits.id],
+                    });
+                }
+                if (matchingCardInUnits) {
+                    socket.emit('resolveEffect', {
+                        effect: lastEffect,
+                        unitCardIds: [matchingCardInUnits.id],
+                    });
+                }
+                break;
+            }
+            default: {
+                break;
+            }
+        }
         return;
     }
 
@@ -52,9 +113,6 @@ export const handleClickOnCard = ({
         return;
     }
 
-    const matchingCardInHand = selfPlayer.hand.find(
-        (card) => card.id === cardId
-    );
     // Match cards in hand
     if (matchingCardInHand) {
         if (matchingCardInHand.cardType === CardType.RESOURCE) {
@@ -85,9 +143,6 @@ export const handleClickOnCard = ({
     }
 
     // Match Resources
-    const matchingCardInResources = selfPlayer.resources.find(
-        (card) => card.id === cardId
-    );
     if (matchingCardInResources) {
         if (
             matchingCardInResources.cardType === CardType.RESOURCE &&
@@ -102,23 +157,12 @@ export const handleClickOnCard = ({
     }
 
     // Match Units (Self Player)
-    const matchingCardInUnits = selfPlayer.units.find(
-        (card) => card.id === cardId
-    );
     if (matchingCardInUnits && matchingCardInUnits.numAttacksLeft > 0) {
         dispatch(selectAttackingUnit(cardId));
         return;
     }
 
     // Matching Units (Other Players)
-    let matchingCardInOtherUnits: UnitCard = null;
-    otherPlayers.forEach((player) => {
-        player.units.forEach((unitCard) => {
-            if (unitCard.id === cardId) {
-                matchingCardInOtherUnits = unitCard;
-            }
-        });
-    });
     if (matchingCardInOtherUnits && attackingUnit) {
         dispatch(performAttack());
         socket.emit('takeGameAction', {

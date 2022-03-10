@@ -2,10 +2,16 @@ import { Socket } from 'socket.io-client';
 
 import { AppDispatch, RootState } from '@/client/redux/store';
 import { ClientToServerEvents, ServerToClientEvents } from '@/types';
-import { getAttackingUnit, getOtherPlayers } from '@/client/redux/selectors';
+import {
+    getAttackingUnit,
+    getLastEffect,
+    getOtherPlayers,
+    getSelfPlayer,
+} from '@/client/redux/selectors';
 import { GameActionTypes } from '@/types/gameActions';
 import { performAttack } from '@/client/redux/clientSideGameExtras';
 import { Player } from '@/types/board';
+import { getDefaultTargetForEffect, TargetTypes } from '@/types/effects';
 
 interface HandleClickOnPlayerParams {
     dispatch: AppDispatch;
@@ -28,10 +34,51 @@ export const handleClickOnPlayer = ({
     state,
     socket,
 }: HandleClickOnPlayerParams) => {
+    const selfPlayer = getSelfPlayer(state);
     const otherPlayers = getOtherPlayers(state);
     const attackingUnit = getAttackingUnit(state);
+    const lastEffect = getLastEffect(state);
 
-    if (otherPlayers.find((otherPlayer) => otherPlayer === player)) {
+    const matchingOtherPlayer = otherPlayers.find(
+        (otherPlayer) => otherPlayer === player
+    );
+    if (lastEffect) {
+        const target =
+            lastEffect.target || getDefaultTargetForEffect(lastEffect.type);
+        switch (target) {
+            case TargetTypes.PLAYER:
+            case TargetTypes.ANY: {
+                if (selfPlayer === player) {
+                    socket.emit('resolveEffect', {
+                        effect: lastEffect,
+                        playerNames: [player.name],
+                    });
+                }
+                if (matchingOtherPlayer) {
+                    socket.emit('resolveEffect', {
+                        effect: lastEffect,
+                        playerNames: [matchingOtherPlayer.name],
+                    });
+                }
+                break;
+            }
+            case TargetTypes.OPPONENT: {
+                if (matchingOtherPlayer) {
+                    socket.emit('resolveEffect', {
+                        effect: lastEffect,
+                        playerNames: [matchingOtherPlayer.name],
+                    });
+                }
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        return;
+    }
+
+    if (matchingOtherPlayer) {
         // Perform Attack
         dispatch(performAttack());
         socket.emit('takeGameAction', {

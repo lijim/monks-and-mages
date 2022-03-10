@@ -143,9 +143,45 @@ describe('handle click on card', () => {
 
     describe('Effects resolutions', () => {
         it('blocks clicking on a card if an effect is in play', () => {
-            const unitCard = makeResourceCard(Resource.BAMBOO);
+            const resourceCard = makeResourceCard(Resource.BAMBOO);
             const spellCard = makeCard(SpellCards.A_GENTLE_GUST);
-            state.board.players[0].hand = [unitCard];
+            state.board.players[0].hand = [resourceCard];
+            state.board.players[0].effectQueue = spellCard.effects;
+
+            handleClickOnCard({
+                cardId: resourceCard.id,
+                dispatch,
+                state,
+                socket,
+            });
+
+            expect(socket.emit).toHaveBeenCalledTimes(0);
+        });
+
+        it('emits an effects resolution if clicking on a unit card', () => {
+            const unitCard = makeCard(UnitCards.LANCER);
+            const spellCard = makeCard(SpellCards.EMBER_SPEAR);
+            state.board.players[0].units = [unitCard];
+            state.board.players[0].effectQueue = spellCard.effects;
+
+            handleClickOnCard({
+                cardId: unitCard.id,
+                dispatch,
+                state,
+                socket,
+            });
+
+            expect(socket.emit).toHaveBeenCalledWith('resolveEffect', {
+                effect: spellCard.effects[0],
+                unitCardIds: [unitCard.id],
+            });
+        });
+
+        it('emits no effects resolution if clicking on a wrong target (enemy units)', () => {
+            const unitCard = makeCard(UnitCards.LANCER);
+            // Lightning slick can only target opposing units
+            const spellCard = makeCard(SpellCards.LIGHTNING_SLICK);
+            state.board.players[0].units = [unitCard];
             state.board.players[0].effectQueue = spellCard.effects;
 
             handleClickOnCard({
@@ -156,6 +192,26 @@ describe('handle click on card', () => {
             });
 
             expect(socket.emit).toHaveBeenCalledTimes(0);
+        });
+
+        it('emits an effects resolution if clicking on a proper target (enemy units)', () => {
+            const unitCard = makeCard(UnitCards.LANCER);
+            // Lightning slick can only target opposing units
+            const spellCard = makeCard(SpellCards.LIGHTNING_SLICK);
+            state.board.players[1].units = [unitCard];
+            state.board.players[0].effectQueue = spellCard.effects;
+
+            handleClickOnCard({
+                cardId: unitCard.id,
+                dispatch,
+                state,
+                socket,
+            });
+
+            expect(socket.emit).toHaveBeenCalledWith('resolveEffect', {
+                effect: spellCard.effects[0],
+                unitCardIds: [unitCard.id],
+            });
         });
     });
 });
