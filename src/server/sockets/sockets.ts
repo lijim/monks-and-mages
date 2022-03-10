@@ -121,6 +121,8 @@ export const configureIo = (server: HttpServer) => {
 
             socket.on('joinRoom', (roomName) => {
                 if (!roomName) return; // blank-string room name not allowed
+                const prevRoom = getRoomForSocket(socket);
+                if (prevRoom) socket.leave(prevRoom);
                 socket.join(`public-${roomName}`);
                 io.emit('listRooms', getDetailedRooms());
             });
