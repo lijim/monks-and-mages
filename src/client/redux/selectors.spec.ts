@@ -1,9 +1,11 @@
 import { makeNewBoard } from '@/factories/board';
+import { EffectType } from '@/types/effects';
 import {
     getSelfPlayer,
     getOtherPlayers,
     isUserInitialized,
     getAttackingUnit,
+    getLastEffect,
 } from './selectors';
 
 describe('selectors', () => {
@@ -77,14 +79,25 @@ describe('selectors', () => {
         });
     });
 
-    describe('getAttackingUnit', () => {
-        it('returns the attacking unit', () => {
+    describe('getLastEffect', () => {
+        it("returns the last effect on the player's queue", () => {
+            const board = makeNewBoard(['Alex', 'Bruno', 'Carla', 'Dionne']);
             const state = {
-                clientSideGameExtras: {
-                    attackingUnit: '432-e1f',
-                },
+                user: { name: 'Alex' },
+                board,
             };
-            expect(getAttackingUnit(state)).toEqual('432-e1f');
+            board.players[0].effectQueue.push({
+                type: EffectType.DRAW,
+                strength: 2,
+            });
+            board.players[0].effectQueue.push({
+                type: EffectType.DRAW,
+                strength: 1,
+            });
+            expect(getLastEffect(state)).toEqual({
+                type: EffectType.DRAW,
+                strength: 1,
+            });
         });
     });
 });

@@ -14,7 +14,7 @@ export enum TargetTypes {
     UNIT = 'UNIT',
 }
 
-const AutoResolvingTargets = [
+export const AutoResolvingTargets = [
     TargetTypes.ALL_OPPONENTS,
     TargetTypes.ALL_OPPOSING_UNITS,
     TargetTypes.ALL_PLAYERS,
@@ -29,8 +29,8 @@ const AutoResolvingTargets = [
 export enum EffectType {
     DRAW,
     DEAL_DAMAGE, // to any target
-    CURSE_HAND, // adds one generic cost to
-    DISCARD_HAND,
+    CURSE_HAND, // adds one generic cost to cards in hand
+    DISCARD_HAND, // discard X cards at random
     RAMP_CRYSTAL,
     RAMP_BAMBOO,
     RAMP_WATER,
@@ -51,9 +51,28 @@ export enum EffectType {
 /**
  * Default targets of effects, e.g.
  */
-const getDefaultTargetForEffect = {
-    [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
-    [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
+export const getDefaultTargetForEffect = (
+    effectType: EffectType
+): TargetTypes => {
+    return {
+        [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
+        [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
+        [EffectType.CURSE_HAND]: TargetTypes.OPPONENT,
+        [EffectType.DISCARD_HAND]: TargetTypes.OPPONENT,
+        [EffectType.RAMP_CRYSTAL]: TargetTypes.SELF_PLAYER,
+        [EffectType.RAMP_BAMBOO]: TargetTypes.SELF_PLAYER,
+        [EffectType.RAMP_WATER]: TargetTypes.SELF_PLAYER,
+        [EffectType.RAMP_IRON]: TargetTypes.SELF_PLAYER,
+        [EffectType.RAMP_FIRE]: TargetTypes.SELF_PLAYER,
+        [EffectType.REVIVE]: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+        [EffectType.SUMMON_UNITS]: TargetTypes.SELF_PLAYER,
+        [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+        [EffectType.BOUNCE]: TargetTypes.UNIT,
+        [EffectType.BUFF_TEAM_ATTACK]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_TEAM_MAGIC]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_TEAM_HP]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_HAND_ATTACK]: TargetTypes.SELF_PLAYER,
+    }[effectType];
 };
 
 /**

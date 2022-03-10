@@ -12,7 +12,7 @@ export interface ServerToClientEvents {
 export interface ResolveEffectsParams {
     effect: Effect;
     playerNames?: string[];
-    unitCardIds: string[];
+    unitCardIds?: string[];
 }
 
 export interface ClientToServerEvents {
