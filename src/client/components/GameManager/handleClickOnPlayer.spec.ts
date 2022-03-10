@@ -15,7 +15,7 @@ describe('handle click on player', () => {
     let state: RootState;
     let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
-    beforeEach(() => {
+    beforeEach((done) => {
         dispatch = jest.fn();
         socket = io();
         socket.emit = jest.fn();
@@ -26,6 +26,12 @@ describe('handle click on player', () => {
             name: 'Cleopatra',
         };
         state.board = makeNewBoard(['Cleopatra', 'Marc Antony'], 0);
+        done();
+    });
+
+    afterEach((done) => {
+        socket.close();
+        done();
     });
 
     describe('resolve effects', () => {
