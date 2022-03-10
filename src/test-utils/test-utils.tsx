@@ -6,7 +6,7 @@ import {
     RenderOptions,
     RenderResult,
 } from '@testing-library/react';
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
@@ -97,6 +97,11 @@ export function render(
     mockWebSocket.socket.emit = jest.fn();
 
     function Wrapper({ children }: { children?: ReactNode }): ReactElement {
+        useEffect(() => {
+            return () => {
+                newSocket.close();
+            };
+        }, []);
         return (
             <Provider store={store}>
                 <WebSocketContextMockProvider ws={mockWebSocket}>

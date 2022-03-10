@@ -19,7 +19,7 @@ describe('handle click on card', () => {
     let state: RootState;
     let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
-    beforeEach(() => {
+    beforeEach((done) => {
         dispatch = jest.fn();
         socket = io();
         socket.emit = jest.fn();
@@ -30,6 +30,12 @@ describe('handle click on card', () => {
             name: 'Cleopatra',
         };
         state.board = makeNewBoard(['Cleopatra', 'Marc Antony'], 0);
+        done();
+    });
+
+    afterEach((done) => {
+        socket.close();
+        done();
     });
 
     it('deploys a resource if in hand', () => {

@@ -176,8 +176,25 @@ export const configureIo = (server: HttpServer) => {
                 // TODO: rename gameEngine as applyGameAction
             });
 
-            socket.on('disconnect', () => {
+            socket.on('disconnecting', () => {
+                const board = getBoardForSocket(socket);
+                const roomName = getRoomForSocket(socket);
+                const name = idsToNames.get(socket.id);
                 clearName(socket.id);
+                if (board) {
+                    const player = board.players.find((p) => p.name === name);
+                    if (player) {
+                        player.health = 0;
+                        player.isAlive = false;
+                    }
+
+                    const playerLeft = board.players.find((p) => p.isAlive);
+                    if (!playerLeft) {
+                        startedBoards.delete(roomName);
+                    } else {
+                        sendBoardForRoom(roomName);
+                    }
+                }
                 io.emit('listRooms', getDetailedRooms());
             });
         }
