@@ -53,5 +53,25 @@ describe('sockets', () => {
                 done();
             });
         });
+
+        it('leaves and closes the previous room', (done) => {
+            clientSocket.emit('chooseName', 'Dora Wini');
+            clientSocket.emit('joinRoom', 'treehouse-1');
+            clientSocket.emit('joinRoom', 'treehouse-2');
+            let numCalls = 0;
+            clientSocket.on('listRooms', (roomsAndIds: DetailedRoom[]) => {
+                numCalls += 1;
+                if (numCalls === 2) {
+                    expect(roomsAndIds).toEqual([
+                        {
+                            roomName: 'public-treehouse-2',
+                            players: ['Dora Wini'],
+                            hasStartedGame: false,
+                        },
+                    ]);
+                    done();
+                }
+            });
+        });
     });
 });
