@@ -8,9 +8,11 @@ import { obscureBoardInfo } from '../obscureBoardInfo';
 import {
     ClientToServerEvents,
     DetailedRoom,
+    ResolveEffectsParams,
     ServerToClientEvents,
 } from '@/types';
 import { applyGameAction } from '../gameEngine';
+import { resolveEffect } from '../resolveEffect';
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -151,6 +153,25 @@ export const configureIo = (server: HttpServer) => {
                 // TODO: add error handling when user tries to take an invalid action
                 startedBoards.set(roomName, newBoardState); // apply state changes to in-memory storage of boards
                 sendBoardForRoom(roomName); // update clients with changes
+            });
+
+            socket.on('resolveEffect', (effectParams: ResolveEffectsParams) => {
+                const board = getBoardForSocket(socket);
+                const roomName = getRoomForSocket(socket);
+                const playerName = idsToNames.get(socket.id);
+                const newBoardState = resolveEffect(
+                    board,
+                    effectParams,
+                    playerName
+                );
+
+                if (newBoardState) {
+                    startedBoards.set(roomName, newBoardState);
+                    sendBoardForRoom(roomName);
+                }
+
+                // TODO: apply a win state
+                // TODO: rename gameEngine as applyGameAction
             });
 
             socket.on('disconnect', () => {

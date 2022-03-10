@@ -1,4 +1,5 @@
 import { Player } from '@/types/board';
+import { Effect } from '@/types/cards';
 import { RootState } from './store';
 
 export const isUserInitialized = (state: Partial<RootState>): boolean =>
@@ -31,3 +32,13 @@ export const getOtherPlayers = (state: Partial<RootState>): Player[] => {
 export const getAttackingUnit = (
     state: Partial<RootState>
 ): string | undefined => state.clientSideGameExtras?.attackingUnit;
+
+export const getLastEffect = (
+    state: Partial<RootState>
+): Effect | undefined => {
+    const selfPlayer = getSelfPlayer(state);
+    if (!selfPlayer) return undefined;
+    const { effectQueue } = selfPlayer;
+    if (effectQueue.length === 0) return undefined;
+    return effectQueue[effectQueue.length - 1];
+};
