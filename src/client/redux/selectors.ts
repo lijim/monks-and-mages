@@ -1,5 +1,6 @@
 import { Player } from '@/types/board';
 import { Effect } from '@/types/cards';
+import { TargetTypes } from '@/types/effects';
 import { RootState } from './store';
 
 export const isUserInitialized = (state: Partial<RootState>): boolean =>
@@ -41,4 +42,32 @@ export const getLastEffect = (
     const { effectQueue } = selfPlayer;
     if (effectQueue.length === 0) return undefined;
     return effectQueue[effectQueue.length - 1];
+};
+
+/**
+ * @param state
+ * @returns {boolean} - return true if and only if there is an effect in the queue
+ * and the last effect on the effectQueue array is invalid given the current board
+ * state, e.g. it tries to target an opposing unit when there are none
+ */
+export const shouldLastEffectFizzle = (state: Partial<RootState>): boolean => {
+    const lastEffect = getLastEffect(state);
+    if (!lastEffect) return false;
+    const otherPlayers = getOtherPlayers(state);
+    const selfPlayer = getSelfPlayer(state);
+    const players = [...otherPlayers, selfPlayer];
+
+    switch (lastEffect.target) {
+        case TargetTypes.OPPOSING_UNIT: {
+            return otherPlayers.every((player) => player.units.length === 0);
+        }
+        case TargetTypes.OWN_UNIT: {
+            return selfPlayer.units.length === 0;
+        }
+        case TargetTypes.UNIT: {
+            return players.every((player) => player.units.length === 0);
+        }
+        default:
+            return false;
+    }
 };

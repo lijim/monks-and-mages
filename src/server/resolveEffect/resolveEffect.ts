@@ -101,6 +101,6 @@ export const resolveEffect = (
             return clonedBoard;
         }
         default:
-            return null;
+            return clonedBoard;
     }
 };
