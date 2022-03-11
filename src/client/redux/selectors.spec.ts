@@ -1,11 +1,14 @@
+import { UnitCards } from '@/cardDb/units';
 import { makeNewBoard } from '@/factories/board';
-import { EffectType } from '@/types/effects';
+import { makeCard } from '@/factories/cards';
+import { EffectType, TargetTypes } from '@/types/effects';
 import {
     getSelfPlayer,
     getOtherPlayers,
     isUserInitialized,
     getAttackingUnit,
     getLastEffect,
+    shouldLastEffectFizzle,
 } from './selectors';
 
 describe('selectors', () => {
@@ -98,6 +101,54 @@ describe('selectors', () => {
                 type: EffectType.DRAW,
                 strength: 1,
             });
+        });
+    });
+
+    describe('shouldEffectFizzle', () => {
+        it('fizzles effects that target units', () => {
+            const board = makeNewBoard(['Alex', 'Bruno', 'Carla', 'Dionne']);
+            const state = {
+                user: { name: 'Alex' },
+                board,
+            };
+
+            board.players[0].effectQueue = [
+                { type: EffectType.BOUNCE, target: TargetTypes.OPPOSING_UNIT },
+            ];
+            expect(shouldLastEffectFizzle(state)).toEqual(true);
+            board.players[0].effectQueue = [
+                { type: EffectType.BOUNCE, target: TargetTypes.UNIT },
+            ];
+            expect(shouldLastEffectFizzle(state)).toEqual(true);
+            board.players[0].effectQueue = [
+                { type: EffectType.BOUNCE, target: TargetTypes.OWN_UNIT },
+            ];
+            expect(shouldLastEffectFizzle(state)).toEqual(true);
+        });
+
+        it('does not fizzle effects that target a valid unit', () => {
+            const board = makeNewBoard(['Alex', 'Bruno', 'Carla', 'Dionne']);
+            // Give each player units so the effects won't fizzle
+            board.players.forEach((player) => {
+                player.units = [makeCard(UnitCards.CAVALRY_ARCHER)];
+            });
+            const state = {
+                user: { name: 'Alex' },
+                board,
+            };
+
+            board.players[0].effectQueue = [
+                { type: EffectType.BOUNCE, target: TargetTypes.OPPOSING_UNIT },
+            ];
+            expect(shouldLastEffectFizzle(state)).toEqual(false);
+            board.players[0].effectQueue = [
+                { type: EffectType.BOUNCE, target: TargetTypes.UNIT },
+            ];
+            expect(shouldLastEffectFizzle(state)).toEqual(false);
+            board.players[0].effectQueue = [
+                { type: EffectType.BOUNCE, target: TargetTypes.OWN_UNIT },
+            ];
+            expect(shouldLastEffectFizzle(state)).toEqual(false);
         });
     });
 });
