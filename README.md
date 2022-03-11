@@ -4,7 +4,7 @@ Monks and Mages is a trading card-style game inspired by [Heroes of Might and Ma
 
 # Installation and Running
 
-This game can be run locally if you have [node](https://nodejs.org/en/download/) and [yarn installed globally](https://yarnpkg.com/getting-started/install)
+This game can be run locally if you have [node v16.x](https://nodejs.org/en/download/) and [yarn installed globally](https://yarnpkg.com/getting-started/install)
 
 To get started:
 
@@ -19,6 +19,8 @@ or alternatively, to get automatic builds via watchmode:
 yarn install
 yarn dev
 ```
+
+Go to `http://localhost:3000/` to see the game (and open it in multiple browser windows to simulate multiple players)
 
 To see sockets.io debug screen:
 
