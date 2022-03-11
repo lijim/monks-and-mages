@@ -36,9 +36,11 @@ export const transformEffectToRulesText = (effect: Effect): string => {
     const targetName = TARGET_TYPES_TO_RULES_TEXT[target || TargetTypes.ANY];
     switch (effect.type) {
         case EffectType.BOUNCE: {
-            return `Return ${strength} of ${targetName} back to ${
-                strength === 1 ? `its` : 'their'
-            } owner's hand`;
+            return `Return ${targetName} back to ${
+                PLURAL_TARGET_TYPES.indexOf(target) > -1
+                    ? "their owners'"
+                    : "its owner's"
+            } hand`;
         }
         case EffectType.BUFF_HAND_ATTACK: {
             return `Increase attack of units in your hand by ${strength}`;

@@ -7,22 +7,30 @@ describe('transformEffectstoRulesText', () => {
     it('displays rules for bouncing units (any unit, plural)', () => {
         const effect: Effect = {
             type: EffectType.BOUNCE,
-            strength: 2,
             target: TargetTypes.UNIT,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
-            `Return 2 of any unit back to their owner's hand`
+            `Return any unit back to its owner's hand`
         );
     });
 
     it('displays rules for bouncing units (opposing unit, singular)', () => {
         const effect: Effect = {
             type: EffectType.BOUNCE,
-            strength: 1,
             target: TargetTypes.OPPOSING_UNIT,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
-            `Return 1 of any unit controlled by an opponent back to its owner's hand`
+            `Return any unit controlled by an opponent back to its owner's hand`
+        );
+    });
+
+    it('displays rules for bouncing units (opposing unit, plural)', () => {
+        const effect: Effect = {
+            type: EffectType.BOUNCE,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Return all opposing units back to their owners' hand`
         );
     });
 

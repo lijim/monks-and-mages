@@ -44,8 +44,9 @@ export const makeSampleDeck1 = (): Card[] => {
 };
 
 export const SAMPLE_DECKLIST_2 = [
-    { card: makeResourceCard(Resource.FIRE), quantity: 10 },
-    { card: makeResourceCard(Resource.WATER), quantity: 10 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 7 },
+    { card: makeResourceCard(Resource.WATER), quantity: 8 },
+    { card: makeResourceCard(Resource.CRYSTAL), quantity: 5 },
     { card: makeCard(SpellCards.EMBER_SPEAR), quantity: 4 },
     { card: makeCard(SpellCards.LIGHTNING_SLICK), quantity: 4 },
     { card: makeCard(SpellCards.CURSE_HAND), quantity: 4 },

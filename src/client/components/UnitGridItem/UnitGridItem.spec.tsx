@@ -29,7 +29,7 @@ describe('Unit Grid Item', () => {
     it('displays rules text (ETBs)', () => {
         render(<UnitGridItem card={UnitCards.WATER_MAGE} />);
         expect(
-            screen.getByText(`Return 1 of any unit back to its owner's hand`)
+            screen.getByText(`Return any unit back to its owner's hand`)
         ).toBeInTheDocument();
         expect(
             screen.getByText('Upon entering the board:')
