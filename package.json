@@ -8,7 +8,7 @@
         "build": "npx webpack",
         "ci": "yarn lint && jest",
         "dev": "npx webpack --watch & cp src/server/homepage.html dist/homepage.html & -w & nodemon .",
-        "heroku-prebuild": "yarn install --dev",
+        "heroku-cleanup": "yarn install --dev",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
         "start": "npx webpack & cp src/server/homepage.html dist/homepage.html & node .",
         "test": "yarn lint && jest --watchAll"
