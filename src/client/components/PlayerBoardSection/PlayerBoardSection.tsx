@@ -18,6 +18,7 @@ const PlayerBoardSectionContainer = styled.div<PlayerBoardSectionContainerProps>
     background-color: ${({ isSelfPlayer }) =>
         isSelfPlayer ? Colors.FELT_GREEN_ALT : Colors.FELT_GREEN};
     zoom: 0.6;
+    box-shadow: 0 2px 2px rgb(0 0 0 / 50%);
 `;
 
 export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
