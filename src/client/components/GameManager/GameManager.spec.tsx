@@ -5,8 +5,10 @@ import { makeNewBoard } from '@/factories/board';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { RootState } from '@/client/redux/store';
 
+jest.useFakeTimers();
+
 describe('Game Manager', () => {
-    it('auto-resolves targets', () => {
+    it('auto-resolves targets', async () => {
         const board = makeNewBoard(['Antoinette', 'Beatrice', 'Claudia'], 0);
         const effect = {
             type: EffectType.BOUNCE,
@@ -21,12 +23,16 @@ describe('Game Manager', () => {
             board,
         };
         const { webSocket } = render(<GameManager />, { preloadedState });
-        expect(webSocket.socket.emit).toHaveBeenCalledWith('resolveEffect', {
-            effect,
-        });
+        jest.advanceTimersByTime(2400);
+        await expect(webSocket.socket.emit).toHaveBeenCalledWith(
+            'resolveEffect',
+            {
+                effect,
+            }
+        );
     });
 
-    it('fizzles the last effect if it has no valid targets', () => {
+    it('fizzles the last effect if it has no valid targets', async () => {
         const board = makeNewBoard(['Antoinette', 'Beatrice', 'Claudia'], 0);
         const effect = {
             type: EffectType.BOUNCE,
@@ -41,8 +47,12 @@ describe('Game Manager', () => {
             board,
         };
         const { webSocket } = render(<GameManager />, { preloadedState });
-        expect(webSocket.socket.emit).toHaveBeenCalledWith('resolveEffect', {
-            effect,
-        });
+        jest.advanceTimersByTime(2400);
+        await expect(webSocket.socket.emit).toHaveBeenCalledWith(
+            'resolveEffect',
+            {
+                effect,
+            }
+        );
     });
 });
