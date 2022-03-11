@@ -4,7 +4,7 @@ import path from 'path';
 import { configureIo } from './sockets';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 // Serves everything from dist/client as /client, e.g. http://localhost:3000/client/index.js
