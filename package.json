@@ -6,10 +6,11 @@
     "private": true,
     "scripts": {
         "build": "npx webpack",
-        "start": "npx webpack & cp src/server/homepage.html dist/homepage.html & node .",
-        "dev": "npx webpack --watch & cp src/server/homepage.html dist/homepage.html & -w & nodemon .",
-        "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
         "ci": "yarn lint && jest",
+        "dev": "npx webpack --watch & cp src/server/homepage.html dist/homepage.html & -w & nodemon .",
+        "heroku-prebuild": "yarn install --dev",
+        "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+        "start": "npx webpack & cp src/server/homepage.html dist/homepage.html & node .",
         "test": "yarn lint && jest --watchAll"
     },
     "dependencies": {
@@ -65,8 +66,11 @@
         "typescript": "^4.5.4",
         "typescript-plugin-styled-components": "^2.0.0",
         "webpack": "^5.66.0",
-        "webpack-cli": "^4.9.1",
+        "webpack-cli": "^4.9.2",
         "webpack-node-externals": "^3.0.0"
+    },
+    "engines": {
+        "node": "17.x"
     },
     "license": "MIT"
 }
