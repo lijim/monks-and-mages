@@ -5,7 +5,8 @@ import { Board } from '@/types/board';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { resolveEffect } from './resolveEffect';
 import { makeCard } from '@/factories/cards';
-import { UnitCards } from '@/cardDb/units';
+import { Tokens, UnitCards } from '@/cardDb/units';
+import { UnitCard } from '@/types/cards';
 
 describe('resolve effect', () => {
     let board: Board;
@@ -33,6 +34,28 @@ describe('resolve effect', () => {
             'Timmy'
         );
         expect(newBoard.players[0].effectQueue).toHaveLength(0);
+    });
+
+    describe('Bounce units', () => {
+        it('bounces a unit back to hand', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            squire.hp = 1;
+            board.players[0].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: { type: EffectType.BOUNCE },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units).toHaveLength(0);
+            const lastCardInHand = newBoard.players[0].hand.splice(
+                -1
+            )[0] as UnitCard;
+            expect(lastCardInHand.name).toEqual(squire.name);
+            expect(lastCardInHand.hp).toEqual(squire.totalHp);
+        });
     });
 
     describe('Draw Cards', () => {
@@ -138,6 +161,24 @@ describe('resolve effect', () => {
                 'Timmy'
             );
             expect(newBoard.players[1].isAlive).toBe(false);
+        });
+    });
+
+    describe('Summon Unit', () => {
+        it('summons 2 demons', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.SUMMON_UNITS,
+                        strength: 2,
+                        summonType: Tokens.DEMON,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units).toHaveLength(2);
+            expect(newBoard.players[0].units[0].name).toBe(Tokens.DEMON.name);
         });
     });
 });

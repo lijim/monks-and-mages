@@ -8,6 +8,7 @@ import {
     TargetTypes,
 } from '@/types/effects';
 import { UnitCard } from '@/types/cards';
+import { makeCard } from '@/factories/cards';
 
 export const resolveEffect = (
     board: Board,
@@ -70,6 +71,14 @@ export const resolveEffect = (
     }
 
     switch (effect.type) {
+        case EffectType.BOUNCE: {
+            unitTargets.forEach(({ player, unitCard }) => {
+                player.units = player.units.filter((card) => card !== unitCard);
+                player.hand.push(unitCard);
+                unitCard.hp = unitCard.totalHp;
+            });
+            return clonedBoard;
+        }
         case EffectType.DRAW: {
             playerTargets.forEach((player) => {
                 const { hand, deck } = player;
@@ -97,6 +106,15 @@ export const resolveEffect = (
             playerTargets.forEach((player) => {
                 player.health -= effectStrength;
                 if (player.health <= 0) player.isAlive = false;
+            });
+            return clonedBoard;
+        }
+        case EffectType.SUMMON_UNITS: {
+            const { summonType } = effect;
+            playerTargets.forEach((player) => {
+                for (let i = 0; i < Math.min(50, effectStrength); i += 1) {
+                    player.units.push(makeCard(summonType));
+                }
             });
             return clonedBoard;
         }
