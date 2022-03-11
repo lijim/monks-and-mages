@@ -47,14 +47,18 @@ export const GameManager: React.FC = ({ children }) => {
         // if the target of the effect auto-resolves, e.g. (ALL OPPONENTS),
         // then resolve the effect automatically
         if (AutoResolvingTargets.indexOf(target) > -1) {
-            socket.emit('resolveEffect', {
-                effect: lastEffect,
-            });
+            setTimeout(() => {
+                socket.emit('resolveEffect', {
+                    effect: lastEffect,
+                });
+            }, 2000);
         }
         if (willLastEffectFizzle) {
-            socket.emit('resolveEffect', {
-                effect: lastEffect,
-            });
+            setTimeout(() => {
+                socket.emit('resolveEffect', {
+                    effect: lastEffect,
+                });
+            }, 2000);
         }
     }, [lastEffect]);
 
