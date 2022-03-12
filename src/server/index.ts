@@ -13,7 +13,11 @@ app.enable('trust proxy');
 
 // eslint-disable-next-line consistent-return
 app.use((request, response, next): void | undefined => {
-    if (process.env.NODE_ENV !== 'development' && !request.secure) {
+    if (
+        process.env.NODE_ENV !== 'development' &&
+        !request.headers.host?.startsWith('localhost') &&
+        !request.secure
+    ) {
         return response.redirect(
             `https://${request.headers.host}${request.url}`
         );

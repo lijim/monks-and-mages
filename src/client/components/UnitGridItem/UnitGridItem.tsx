@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { UnitCard } from '@/types/cards';
 import { CastingCost } from '../CastingCost';
 import {
+    AttackCell,
     AttackHPFooter,
     CardFrame,
     CardHeader,
@@ -32,9 +33,11 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
     const attackUnitId = useSelector(getAttackingUnit);
     const {
         attack,
+        attackBuff,
         cost,
         enterEffects,
         hp,
+        hpBuff,
         id,
         imgSrc,
         isMagical,
@@ -84,9 +87,11 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 ))}
             </RulesTextArea>
             <AttackHPFooter>
-                <div>{attack} ⚔️</div>
-                <HPCell>
-                    {isOnBoard && `${hp} / `} {totalHp} 💙
+                <AttackCell data-testid="attack" buffAmount={attackBuff}>
+                    {attack + attackBuff} ⚔️
+                </AttackCell>
+                <HPCell data-testid="hp" buffAmount={hpBuff}>
+                    {isOnBoard && `${hp + hpBuff} / `} {totalHp + hpBuff} 💙
                 </HPCell>
             </AttackHPFooter>
         </CardFrame>

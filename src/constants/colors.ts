@@ -1,5 +1,7 @@
 export enum Colors {
+    BUFF_BLUE = '#0096FF',
     DARK_BROWN = '#4a2e15',
+    DEBUFF_RED = '#c70039',
     FELT_GREEN = '#247345',
     FELT_GREEN_ALT = '#36ae68',
     FIRE_ORANGE = '#f57322',

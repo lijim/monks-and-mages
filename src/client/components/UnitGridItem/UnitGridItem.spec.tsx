@@ -5,6 +5,7 @@ import { render } from '@/test-utils';
 import { UnitCards } from '@/cardDb/units';
 import { UnitGridItem } from './UnitGridItem';
 import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
+import { makeCard } from '@/factories/cards';
 
 describe('Unit Grid Item', () => {
     it('renders unit name + casting cost', () => {
@@ -40,5 +41,19 @@ describe('Unit Grid Item', () => {
         expect(
             screen.getByText('Quick (can attack right away)')
         ).toBeInTheDocument();
+    });
+
+    it('renders unit name + casting cost', () => {
+        const unitCard = makeCard(UnitCards.SQUIRE);
+        unitCard.attackBuff = 5;
+        unitCard.hpBuff = 6;
+        render(<UnitGridItem card={unitCard} isOnBoard />);
+        expect(screen.getByTestId('attack')).toHaveTextContent(
+            `${unitCard.attackBuff + unitCard.attack} ⚔️`
+        );
+        const newHpTotal = unitCard.hpBuff + unitCard.hp;
+        expect(screen.getByTestId('hp')).toHaveTextContent(
+            `${newHpTotal} / ${newHpTotal} 💙`
+        );
     });
 });

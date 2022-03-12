@@ -241,6 +241,26 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0]).toEqual(unitCard);
         });
 
+        it('causes an "enter the board" effect', () => {
+            const unitCard = makeCard(UnitCards.MARTIAL_TRAINER);
+            board.players[0].hand = [unitCard];
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.IRON]: 3,
+            };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_UNIT,
+                    cardId: unitCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].effectQueue).toEqual(
+                unitCard.enterEffects
+            );
+        });
+
         it('does not deploy a unit when the player cannot pay for it', () => {
             const unitCard = makeCard(UnitCards.CANNON);
             board.players[0].hand = [unitCard];
@@ -300,6 +320,30 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0].hp).toEqual(1);
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
             expect(newBoardState.players[1].units[0].hp).toEqual(1);
+        });
+
+        it('performs a melee attack (non-lethal b/c of buffs)', () => {
+            const attacker = makeCard(UnitCards.LANCER);
+            attacker.numAttacksLeft = 1;
+            attacker.hpBuff = 2;
+            const defender = makeCard(UnitCards.LANCER);
+            defender.hpBuff = 2;
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            // hp = -1, but not in cemetery b/c of buffs
+            expect(newBoardState.players[0].units[0].hp).toEqual(-1);
+            expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
+            // hp = -1, but not in cemetery b/c of buffs
+            expect(newBoardState.players[1].units[0].hp).toEqual(-1);
         });
 
         it('performs a melee attack (lethal for both)', () => {

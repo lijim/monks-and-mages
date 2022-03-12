@@ -10,13 +10,6 @@ To get started:
 
 ```
 yarn install
-yarn start
-```
-
-or alternatively, to get automatic builds via watchmode:
-
-```
-yarn install
 yarn dev
 ```
 

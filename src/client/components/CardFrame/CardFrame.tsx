@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/colors';
 import styled from 'styled-components';
 
 interface CardFrameProps {
@@ -100,6 +101,25 @@ export const AttackHPFooter = styled.div`
     grid-template-columns: auto auto;
 `;
 
-export const HPCell = styled.div`
+interface BuffedTextProps {
+    buffAmount?: number;
+}
+
+export const AttackCell = styled.div<BuffedTextProps>`
+    ${({ buffAmount }) => {
+        if (!buffAmount) return '';
+        if (buffAmount > 0) return `color: ${Colors.BUFF_BLUE}`;
+        if (buffAmount < 0) return `color: ${Colors.DEBUFF_RED}`;
+        return '';
+    }}
+`;
+
+export const HPCell = styled.div<BuffedTextProps>`
     text-align: right;
+    ${({ buffAmount }) => {
+        if (!buffAmount) return '';
+        if (buffAmount > 0) return `color: ${Colors.BUFF_BLUE}`;
+        if (buffAmount < 0) return `color: ${Colors.DEBUFF_RED}`;
+        return '';
+    }}
 `;
