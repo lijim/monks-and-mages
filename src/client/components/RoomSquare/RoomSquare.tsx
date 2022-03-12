@@ -48,7 +48,9 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
             <div>
                 <PlayerList>
                     {players.map((player) => (
-                        <li key={player}>👤 {player}</li>
+                        <li key={player}>
+                            👤 <span>{player}</span>
+                        </li>
                     ))}
                 </PlayerList>
             </div>

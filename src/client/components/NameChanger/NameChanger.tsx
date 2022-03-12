@@ -1,6 +1,6 @@
-import { MAX_PLAYER_NAME_LENGTH } from '@/constants/lobbyConstants';
 import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
+import { MAX_PLAYER_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { PrimaryColorButton } from '../Button';
 
 interface NameChangerProps {
