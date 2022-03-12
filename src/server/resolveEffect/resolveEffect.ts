@@ -9,6 +9,7 @@ import {
 } from '@/types/effects';
 import { UnitCard } from '@/types/cards';
 import { makeCard } from '@/factories/cards';
+import { processBoardToCemetery } from '../gameEngine';
 
 export const resolveEffect = (
     board: Board,
@@ -76,6 +77,52 @@ export const resolveEffect = (
                 player.units = player.units.filter((card) => card !== unitCard);
                 player.hand.push(unitCard);
                 unitCard.hp = unitCard.totalHp;
+                unitCard.attackBuff = 0;
+                unitCard.hpBuff = 0;
+            });
+            return clonedBoard;
+        }
+        case EffectType.BUFF_TEAM_ATTACK: {
+            playerTargets.forEach((player) => {
+                player.units.forEach((unit) => {
+                    if (!unit.isMagical) {
+                        unit.attackBuff += effectStrength;
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.BUFF_TEAM_HP: {
+            playerTargets.forEach((player) => {
+                player.units.forEach((unit) => {
+                    unit.hpBuff += effectStrength;
+                });
+            });
+            // in case debuffing causes units to go to cemtery
+            processBoardToCemetery(clonedBoard);
+            return clonedBoard;
+        }
+        case EffectType.BUFF_TEAM_MAGIC: {
+            playerTargets.forEach((player) => {
+                player.units.forEach((unit) => {
+                    if (unit.isMagical) {
+                        unit.attackBuff += effectStrength;
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.DEAL_DAMAGE: {
+            if (unitTargets) {
+                unitTargets.forEach(({ unitCard }) => {
+                    unitCard.hp -= effectStrength;
+                });
+                processBoardToCemetery(clonedBoard);
+            }
+
+            playerTargets.forEach((player) => {
+                player.health -= effectStrength;
+                if (player.health <= 0) player.isAlive = false;
             });
             return clonedBoard;
         }
@@ -88,24 +135,6 @@ export const resolveEffect = (
                 player.hand = hand.concat(deck.splice(-effectStrength));
                 player.numCardsInHand = player.hand.length;
                 player.numCardsInDeck = player.deck.length;
-            });
-            return clonedBoard;
-        }
-        case EffectType.DEAL_DAMAGE: {
-            unitTargets.forEach(({ player, unitCard }) => {
-                const { units } = player;
-                unitCard.hp -= effectStrength;
-                if (unitCard.hp <= 0) {
-                    unitCard.hp = 0;
-                    player.cemetery.push(
-                        units.splice(units.indexOf(unitCard), 1)[0]
-                    );
-                }
-            });
-
-            playerTargets.forEach((player) => {
-                player.health -= effectStrength;
-                if (player.health <= 0) player.isAlive = false;
             });
             return clonedBoard;
         }

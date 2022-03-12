@@ -5,6 +5,7 @@ import { GameAction, GameActionTypes } from '@/types/gameActions';
 import { CardType, ResourceCard, UnitCard } from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
+import { PassiveEffect } from '@/types/effects';
 
 const getNextPlayer = (board: Board): Player => {
     const { players } = board;
@@ -34,6 +35,38 @@ const applyWinState = (board: Board): Board => {
         board.gameState = GameState.TIE;
     }
     return board;
+};
+
+export const resetUnitCard = (unitCard: UnitCard) => {
+    const hasQuick = unitCard.passiveEffects.indexOf(PassiveEffect.QUICK) > -1;
+
+    unitCard.hp = unitCard.totalHp;
+    unitCard.hpBuff = 0;
+    unitCard.attackBuff = 0;
+    unitCard.numAttacksLeft = hasQuick ? unitCard.numAttacks : 0;
+};
+
+/**
+ * Mutates the board that's passed in.
+ *
+ * Cleans up all units where the hp (including buffs) is <= 0 and seend
+ * them to the cemetry
+ */
+export const processBoardToCemetery = (board: Board) => {
+    const { players } = board;
+    if (!players?.length) return;
+    players.forEach((player) => {
+        const { units } = player;
+        units.forEach((unitCard) => {
+            const { hp, hpBuff } = unitCard;
+            if (hp + hpBuff <= 0) {
+                resetUnitCard(unitCard);
+                player.cemetery.push(
+                    units.splice(units.indexOf(unitCard), 1)[0]
+                );
+            }
+        });
+    });
 };
 
 type ApplyGameActionParams = {
@@ -146,6 +179,9 @@ export const applyGameAction = ({
                     matchingCard
                 ).resourcePool;
                 activePlayer.units.push(matchingCard);
+                activePlayer.effectQueue = activePlayer.effectQueue.concat(
+                    cloneDeep(matchingCard.enterEffects)
+                );
                 activePlayer.numCardsInHand -= 1;
                 activePlayer.hand.splice(matchingCardIndex, 1);
             }
@@ -187,29 +223,21 @@ export const applyGameAction = ({
                 // Resolve Combat
                 attacker.numAttacksLeft -= 1;
 
-                const { attack, hp } = attacker;
-                const { attack: defenderAttack, hp: defenderHp } = defender;
+                const { attack, attackBuff, hp } = attacker;
+                const {
+                    attack: defenderAttack,
+                    attackBuff: defenderAttackBuff,
+                    hp: defenderHp,
+                } = defender;
                 if (
                     (attacker.isRanged && defender.isRanged) ||
                     !attacker.isRanged
                 )
-                    attacker.hp = Math.max(0, hp - defenderAttack);
-                defender.hp = Math.max(0, defenderHp - attack);
+                    attacker.hp = hp - defenderAttack - defenderAttackBuff;
+                defender.hp = defenderHp - attack - attackBuff;
 
                 // Resolve units going to the cemetery
-                if (attacker.hp === 0) {
-                    activePlayer.cemetery.push(attacker);
-                    activePlayer.units = activePlayer.units.filter(
-                        (card) => card.id !== cardId
-                    );
-                }
-
-                if (defender.hp === 0) {
-                    defendingPlayer.cemetery.push(defender);
-                    defendingPlayer.units = defendingPlayer.units.filter(
-                        (card) => card.id !== unitTarget
-                    );
-                }
+                processBoardToCemetery(clonedBoard);
                 return clonedBoard;
             }
 

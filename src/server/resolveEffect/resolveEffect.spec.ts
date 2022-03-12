@@ -41,6 +41,7 @@ describe('resolve effect', () => {
             const squire = makeCard(UnitCards.SQUIRE);
             squire.hp = 1;
             board.players[0].units = [squire];
+
             const newBoard = resolveEffect(
                 board,
                 {
@@ -49,6 +50,7 @@ describe('resolve effect', () => {
                 },
                 'Timmy'
             );
+
             expect(newBoard.players[0].units).toHaveLength(0);
             const lastCardInHand = newBoard.players[0].hand.splice(
                 -1
@@ -56,11 +58,96 @@ describe('resolve effect', () => {
             expect(lastCardInHand.name).toEqual(squire.name);
             expect(lastCardInHand.hp).toEqual(squire.totalHp);
         });
+
+        it("resets a unit's buffs", () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            squire.attackBuff = 2;
+            squire.hpBuff = 2;
+            board.players[0].units = [squire];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: { type: EffectType.BOUNCE },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+
+            const lastCardInHand = newBoard.players[0].hand.splice(
+                -1
+            )[0] as UnitCard;
+            expect(lastCardInHand.attackBuff).toEqual(0);
+            expect(lastCardInHand.hpBuff).toEqual(0);
+        });
+    });
+
+    describe('Buff units', () => {
+        it('buffs attack of non-magic units on your board', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const cannon = makeCard(UnitCards.CANNON);
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[0].units = [squire, cannon, apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: { type: EffectType.BUFF_TEAM_ATTACK, strength: 2 },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(2);
+            expect(newBoard.players[0].units[1].attackBuff).toEqual(2);
+            expect(newBoard.players[0].units[2].attackBuff).toEqual(0);
+        });
+
+        it('buffs hp of units on your board', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const cannon = makeCard(UnitCards.CANNON);
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[0].units = [squire, cannon, apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: { type: EffectType.BUFF_TEAM_HP, strength: 2 },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(2);
+            expect(newBoard.players[0].units[1].hpBuff).toEqual(2);
+            expect(newBoard.players[0].units[2].hpBuff).toEqual(2);
+        });
+
+        it('buffs magic of units on your board', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const cannon = makeCard(UnitCards.CANNON);
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[0].units = [squire, cannon, apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: { type: EffectType.BUFF_TEAM_MAGIC, strength: 2 },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(0);
+            expect(newBoard.players[0].units[1].attackBuff).toEqual(0);
+            expect(newBoard.players[0].units[2].attackBuff).toEqual(2);
+        });
     });
 
     describe('Draw Cards', () => {
         it('draws cards for players', () => {
             const deckLength = board.players[0].deck.length;
+
             const newBoard = resolveEffect(
                 board,
                 {
@@ -72,6 +159,7 @@ describe('resolve effect', () => {
                 },
                 'Timmy'
             );
+
             expect(newBoard.players[0].hand).toHaveLength(
                 PlayerConstants.STARTING_HAND_SIZE + 2
             );
@@ -88,11 +176,13 @@ describe('resolve effect', () => {
         });
         it('makes the player draw out of cards and lose', () => {
             const deckLength = board.players[0].deck.length;
+
             const newBoard = resolveEffect(
                 board,
                 { effect: { type: EffectType.DRAW, strength: deckLength + 1 } },
                 'Timmy'
             );
+
             expect(newBoard.players[0].hand).toHaveLength(
                 PlayerConstants.STARTING_HAND_SIZE + deckLength
             );
