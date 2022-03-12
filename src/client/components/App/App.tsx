@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { Route, Routes } from 'react-router-dom';
+import styled from 'styled-components';
 import 'react-popper-tooltip/dist/styles.css';
 
 import { makeSampleDeck1 } from '@/factories/deck';
@@ -13,6 +14,13 @@ import { IntroScreen } from '../IntroScreen';
 import { Rooms } from '../Rooms';
 import { GameDisplay } from '../GameDisplay';
 import { GameManager } from '../GameManager';
+
+const LobbyBackground = styled.div`
+    background: linear-gradient(70deg, #eed, transparent);
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+`;
 
 export const App: React.FC = () => {
     const deck = makeSampleDeck1();
@@ -29,10 +37,10 @@ export const App: React.FC = () => {
                                 <Route
                                     path="/"
                                     element={
-                                        <>
+                                        <LobbyBackground>
                                             <IntroScreen />
                                             {isUserPastIntroScreen && <Rooms />}
-                                        </>
+                                        </LobbyBackground>
                                     }
                                 />
                                 <Route

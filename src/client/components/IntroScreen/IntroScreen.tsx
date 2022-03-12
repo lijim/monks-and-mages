@@ -1,11 +1,17 @@
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 import { RootState } from '@/client/redux/store';
 import { NameChanger } from '../NameChanger';
 import { WebSocketContext } from '../WebSockets';
 
 // TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
+
+const NameDisplayer = styled.div`
+    padding-left: 50px;
+    padding-top: 20px;
+`;
 
 /**
  * The Intro Screen is where people set their names / see games in
@@ -26,12 +32,13 @@ export const IntroScreen: React.FC = () => {
     return (
         <>
             {name ? (
-                <>
-                    Name: {name}{' '}
-                    <button type="button" onClick={logOut}>
+                <NameDisplayer>
+                    👤 <b>{name}</b> (
+                    <a href="#" type="button" onClick={logOut}>
                         Logout
-                    </button>
-                </>
+                    </a>
+                    )
+                </NameDisplayer>
             ) : (
                 <NameChanger handleSubmit={handleSubmit} />
             )}

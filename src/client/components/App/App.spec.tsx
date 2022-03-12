@@ -23,6 +23,6 @@ describe('App', () => {
             },
         };
         render(<App />, { preloadedState });
-        expect(screen.queryByText('Name: Gretsch')).toBeInTheDocument();
+        expect(screen.queryByText('Gretsch')).toBeInTheDocument();
     });
 });

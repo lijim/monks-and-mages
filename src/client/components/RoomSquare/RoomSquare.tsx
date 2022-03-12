@@ -1,11 +1,19 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import { DetailedRoom } from '@/types';
+import { SecondaryColorButton } from '../Button';
 
 type RoomSquareProps = {
     detailedRoom: DetailedRoom;
+    hasJoined?: boolean;
+    joinRoom?: () => void;
     onStartGameClicked?: () => void;
 };
+
+const PlayerList = styled.ul`
+    list-style-type: none;
+`;
 
 /**
  * @returns component for a single room to be displayed on the main
@@ -13,22 +21,36 @@ type RoomSquareProps = {
  */
 export const RoomSquare: React.FC<RoomSquareProps> = ({
     detailedRoom: { hasStartedGame, roomName, players },
+    hasJoined,
+    joinRoom,
     onStartGameClicked,
 }) => {
     const normalizedRoomName = roomName.replace('public-', '');
     return (
         <div>
-            <h1>{normalizedRoomName}</h1>
+            <h1>
+                {normalizedRoomName}
+                <span>
+                    {' '}
+                    {!hasJoined && (
+                        <SecondaryColorButton onClick={joinRoom}>
+                            Join
+                        </SecondaryColorButton>
+                    )}
+                    {!hasStartedGame && players.length > 1 && hasJoined && (
+                        <SecondaryColorButton onClick={onStartGameClicked}>
+                            Start Game
+                        </SecondaryColorButton>
+                    )}
+                </span>
+            </h1>
             {hasStartedGame && <span>Started</span>}
-            {!hasStartedGame && players.length > 1 && (
-                <button onClick={onStartGameClicked}>Start Game</button>
-            )}
             <div>
-                <ul>
+                <PlayerList>
                     {players.map((player) => (
-                        <li key={player}>{player}</li>
+                        <li key={player}>👤 {player}</li>
                     ))}
-                </ul>
+                </PlayerList>
             </div>
         </div>
     );
