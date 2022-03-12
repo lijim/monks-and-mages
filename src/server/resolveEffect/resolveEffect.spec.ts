@@ -166,14 +166,8 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].hand).toHaveLength(
                 PlayerConstants.STARTING_HAND_SIZE + 2
             );
-            expect(newBoard.players[0].numCardsInHand).toEqual(
-                PlayerConstants.STARTING_HAND_SIZE + 2
-            );
             expect(newBoard.players[0].deck).toHaveLength(deckLength - 2);
             expect(newBoard.players[1].hand).toHaveLength(
-                PlayerConstants.STARTING_HAND_SIZE + 2
-            );
-            expect(newBoard.players[1].numCardsInHand).toEqual(
                 PlayerConstants.STARTING_HAND_SIZE + 2
             );
         });
@@ -189,11 +183,7 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].hand).toHaveLength(
                 PlayerConstants.STARTING_HAND_SIZE + deckLength
             );
-            expect(newBoard.players[0].numCardsInHand).toEqual(
-                PlayerConstants.STARTING_HAND_SIZE + deckLength
-            );
             expect(newBoard.players[0].deck).toEqual([]);
-            expect(newBoard.players[0].numCardsInDeck).toEqual(0);
             expect(newBoard.players[0].isAlive).toEqual(false);
         });
     });

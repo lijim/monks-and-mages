@@ -169,8 +169,6 @@ export const resolveEffect = (
                     player.isAlive = false;
                 }
                 player.hand = hand.concat(deck.splice(-effectStrength));
-                player.numCardsInHand = player.hand.length;
-                player.numCardsInDeck = player.deck.length;
             });
             return clonedBoard;
         }
