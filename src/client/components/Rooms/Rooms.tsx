@@ -33,6 +33,9 @@ const LeftColumn = styled.div`
 const MiddleColumn = styled.div`
     overflow-y: scroll;
 `;
+const Spacer = styled.div`
+    height: 8px;
+`;
 
 const RoomsTab = styled.h1`
     margin: 0;
@@ -89,7 +92,12 @@ export const Rooms: React.FC = () => {
     return (
         <RoomsContainer>
             <LeftColumn>
-                <form>
+                <form
+                    onSubmit={(event) => {
+                        event.preventDefault();
+                        joinRoom(newRoomName);
+                    }}
+                >
                     <label htmlFor="newRoomName">
                         <b>Create New Room</b>{' '}
                     </label>
@@ -103,6 +111,7 @@ export const Rooms: React.FC = () => {
                             setNewRoomName(event.target.value);
                         }}
                     />
+                    <Spacer />
                     <span>
                         <PrimaryColorButton
                             onClick={() => {
