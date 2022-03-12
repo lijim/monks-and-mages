@@ -18,7 +18,7 @@ export const makeCard = (unitBase: UnitBase): UnitCard => {
 // Tokens
 const DEMON: UnitCard = makeCard({
     name: 'Demon',
-    imgSrc: 'https://unsplash.com/photos/vStkVmrfTrw',
+    imgSrc: 'https://images.unsplash.com/photo-1519235624215-85175d5eb36e',
     cost: {
         [Resource.GENERIC]: 1,
     },
@@ -33,15 +33,16 @@ const DEMON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
-const GOLEM: UnitCard = makeCard({
-    name: 'Demon',
+const GOLEM_DRAGON: UnitCard = makeCard({
+    name: 'Golem Dragon',
+    imgSrc: 'https://images.unsplash.com/photo-1558346547-1b88655371db',
     cost: {
         [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [],
-    totalHp: 1,
-    attack: 1,
+    totalHp: 3,
+    attack: 3,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
@@ -455,7 +456,7 @@ const CANNON: UnitCard = makeCard({
 
 export const Tokens = {
     DEMON,
-    GOLEM,
+    GOLEM_DRAGON,
 };
 
 export const UnitCards = {

@@ -70,6 +70,16 @@ export const Rooms: React.FC = () => {
         webSocket.startGame();
     };
 
+    const chooseDeck = (deckListSelection: string) => {
+        if (
+            (Object.values(DeckListSelections) as string[]).includes(
+                deckListSelection
+            )
+        ) {
+            webSocket.chooseDeck(deckListSelection as DeckListSelections);
+        }
+    };
+
     // TODO:
     // only allow 1 room at a time to be joined
 
@@ -79,41 +89,50 @@ export const Rooms: React.FC = () => {
     return (
         <RoomsContainer>
             <LeftColumn>
-                <div>
+                <form>
                     <label htmlFor="newRoomName">
                         <b>Create New Room</b>{' '}
                     </label>
                     <input
                         value={newRoomName}
                         maxLength={MAX_ROOM_NAME_LENGTH}
-                        name="newRoomName"
+                        id="newRoomName"
                         type="text"
                         placeholder="The Training Grounds"
                         onChange={(event) => {
                             setNewRoomName(event.target.value);
                         }}
                     />
-                </div>
-
-                <span>
-                    <PrimaryColorButton
-                        onClick={() => {
-                            joinRoom(newRoomName);
-                        }}
-                        disabled={!newRoomName}
-                    >
-                        Create
-                    </PrimaryColorButton>
-                </span>
+                    <span>
+                        <PrimaryColorButton
+                            onClick={() => {
+                                joinRoom(newRoomName);
+                            }}
+                            disabled={!newRoomName}
+                            type="submit"
+                        >
+                            Create
+                        </PrimaryColorButton>
+                    </span>
+                </form>
 
                 <div>
                     <hr />
                     <label htmlFor="deckSelection">
                         <b>Choose a Deck</b>{' '}
                     </label>
-                    <select name="deckSelection">
-                        <option>{DeckListSelections.MONKS}</option>
-                        <option>{DeckListSelections.MAGES}</option>
+                    <select
+                        id="deckSelection"
+                        onChange={(event) => {
+                            chooseDeck(event.target.value);
+                        }}
+                    >
+                        <option value={DeckListSelections.MONKS}>
+                            {DeckListSelections.MONKS}
+                        </option>
+                        <option value={DeckListSelections.MAGES}>
+                            {DeckListSelections.MAGES}
+                        </option>
                     </select>
                 </div>
             </LeftColumn>

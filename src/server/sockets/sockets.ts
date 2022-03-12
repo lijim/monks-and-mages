@@ -5,7 +5,10 @@ import { Board, Player } from '@/types/board';
 import { makeNewBoard } from '@/factories/board';
 import { obscureBoardInfo } from '../obscureBoardInfo';
 
-import { DEFAULT_ROOM_NAMES } from '@/constants/lobbyConstants';
+import {
+    DeckListSelections,
+    DEFAULT_ROOM_NAMES,
+} from '@/constants/lobbyConstants';
 import {
     ClientToServerEvents,
     DetailedRoom,
@@ -29,12 +32,14 @@ export const configureIo = (server: HttpServer) => {
 
     const idsToNames = new Map<string, string>(); // mapping of socket ids to user-chosen names
     const namesToIds = new Map<string, string>(); // reverse map of idsToNames
+    const nameToDeckListSelection = new Map<string, DeckListSelections>();
     const clearName = (idToMatch: string) => {
         const matchingName = [...namesToIds.entries()].find(
             ([, id]) => id === idToMatch
         );
         if (!matchingName) return;
         namesToIds.delete(matchingName[0]);
+        nameToDeckListSelection.delete(matchingName[0]);
         idsToNames.delete(idToMatch);
     };
 
@@ -46,6 +51,12 @@ export const configureIo = (server: HttpServer) => {
             }
         });
         return names;
+    };
+
+    const getDeckListSelectionsFromNames = (playerNames: string[]) => {
+        return playerNames.map((playerName) =>
+            nameToDeckListSelection.get(playerName)
+        );
     };
 
     const startedBoards = new Map<string, Board>();
@@ -114,6 +125,12 @@ export const configureIo = (server: HttpServer) => {
         (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
             socket.emit('listRooms', getDetailedRooms());
 
+            socket.on('chooseDeck', (deckListSelection: DeckListSelections) => {
+                const name = idsToNames.get(socket.id);
+                if (!name) return;
+                nameToDeckListSelection.set(name, deckListSelection);
+            });
+
             socket.on('chooseName', (name: string) => {
                 if (!name) {
                     clearName(socket.id);
@@ -145,8 +162,12 @@ export const configureIo = (server: HttpServer) => {
                 // TODO: handle race condition where 2 people start game at same time
                 socket.rooms.forEach((roomName) => {
                     const socketIds = io.sockets.adapter.rooms.get(roomName);
+                    const playerNames = getNamesFromIds([...socketIds]);
+                    const playerDeckListSelections =
+                        getDeckListSelectionsFromNames(playerNames);
                     const board = makeNewBoard({
-                        playerNames: getNamesFromIds([...socketIds]),
+                        playerDeckListSelections,
+                        playerNames,
                     });
                     startedBoards.set(roomName, board);
                     io.to(roomName).emit('startGame');

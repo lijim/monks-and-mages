@@ -44,6 +44,7 @@ interface RenderValue {
     dispatch: AppDispatch;
     render: RenderResult;
     webSocket: {
+        chooseDeck: jest.Mock;
         chooseName: jest.Mock;
         joinRoom: jest.Mock;
         resolveEffect: jest.Mock;
@@ -87,6 +88,7 @@ export function render(
 
     const mockWebSocket = {
         socket: newSocket,
+        chooseDeck: jest.fn(),
         chooseName: jest.fn(),
         joinRoom: jest.fn(),
         resolveEffect: jest.fn(),
