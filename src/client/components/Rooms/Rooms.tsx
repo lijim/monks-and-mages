@@ -29,8 +29,13 @@ const LeftColumn = styled.div`
     box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
     height: 45%;
 
+    label {
+        margin-bottom: 4px;
+        display: block;
+    }
     input {
-        zoom: 1.4;
+        width: 90%;
+        height: 30px;
     }
     select {
         zoom: 1.7;

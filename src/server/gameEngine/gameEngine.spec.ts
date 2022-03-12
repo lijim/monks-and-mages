@@ -449,6 +449,7 @@ describe('Game Action', () => {
             const attacker = makeCard(UnitCards.BOUNTY_COLLECTOR);
             attacker.numAttacksLeft = 1;
             const defender = makeCard(UnitCards.SQUIRE);
+            defender.hpBuff = 3;
             board.players[0].units = [attacker];
             board.players[1].units = [defender];
             const newBoardState = applyGameAction({

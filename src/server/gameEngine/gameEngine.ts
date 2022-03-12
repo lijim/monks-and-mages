@@ -56,16 +56,17 @@ export const processBoardToCemetery = (board: Board) => {
     const { players } = board;
     if (!players?.length) return;
     players.forEach((player) => {
-        const { units } = player;
-        units.forEach((unitCard) => {
-            const { hp, hpBuff } = unitCard;
-            if (hp + hpBuff <= 0) {
-                resetUnitCard(unitCard);
-                player.cemetery.push(
-                    units.splice(units.indexOf(unitCard), 1)[0]
-                );
-            }
-        });
+        const unitsHeadedToCemetery = player.units.filter(
+            (unit) => unit.hp + unit.hpBuff <= 0
+        );
+
+        const unitsLeft = player.units.filter(
+            (unit) => unit.hp + unit.hpBuff > 0
+        );
+
+        player.units = unitsLeft;
+        player.cemetery = player.cemetery.concat(unitsHeadedToCemetery);
+        unitsHeadedToCemetery.forEach(resetUnitCard);
     });
 };
 
@@ -240,11 +241,11 @@ export const applyGameAction = ({
                     !attacker.isRanged
                 ) {
                     attacker.hp = defenderHasPoisonous
-                        ? 0
+                        ? -Number.MAX_SAFE_INTEGER
                         : hp - defenderAttack - defenderAttackBuff;
                 }
                 defender.hp = attackerHasPoisonous
-                    ? 0
+                    ? -Number.MAX_SAFE_INTEGER
                     : defenderHp - attack - attackBuff;
 
                 // Resolve units going to the cemetery
