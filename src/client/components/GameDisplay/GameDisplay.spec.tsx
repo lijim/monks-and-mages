@@ -27,7 +27,7 @@ describe('GameDisplay', () => {
         });
         const preloadedState: Partial<RootState> = {
             user: {
-                name: 'Tommy',
+                name: 'Timmy',
             },
             board,
         };

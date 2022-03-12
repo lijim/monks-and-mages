@@ -9,6 +9,7 @@ import {
     getAttackingUnit,
     getLastEffect,
     shouldLastEffectFizzle,
+    getLastEffectForActivePlayer,
 } from './selectors';
 
 describe('selectors', () => {
@@ -108,6 +109,31 @@ describe('selectors', () => {
                 strength: 1,
             });
             expect(getLastEffect(state)).toEqual({
+                type: EffectType.DRAW,
+                strength: 1,
+            });
+        });
+    });
+
+    describe('getLastEffect', () => {
+        it("returns the last effect on the player's queue", () => {
+            const board = makeNewBoard({
+                playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+                startingPlayerIndex: 0,
+            });
+            const state = {
+                user: { name: 'Bruno' },
+                board,
+            };
+            board.players[0].effectQueue.push({
+                type: EffectType.DRAW,
+                strength: 2,
+            });
+            board.players[0].effectQueue.push({
+                type: EffectType.DRAW,
+                strength: 1,
+            });
+            expect(getLastEffectForActivePlayer(state)).toEqual({
                 type: EffectType.DRAW,
                 strength: 1,
             });
