@@ -28,7 +28,7 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
     const normalizedRoomName = roomName.replace('public-', '');
     return (
         <div>
-            <h1>
+            <h2>
                 {normalizedRoomName}
                 <span>
                     {' '}
@@ -43,7 +43,7 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
                         </SecondaryColorButton>
                     )}
                 </span>
-            </h1>
+            </h2>
             {hasStartedGame && <span>Started</span>}
             <div>
                 <PlayerList>

@@ -14,16 +14,33 @@ const RoomsContainer = styled.div`
     margin: 50px;
     grid-template-columns: 250px 1fr;
     overflow-y: hidden;
+    grid-gap: 20px;
 `;
 
 const LeftColumn = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
     grid-gap: 10px;
+    padding: 20px;
+    background: wheat;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+    height: 45%;
 `;
 
 const MiddleColumn = styled.div`
     overflow-y: scroll;
+`;
+
+const RoomsTab = styled.h1`
+    margin: 0;
+    background: pink;
+    color: white;
+    display: inline-grid;
+    place-items: center;
+    height: 40px;
+    padding: 7px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
 `;
 
 /**
@@ -80,12 +97,12 @@ export const Rooms: React.FC = () => {
                         }}
                         disabled={!newRoomName}
                     >
-                        Create New Room
+                        Create
                     </PrimaryColorButton>
                 </span>
             </LeftColumn>
             <MiddleColumn>
-                <h1>Rooms</h1>
+                <RoomsTab>Rooms</RoomsTab>
                 {rooms &&
                     [...rooms]
                         .sort((roomA, roomB) =>
