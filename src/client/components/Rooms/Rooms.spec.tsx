@@ -8,7 +8,7 @@ import { RootState } from '@/client/redux/store';
 describe('Rooms', () => {
     it('renders multiple rooms', () => {
         const preloadedState: Partial<RootState> = {
-            rooms: {
+            lobby: {
                 rooms: [
                     {
                         roomName: 'Room 6',

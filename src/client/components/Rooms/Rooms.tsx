@@ -7,7 +7,10 @@ import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
 import { DetailedRoom } from '@/types';
 import { PrimaryColorButton } from '../Button';
-import { MAX_ROOM_NAME_LENGTH } from '@/constants/lobbyConstants';
+import {
+    DeckListSelections,
+    MAX_ROOM_NAME_LENGTH,
+} from '@/constants/lobbyConstants';
 
 const RoomsContainer = styled.div`
     display: grid;
@@ -19,7 +22,7 @@ const RoomsContainer = styled.div`
 
 const LeftColumn = styled.div`
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
     grid-gap: 10px;
     padding: 20px;
     background: wheat;
@@ -51,7 +54,7 @@ const RoomsTab = styled.h1`
 export const Rooms: React.FC = () => {
     const name = useSelector<RootState, string>((state) => state.user.name);
     const rooms = useSelector<RootState, DetailedRoom[]>(
-        (state) => state.rooms.rooms || []
+        (state) => state.lobby.rooms || []
     );
     const joinedRoom = rooms.find((detailedRoom) =>
         detailedRoom.players.find((player) => player === name)
@@ -76,8 +79,10 @@ export const Rooms: React.FC = () => {
     return (
         <RoomsContainer>
             <LeftColumn>
-                <label htmlFor="newRoomName">
-                    <b>Create New Room</b>{' '}
+                <div>
+                    <label htmlFor="newRoomName">
+                        <b>Create New Room</b>{' '}
+                    </label>
                     <input
                         value={newRoomName}
                         maxLength={MAX_ROOM_NAME_LENGTH}
@@ -88,7 +93,7 @@ export const Rooms: React.FC = () => {
                             setNewRoomName(event.target.value);
                         }}
                     />
-                </label>
+                </div>
 
                 <span>
                     <PrimaryColorButton
@@ -100,6 +105,17 @@ export const Rooms: React.FC = () => {
                         Create
                     </PrimaryColorButton>
                 </span>
+
+                <div>
+                    <hr />
+                    <label htmlFor="deckSelection">
+                        <b>Choose a Deck</b>{' '}
+                    </label>
+                    <select name="deckSelection">
+                        <option>{DeckListSelections.MONKS}</option>
+                        <option>{DeckListSelections.MAGES}</option>
+                    </select>
+                </div>
             </LeftColumn>
             <MiddleColumn>
                 <RoomsTab>Rooms</RoomsTab>
