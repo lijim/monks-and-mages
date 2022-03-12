@@ -44,6 +44,18 @@ export const getLastEffect = (
     return effectQueue[effectQueue.length - 1];
 };
 
+export const getLastEffectForActivePlayer = (
+    state: Partial<RootState>
+): Effect | undefined => {
+    const activePlayer = state.board?.players?.find(
+        (player) => player.isActivePlayer
+    );
+    if (!activePlayer) return undefined;
+    const { effectQueue } = activePlayer;
+    if (effectQueue.length === 0) return undefined;
+    return effectQueue[effectQueue.length - 1];
+};
+
 /**
  * @param state
  * @returns {boolean} - return true if and only if there is an effect in the queue

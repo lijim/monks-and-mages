@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import {
-    getLastEffect,
+    getLastEffectForActivePlayer,
     getOtherPlayers,
     getSelfPlayer,
 } from '@/client/redux/selectors';
@@ -49,10 +49,17 @@ const EmphText = styled.span`
     color: white;
 `;
 
+/**
+ * Shows the entire game board + player information + any visual effects / chat messages
+ * needed for the player to understand the game state
+ * @returns
+ */
 export const GameDisplay: React.FC = () => {
     const selfPlayer = useSelector<RootState, Player>(getSelfPlayer);
     const otherPlayers = useSelector<RootState, Player[]>(getOtherPlayers);
-    const lastEffect = useSelector<RootState, Effect>(getLastEffect);
+    const lastEffect = useSelector<RootState, Effect>(
+        getLastEffectForActivePlayer
+    );
 
     return (
         <GameGrid>
