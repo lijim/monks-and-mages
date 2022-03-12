@@ -127,10 +127,8 @@ export const configureIo = (server: HttpServer) => {
 
             socket.on('chooseDeck', (deckListSelection: DeckListSelections) => {
                 const name = idsToNames.get(socket.id);
-                console.log(name);
                 if (!name) return;
                 nameToDeckListSelection.set(name, deckListSelection);
-                console.log(nameToDeckListSelection);
             });
 
             socket.on('chooseName', (name: string) => {
