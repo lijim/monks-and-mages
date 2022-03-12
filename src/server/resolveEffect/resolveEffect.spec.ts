@@ -215,23 +215,22 @@ describe('resolve effect', () => {
             );
         });
 
-        it('deals damage to all opposing unit', () => {
+        it('deals lethal damage (all opposing units)', () => {
             const squire = makeCard(UnitCards.SQUIRE);
-            board.players[1].units = [squire];
+            const squire2 = makeCard(UnitCards.SQUIRE);
+            board.players[1].units = [squire, squire2];
             const newBoard = resolveEffect(
                 board,
                 {
                     effect: {
                         type: EffectType.DEAL_DAMAGE,
-                        strength: 2,
+                        strength: 4,
                         target: TargetTypes.ALL_OPPOSING_UNITS,
                     },
                 },
                 'Timmy'
             );
-            expect(newBoard.players[1].units[0].hp).toEqual(
-                UnitCards.SQUIRE.hp - 2
-            );
+            expect(newBoard.players[1].units).toHaveLength(0);
         });
 
         it('deals damage to a player', () => {
