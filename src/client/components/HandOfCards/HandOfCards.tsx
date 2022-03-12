@@ -20,7 +20,10 @@ interface HandContainerProps {
 const HandContainer = styled.div<HandContainerProps>`
     display: grid;
     grid-template-columns:
-        repeat(${({ handSize }) => Math.max(1, handSize - 1)}, 1fr)
+        repeat(
+            ${({ handSize }) => Math.max(1, handSize - 1)},
+            minmax(5px, 195px)
+        )
         260px;
     overflow-y: hidden;
 `;
