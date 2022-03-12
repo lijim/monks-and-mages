@@ -533,6 +533,28 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });
 
+        it('attacks the opposing player', () => {
+            const attacker = makeCard(UnitCards.WATER_GUARDIAN);
+            attacker.attackBuff = 3;
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH -
+                    attacker.attack -
+                    attacker.attackBuff
+            );
+            expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
+        });
+
         it('deals lethal damage to opposing player', () => {
             const attacker = makeCard(UnitCards.WATER_GUARDIAN);
             attacker.numAttacksLeft = 1;

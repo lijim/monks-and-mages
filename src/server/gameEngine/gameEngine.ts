@@ -251,7 +251,7 @@ export const applyGameAction = ({
                 );
                 if (defendingPlayerHasSoldier && !attacker.isMagical)
                     return clonedBoard;
-                defendingPlayer.health -= attacker.attack;
+                defendingPlayer.health -= attacker.attack + attacker.attackBuff;
                 if (defendingPlayer.health < 0) {
                     defendingPlayer.isAlive = false;
                     applyWinState(board);
