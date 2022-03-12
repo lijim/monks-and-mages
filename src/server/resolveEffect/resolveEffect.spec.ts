@@ -12,7 +12,10 @@ describe('resolve effect', () => {
     let board: Board;
 
     beforeEach(() => {
-        board = makeNewBoard(['Timmy', 'Tommy', 'Bobby'], 0);
+        board = makeNewBoard({
+            playerNames: ['Timmy', 'Tommy'],
+            startingPlayerIndex: 0,
+        });
     });
 
     it('does nothing if not coming from the active player', () => {

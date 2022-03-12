@@ -29,7 +29,10 @@ describe('handle click on card', () => {
             isDisconnected: false,
             name: 'Cleopatra',
         };
-        state.board = makeNewBoard(['Cleopatra', 'Marc Antony'], 0);
+        state.board = makeNewBoard({
+            playerNames: ['Cleopatra', 'Marc Antony'],
+            startingPlayerIndex: 0,
+        });
         done();
     });
 

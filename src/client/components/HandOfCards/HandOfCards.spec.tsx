@@ -12,7 +12,10 @@ describe('Hand of Cards', () => {
             user: {
                 name: 'Tommy',
             },
-            board: makeNewBoard(['Tommy', 'Timmy']),
+            board: makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                startingPlayerIndex: 0,
+            }),
         };
         render(<HandOfCards />, { preloadedState });
         const unitCards = screen.queryAllByTestId('UnitGridItem');

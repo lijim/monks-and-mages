@@ -13,7 +13,7 @@ describe('GameDisplay', () => {
             user: {
                 name: 'Tommy',
             },
-            board: makeNewBoard(['Tommy', 'Timmy']),
+            board: makeNewBoard({ playerNames: ['Tommy', 'Timmy'] }),
         };
         render(<GameDisplay />, { preloadedState });
         expect(screen.queryByText('Tommy')).toBeInTheDocument();
@@ -21,7 +21,10 @@ describe('GameDisplay', () => {
     });
 
     it('renders active effects', () => {
-        const board = makeNewBoard(['Tommy', 'Timmy'], 0);
+        const board = makeNewBoard({
+            playerNames: ['Tommy', 'Timmy'],
+            startingPlayerIndex: 0,
+        });
         const preloadedState: Partial<RootState> = {
             user: {
                 name: 'Tommy',

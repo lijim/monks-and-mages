@@ -2,7 +2,7 @@ import { makeNewBoard } from './makeNewBoard';
 
 describe('Make New Board', () => {
     it('makes a new board with players', () => {
-        const board = makeNewBoard(['Hal', 'Orin']);
+        const board = makeNewBoard({ playerNames: ['Hal', 'Orin'] });
         expect(board.players[0].name).toEqual('Hal');
         expect(board.players[0].health).toEqual(15);
         expect(board.players[1].name).toEqual('Orin');
@@ -10,7 +10,7 @@ describe('Make New Board', () => {
     });
 
     it('makes a random player the starting player', () => {
-        const board = makeNewBoard(['Hal', 'Orin', 'Samus']);
+        const board = makeNewBoard({ playerNames: ['Hal', 'Orin', 'Samus'] });
         expect(
             board.players[0].isActivePlayer ||
                 board.players[1].isActivePlayer ||
