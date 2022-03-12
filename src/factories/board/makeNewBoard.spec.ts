@@ -1,3 +1,5 @@
+import { DeckListSelections } from '@/constants/lobbyConstants';
+import { makeDeck, SAMPLE_DECKLIST_2 } from '../deck';
 import { makeNewBoard } from './makeNewBoard';
 
 describe('Make New Board', () => {
@@ -7,6 +9,22 @@ describe('Make New Board', () => {
         expect(board.players[0].health).toEqual(15);
         expect(board.players[1].name).toEqual('Orin');
         expect(board.players[1].health).toEqual(15);
+    });
+
+    it('makes a new board with preferred starting decks', () => {
+        const board = makeNewBoard({
+            playerNames: ['Hal', 'Orin'],
+            playerDeckListSelections: [DeckListSelections.MAGES],
+        });
+        expect(
+            [...board.players[0].deck, ...board.players[0].hand]
+                .map((card) => card.name)
+                .sort()
+        ).toEqual(
+            makeDeck(SAMPLE_DECKLIST_2)
+                .map((card) => card.name)
+                .sort()
+        );
     });
 
     it('makes a random player the starting player', () => {

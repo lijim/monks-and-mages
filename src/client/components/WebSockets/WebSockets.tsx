@@ -16,6 +16,7 @@ import {
     ServerToClientEvents,
 } from '@/types';
 import { GameAction } from '@/types/gameActions';
+import { DeckListSelections } from '@/constants/lobbyConstants';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
@@ -74,6 +75,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('joinRoom', roomName);
         };
 
+        const chooseDeck = (deckListSelection: DeckListSelections) => {
+            newSocket.emit('chooseDeck', deckListSelection);
+        };
+
         const chooseName = (name: string) => {
             newSocket.emit('chooseName', name);
         };
@@ -93,6 +98,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         setSocket(newSocket);
         setWs({
             socket: newSocket,
+            chooseDeck,
             chooseName,
             joinRoom,
             resolveEffect,

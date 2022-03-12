@@ -1,3 +1,4 @@
+import { DeckListSelections } from './constants/lobbyConstants';
 import { Board } from './types/board';
 import { Effect } from './types/cards';
 import { GameAction } from './types/gameActions';
@@ -16,6 +17,7 @@ export interface ResolveEffectParams {
 }
 
 export interface ClientToServerEvents {
+    chooseDeck: (deckListSelection: DeckListSelections) => void;
     chooseName: (name: string) => void;
     getRooms: () => void;
     joinRoom: (roomName: string) => void;
