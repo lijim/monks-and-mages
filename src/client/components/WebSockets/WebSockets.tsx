@@ -7,7 +7,7 @@ import {
     chooseName as chooseNameReducer,
     initializeUser,
 } from '@/client/redux/user';
-import { updateRoomsAndPlayers } from '@/client/redux/room';
+import { updateRoomsAndPlayers } from '@/client/redux/lobby';
 import { AppDispatch } from '@/client/redux/store';
 import { updateBoardState } from '@/client/redux/board';
 import {

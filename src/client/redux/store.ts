@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { applyMiddleware } from 'redux';
 
 import { boardReducer } from './board';
-import { roomsReducer } from './room';
+import { lobbyReducer } from './lobby';
 import { userReducer, userSlice } from './user';
 import { clientSideGameExtrasReducer } from './clientSideGameExtras';
 
@@ -18,7 +18,7 @@ export const createRootReducer = () =>
         board: boardReducer,
         clientSideGameExtras: clientSideGameExtrasReducer,
         router: routerReducer,
-        rooms: roomsReducer,
+        lobby: lobbyReducer,
         user: userReducer,
     });
 
