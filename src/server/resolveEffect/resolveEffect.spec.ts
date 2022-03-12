@@ -5,7 +5,7 @@ import { Board } from '@/types/board';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { resolveEffect } from './resolveEffect';
 import { makeCard } from '@/factories/cards';
-import { Tokens, UnitCards } from '@/cardDb/units';
+import { Tokens, UnitCards } from '@/mocks/units';
 import { UnitCard } from '@/types/cards';
 
 describe('resolve effect', () => {

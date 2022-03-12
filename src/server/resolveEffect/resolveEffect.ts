@@ -140,6 +140,7 @@ export const resolveEffect = (
         }
         case EffectType.SUMMON_UNITS: {
             const { summonType } = effect;
+            if (!summonType) return clonedBoard;
             playerTargets.forEach((player) => {
                 for (let i = 0; i < Math.min(50, effectStrength); i += 1) {
                     player.units.push(makeCard(summonType));
