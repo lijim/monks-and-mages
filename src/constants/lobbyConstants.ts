@@ -5,8 +5,10 @@ export const DEFAULT_ROOM_NAMES = [
 ];
 
 export enum DeckListSelections {
-    MAGES = 'mages',
-    MONKS = 'monks',
+    MAGES_FIRE = 'mages 🔥',
+    MAGES_WATER = 'mages 🌊',
+    MAGES_WIND = 'mages 💨',
+    MONKS = 'monks 🤺',
 }
 
 export const MAX_PLAYER_NAME_LENGTH = 25;

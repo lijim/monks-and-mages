@@ -1,5 +1,5 @@
-import { SpellCards } from '@/cardDb/spells';
-import { UnitCards } from '@/cardDb/units';
+import { SpellCards } from '@/mocks/spells';
+import { UnitCards } from '@/mocks/units';
 import { PlayerConstants } from '@/constants/gameConstants';
 import { makeNewBoard } from '@/factories/board';
 import { makeCard, makeResourceCard } from '@/factories/cards';

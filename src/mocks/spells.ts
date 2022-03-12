@@ -1,13 +1,7 @@
-import { CardType, SpellBase, SpellCard } from '@/types/cards';
+import { makeCard } from '@/cardDb/spells';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
-import { Tokens } from '../units';
-
-export const makeCard = (spellBase: SpellBase): SpellCard => ({
-    ...spellBase,
-    cardType: CardType.SPELL,
-    isSelected: false,
-});
+import { Tokens } from './units';
 
 // Fire Magic
 const EMBER_SPEAR = makeCard({
@@ -89,7 +83,7 @@ const GENEROUS_GEYSER = makeCard({
 
 const SUMMON_SHARKS = makeCard({
     name: 'Summon Sharks',
-    imgSrc: 'https://images.unsplash.com/photo-1510965156882-b72babc7b619',
+    imgSrc: 'https://images.unsplash.com/photo-1556509511-4ee17e467199',
     cost: { [Resource.WATER]: 2, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 1 },
     effects: [
         {
@@ -161,39 +155,6 @@ const HOLY_REVIVAL = makeCard({
     ],
 });
 
-// Iron
-const THROW_SHURIKEN = makeCard({
-    name: 'Throw Shuriken',
-    imgSrc: 'https://images.unsplash.com/photo-1567299720257-2619000f105e',
-    cost: { [Resource.IRON]: 1 },
-    effects: [
-        {
-            type: EffectType.DEAL_DAMAGE,
-            target: TargetTypes.UNIT,
-            strength: 2,
-        },
-    ],
-});
-
-// Bamboo
-const RAIN_OF_ARROWS = makeCard({
-    name: 'Rain of Arrows',
-    imgSrc: 'https://images.unsplash.com/photo-1563705883268-eb58ab6f505d',
-    cost: { [Resource.BAMBOO]: 2, [Resource.GENERIC]: 2 },
-    effects: [
-        {
-            type: EffectType.DEAL_DAMAGE,
-            target: TargetTypes.ALL_OPPOSING_UNITS,
-            strength: 3,
-        },
-        {
-            type: EffectType.DEAL_DAMAGE,
-            target: TargetTypes.ALL_OPPONENTS,
-            strength: 3,
-        },
-    ],
-});
-
 export const SpellCards = {
     // Fire
     EMBER_SPEAR,
@@ -211,10 +172,4 @@ export const SpellCards = {
     A_GENTLE_GUST,
     A_THOUSAND_WINDS,
     HOLY_REVIVAL,
-
-    // Iron
-    THROW_SHURIKEN,
-
-    // Bamboo
-    RAIN_OF_ARROWS,
 };

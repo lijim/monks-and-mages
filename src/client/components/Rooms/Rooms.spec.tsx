@@ -48,10 +48,10 @@ describe('Rooms', () => {
         };
         const { webSocket } = render(<Rooms />, { preloadedState });
         fireEvent.change(screen.getByLabelText('Choose a Deck'), {
-            target: { value: DeckListSelections.MAGES },
+            target: { value: DeckListSelections.MAGES_FIRE },
         });
         expect(webSocket.chooseDeck).toHaveBeenCalledWith(
-            DeckListSelections.MAGES
+            DeckListSelections.MAGES_FIRE
         );
     });
 });

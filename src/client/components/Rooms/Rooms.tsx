@@ -28,6 +28,13 @@ const LeftColumn = styled.div`
     background: wheat;
     box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
     height: 45%;
+
+    input {
+        zoom: 1.4;
+    }
+    select {
+        zoom: 1.7;
+    }
 `;
 
 const MiddleColumn = styled.div`
@@ -135,13 +142,18 @@ export const Rooms: React.FC = () => {
                         onChange={(event) => {
                             chooseDeck(event.target.value);
                         }}
+                        defaultValue={DeckListSelections.MONKS}
                     >
-                        <option value={DeckListSelections.MONKS}>
-                            {DeckListSelections.MONKS}
-                        </option>
-                        <option value={DeckListSelections.MAGES}>
-                            {DeckListSelections.MAGES}
-                        </option>
+                        {Object.values(DeckListSelections).map(
+                            (deckListSelection) => (
+                                <option
+                                    value={deckListSelection}
+                                    key={deckListSelection}
+                                >
+                                    {deckListSelection}
+                                </option>
+                            )
+                        )}
                     </select>
                 </div>
             </LeftColumn>

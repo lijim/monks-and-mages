@@ -14,7 +14,7 @@ describe('Make New Board', () => {
     it('makes a new board with preferred starting decks', () => {
         const board = makeNewBoard({
             playerNames: ['Hal', 'Orin'],
-            playerDeckListSelections: [DeckListSelections.MAGES],
+            playerDeckListSelections: [DeckListSelections.MAGES_FIRE],
         });
         expect(
             [...board.players[0].deck, ...board.players[0].hand]

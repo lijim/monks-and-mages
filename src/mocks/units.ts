@@ -1,19 +1,15 @@
-import { CardType, UnitBase, UnitCard } from '@/types/cards';
+import { makeCard } from '@/cardDb/units';
+import { UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
-export const makeCard = (unitBase: UnitBase): UnitCard => {
-    const hasQuick = unitBase.passiveEffects.indexOf(PassiveEffect.QUICK) > -1;
-    return {
-        ...unitBase,
-        cardType: CardType.UNIT,
-        hp: unitBase.totalHp,
-        numAttacksLeft: hasQuick ? unitBase.numAttacks : 0,
-        isSelected: false,
-        hpBuff: 0,
-        attackBuff: 0,
-    };
-};
+/**
+ * Freezing these units in time so that we can get changes to cardDb/units
+ * while still maintaining accurate tests.
+ *
+ * There was an issue where tweaking values in cardDb/units caused changes
+ * in the test files for the server side game engine (gameEngine.ts)
+ */
 
 // Tokens
 const DEMON: UnitCard = makeCard({
@@ -307,7 +303,7 @@ const LANCER: UnitCard = makeCard({
     },
     description: '',
     enterEffects: [],
-    totalHp: 2,
+    totalHp: 1,
     attack: 2,
     numAttacks: 1,
     isRanged: false,
@@ -325,7 +321,7 @@ const SQUIRE: UnitCard = makeCard({
     },
     description: '',
     enterEffects: [],
-    totalHp: 4,
+    totalHp: 3,
     attack: 2,
     numAttacks: 1,
     isRanged: false,
@@ -352,8 +348,8 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
             strength: 1,
         },
     ],
-    totalHp: 2,
-    attack: 2,
+    totalHp: 1,
+    attack: 1,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
@@ -541,28 +537,6 @@ const CANNON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
-const BAMBOO_FARMER: UnitCard = makeCard({
-    name: 'Bamboo Farmer',
-    imgSrc: 'https://images.unsplash.com/photo-1512631118612-7bf02594062b',
-    cost: {
-        [Resource.BAMBOO]: 1,
-    },
-    description: '',
-    enterEffects: [
-        {
-            type: EffectType.RAMP_BAMBOO,
-            strength: 1,
-        },
-    ],
-    totalHp: 1,
-    attack: 1,
-    numAttacks: 1,
-    isRanged: false,
-    isMagical: false,
-    isSoldier: false,
-    passiveEffects: [],
-});
-
 export const UnitCards = {
     MAGICIANS_APPRENTICE,
     // FIRE
@@ -591,6 +565,4 @@ export const UnitCards = {
     LONGBOWMAN,
     CAVALRY_ARCHER,
     CANNON,
-    // MISC
-    BAMBOO_FARMER,
 };
