@@ -5,6 +5,7 @@ interface CardFrameProps {
     isRaised?: boolean;
     isRotated?: boolean;
     primaryColor?: string;
+    zoomLevel?: number;
 }
 /**
  * Aesthetic components relating to how a card is rendered in full-card mode
@@ -30,7 +31,7 @@ export const CardFrame = styled.div<CardFrameProps>`
         
     `
             : ''}
-    zoom: 0.75;
+    zoom: ${({ zoomLevel = 1 }) => zoomLevel * 0.75};
     cursor: pointer;
     font-size: 14px;
     display: inline-grid;

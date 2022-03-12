@@ -8,11 +8,13 @@ import { CastingCostFrame } from '../CastingCost';
 interface ResourceCardGridItemProps {
     card: ResourceCard;
     onClick?: () => void;
+    zoomLevel?: number;
 }
 
 export const ResourceCardGridItem: React.FC<ResourceCardGridItemProps> = ({
     card,
     onClick,
+    zoomLevel,
 }) => {
     const { name, icon, primaryColor } = RESOURCE_GLOSSARY[card.resourceType];
     return (
@@ -21,6 +23,7 @@ export const ResourceCardGridItem: React.FC<ResourceCardGridItemProps> = ({
             data-testid="ResourceCard-GridItem"
             onClick={onClick}
             isRotated={card.isUsed}
+            zoomLevel={zoomLevel}
         >
             <CardHeader>
                 <NameCell>{name}</NameCell>

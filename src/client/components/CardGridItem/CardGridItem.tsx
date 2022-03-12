@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { Card, CardType } from '@/types/cards';
 import { ResourceCardGridItem } from '../ResourceCardGridItem';
@@ -9,13 +10,19 @@ import { GameManagerContext } from '../GameManager';
 interface CardGridItemProps {
     card: Card;
     hasOnClick?: boolean;
+    hasTooltip?: boolean;
     isOnBoard?: boolean;
+    zoomLevel?: number;
 }
 
-export const CardGridItem: React.FC<CardGridItemProps> = ({
+/**
+ * renders a card grid item w/ no tooltip
+ */
+export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
     card,
     hasOnClick,
     isOnBoard,
+    zoomLevel,
 }) => {
     const { handleClickCard } = useContext(GameManagerContext) || {};
     const onClick = () => {
@@ -26,6 +33,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
             <ResourceCardGridItem
                 card={card}
                 onClick={hasOnClick ? onClick : undefined}
+                zoomLevel={zoomLevel}
             />
         );
     }
@@ -34,6 +42,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
             <SpellGridItem
                 card={card}
                 onClick={hasOnClick ? onClick : undefined}
+                zoomLevel={zoomLevel}
             />
         );
     }
@@ -43,8 +52,58 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                 card={card}
                 onClick={hasOnClick ? onClick : undefined}
                 isOnBoard={isOnBoard}
+                zoomLevel={zoomLevel}
             />
         );
     }
     return undefined;
+};
+
+export const CardGridItem: React.FC<CardGridItemProps> = ({
+    card,
+    hasTooltip,
+    hasOnClick,
+    isOnBoard,
+    zoomLevel = 1,
+}) => {
+    const {
+        getArrowProps,
+        getTooltipProps,
+        setTooltipRef,
+        setTriggerRef,
+        visible,
+    } = usePopperTooltip();
+
+    return (
+        <>
+            {/* The card itself */}
+            <div style={{ display: 'inline-grid' }} ref={setTriggerRef}>
+                <CardGridSingleItem
+                    key={card.id}
+                    card={card}
+                    hasOnClick
+                    zoomLevel={zoomLevel}
+                />
+            </div>
+            {visible && hasTooltip && (
+                <div
+                    ref={setTooltipRef}
+                    {...getTooltipProps({
+                        className: 'tooltip-container',
+                    })}
+                >
+                    <CardGridSingleItem
+                        isOnBoard={isOnBoard}
+                        card={card}
+                        hasOnClick={hasOnClick}
+                    />
+                    <div
+                        {...getArrowProps({
+                            className: 'tooltip-arrow',
+                        })}
+                    />
+                </div>
+            )}
+        </>
+    );
 };

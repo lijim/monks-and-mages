@@ -23,12 +23,14 @@ interface UnitGridItemProps {
     card: UnitCard;
     isOnBoard?: boolean;
     onClick?: () => void;
+    zoomLevel?: number;
 }
 
 export const UnitGridItem: React.FC<UnitGridItemProps> = ({
     card,
     isOnBoard = false,
     onClick,
+    zoomLevel,
 }) => {
     const attackUnitId = useSelector(getAttackingUnit);
     const {
@@ -58,6 +60,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
             data-testid="UnitGridItem"
             primaryColor={getColorForCard(card)}
             onClick={onClick}
+            zoomLevel={zoomLevel}
         >
             <CardHeader>
                 <NameCell>{name}</NameCell>

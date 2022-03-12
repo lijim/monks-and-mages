@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { usePopperTooltip } from 'react-popper-tooltip';
 import { useSelector } from 'react-redux';
 
 import { getSelfPlayer } from '@/client/redux/selectors';
@@ -38,37 +37,9 @@ interface CardInHandProps {
 }
 // one of the cards in the hand of cards
 const CardInHand: React.FC<CardInHandProps> = ({ card }) => {
-    const {
-        getArrowProps,
-        getTooltipProps,
-        setTooltipRef,
-        setTriggerRef,
-        visible,
-    } = usePopperTooltip();
-
     return (
         <WidthLessContainer key={card.id}>
-            {/* The card itself */}
-            <div style={{ width: 220 }} ref={setTriggerRef}>
-                <CardGridItem key={card.id} card={card} hasOnClick />
-            </div>
-
-            {/* Tooltip when card is hovered */}
-            {visible && (
-                <div
-                    ref={setTooltipRef}
-                    {...getTooltipProps({
-                        className: 'tooltip-container',
-                    })}
-                >
-                    <CardGridItem key={card.id} card={card} />
-                    <div
-                        {...getArrowProps({
-                            className: 'tooltip-arrow',
-                        })}
-                    />
-                </div>
-            )}
+            <CardGridItem key={card.id} card={card} hasOnClick hasTooltip />
         </WidthLessContainer>
     );
 };

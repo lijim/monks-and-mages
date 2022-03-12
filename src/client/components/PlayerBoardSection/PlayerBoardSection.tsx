@@ -17,7 +17,6 @@ interface PlayerBoardSectionContainerProps {
 const PlayerBoardSectionContainer = styled.div<PlayerBoardSectionContainerProps>`
     background-color: ${({ isSelfPlayer }) =>
         isSelfPlayer ? Colors.FELT_GREEN_ALT : Colors.FELT_GREEN};
-    zoom: 0.6;
     box-shadow: 0 2px 2px rgb(0 0 0 / 50%);
 `;
 
@@ -29,27 +28,38 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
         return <PlayerBoardSectionContainer isSelfPlayer={isSelfPlayer} />;
     }
     const { units, resources } = player;
+    const unitsSection = (
+        <div>
+            {units.map((unitCard) => (
+                <CardGridItem
+                    card={unitCard}
+                    key={unitCard.id}
+                    hasOnClick
+                    hasTooltip
+                    isOnBoard
+                    zoomLevel={0.6}
+                />
+            ))}
+        </div>
+    );
+    const resourcesSection = (
+        <div>
+            {resources.map((resourceCard) => (
+                <CardGridItem
+                    card={resourceCard}
+                    key={resourceCard.id}
+                    hasOnClick
+                    zoomLevel={0.6}
+                />
+            ))}
+        </div>
+    );
     return (
         <PlayerBoardSectionContainer isSelfPlayer={isSelfPlayer}>
-            <div>
-                {units.map((unitCard) => (
-                    <CardGridItem
-                        card={unitCard}
-                        key={unitCard.id}
-                        hasOnClick
-                        isOnBoard
-                    />
-                ))}
-            </div>
-            <div>
-                {resources.map((resourceCard) => (
-                    <CardGridItem
-                        card={resourceCard}
-                        key={resourceCard.id}
-                        hasOnClick
-                    />
-                ))}
-            </div>
+            {!isSelfPlayer && resourcesSection}
+            {/* for other players, display resources above units */}
+            {unitsSection}
+            {isSelfPlayer && resourcesSection}
         </PlayerBoardSectionContainer>
     );
 };
