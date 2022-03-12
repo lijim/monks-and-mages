@@ -31,6 +31,36 @@ describe('Room Square', () => {
         expect(screen.getByText('Room 6')).toBeInTheDocument();
     });
 
+    it('joins the room', () => {
+        const mockJoinRoom = jest.fn();
+        render(
+            <RoomSquare
+                detailedRoom={{
+                    roomName: 'public-Room 6',
+                    players: ['Kimmy', 'Jimmy', 'Timmy'],
+                }}
+                joinRoom={mockJoinRoom}
+            />
+        );
+        fireEvent.click(screen.getByText('Join'));
+        expect(mockJoinRoom).toHaveBeenCalled();
+    });
+
+    it('hides the join room option', () => {
+        const mockJoinRoom = jest.fn();
+        render(
+            <RoomSquare
+                detailedRoom={{
+                    roomName: 'public-Room 6',
+                    players: ['Kimmy', 'Jimmy', 'Timmy'],
+                }}
+                hasJoined
+                joinRoom={mockJoinRoom}
+            />
+        );
+        expect(screen.queryByText('Join')).not.toBeInTheDocument();
+    });
+
     it('renders Started if a game has started', () => {
         render(
             <RoomSquare
@@ -53,6 +83,7 @@ describe('Room Square', () => {
                     players: ['Kimmy'],
                     hasStartedGame: false,
                 }}
+                hasJoined
                 onStartGameClicked={mockStartGame}
             />
         );
@@ -69,6 +100,7 @@ describe('Room Square', () => {
                     players: ['Kimmy', 'Jimmy'],
                     hasStartedGame: true,
                 }}
+                hasJoined
                 onStartGameClicked={mockStartGame}
             />
         );
@@ -85,6 +117,7 @@ describe('Room Square', () => {
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
                     hasStartedGame: false,
                 }}
+                hasJoined
                 onStartGameClicked={mockStartGame}
             />
         );

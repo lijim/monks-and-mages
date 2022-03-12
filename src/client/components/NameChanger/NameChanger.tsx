@@ -1,5 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
+import { MAX_PLAYER_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { PrimaryColorButton } from '../Button';
 
 interface NameChangerProps {
@@ -49,6 +50,7 @@ export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
                     <input
                         id="name-selector"
                         role="textbox"
+                        maxLength={MAX_PLAYER_NAME_LENGTH}
                         autoFocus
                         autoComplete="off" // ignore for password managers
                         data-lpignore="true" // ignore for lastPass

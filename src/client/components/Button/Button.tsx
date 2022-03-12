@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import { Colors } from '@/constants/colors';
@@ -44,7 +43,8 @@ export const Button = styled.button.attrs(
     }
     position: relative;
     cursor: pointer;
-    width: 150px;
+    padding-left: ${({ emoji }) => (emoji ? '50' : '20')}px;
+    padding-right: ${({ emoji }) => (emoji ? '50' : '20')}px;
     color: white;
     font-size: 22px;
     border: 1px solid ${({ borderColor }) => borderColor};
@@ -56,4 +56,9 @@ export const Button = styled.button.attrs(
 export const PrimaryColorButton = styled(Button).attrs({
     backgroundColor: Colors.FIRE_ORANGE,
     hoverBackgroundColor: Colors.FIRE_ORANGE_EMPHASIZED,
+})``;
+
+export const SecondaryColorButton = styled(Button).attrs({
+    backgroundColor: Colors.SECONDARY_GREEN,
+    hoverBackgroundColor: Colors.SECONDARY_GREEN_EMPHASIZED,
 })``;

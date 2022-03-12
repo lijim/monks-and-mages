@@ -13,6 +13,7 @@ import {
     DetailedRoom,
     ServerToClientEvents,
 } from '@/types';
+import { DEFAULT_ROOM_NAMES } from '@/constants/lobbyConstants';
 
 /**
  * TODO:
@@ -67,6 +68,16 @@ describe('sockets', () => {
 
         it('joins a room', (done) => {
             clientSocket.emit('joinRoom', 'treehouse-1');
+
+            const defaultRooms = DEFAULT_ROOM_NAMES.map(
+                (roomName): DetailedRoom => {
+                    return {
+                        roomName: `public-${roomName}`,
+                        players: [],
+                        hasStartedGame: false,
+                    };
+                }
+            );
             clientSocket.on('listRooms', (roomsAndIds: DetailedRoom[]) => {
                 expect(roomsAndIds).toEqual([
                     {
@@ -74,6 +85,7 @@ describe('sockets', () => {
                         players: ['Dora Wini'],
                         hasStartedGame: false,
                     },
+                    ...defaultRooms,
                 ]);
                 done();
             });

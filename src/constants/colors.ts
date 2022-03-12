@@ -7,4 +7,6 @@ export enum Colors {
     FIRE_ORANGE = '#f57322',
     FIRE_ORANGE_EMPHASIZED = '#dc671e',
     FOCUS_BLUE = '#0071bc', // for outlines, accessiblity, showing active player
+    SECONDARY_GREEN = '#08A946',
+    SECONDARY_GREEN_EMPHASIZED = '#057932',
 }

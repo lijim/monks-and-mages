@@ -1,10 +1,11 @@
 import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
-import { Board } from '@/types/board';
+import { Board, Player } from '@/types/board';
 import { makeNewBoard } from '@/factories/board';
 import { obscureBoardInfo } from '../obscureBoardInfo';
 
+import { DEFAULT_ROOM_NAMES } from '@/constants/lobbyConstants';
 import {
     ClientToServerEvents,
     DetailedRoom,
@@ -82,6 +83,10 @@ export const configureIo = (server: HttpServer) => {
     const getDetailedRooms = () => {
         const detailedRooms: DetailedRoom[] = [];
         const roomsAndIds = io.sockets.adapter.rooms;
+        const defaultRoomNames = DEFAULT_ROOM_NAMES.map(
+            (roomName) => `public-${roomName}`
+        ).filter((roomName) => !roomsAndIds.has(roomName));
+
         [...roomsAndIds.entries()].forEach(([roomName, socketIds]) => {
             if (!roomName.startsWith('public-')) return; // skip private rooms
 
@@ -89,6 +94,15 @@ export const configureIo = (server: HttpServer) => {
                 roomName,
                 players: getNamesFromIds([...socketIds]),
                 hasStartedGame: startedBoards.has(roomName),
+            };
+            detailedRooms.push(room);
+        });
+
+        defaultRoomNames.forEach((roomName) => {
+            const room: DetailedRoom = {
+                roomName,
+                players: [] as string[],
+                hasStartedGame: false,
             };
             detailedRooms.push(room);
         });
