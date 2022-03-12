@@ -119,8 +119,6 @@ export const applyGameAction = ({
                     activePlayer = nextPlayer;
                 } else {
                     // proceed to next turn
-                    nextPlayer.numCardsInDeck -= 1;
-                    nextPlayer.numCardsInHand += 1;
                     nextPlayer.resourcesLeftToDeploy = 1;
                     nextPlayer.hand.push(nextPlayer.deck.pop());
                     return clonedBoard;
@@ -140,7 +138,6 @@ export const applyGameAction = ({
             if (resourcesLeftToDeploy <= 0) {
                 return clonedBoard;
             }
-            activePlayer.numCardsInHand -= 1;
             activePlayer.resourcesLeftToDeploy -= 1;
 
             resources.push(
@@ -183,7 +180,6 @@ export const applyGameAction = ({
                 activePlayer.effectQueue = activePlayer.effectQueue.concat(
                     cloneDeep(matchingCard.enterEffects)
                 );
-                activePlayer.numCardsInHand -= 1;
                 activePlayer.hand.splice(matchingCardIndex, 1);
             }
             return clonedBoard;
@@ -296,7 +292,6 @@ export const applyGameAction = ({
             activePlayer.effectQueue = activePlayer.effectQueue.concat(
                 cloneDeep(matchingCard.effects)
             );
-            activePlayer.numCardsInHand -= 1;
             cemetery.push(hand.splice(matchingCardIndex, 1)[0]);
 
             return clonedBoard;

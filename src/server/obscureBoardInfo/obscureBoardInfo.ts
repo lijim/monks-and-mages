@@ -12,14 +12,17 @@ export const obscureBoardInfo = (
 ): Board => {
     const obscuredBoard = cloneDeep(board);
 
+    obscuredBoard.players.forEach((player) => {
+        player.numCardsInHand = player.hand.length;
+        player.numCardsInDeck = player.deck.length;
+        player.deck = [];
+    });
+
     obscuredBoard.players
         .filter((player) => player.name !== forPlayerName)
         .forEach((player) => {
             player.hand = [];
         });
 
-    obscuredBoard.players.forEach((player) => {
-        player.deck = [];
-    });
     return obscuredBoard;
 };

@@ -83,12 +83,6 @@ describe('Game Action', () => {
 
             const nextPlayer = newBoardState.players[1];
 
-            expect(nextPlayer.numCardsInDeck).toEqual(
-                cardsInDeckBefore.length - 1
-            );
-            expect(nextPlayer.numCardsInHand).toEqual(
-                cardsInHandBefore.length + 1
-            );
             expect(nextPlayer.deck).toEqual(
                 cardsInDeckBefore.slice(0, cardsInDeckBefore.length - 1)
             );
@@ -116,7 +110,7 @@ describe('Game Action', () => {
                 gameAction: { type: GameActionTypes.PASS_TURN },
                 playerName: 'Timmy',
             });
-            expect(newBoardState.players[2].numCardsInDeck).toEqual(
+            expect(newBoardState.players[2].deck.length).toEqual(
                 cardsInDeckBefore.length - 1
             );
         });
@@ -157,7 +151,7 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
             expect(newBoardState.players[0].resources).toHaveLength(1);
-            expect(newBoardState.players[0].numCardsInHand).toEqual(0);
+            expect(newBoardState.players[0].hand).toHaveLength(0);
             expect(newBoardState.players[0].resourcesLeftToDeploy).toBe(0);
         });
 
@@ -240,7 +234,6 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
             expect(newBoardState.players[0].hand).toEqual([]);
-            expect(newBoardState.players[0].numCardsInHand).toBe(0);
             expect(newBoardState.players[0].units[0]).toEqual(unitCard);
         });
 
@@ -682,9 +675,6 @@ describe('Game Action', () => {
                 spellCard.effects
             );
             expect(newBoardState.players[0].cemetery).toEqual([spellCard]);
-            expect(newBoardState.players[0].numCardsInHand).toEqual(
-                PlayerConstants.STARTING_HAND_SIZE - 1
-            );
         });
 
         it("won't cast a spell that's too expensive", () => {
@@ -702,9 +692,6 @@ describe('Game Action', () => {
 
             expect(newBoardState.players[0].effectQueue).toHaveLength(0);
             expect(newBoardState.players[0].cemetery).toHaveLength(0);
-            expect(newBoardState.players[0].numCardsInHand).toEqual(
-                PlayerConstants.STARTING_HAND_SIZE
-            );
         });
     });
 });
