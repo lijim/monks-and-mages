@@ -11,7 +11,10 @@ import { SpellCards } from '@/cardDb/spells';
 
 describe('Self Player Board', () => {
     it('disables the pass turn button if effects are remaining', () => {
-        const board = makeNewBoard(['Melvin', 'Melissa'], 0);
+        const board = makeNewBoard({
+            playerNames: ['Melvin', 'Melissa'],
+            startingPlayerIndex: 0,
+        });
         board.players[0].effectQueue = [...SpellCards.A_GENTLE_GUST.effects];
         const preloadedState: Partial<RootState> = {
             user: {
@@ -30,7 +33,10 @@ describe('Self Player Board', () => {
             user: {
                 name: 'Melvin',
             },
-            board: makeNewBoard(['Melvin', 'Melissa'], 0),
+            board: makeNewBoard({
+                playerNames: ['Melvin', 'Melissa'],
+                startingPlayerIndex: 0,
+            }),
         };
         const { dispatch, webSocket } = render(<SelfPlayerInfo />, {
             preloadedState,
@@ -48,7 +54,10 @@ describe('Self Player Board', () => {
             user: {
                 name: 'Melvin',
             },
-            board: makeNewBoard(['Melvin', 'Melissa'], 0),
+            board: makeNewBoard({
+                playerNames: ['Melvin', 'Melissa'],
+                startingPlayerIndex: 0,
+            }),
         };
         const { dispatch, webSocket } = render(<SelfPlayerInfo />, {
             preloadedState,
@@ -66,7 +75,10 @@ describe('Self Player Board', () => {
             user: {
                 name: 'Melvin',
             },
-            board: makeNewBoard(['Melvin', 'Melissa'], 1),
+            board: makeNewBoard({
+                playerNames: ['Melvin', 'Melissa'],
+                startingPlayerIndex: 1,
+            }),
         };
         render(<SelfPlayerInfo />, { preloadedState });
         expect(screen.queryByText('Pass Turn')).not.toBeInTheDocument();

@@ -34,7 +34,7 @@ describe('selectors', () => {
         it('returns the player that matches the name', () => {
             const state = {
                 user: { name: 'Bruno' },
-                board: makeNewBoard(['Bruno', 'Carla']),
+                board: makeNewBoard({ playerNames: ['Bruno', 'Carla'] }),
             };
             expect(getSelfPlayer(state).name).toBe('Bruno');
         });
@@ -44,7 +44,9 @@ describe('selectors', () => {
         it('returns all players for spectators', () => {
             const state = {
                 user: { name: 'Bobby' },
-                board: makeNewBoard(['Bruno', 'Carla', 'James']),
+                board: makeNewBoard({
+                    playerNames: ['Bruno', 'Carla', 'James'],
+                }),
             };
             expect(getOtherPlayers(state).map((player) => player.name)).toEqual(
                 ['Bruno', 'Carla', 'James']
@@ -54,7 +56,9 @@ describe('selectors', () => {
         it('returns in rotating order (in the middle)', () => {
             const state = {
                 user: { name: 'Bruno' },
-                board: makeNewBoard(['Alex', 'Bruno', 'Carla', 'Dionne']),
+                board: makeNewBoard({
+                    playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+                }),
             };
             expect(getOtherPlayers(state).map((player) => player.name)).toEqual(
                 ['Carla', 'Dionne', 'Alex']
@@ -64,7 +68,9 @@ describe('selectors', () => {
         it('returns in rotating order (first in board order)', () => {
             const state = {
                 user: { name: 'Alex' },
-                board: makeNewBoard(['Alex', 'Bruno', 'Carla', 'Dionne']),
+                board: makeNewBoard({
+                    playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+                }),
             };
             expect(getOtherPlayers(state).map((player) => player.name)).toEqual(
                 ['Bruno', 'Carla', 'Dionne']
@@ -74,7 +80,9 @@ describe('selectors', () => {
         it('returns in rotating order (last in board order)', () => {
             const state = {
                 user: { name: 'Dionne' },
-                board: makeNewBoard(['Alex', 'Bruno', 'Carla', 'Dionne']),
+                board: makeNewBoard({
+                    playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+                }),
             };
             expect(getOtherPlayers(state).map((player) => player.name)).toEqual(
                 ['Alex', 'Bruno', 'Carla']
@@ -84,7 +92,9 @@ describe('selectors', () => {
 
     describe('getLastEffect', () => {
         it("returns the last effect on the player's queue", () => {
-            const board = makeNewBoard(['Alex', 'Bruno', 'Carla', 'Dionne']);
+            const board = makeNewBoard({
+                playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+            });
             const state = {
                 user: { name: 'Alex' },
                 board,
@@ -106,7 +116,9 @@ describe('selectors', () => {
 
     describe('shouldEffectFizzle', () => {
         it('fizzles effects that target units', () => {
-            const board = makeNewBoard(['Alex', 'Bruno', 'Carla', 'Dionne']);
+            const board = makeNewBoard({
+                playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+            });
             const state = {
                 user: { name: 'Alex' },
                 board,
@@ -127,7 +139,9 @@ describe('selectors', () => {
         });
 
         it('does not fizzle effects that target a valid unit', () => {
-            const board = makeNewBoard(['Alex', 'Bruno', 'Carla', 'Dionne']);
+            const board = makeNewBoard({
+                playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+            });
             // Give each player units so the effects won't fizzle
             board.players.forEach((player) => {
                 player.units = [makeCard(UnitCards.CAVALRY_ARCHER)];

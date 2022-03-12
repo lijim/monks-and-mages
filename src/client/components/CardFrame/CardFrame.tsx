@@ -1,5 +1,5 @@
-import { Colors } from '@/constants/colors';
 import styled from 'styled-components';
+import { Colors } from '@/constants/colors';
 
 interface CardFrameProps {
     isRaised?: boolean;

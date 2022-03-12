@@ -131,7 +131,9 @@ export const configureIo = (server: HttpServer) => {
                 // TODO: handle race condition where 2 people start game at same time
                 socket.rooms.forEach((roomName) => {
                     const socketIds = io.sockets.adapter.rooms.get(roomName);
-                    const board = makeNewBoard(getNamesFromIds([...socketIds]));
+                    const board = makeNewBoard({
+                        playerNames: getNamesFromIds([...socketIds]),
+                    });
                     startedBoards.set(roomName, board);
                     io.to(roomName).emit('startGame');
                     sendBoardForRoom(roomName);

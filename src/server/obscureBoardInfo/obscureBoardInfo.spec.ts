@@ -3,7 +3,7 @@ import { obscureBoardInfo } from './obscureBoardInfo';
 
 describe('Obscure board info', () => {
     it("hides other players' hands", () => {
-        const board = makeNewBoard(['Timmy', 'Tom']);
+        const board = makeNewBoard({ playerNames: ['Timmy', 'Tom'] });
         const boardTommySees = obscureBoardInfo(board, 'Tom');
         expect(
             boardTommySees.players.find((player) => player.name === 'Timmy')
@@ -12,7 +12,7 @@ describe('Obscure board info', () => {
     });
 
     it('does not hide your own hand', () => {
-        const board = makeNewBoard(['Timmy', 'Tom']);
+        const board = makeNewBoard({ playerNames: ['Timmy', 'Tom'] });
         const boardTommySees = obscureBoardInfo(board, 'Tom');
         expect(
             boardTommySees.players.find((player) => player.name === 'Tom').hand
@@ -20,7 +20,7 @@ describe('Obscure board info', () => {
     });
 
     it('hides decks', () => {
-        const board = makeNewBoard(['Timmy', 'Tom']);
+        const board = makeNewBoard({ playerNames: ['Timmy', 'Tom'] });
         const boardTommySees = obscureBoardInfo(board, 'Tom');
         expect(
             boardTommySees.players.find((player) => player.name === 'Tom').deck

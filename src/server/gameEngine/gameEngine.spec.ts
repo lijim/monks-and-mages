@@ -12,7 +12,10 @@ describe('Game Action', () => {
     let board: Board;
 
     beforeEach(() => {
-        board = makeNewBoard(['Timmy', 'Tommy', 'Bobby'], 0);
+        board = makeNewBoard({
+            playerNames: ['Timmy', 'Tommy', 'Bobby'],
+            startingPlayerIndex: 0,
+        });
     });
 
     it('short-circuits if the player is not the active player', () => {

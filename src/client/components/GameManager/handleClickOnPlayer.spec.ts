@@ -25,7 +25,10 @@ describe('handle click on player', () => {
             isDisconnected: false,
             name: 'Cleopatra',
         };
-        state.board = makeNewBoard(['Cleopatra', 'Marc Antony'], 0);
+        state.board = makeNewBoard({
+            playerNames: ['Cleopatra', 'Marc Antony'],
+            startingPlayerIndex: 0,
+        });
         done();
     });
 

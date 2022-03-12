@@ -9,7 +9,10 @@ jest.useFakeTimers();
 
 describe('Game Manager', () => {
     it('auto-resolves targets', async () => {
-        const board = makeNewBoard(['Antoinette', 'Beatrice', 'Claudia'], 0);
+        const board = makeNewBoard({
+            playerNames: ['Antoinette', 'Beatrice', 'Claudia'],
+            startingPlayerIndex: 0,
+        });
         const effect = {
             type: EffectType.BOUNCE,
             target: TargetTypes.ALL_OPPOSING_UNITS,
@@ -33,7 +36,10 @@ describe('Game Manager', () => {
     });
 
     it('fizzles the last effect if it has no valid targets', async () => {
-        const board = makeNewBoard(['Antoinette', 'Beatrice', 'Claudia'], 0);
+        const board = makeNewBoard({
+            playerNames: ['Antoinette', 'Beatrice', 'Claudia'],
+            startingPlayerIndex: 0,
+        });
         const effect = {
             type: EffectType.BOUNCE,
             target: TargetTypes.OWN_UNIT,
