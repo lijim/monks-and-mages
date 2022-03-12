@@ -81,7 +81,8 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                 <CardGridSingleItem
                     key={card.id}
                     card={card}
-                    hasOnClick
+                    isOnBoard={isOnBoard}
+                    hasOnClick={hasOnClick}
                     zoomLevel={zoomLevel}
                 />
             </div>
@@ -92,11 +93,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                         className: 'tooltip-container',
                     })}
                 >
-                    <CardGridSingleItem
-                        isOnBoard={isOnBoard}
-                        card={card}
-                        hasOnClick={hasOnClick}
-                    />
+                    <CardGridSingleItem isOnBoard={isOnBoard} card={card} />
                     <div
                         {...getArrowProps({
                             className: 'tooltip-arrow',

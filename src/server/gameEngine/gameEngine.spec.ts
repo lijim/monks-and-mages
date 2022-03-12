@@ -445,6 +445,53 @@ describe('Game Action', () => {
             expect(newBoardState.players[1].units).toHaveLength(0);
         });
 
+        it('performs a ranged attack (lethal for defender through poisonous)', () => {
+            const attacker = makeCard(UnitCards.BOUNTY_COLLECTOR);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].units).toHaveLength(1);
+            expect(newBoardState.players[1].cemetery[0].name).toEqual(
+                defender.name
+            );
+            expect(newBoardState.players[1].units).toHaveLength(0);
+        });
+
+        it('performs a ranged attack (lethal for both through poisonous)', () => {
+            const attacker = makeCard(UnitCards.BOUNTY_COLLECTOR);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.BOUNTY_COLLECTOR);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].cemetery[0].name).toEqual(
+                attacker.name
+            );
+            expect(newBoardState.players[0].units).toHaveLength(0);
+            expect(newBoardState.players[1].cemetery[0].name).toEqual(
+                defender.name
+            );
+            expect(newBoardState.players[1].units).toHaveLength(0);
+        });
+
         it('performs a ranged attack (lethal for both vs. ranged)', () => {
             const attacker = makeCard(UnitCards.STONE_SLINGER);
             attacker.numAttacksLeft = 1;

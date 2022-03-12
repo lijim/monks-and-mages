@@ -410,7 +410,7 @@ const ASSASSIN: UnitCard = makeCard({
     totalHp: 1,
     attack: 1,
     numAttacks: 1,
-    isRanged: false,
+    isRanged: true,
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED],

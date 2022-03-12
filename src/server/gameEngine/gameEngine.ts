@@ -208,6 +208,12 @@ export const applyGameAction = ({
                     });
                 });
                 if (!defender) return clonedBoard;
+                const defenderHasPoisonous = defender.passiveEffects.some(
+                    (passiveEffect) => passiveEffect === PassiveEffect.POISONED
+                );
+                const attackerHasPoisonous = attacker.passiveEffects.some(
+                    (passiveEffect) => passiveEffect === PassiveEffect.POISONED
+                );
 
                 // Soldiers prevent attacks vs. non-soldiers (unless magical)
                 const defendingPlayerHasSoldier = defendingPlayer.units.some(
@@ -232,9 +238,14 @@ export const applyGameAction = ({
                 if (
                     (attacker.isRanged && defender.isRanged) ||
                     !attacker.isRanged
-                )
-                    attacker.hp = hp - defenderAttack - defenderAttackBuff;
-                defender.hp = defenderHp - attack - attackBuff;
+                ) {
+                    attacker.hp = defenderHasPoisonous
+                        ? 0
+                        : hp - defenderAttack - defenderAttackBuff;
+                }
+                defender.hp = attackerHasPoisonous
+                    ? 0
+                    : defenderHp - attack - attackBuff;
 
                 // Resolve units going to the cemetery
                 processBoardToCemetery(clonedBoard);
