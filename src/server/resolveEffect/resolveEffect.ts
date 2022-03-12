@@ -7,7 +7,7 @@ import {
     getDefaultTargetForEffect,
     TargetTypes,
 } from '@/types/effects';
-import { UnitCard } from '@/types/cards';
+import { CardType, UnitCard } from '@/types/cards';
 import { makeCard } from '@/factories/cards';
 import { processBoardToCemetery } from '../gameEngine';
 
@@ -32,7 +32,7 @@ export const resolveEffect = (
 
     // Determine targets to apply effects to
     let playerTargets: Player[];
-    const unitTargets: { player: Player; unitCard: UnitCard }[] = [];
+    let unitTargets: { player: Player; unitCard: UnitCard }[] = [];
     const target = effect.target || getDefaultTargetForEffect(effect.type);
 
     if (playerNames) {
@@ -60,6 +60,42 @@ export const resolveEffect = (
     }
 
     playerTargets = playerTargets?.filter((player) => player.isAlive) || [];
+
+    const otherPlayerUnits = otherPlayers.flatMap((player) =>
+        player.units.map((unitCard) => {
+            return { player, unitCard };
+        })
+    );
+    const selfPlayerUnits = activePlayer.units.map((unitCard) => {
+        return { player: activePlayer, unitCard };
+    });
+    switch (target) {
+        case TargetTypes.ALL_OPPOSING_UNITS: {
+            unitTargets = otherPlayerUnits;
+            break;
+        }
+        case TargetTypes.ALL_SELF_UNITS: {
+            unitTargets = selfPlayerUnits;
+            break;
+        }
+        case TargetTypes.ALL_UNITS: {
+            unitTargets = [...selfPlayerUnits, ...otherPlayerUnits];
+            break;
+        }
+        case TargetTypes.ALL_SELF_UNITS_GRAVEYARD: {
+            activePlayer.cemetery.forEach((card) => {
+                if (card.cardType === CardType.UNIT)
+                    unitTargets.push({
+                        player: activePlayer,
+                        unitCard: card,
+                    });
+            });
+            break;
+        }
+        default: {
+            break;
+        }
+    }
 
     if (unitCardIds) {
         players.forEach((player) => {

@@ -200,13 +200,13 @@ describe('resolve effect', () => {
 
     describe('Deal Damage', () => {
         it('deals damage to a unit', () => {
-            const lancer = makeCard(UnitCards.SQUIRE);
-            board.players[0].units = [lancer];
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire];
             const newBoard = resolveEffect(
                 board,
                 {
                     effect: { type: EffectType.DEAL_DAMAGE, strength: 2 },
-                    unitCardIds: [lancer.id],
+                    unitCardIds: [squire.id],
                 },
                 'Timmy'
             );
@@ -214,6 +214,26 @@ describe('resolve effect', () => {
                 UnitCards.SQUIRE.hp - 2
             );
         });
+
+        it('deals damage to all opposing unit', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[1].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE,
+                        strength: 2,
+                        target: TargetTypes.ALL_OPPOSING_UNITS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].units[0].hp).toEqual(
+                UnitCards.SQUIRE.hp - 2
+            );
+        });
+
         it('deals damage to a player', () => {
             const newBoard = resolveEffect(
                 board,
@@ -228,13 +248,13 @@ describe('resolve effect', () => {
             );
         });
         it('deals lethal to a unit', () => {
-            const lancer = makeCard(UnitCards.SQUIRE);
-            board.players[0].units = [lancer];
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire];
             const newBoard = resolveEffect(
                 board,
                 {
                     effect: { type: EffectType.DEAL_DAMAGE, strength: 3 },
-                    unitCardIds: [lancer.id],
+                    unitCardIds: [squire.id],
                 },
                 'Timmy'
             );
