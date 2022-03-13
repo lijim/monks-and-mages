@@ -115,7 +115,7 @@ export const applyGameAction = ({
                 if (nextPlayer.deck.length === 0) {
                     nextPlayer.isAlive = false;
                     applyWinState(clonedBoard);
-                    if (board.gameState !== GameState.PLAYING)
+                    if (clonedBoard.gameState !== GameState.PLAYING)
                         return clonedBoard;
                     activePlayer = nextPlayer;
                 } else {
@@ -263,7 +263,7 @@ export const applyGameAction = ({
                 defendingPlayer.health -= attacker.attack + attacker.attackBuff;
                 if (defendingPlayer.health < 0) {
                     defendingPlayer.isAlive = false;
-                    applyWinState(board);
+                    applyWinState(clonedBoard);
                 }
                 attacker.numAttacksLeft -= 1;
                 return clonedBoard;

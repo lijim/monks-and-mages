@@ -8,8 +8,27 @@ import { SelfPlayerInfo } from './SelfPlayerInfo';
 import { passTurn } from '@/client/redux/clientSideGameExtras';
 import { GameActionTypes } from '@/types/gameActions';
 import { SpellCards } from '@/cardDb/spells';
+import { GameState } from '@/types/board';
 
 describe('Self Player Board', () => {
+    it('disables the pass turn button if the game has not started', () => {
+        const board = makeNewBoard({
+            playerNames: ['Melvin', 'Melissa'],
+            startingPlayerIndex: 0,
+        });
+        board.gameState = GameState.MULLIGANING;
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Melvin',
+            },
+            board,
+        };
+        render(<SelfPlayerInfo />, {
+            preloadedState,
+        });
+        expect(screen.getByText('Pass Turn')).toBeDisabled();
+    });
+
     it('disables the pass turn button if effects are remaining', () => {
         const board = makeNewBoard({
             playerNames: ['Melvin', 'Melissa'],

@@ -7,6 +7,7 @@ import {
     getLastEffect,
     getOtherPlayers,
     getSelfPlayer,
+    isBoardInteractable,
 } from '@/client/redux/selectors';
 import { GameActionTypes } from '@/types/gameActions';
 import { performAttack } from '@/client/redux/clientSideGameExtras';
@@ -38,8 +39,7 @@ export const handleClickOnPlayer = ({
     const otherPlayers = getOtherPlayers(state);
     const attackingUnit = getAttackingUnit(state);
     const lastEffect = getLastEffect(state);
-
-    if (state.board.gameState !== GameState.PLAYING) {
+    if (!isBoardInteractable(state)) {
         return;
     }
 

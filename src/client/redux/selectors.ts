@@ -1,4 +1,4 @@
-import { Player } from '@/types/board';
+import { GameState, Player } from '@/types/board';
 import { Effect } from '@/types/cards';
 import { TargetTypes } from '@/types/effects';
 import { RootState } from './store';
@@ -82,4 +82,18 @@ export const shouldLastEffectFizzle = (state: Partial<RootState>): boolean => {
         default:
             return false;
     }
+};
+
+/**
+ * returns whether you can interact with the main elements of the board, e.g. their hand,
+ * opponents' faces, etc.
+ */
+export const isBoardInteractable = (state: Partial<RootState>): boolean => {
+    const player = getSelfPlayer(state);
+    if (!player) return false;
+    return !!(
+        player.isAlive &&
+        player.isActivePlayer &&
+        state.board?.gameState === GameState.PLAYING
+    );
 };

@@ -1,6 +1,7 @@
 import { UnitCards } from '@/cardDb/units';
 import { makeNewBoard } from '@/factories/board';
 import { makeCard } from '@/factories/cards';
+import { GameState } from '@/types/board';
 import { EffectType, TargetTypes } from '@/types/effects';
 import {
     getSelfPlayer,
@@ -10,6 +11,7 @@ import {
     getLastEffect,
     shouldLastEffectFizzle,
     getLastEffectForActivePlayer,
+    isBoardInteractable,
 } from './selectors';
 
 describe('selectors', () => {
@@ -189,6 +191,71 @@ describe('selectors', () => {
                 { type: EffectType.BOUNCE, target: TargetTypes.OWN_UNIT },
             ];
             expect(shouldLastEffectFizzle(state)).toEqual(false);
+        });
+    });
+
+    describe('isBoardInteractable', () => {
+        it('returns true for when players are actively alive and playing', () => {
+            const board = makeNewBoard({
+                playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+                startingPlayerIndex: 0,
+            });
+            const state = {
+                user: { name: 'Alex' },
+                board,
+            };
+            expect(isBoardInteractable(state)).toEqual(true);
+        });
+
+        it('returns false for when players are not the active player', () => {
+            const board = makeNewBoard({
+                playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+                startingPlayerIndex: 1,
+            });
+            const state = {
+                user: { name: 'Alex' },
+                board,
+            };
+            expect(isBoardInteractable(state)).toEqual(false);
+        });
+
+        it('returns false for when players are not alive', () => {
+            const board = makeNewBoard({
+                playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+                startingPlayerIndex: 0,
+            });
+            const state = {
+                user: { name: 'Alex' },
+                board,
+            };
+            board.players[0].isAlive = false;
+            expect(isBoardInteractable(state)).toEqual(false);
+        });
+
+        it('returns false for when the game has not begun', () => {
+            const board = makeNewBoard({
+                playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+                startingPlayerIndex: 0,
+            });
+            const state = {
+                user: { name: 'Alex' },
+                board,
+            };
+            board.gameState = GameState.MULLIGANING;
+            expect(isBoardInteractable(state)).toEqual(false);
+        });
+
+        it('returns false for when the game is over', () => {
+            const board = makeNewBoard({
+                playerNames: ['Alex', 'Bruno', 'Carla', 'Dionne'],
+                startingPlayerIndex: 0,
+            });
+            board.gameState = GameState.TIE;
+            const state = {
+                user: { name: 'Alex' },
+                board,
+            };
+            expect(isBoardInteractable(state)).toEqual(false);
         });
     });
 });
