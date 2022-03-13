@@ -1,24 +1,15 @@
-import { DeckListSelections } from '@/constants/lobbyConstants';
-import { Board, GameState } from '@/types/board';
 import {
-    SAMPLE_DECKLIST_0,
-    SAMPLE_DECKLIST_2,
-    SAMPLE_DECKLIST_3,
-    SAMPLE_DECKLIST_4,
-} from '../deck';
+    deckListMappings,
+    DeckListSelections,
+} from '@/constants/lobbyConstants';
+import { Board, GameState } from '@/types/board';
+import { SAMPLE_DECKLIST_0 } from '../deck';
 import { makeNewPlayer } from '../player';
 
 export type MakeNewBoardParams = {
     playerDeckListSelections?: DeckListSelections[];
     playerNames: string[];
     startingPlayerIndex?: number;
-};
-
-const deckListMappings = {
-    [DeckListSelections.MONKS]: SAMPLE_DECKLIST_0,
-    [DeckListSelections.MAGES_FIRE]: SAMPLE_DECKLIST_2,
-    [DeckListSelections.MAGES_WATER]: SAMPLE_DECKLIST_3,
-    [DeckListSelections.MAGES_WIND]: SAMPLE_DECKLIST_4,
 };
 
 export const makeNewBoard = ({

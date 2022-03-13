@@ -123,3 +123,21 @@ export const SAMPLE_DECKLIST_4: DeckList = [
     { card: SpellCards.A_GENTLE_GUST, quantity: 2 },
     { card: SpellCards.A_THOUSAND_WINDS, quantity: 2 },
 ];
+
+// Bamboo + Iron - revised version (not used in mocks)
+export const SAMPLE_DECKLIST_5: DeckList = [
+    // Resources
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 14 },
+    { card: makeResourceCard(Resource.IRON), quantity: 8 },
+    // Other
+    { card: UnitCards.BAMBOO_FARMER, quantity: 4 },
+    // Soldiers
+    { card: UnitCards.TEMPLE_GUARDIAN, quantity: 4 },
+    // Ranged
+    { card: UnitCards.LONGBOWMAN, quantity: 2 },
+    { card: UnitCards.JAVELINEER, quantity: 2 },
+    // Spells
+    { card: SpellCards.THROW_SHURIKEN, quantity: 4 },
+    { card: SpellCards.FEED_TEAM, quantity: 4 },
+    { card: SpellCards.RAIN_OF_ARROWS, quantity: 4 },
+];

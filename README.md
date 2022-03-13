@@ -2,6 +2,8 @@
 
 Monks and Mages is a trading card-style game inspired by [Heroes of Might and Magic](https://en.wikipedia.org/wiki/Heroes_of_Might_and_Magic) / [Magic the Gathering](https://en.wikipedia.org/wiki/Magic:_The_Gathering). The gameplay is similar to Magic, but with vastly simplified rules. Players build decks, then pit these decks against 1-3 other players. Cards are inspired from a mix of medieval and Chinese settings
 
+To play, visit: https://www.monksandmages.com/
+
 # Installation and Running
 
 This game can be run locally if you have [node v16.x](https://nodejs.org/en/download/) and [yarn installed globally](https://yarnpkg.com/getting-started/install)

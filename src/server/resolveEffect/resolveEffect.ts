@@ -17,7 +17,7 @@ export const resolveEffect = (
     playerName: string
 ): Board | null => {
     const clonedBoard = cloneDeep(board);
-    const { strength: effectStrength } = effect;
+    const { strength: effectStrength = 0 } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
     const otherPlayers = players.filter((player) => !player.isActivePlayer);
