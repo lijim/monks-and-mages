@@ -8,7 +8,7 @@ import {
     TargetTypes,
 } from '@/types/effects';
 import { CardType, UnitCard } from '@/types/cards';
-import { makeCard } from '@/factories/cards';
+import { makeCard, makeResourceCard } from '@/factories/cards';
 import { processBoardToCemetery, resetUnitCard } from '../gameEngine';
 
 export const resolveEffect = (
@@ -178,6 +178,16 @@ export const resolveEffect = (
                     player.isAlive = false;
                 }
                 player.hand = hand.concat(deck.splice(-effectStrength));
+            });
+            return clonedBoard;
+        }
+        case EffectType.RAMP: {
+            const { resourceType } = effect;
+            if (!resourceType) return clonedBoard;
+            playerTargets.forEach((player) => {
+                for (let i = 0; i < Math.min(50, effectStrength); i += 1) {
+                    player.resources.push(makeResourceCard(resourceType));
+                }
             });
             return clonedBoard;
         }

@@ -7,6 +7,7 @@ import { resolveEffect } from './resolveEffect';
 import { makeCard } from '@/factories/cards';
 import { Tokens, UnitCards } from '@/mocks/units';
 import { UnitCard } from '@/types/cards';
+import { Resource } from '@/types/resources';
 
 describe('resolve effect', () => {
     let board: Board;
@@ -318,6 +319,25 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Ramp Player', () => {
+        it('increases resources deployed', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RAMP,
+                        strength: 2,
+                        resourceType: Resource.CRYSTAL,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].resources).toHaveLength(2);
+            expect(newBoard.players[0].resources[0].name).toBe(
+                Resource.CRYSTAL
+            );
+        });
+    });
     describe('Summon Unit', () => {
         it('summons 2 demons', () => {
             const newBoard = resolveEffect(
