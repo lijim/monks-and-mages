@@ -83,6 +83,30 @@ describe('resolve effect', () => {
             expect(lastCardInHand.attackBuff).toEqual(0);
             expect(lastCardInHand.hpBuff).toEqual(0);
         });
+
+        it("resets a unit's costs", () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            squire.attackBuff = 2;
+            squire.hpBuff = 2;
+            squire.cost.Generic = 5;
+            board.players[0].units = [squire];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: { type: EffectType.BOUNCE },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+
+            const lastCardInHand = newBoard.players[0].hand.splice(
+                -1
+            )[0] as UnitCard;
+            expect(lastCardInHand.attackBuff).toEqual(0);
+            expect(lastCardInHand.hpBuff).toEqual(0);
+            expect(lastCardInHand.cost.Generic).toEqual(1);
+        });
     });
 
     describe('Buff units', () => {
@@ -144,6 +168,34 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].units[0].attackBuff).toEqual(0);
             expect(newBoard.players[0].units[1].attackBuff).toEqual(0);
             expect(newBoard.players[0].units[2].attackBuff).toEqual(2);
+        });
+    });
+
+    describe('Curse Hand', () => {
+        it('increases costs for cards', () => {
+            board.players[1].hand = [
+                makeCard(UnitCards.SQUIRE),
+                makeCard(UnitCards.LANCER),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.CURSE_HAND,
+                        strength: 2,
+                        target: TargetTypes.OPPONENT,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect((newBoard.players[1].hand[0] as UnitCard).cost.Generic).toBe(
+                3
+            );
+            expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
+                2
+            );
         });
     });
 

@@ -9,7 +9,7 @@ import {
 } from '@/types/effects';
 import { CardType, UnitCard } from '@/types/cards';
 import { makeCard } from '@/factories/cards';
-import { processBoardToCemetery } from '../gameEngine';
+import { processBoardToCemetery, resetUnitCard } from '../gameEngine';
 
 export const resolveEffect = (
     board: Board,
@@ -112,9 +112,7 @@ export const resolveEffect = (
             unitTargets.forEach(({ player, unitCard }) => {
                 player.units = player.units.filter((card) => card !== unitCard);
                 player.hand.push(unitCard);
-                unitCard.hp = unitCard.totalHp;
-                unitCard.attackBuff = 0;
-                unitCard.hpBuff = 0;
+                resetUnitCard(unitCard);
             });
             return clonedBoard;
         }
@@ -143,6 +141,17 @@ export const resolveEffect = (
                 player.units.forEach((unit) => {
                     if (unit.isMagical) {
                         unit.attackBuff += effectStrength;
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.CURSE_HAND: {
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (card.cardType !== CardType.RESOURCE) {
+                        card.cost.Generic =
+                            (card.cost.Generic || 0) + effectStrength;
                     }
                 });
             });

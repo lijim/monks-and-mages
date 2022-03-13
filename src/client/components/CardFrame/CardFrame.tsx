@@ -35,7 +35,7 @@ export const CardFrame = styled.div<CardFrameProps>`
     cursor: pointer;
     font-size: 14px;
     display: inline-grid;
-    grid-template-rows: 20px 1fr 20px 120px auto;
+    grid-template-rows: auto 1fr 20px 120px auto;
     width: 220px;
     height: 320px;
     border: 10px solid #240503;

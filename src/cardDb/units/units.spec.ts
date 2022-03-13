@@ -29,10 +29,11 @@ describe('Unit Cards', () => {
         const unitCard = makeCard(unitBase);
         expect(unitCard.name).toBe(unitBase.name);
         expect(unitCard.attack).toBe(unitBase.attack);
+        expect(unitCard.attackBuff).toBe(0);
         expect(unitCard.numAttacksLeft).toBe(0);
         expect(unitCard.hp).toBe(10);
         expect(unitCard.hpBuff).toBe(0);
-        expect(unitCard.attackBuff).toBe(0);
+        expect(unitCard.originalCost).toEqual(unitBase.cost);
         expect(unitCard.cardType).toBe(CardType.UNIT);
         expect(unitCard.isSelected).toBe(false);
     });

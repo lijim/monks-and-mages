@@ -46,6 +46,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         isRanged,
         isSoldier,
         name,
+        originalCost,
         passiveEffects,
         totalHp,
     } = card;
@@ -65,7 +66,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
             <CardHeader>
                 <NameCell>{name}</NameCell>
                 <CostHeaderCell>
-                    <CastingCost cost={cost} />
+                    <CastingCost cost={cost} originalCost={originalCost} />
                 </CostHeaderCell>
             </CardHeader>
             <CardImageContainer>
