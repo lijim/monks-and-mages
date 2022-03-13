@@ -27,6 +27,71 @@ describe('Game Action', () => {
         expect(newBoardState).toEqual(board);
     });
 
+    describe('Mulligans', () => {
+        beforeEach(() => {
+            board.gameState = GameState.MULLIGANING;
+        });
+
+        it('starts the game when everyone has accepted a mulligan', () => {
+            let newBoardState = applyGameAction({
+                board,
+                gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
+                playerName: 'Timmy',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
+                gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
+                playerName: 'Tommy',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
+                gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
+                playerName: 'Bobby',
+            });
+
+            expect(
+                newBoardState.players.filter((player) => player.readyToStart)
+            ).toHaveLength(3);
+            expect(newBoardState.gameState).toEqual(GameState.PLAYING);
+        });
+
+        it('goes down a card for each mulligan', () => {
+            let newBoardState = applyGameAction({
+                board,
+                gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
+                playerName: 'Timmy',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
+                gameAction: { type: GameActionTypes.REJECT_MULLIGAN },
+                playerName: 'Tommy',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
+                gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
+                playerName: 'Bobby',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
+                gameAction: { type: GameActionTypes.REJECT_MULLIGAN },
+                playerName: 'Tommy',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
+                gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
+                playerName: 'Tommy',
+            });
+
+            expect(
+                newBoardState.players.filter((player) => player.readyToStart)
+            ).toHaveLength(3);
+            expect(newBoardState.players[1].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE - 2
+            );
+            expect(newBoardState.gameState).toEqual(GameState.PLAYING);
+        });
+    });
+
     describe('Pass Turn', () => {
         it("resets the active player's resource pool", () => {
             board.players[0].resourcePool = { [Resource.CRYSTAL]: 1 };

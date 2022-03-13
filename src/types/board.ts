@@ -36,6 +36,7 @@ export type Board = {
     chatLog: ChatLog;
     gameState: GameState;
     players: Player[];
+    startingPlayerIndex: number;
 };
 
 /**
