@@ -20,6 +20,7 @@ export type ResourceCard = {
  * Needs to be here due to circular dependencies
  */
 export type Effect = {
+    resourceType?: Resource;
     strength?: number;
     summonType?: UnitCard;
     target?: TargetTypes;

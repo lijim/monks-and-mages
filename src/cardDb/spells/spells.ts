@@ -146,7 +146,8 @@ const A_THOUSAND_WINDS = makeCard({
             strength: 3,
         },
         {
-            type: EffectType.RAMP_WATER,
+            type: EffectType.RAMP,
+            resourceType: Resource.WATER,
             strength: 1,
         },
     ],
@@ -179,6 +180,20 @@ const THROW_SHURIKEN = makeCard({
 });
 
 // Bamboo
+const FEED_TEAM = makeCard({
+    name: 'Feed Team',
+    imgSrc: 'https://images.unsplash.com/photo-1536746295297-2539b444b74d',
+    cost: { [Resource.BAMBOO]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.RAMP,
+            resourceType: Resource.BAMBOO,
+            strength: 1,
+        },
+        { type: EffectType.BUFF_TEAM_HP, strength: 1 },
+    ],
+});
+
 const RAIN_OF_ARROWS = makeCard({
     name: 'Rain of Arrows',
     imgSrc: 'https://images.unsplash.com/photo-1563705883268-eb58ab6f505d',
@@ -219,5 +234,6 @@ export const SpellCards = {
     THROW_SHURIKEN,
 
     // Bamboo
+    FEED_TEAM,
     RAIN_OF_ARROWS,
 };

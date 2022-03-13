@@ -552,7 +552,8 @@ const BAMBOO_FARMER: UnitCard = makeCard({
     description: '',
     enterEffects: [
         {
-            type: EffectType.RAMP_BAMBOO,
+            type: EffectType.RAMP,
+            resourceType: Resource.BAMBOO,
             strength: 1,
         },
     ],

@@ -1,6 +1,7 @@
 import { Tokens } from '@/cardDb/units';
 import { Effect } from '@/types/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
+import { Resource } from '@/types/resources';
 import { transformEffectToRulesText } from './transformEffectsToRulesText';
 
 describe('transformEffectstoRulesText', () => {
@@ -150,7 +151,8 @@ describe('transformEffectstoRulesText', () => {
 
     it('displays rules for ramping bamboo', () => {
         const effect: Effect = {
-            type: EffectType.RAMP_BAMBOO,
+            type: EffectType.RAMP,
+            resourceType: Resource.BAMBOO,
             strength: 1,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
@@ -160,7 +162,8 @@ describe('transformEffectstoRulesText', () => {
 
     it('displays rules for ramping crystal', () => {
         const effect: Effect = {
-            type: EffectType.RAMP_CRYSTAL,
+            type: EffectType.RAMP,
+            resourceType: Resource.CRYSTAL,
             strength: 1,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
@@ -170,7 +173,8 @@ describe('transformEffectstoRulesText', () => {
 
     it('displays rules for ramping fire', () => {
         const effect: Effect = {
-            type: EffectType.RAMP_FIRE,
+            type: EffectType.RAMP,
+            resourceType: Resource.FIRE,
             strength: 3,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
@@ -180,7 +184,8 @@ describe('transformEffectstoRulesText', () => {
 
     it('displays rules for ramping iron', () => {
         const effect: Effect = {
-            type: EffectType.RAMP_IRON,
+            type: EffectType.RAMP,
+            resourceType: Resource.IRON,
             strength: 3,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
@@ -190,7 +195,8 @@ describe('transformEffectstoRulesText', () => {
 
     it('displays rules for ramping water', () => {
         const effect: Effect = {
-            type: EffectType.RAMP_WATER,
+            type: EffectType.RAMP,
+            resourceType: Resource.WATER,
             strength: 2,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
