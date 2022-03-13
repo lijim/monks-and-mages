@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash.clonedeep';
+import shuffle from 'lodash.shuffle';
 
 import { Board, GameState, Player } from '@/types/board';
 import { GameAction, GameActionTypes } from '@/types/gameActions';
@@ -6,6 +7,28 @@ import { CardType, ResourceCard, UnitCard } from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
+
+/**
+ * @returns {Object} next player who has not readied yet (by accepting their mulligan) or
+ * null if everyone has readied up
+ */
+const getNextUnreadyPlayer = (board: Board): Player => {
+    const { players } = board;
+    const activePlayerIndex = players.findIndex(
+        (player) => player.isActivePlayer
+    );
+    for (
+        let index = activePlayerIndex + 1;
+        index < activePlayerIndex + players.length;
+        index += 1
+    ) {
+        const nextPlayer = players[index % players.length];
+        if (!nextPlayer.readyToStart) {
+            return nextPlayer;
+        }
+    }
+    return null;
+};
 
 const getNextPlayer = (board: Board): Player => {
     const { players } = board;
@@ -92,6 +115,45 @@ export const applyGameAction = ({
     }
 
     switch (gameAction.type) {
+        case GameActionTypes.ACCEPT_MULLIGAN: {
+            activePlayer.readyToStart = true;
+            const nextPlayer = getNextUnreadyPlayer(clonedBoard);
+            if (!nextPlayer) {
+                // everyone has readied up, start the game
+                clonedBoard.gameState = GameState.PLAYING;
+                clonedBoard.players.forEach((player, index) => {
+                    player.isActivePlayer =
+                        index === clonedBoard.startingPlayerIndex;
+                });
+            } else {
+                activePlayer.isActivePlayer = false;
+                nextPlayer.isActivePlayer = true;
+            }
+
+            return clonedBoard;
+        }
+        case GameActionTypes.REJECT_MULLIGAN: {
+            // shuffle and deal new cards (1 less than before)
+            const currentHandSize = activePlayer.hand.length;
+            activePlayer.deck = activePlayer.deck.concat(activePlayer.hand);
+            const shuffledDeck = shuffle(activePlayer.deck);
+            activePlayer.deck = shuffledDeck.slice(
+                Math.max(0, currentHandSize - 1)
+            );
+            activePlayer.hand = shuffledDeck.slice(
+                0,
+                Math.max(0, currentHandSize - 1)
+            );
+
+            // move to next player
+            const nextPlayer = getNextUnreadyPlayer(clonedBoard);
+            if (nextPlayer) {
+                activePlayer.isActivePlayer = false;
+                nextPlayer.isActivePlayer = true;
+            }
+
+            return clonedBoard;
+        }
         case GameActionTypes.PASS_TURN: {
             activePlayer.resourcePool = {};
             // tries to loop through all players, in case one draws out of their deck

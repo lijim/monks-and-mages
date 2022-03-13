@@ -32,5 +32,6 @@ export const makeNewBoard = ({
         chatLog: [],
         gameState: GameState.PLAYING,
         players,
+        startingPlayerIndex,
     };
 };

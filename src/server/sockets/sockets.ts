@@ -1,7 +1,7 @@
 import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
-import { Board, Player } from '@/types/board';
+import { Board, GameState, Player } from '@/types/board';
 import { makeNewBoard } from '@/factories/board';
 import { obscureBoardInfo } from '../obscureBoardInfo';
 
@@ -169,6 +169,7 @@ export const configureIo = (server: HttpServer) => {
                         playerDeckListSelections,
                         playerNames,
                     });
+                    board.gameState = GameState.MULLIGANING;
                     startedBoards.set(roomName, board);
                     io.to(roomName).emit('startGame');
                     sendBoardForRoom(roomName);

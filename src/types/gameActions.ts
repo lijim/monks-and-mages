@@ -1,10 +1,20 @@
 export enum GameActionTypes {
+    ACCEPT_MULLIGAN = 'ACCEPT_MULLIGAN',
     CAST_SPELL = 'CAST_SPELL',
     DEPLOY_RESOURCE = 'DEPLOY_RESOURCE',
     DEPLOY_UNIT = 'DEPLOY_UNIT',
     PASS_TURN = 'PASS_TURN',
     PERFORM_ATTACK = 'PERFORM_ATTACK',
+    REJECT_MULLIGAN = 'REJECT_MULLIGAN',
     TAP_RESOURCE = 'TAP_RESOURCE',
+}
+
+export interface AcceptMulliganAction {
+    type: GameActionTypes.ACCEPT_MULLIGAN;
+}
+
+export interface RejectMulliganAction {
+    type: GameActionTypes.REJECT_MULLIGAN;
 }
 
 export interface PassTurnAction {
@@ -41,6 +51,8 @@ export interface PerformAttack {
 }
 
 export type GameAction =
+    | AcceptMulliganAction
+    | RejectMulliganAction
     | PassTurnAction
     | DeployResource
     | TapResource

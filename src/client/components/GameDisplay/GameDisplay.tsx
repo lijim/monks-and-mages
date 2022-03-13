@@ -15,6 +15,7 @@ import { HandOfCards } from '../HandOfCards';
 import { PlayerBoardSection } from '../PlayerBoardSection';
 import { Effect } from '@/types/cards';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
+import { CenterPromptBox } from '../CenterPromptBox';
 
 const GameGrid = styled.div`
     width: 100%;
@@ -78,6 +79,7 @@ export const GameDisplay: React.FC = () => {
                 {otherPlayers.map((player) => (
                     <PlayerBoardSection key={player.name} player={player} />
                 ))}
+                <CenterPromptBox />
                 <PlayerBoardSection player={selfPlayer} isSelfPlayer />
                 <HandOfCards />
             </CenterColumn>
