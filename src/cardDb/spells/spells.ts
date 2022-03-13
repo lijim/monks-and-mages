@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash.clonedeep';
+
 import { CardType, SpellBase, SpellCard } from '@/types/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
@@ -7,6 +9,7 @@ export const makeCard = (spellBase: SpellBase): SpellCard => ({
     ...spellBase,
     cardType: CardType.SPELL,
     isSelected: false,
+    originalCost: cloneDeep(spellBase.cost),
 });
 
 // Fire Magic

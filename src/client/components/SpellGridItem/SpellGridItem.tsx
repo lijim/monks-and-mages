@@ -25,7 +25,7 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
     onClick,
     zoomLevel,
 }) => {
-    const { cost, imgSrc, name, effects } = card;
+    const { cost, imgSrc, name, effects, originalCost } = card;
 
     return (
         <CardFrame
@@ -37,7 +37,7 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
             <CardHeader>
                 <NameCell>{name}</NameCell>
                 <CostHeaderCell>
-                    <CastingCost cost={cost} />
+                    <CastingCost cost={cost} originalCost={originalCost} />
                 </CostHeaderCell>
             </CardHeader>
             <CardImageContainer>

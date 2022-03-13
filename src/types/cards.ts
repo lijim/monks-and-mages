@@ -42,6 +42,7 @@ export type UnitBase = {
     name: string;
     // how much damage is inflicted per attack
     numAttacks: number;
+    originalCost?: PartialRecord<Resource, number>;
     // all units except magic must attack soldiers first 🛡️
     passiveEffects: PassiveEffect[];
     totalHp: number;
@@ -64,6 +65,7 @@ export type SpellBase = {
     effects: Effect[];
     imgSrc?: string;
     name: string;
+    originalCost?: PartialRecord<Resource, number>;
 };
 
 export interface SpellCard extends SpellBase {

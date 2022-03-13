@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash.clonedeep';
 import { CardType, UnitBase, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
@@ -12,6 +13,7 @@ export const makeCard = (unitBase: UnitBase): UnitCard => {
         isSelected: false,
         hpBuff: 0,
         attackBuff: 0,
+        originalCost: cloneDeep(unitBase.cost),
     };
 };
 
