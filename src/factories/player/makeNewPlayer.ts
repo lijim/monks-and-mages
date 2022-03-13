@@ -25,6 +25,7 @@ export const makeNewPlayer = (
         name: playerName,
         numCardsInDeck: activeDeck.length,
         numCardsInHand: hand.length,
+        readyToStart: false,
         resourcePool: {},
         resources: [],
         resourcesLeftToDeploy: 1,

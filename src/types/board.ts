@@ -14,6 +14,7 @@ export type Player = {
     name: string;
     numCardsInDeck: number;
     numCardsInHand: number;
+    readyToStart: boolean;
     resourcePool: PartialRecord<Resource, number>;
     resources: ResourceCard[];
     // queue of effects, with position 0 getting resolved first
@@ -22,6 +23,9 @@ export type Player = {
 };
 
 export enum GameState {
+    // players decide whether to keep their opening cards 1 at a time, with the active player
+    // making a choice and passing
+    MULLIGANING = 'MULLIGANING',
     PLAYING = 'PLAYING',
     TIE = 'TIE',
     WIN = 'WIN',

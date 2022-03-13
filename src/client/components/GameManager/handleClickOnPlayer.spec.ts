@@ -9,6 +9,7 @@ import { UnitCards } from '@/cardDb/units';
 import { performAttack } from '@/client/redux/clientSideGameExtras';
 import { handleClickOnPlayer } from './handleClickPlayer';
 import { SpellCards } from '@/cardDb/spells';
+import { GameState } from '@/types/board';
 
 describe('handle click on player', () => {
     let dispatch: AppDispatch;
@@ -29,6 +30,7 @@ describe('handle click on player', () => {
             playerNames: ['Cleopatra', 'Marc Antony'],
             startingPlayerIndex: 0,
         });
+        state.board.gameState = GameState.PLAYING;
         done();
     });
 
@@ -75,6 +77,24 @@ describe('handle click on player', () => {
                 cardId: unitCard.id,
                 playerTarget: 'Marc Antony',
             });
+        });
+
+        it('does nothing if the game is over', () => {
+            const unitCard = makeCard(UnitCards.LANCER);
+            unitCard.numAttacksLeft = 1;
+            state.board.players[0].units.push(unitCard);
+            state.board.gameState = GameState.WIN;
+            state.clientSideGameExtras = { attackingUnit: unitCard.id };
+
+            handleClickOnPlayer({
+                player: state.board.players[1],
+                dispatch,
+                state,
+                socket,
+            });
+
+            expect(dispatch).not.toHaveBeenCalled();
+            expect(socket.emit).not.toHaveBeenCalled();
         });
     });
 });

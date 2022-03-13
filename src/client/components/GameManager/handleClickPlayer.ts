@@ -10,7 +10,7 @@ import {
 } from '@/client/redux/selectors';
 import { GameActionTypes } from '@/types/gameActions';
 import { performAttack } from '@/client/redux/clientSideGameExtras';
-import { Player } from '@/types/board';
+import { GameState, Player } from '@/types/board';
 import { getDefaultTargetForEffect, TargetTypes } from '@/types/effects';
 
 interface HandleClickOnPlayerParams {
@@ -38,6 +38,10 @@ export const handleClickOnPlayer = ({
     const otherPlayers = getOtherPlayers(state);
     const attackingUnit = getAttackingUnit(state);
     const lastEffect = getLastEffect(state);
+
+    if (state.board.gameState !== GameState.PLAYING) {
+        return;
+    }
 
     const matchingOtherPlayer = otherPlayers.find(
         (otherPlayer) => otherPlayer === player
