@@ -13,6 +13,7 @@ import {
     selectAttackingUnit,
 } from '@/client/redux/clientSideGameExtras';
 import { SpellCards } from '@/cardDb/spells';
+import { GameState } from '@/types/board';
 
 describe('handle click on card', () => {
     let dispatch: AppDispatch;
@@ -33,12 +34,28 @@ describe('handle click on card', () => {
             playerNames: ['Cleopatra', 'Marc Antony'],
             startingPlayerIndex: 0,
         });
+        state.board.gameState = GameState.PLAYING;
         done();
     });
 
     afterEach((done) => {
         socket.close();
         done();
+    });
+
+    it('does nothing for mulligan phase', () => {
+        state.board.gameState = GameState.MULLIGANING;
+        const resourceCard = makeResourceCard(Resource.CRYSTAL);
+        state.board.players[0].hand.push(resourceCard);
+
+        handleClickOnCard({
+            cardId: resourceCard.id,
+            dispatch,
+            state,
+            socket,
+        });
+
+        expect(socket.emit).not.toHaveBeenCalled();
     });
 
     it('deploys a resource if in hand', () => {

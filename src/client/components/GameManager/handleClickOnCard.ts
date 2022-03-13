@@ -7,6 +7,7 @@ import {
     getLastEffect,
     getOtherPlayers,
     getSelfPlayer,
+    isBoardInteractable,
 } from '@/client/redux/selectors';
 import { CardType, UnitCard } from '@/types/cards';
 import { GameActionTypes } from '@/types/gameActions';
@@ -45,6 +46,9 @@ export const handleClickOnCard = ({
     const otherPlayers = getOtherPlayers(state);
     const attackingUnit = getAttackingUnit(state);
     const lastEffect = getLastEffect(state);
+    if (!isBoardInteractable(state)) {
+        return;
+    }
 
     const matchingCardInHand = selfPlayer.hand.find(
         (card) => card.id === cardId

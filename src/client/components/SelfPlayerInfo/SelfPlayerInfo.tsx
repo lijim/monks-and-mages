@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getSelfPlayer } from '@/client/redux/selectors';
+import { getSelfPlayer, isBoardInteractable } from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
 import { passTurn as passTurnGameExtras } from '@/client/redux/clientSideGameExtras';
 
@@ -16,6 +16,9 @@ import { PrimaryColorButton } from '../Button';
  */
 export const SelfPlayerInfo: React.FC = () => {
     const selfPlayer = useSelector<RootState, Player | null>(getSelfPlayer);
+    const isGameInteractable = useSelector<RootState, boolean>(
+        isBoardInteractable
+    );
     const dispatch = useDispatch();
 
     const webSocket = useContext(WebSocketContext);
@@ -30,7 +33,10 @@ export const SelfPlayerInfo: React.FC = () => {
             {selfPlayer.isActivePlayer && (
                 <PrimaryColorButton
                     onClick={passTurn}
-                    disabled={selfPlayer?.effectQueue?.length > 0}
+                    disabled={
+                        !isGameInteractable ||
+                        selfPlayer?.effectQueue?.length > 0
+                    }
                 >
                     Pass Turn
                 </PrimaryColorButton>

@@ -4,6 +4,8 @@ Monks and Mages is a trading card-style game inspired by [Heroes of Might and Ma
 
 To play, visit: https://www.monksandmages.com/
 
+This game is a work in progress. If you find bugs, feel free to let me know on the issues section of this project
+
 # Installation and Running
 
 This game can be run locally if you have [node v16.x](https://nodejs.org/en/download/) and [yarn installed globally](https://yarnpkg.com/getting-started/install)
@@ -55,7 +57,7 @@ This project runs on a few core technologies:
 -   [webpack](https://webpack.js.org/)
 -   [socket.io](https://socket.io/)
 -   [React](https://reactjs.org/)
--   [React Drag and Drop](https://react-dnd.github.io/react-dnd/about)
+-   [React Redux](https://redux-toolkit.js.org/introduction/getting-started)
 -   [React Router v6](https://reactrouter.com)
 
 Linting on this project is done via a combination of typescript, [prettier](https://prettier.io/), and [eslint](https://eslint.org/)
@@ -82,3 +84,12 @@ Unit testing is covered via [Jest](https://jestjs.io/) and [React Testing Librar
     -   **Spells** have an effect that is deployed immediately upon casting, such as:
         -   Ember Spear (🔥) deal 3 damage to any target
         -   A gentle gust (🔥)(🌊) buffs the team's stats by 1
+
+# Game philosophy
+
+-   the game has 5 resources with separate identities:
+    -   Bamboo 🎋: resource generation, minor healing effects, ranged units and ranged damage spells
+    -   Iron 🛠: soldiers, sturdy units, minor damage spells
+    -   Fire 🔥: direct damage, conjuration, curses (e.g. cursing an opponents' hand)
+    -   Water 🌊: drawing cards, conjuration, returning units to hands (bounce)
+    -   Crystal 🔮: drawing cards (minor), resurrection, augmenting other forms of magic
