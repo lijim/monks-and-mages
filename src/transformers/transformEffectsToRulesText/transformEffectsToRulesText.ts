@@ -32,7 +32,7 @@ const titleize = (str: string): string => {
 };
 
 export const transformEffectToRulesText = (effect: Effect): string => {
-    const { strength, target, summonType } = effect;
+    const { strength, target, resourceType, summonType } = effect;
     const targetName = TARGET_TYPES_TO_RULES_TEXT[target || TargetTypes.ANY];
     switch (effect.type) {
         case EffectType.BOUNCE: {
@@ -74,20 +74,8 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         case EffectType.HEAL: {
             return `Restore ${strength} HP to ${targetName}`;
         }
-        case EffectType.RAMP_BAMBOO: {
-            return `Increase bamboo resources by ${strength}`;
-        }
-        case EffectType.RAMP_CRYSTAL: {
-            return `Increase crystal resources by ${strength}`;
-        }
-        case EffectType.RAMP_FIRE: {
-            return `Increase fire resources by ${strength}`;
-        }
-        case EffectType.RAMP_IRON: {
-            return `Increase iron resources by ${strength}`;
-        }
-        case EffectType.RAMP_WATER: {
-            return `Increase water resources by ${strength}`;
+        case EffectType.RAMP: {
+            return `Increase ${resourceType.toLowerCase()} resources by ${strength}`;
         }
         case EffectType.REVIVE: {
             return `Revive ${targetName}`;

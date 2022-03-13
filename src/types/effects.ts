@@ -31,11 +31,7 @@ export enum EffectType {
     DEAL_DAMAGE, // to any target
     CURSE_HAND, // adds one generic cost to cards in hand
     DISCARD_HAND, // discard X cards at random
-    RAMP_CRYSTAL,
-    RAMP_BAMBOO,
-    RAMP_WATER,
-    RAMP_IRON,
-    RAMP_FIRE,
+    RAMP,
     REVIVE,
     SUMMON_UNITS,
     HEAL, // to any target
@@ -59,11 +55,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
         [EffectType.CURSE_HAND]: TargetTypes.OPPONENT,
         [EffectType.DISCARD_HAND]: TargetTypes.OPPONENT,
-        [EffectType.RAMP_CRYSTAL]: TargetTypes.SELF_PLAYER,
-        [EffectType.RAMP_BAMBOO]: TargetTypes.SELF_PLAYER,
-        [EffectType.RAMP_WATER]: TargetTypes.SELF_PLAYER,
-        [EffectType.RAMP_IRON]: TargetTypes.SELF_PLAYER,
-        [EffectType.RAMP_FIRE]: TargetTypes.SELF_PLAYER,
+        [EffectType.RAMP]: TargetTypes.SELF_PLAYER,
         [EffectType.REVIVE]: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
         [EffectType.SUMMON_UNITS]: TargetTypes.SELF_PLAYER,
         [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,

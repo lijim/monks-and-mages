@@ -146,7 +146,8 @@ const A_THOUSAND_WINDS = makeCard({
             strength: 3,
         },
         {
-            type: EffectType.RAMP_WATER,
+            type: EffectType.RAMP,
+            resourceType: Resource.WATER,
             strength: 1,
         },
     ],
