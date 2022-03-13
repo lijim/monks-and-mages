@@ -132,6 +132,7 @@ export const SAMPLE_DECKLIST_5: DeckList = [
     // Other
     { card: UnitCards.BAMBOO_FARMER, quantity: 4 },
     // Soldiers
+    { card: UnitCards.LANCER, quantity: 2 },
     { card: UnitCards.TEMPLE_GUARDIAN, quantity: 4 },
     // Ranged
     { card: UnitCards.LONGBOWMAN, quantity: 2 },
