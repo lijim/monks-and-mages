@@ -613,6 +613,43 @@ describe('Game Action', () => {
             expect(newBoardState.players[1].isAlive).toBe(false);
         });
 
+        it('does not win the game with a lethal attack if another player is around', () => {
+            const attacker = makeCard(UnitCards.WATER_GUARDIAN);
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            board.players[1].health = 1;
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[1].isAlive).toBe(false);
+            expect(newBoardState.gameState).toBe(GameState.PLAYING);
+        });
+
+        it('wins the game with a lethal attack', () => {
+            const attacker = makeCard(UnitCards.WATER_GUARDIAN);
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            board.players[1].health = 1;
+            board.players[2].isAlive = false;
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[1].isAlive).toBe(false);
+            expect(newBoardState.gameState).toBe(GameState.WIN);
+        });
+
         it('blocks an attack vs player with soldiers', () => {
             const attacker = makeCard(UnitCards.LANCER);
             const defender = makeCard(UnitCards.LANCER);

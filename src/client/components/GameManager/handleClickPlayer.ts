@@ -11,7 +11,7 @@ import {
 } from '@/client/redux/selectors';
 import { GameActionTypes } from '@/types/gameActions';
 import { performAttack } from '@/client/redux/clientSideGameExtras';
-import { GameState, Player } from '@/types/board';
+import { Player } from '@/types/board';
 import { getDefaultTargetForEffect, TargetTypes } from '@/types/effects';
 
 interface HandleClickOnPlayerParams {
