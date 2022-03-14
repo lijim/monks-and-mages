@@ -1,28 +1,49 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { HistoryRouter as Router } from 'redux-first-history/rr6';
+
+import { screen, waitFor } from '@testing-library/react';
 import { render } from '@/test-utils';
 
-import { App } from './App';
-import { RootState } from '@/client/redux/store';
+import { RouterRoutes } from './App';
+import { history, RootState } from '@/client/redux/store';
 
 describe('App', () => {
-    it('renders a name selection', () => {
+    it('renders a name selection', async () => {
         const preloadedState: Partial<RootState> = {
             user: {
                 name: '',
             },
         };
-        render(<App />, { preloadedState });
-        expect(screen.queryByText('Choose a Name')).toBeInTheDocument();
+        render(
+            <React.Suspense fallback={<></>}>
+                <Router history={history}>
+                    <RouterRoutes />
+                </Router>
+            </React.Suspense>,
+            { preloadedState }
+        );
+        await waitFor(() =>
+            expect(screen.queryByText('Choose a Name')).toBeInTheDocument()
+        );
     });
 
-    it('renders a particular name if already selected', () => {
+    it('renders a particular name if already selected', async () => {
         const preloadedState: Partial<RootState> = {
             user: {
                 name: 'Gretsch',
             },
         };
-        render(<App />, { preloadedState });
-        expect(screen.queryByText('Gretsch')).toBeInTheDocument();
+
+        render(
+            <React.Suspense fallback={<></>}>
+                <Router history={history}>
+                    <RouterRoutes />
+                </Router>
+            </React.Suspense>,
+            { preloadedState }
+        );
+        await waitFor(() =>
+            expect(screen.queryByText('Gretsch')).toBeInTheDocument()
+        );
     });
 });

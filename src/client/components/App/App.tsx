@@ -42,8 +42,26 @@ const Centered = styled.div`
     place-items: center;
 `;
 
-const Main: React.FC = () => {
+export const RouterRoutes: React.FC = () => {
     const isUserPastIntroScreen = useSelector<RootState>(isUserInitialized);
+
+    return (
+        <Routes>
+            <Route
+                path="/"
+                element={
+                    <LobbyBackground>
+                        <IntroScreen />
+                        {isUserPastIntroScreen && <Rooms />}
+                    </LobbyBackground>
+                }
+            />
+            <Route path="/ingame" element={<GameDisplay />} />
+        </Routes>
+    );
+};
+
+const Main: React.FC = () => {
     return (
         <div>
             <Router history={history}>
@@ -56,21 +74,7 @@ const Main: React.FC = () => {
                 >
                     <WebSocketProvider>
                         <GameManager>
-                            <Routes>
-                                <Route
-                                    path="/"
-                                    element={
-                                        <LobbyBackground>
-                                            <IntroScreen />
-                                            {isUserPastIntroScreen && <Rooms />}
-                                        </LobbyBackground>
-                                    }
-                                />
-                                <Route
-                                    path="/ingame"
-                                    element={<GameDisplay />}
-                                />
-                            </Routes>
+                            <RouterRoutes />
                         </GameManager>
                     </WebSocketProvider>
                 </React.Suspense>
