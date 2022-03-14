@@ -1,6 +1,7 @@
 const path = require('path');
 const { addDisplayNameTransformer } = require('ts-react-display-name')
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const nodeExternals = require('webpack-node-externals');
 
 const styledComponentsTransformer = createStyledComponentsTransformer({
@@ -40,8 +41,11 @@ const clientConfig = {
         client: './src/client/index.tsx',
     },
     optimization: {
-        minimize: false
+        minimize: true
     },
+    plugins: [
+        new BundleAnalyzerPlugin()
+    ],
     target: 'web',
     mode: 'production',
     module: {
@@ -73,7 +77,8 @@ const clientConfig = {
     },
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        chunkFilename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist/public/js'),
     },
 };
 

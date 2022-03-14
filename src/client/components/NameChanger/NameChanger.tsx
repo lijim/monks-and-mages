@@ -13,6 +13,43 @@ const NameChangerContainer = styled.div`
     height: 100vh;
     display: grid;
     place-items: center;
+    animation: fadein 2s;
+
+    @keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes fadein {
+        /* Firefox */
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fadein {
+        /* Safari and Chrome */
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @-o-keyframes fadein {
+        /* Opera */
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 `;
 
 const NameChangerForm = styled.form`
