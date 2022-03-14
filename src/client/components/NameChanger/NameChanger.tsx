@@ -13,7 +13,7 @@ const NameChangerContainer = styled.div`
     height: 100vh;
     display: grid;
     place-items: center;
-    animation: fadein 2s;
+    animation: fadein 1s;
 
     @keyframes fadein {
         from {

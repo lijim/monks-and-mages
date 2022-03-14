@@ -24,6 +24,7 @@ export const ResourceCardGridItem: React.FC<ResourceCardGridItemProps> = ({
             onClick={onClick}
             isRotated={card.isUsed}
             zoomLevel={zoomLevel}
+            className="CardFrame"
         >
             <CardHeader>
                 <NameCell>{name}</NameCell>

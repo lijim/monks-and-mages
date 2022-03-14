@@ -33,6 +33,7 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
             primaryColor={getColorForCard(card)}
             onClick={onClick}
             zoomLevel={zoomLevel}
+            className="CardFrame"
         >
             <CardHeader>
                 <NameCell>{name}</NameCell>

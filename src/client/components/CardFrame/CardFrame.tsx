@@ -42,6 +42,7 @@ export const CardFrame = styled.div<CardFrameProps>`
     border-radius: 4%;
     padding: 10px;
     color: white;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     ${({ isRotated }) => (isRotated ? 'transform: rotate(90deg)' : '')};
     background-color: ${({ primaryColor }) => primaryColor || '#5c4d50'};
 `;
@@ -96,10 +97,11 @@ export const RulesTextArea = styled.div<RulesTextAreaProps>`
 `;
 
 export const AttackHPFooter = styled.div`
-    padding-top: 4px;
+    padding: 8px;
     font-weight: bold;
     display: grid;
     grid-template-columns: auto auto;
+    background: rgba(0, 0, 0, 0.5);
 `;
 
 interface BuffedTextProps {
