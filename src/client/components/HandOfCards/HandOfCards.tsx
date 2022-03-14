@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
 import { getSelfPlayer } from '@/client/redux/selectors';
 import { CardGridItem } from '../CardGridItem';
 import { Card } from '@/types/cards';
+import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
+import { Colors } from '@/constants/colors';
 
 interface HandContainerProps {
     handSize: number;
@@ -27,18 +29,30 @@ const HandContainer = styled.div<HandContainerProps>`
     overflow-y: hidden;
 `;
 
+type WidthLessContainerProps = {
+    isDeployable?: boolean;
+};
+
 // This widthless parent container is a CSS trick to prevent the 1fr units from expanding completely
-const WidthLessContainer = styled.div`
+const WidthLessContainer = styled.div<WidthLessContainerProps>`
     width: 0;
+    .tooltip-container .CardFrame {
+        border: 10px solid #240503;
+    }
+    .CardFrame {
+        ${({ isDeployable }) =>
+            isDeployable ? `border: 10px solid ${Colors.FOCUS_BLUE};` : ''}
+    }
 `;
 
 interface CardInHandProps {
     card: Card;
+    isDeployable?: boolean;
 }
 // one of the cards in the hand of cards
-const CardInHand: React.FC<CardInHandProps> = ({ card }) => {
+const CardInHand: React.FC<CardInHandProps> = ({ card, isDeployable }) => {
     return (
-        <WidthLessContainer key={card.id}>
+        <WidthLessContainer key={card.id} isDeployable={isDeployable}>
             <CardGridItem key={card.id} card={card} hasOnClick hasTooltip />
         </WidthLessContainer>
     );
@@ -47,11 +61,26 @@ const CardInHand: React.FC<CardInHandProps> = ({ card }) => {
 export const HandOfCards: React.FC = () => {
     const selfPlayer = useSelector(getSelfPlayer);
     const handSize = selfPlayer?.hand?.length;
+
+    const playerHasCardsLeftToDeploy = selfPlayer.resourcesLeftToDeploy > 0;
+
+    const isCardDeployable = useCallback(
+        (card: Card) => {
+            if (card.cardType === 'Resource') return playerHasCardsLeftToDeploy;
+            return canPlayerPayForCard(selfPlayer, card);
+        },
+        [selfPlayer]
+    );
+
     if (!handSize) return <></>;
     return (
         <HandContainer handSize={handSize}>
             {selfPlayer.hand.map((card) => (
-                <CardInHand key={card.id} card={card} />
+                <CardInHand
+                    key={card.id}
+                    card={card}
+                    isDeployable={isCardDeployable(card)}
+                />
             ))}
         </HandContainer>
     );

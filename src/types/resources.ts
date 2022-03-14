@@ -35,13 +35,21 @@ export const RESOURCE_GLOSSARY: Record<Resource, GlossaryEntry> = {
     [Resource.CRYSTAL]: {
         icon: '🔮',
         name: 'Crystal',
-        primaryColor: '#b384d1',
+        primaryColor: Colors.CRYSTAL_PURPLE,
     },
     [Resource.FIRE]: {
         icon: '🔥',
         name: 'Fire',
         primaryColor: Colors.FIRE_ORANGE,
     },
-    [Resource.IRON]: { icon: '🛠️', name: 'Iron', primaryColor: '#5c5955' },
-    [Resource.WATER]: { icon: '🌊', name: 'Water', primaryColor: '#2ccdf5' },
+    [Resource.IRON]: {
+        icon: '🛠️',
+        name: 'Iron',
+        primaryColor: Colors.IRON_GREY,
+    },
+    [Resource.WATER]: {
+        icon: '🌊',
+        name: 'Water',
+        primaryColor: Colors.WATER_BLUE,
+    },
 };
