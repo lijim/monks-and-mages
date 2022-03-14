@@ -1,7 +1,7 @@
 const path = require('path');
 const { addDisplayNameTransformer } = require('ts-react-display-name')
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const nodeExternals = require('webpack-node-externals');
 
 const styledComponentsTransformer = createStyledComponentsTransformer({
@@ -43,9 +43,9 @@ const clientConfig = {
     optimization: {
         minimize: true
     },
-    plugins: [
+    /* plugins: [
         new BundleAnalyzerPlugin()
-    ],
+    ], */
     target: 'web',
     mode: 'production',
     module: {
