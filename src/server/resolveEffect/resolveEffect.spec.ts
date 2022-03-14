@@ -319,6 +319,46 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Heal', () => {
+        it('heals players', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.HEAL,
+                        strength: 2,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].health).toEqual(
+                PlayerConstants.STARTING_HEALTH + 2
+            );
+        });
+
+        it('heals, but does not overheal units', () => {
+            const knight1 = makeCard(UnitCards.KNIGHT_TEMPLAR);
+            const knight2 = makeCard(UnitCards.KNIGHT_TEMPLAR);
+            knight1.hp = 1;
+            knight2.hp = 3;
+            board.players[0].units = [knight1, knight2];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.HEAL,
+                        strength: 2,
+                        target: TargetTypes.ALL_UNITS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].hp).toEqual(3);
+            expect(newBoard.players[0].units[1].hp).toEqual(4);
+        });
+    });
+
     describe('Ramp Player', () => {
         it('increases resources deployed', () => {
             const newBoard = resolveEffect(

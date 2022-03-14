@@ -297,7 +297,7 @@ const WIND_MAGE: UnitCard = makeCard({
     isRanged: true,
     isMagical: true,
     isSoldier: false,
-    passiveEffects: [],
+    passiveEffects: [PassiveEffect.QUICK],
 });
 
 // Soldiers

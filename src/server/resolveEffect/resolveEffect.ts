@@ -181,6 +181,18 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.HEAL: {
+            playerTargets.forEach((player) => {
+                player.health += effectStrength;
+            });
+            unitTargets.forEach(({ unitCard }) => {
+                unitCard.hp = Math.min(
+                    unitCard.totalHp,
+                    unitCard.hp + effectStrength
+                );
+            });
+            return clonedBoard;
+        }
         case EffectType.RAMP: {
             const { resourceType } = effect;
             if (!resourceType) return clonedBoard;
