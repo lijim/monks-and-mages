@@ -27,9 +27,7 @@ app.use((request, response, next): void | undefined => {
 });
 
 // Serves everything from dist/client as /client, e.g. http://localhost:3000/client/index.js
-app.use('/client.bundle.js', (_, res) => {
-    res.sendFile(path.join(__dirname, 'client.bundle.js'));
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serves the base page
 app.get('/', (_, res) => {

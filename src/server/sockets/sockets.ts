@@ -209,9 +209,6 @@ export const configureIo = (server: HttpServer) => {
                     startedBoards.set(roomName, newBoardState);
                     sendBoardForRoom(roomName);
                 }
-
-                // TODO: apply a win state
-                // TODO: rename gameEngine as applyGameAction
             });
 
             socket.on('disconnecting', () => {

@@ -1,20 +1,34 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, Provider } from 'react-redux';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import 'react-popper-tooltip/dist/styles.css';
 
-import { makeSampleDeck1 } from '@/factories/deck';
 import { isUserInitialized } from '@/client/redux/selectors';
-import { history, RootState } from '@/client/redux/store';
+import { history, RootState, store } from '@/client/redux/store';
 
-import { DeckList } from '../DeckList';
-import { IntroScreen } from '../IntroScreen';
-import { Rooms } from '../Rooms';
-import { GameDisplay } from '../GameDisplay';
-import { GameManager } from '../GameManager';
-
+const IntroScreen = React.lazy(() =>
+    import('../IntroScreen').then((module) => ({
+        default: module.IntroScreen,
+    }))
+);
+const Rooms = React.lazy(() =>
+    import('../Rooms').then((module) => ({
+        default: module.Rooms,
+    }))
+);
+const WebSocketProvider = React.lazy(() =>
+    import('../WebSockets').then((module) => ({
+        default: module.WebSocketProvider,
+    }))
+);
+const GameManager = React.lazy(() =>
+    import('../GameManager').then((module) => ({ default: module.GameManager }))
+);
+const GameDisplay = React.lazy(() =>
+    import('../GameDisplay').then((module) => ({ default: module.GameDisplay }))
+);
 const LobbyBackground = styled.div`
     background: linear-gradient(70deg, #eed, transparent);
     height: 100vh;
@@ -22,37 +36,57 @@ const LobbyBackground = styled.div`
     grid-template-rows: auto 1fr;
 `;
 
-export const App: React.FC = () => {
-    const deck = makeSampleDeck1();
+const Centered = styled.div`
+    height: 100vh;
+    display: grid;
+    place-items: center;
+`;
 
+export const RouterRoutes: React.FC = () => {
     const isUserPastIntroScreen = useSelector<RootState>(isUserInitialized);
 
     return (
-        <GameManager>
-            <div>
-                <Router history={history}>
-                    {
-                        <React.Fragment>
-                            <Routes>
-                                <Route
-                                    path="/"
-                                    element={
-                                        <LobbyBackground>
-                                            <IntroScreen />
-                                            {isUserPastIntroScreen && <Rooms />}
-                                        </LobbyBackground>
-                                    }
-                                />
-                                <Route
-                                    path="/ingame"
-                                    element={<GameDisplay />}
-                                />
-                                <Route element={<DeckList deck={deck} />} />
-                            </Routes>
-                        </React.Fragment>
+        <Routes>
+            <Route
+                path="/"
+                element={
+                    <LobbyBackground>
+                        <IntroScreen />
+                        {isUserPastIntroScreen && <Rooms />}
+                    </LobbyBackground>
+                }
+            />
+            <Route path="/ingame" element={<GameDisplay />} />
+        </Routes>
+    );
+};
+
+const Main: React.FC = () => {
+    return (
+        <div>
+            <Router history={history}>
+                <React.Suspense
+                    fallback={
+                        <LobbyBackground>
+                            <Centered></Centered>
+                        </LobbyBackground>
                     }
-                </Router>
-            </div>
-        </GameManager>
+                >
+                    <WebSocketProvider>
+                        <GameManager>
+                            <RouterRoutes />
+                        </GameManager>
+                    </WebSocketProvider>
+                </React.Suspense>
+            </Router>
+        </div>
+    );
+};
+
+export const App: React.FC = () => {
+    return (
+        <Provider store={store}>
+            <Main />
+        </Provider>
     );
 };

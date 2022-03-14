@@ -18,8 +18,6 @@ import {
 } from '@/client/redux/clientSideGameExtras';
 import { getDefaultTargetForEffect, TargetTypes } from '@/types/effects';
 
-// TODO: make it take just the card instead and add a param for target area
-// (your hand, your board, other players' board)
 interface HandleClickOnCardParams {
     cardId: string;
     dispatch: AppDispatch;

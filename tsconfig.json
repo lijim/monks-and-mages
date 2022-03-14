@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "es6",
+    "module": "es2020",
     "esModuleInterop": true,
     "target": "es6",
     "jsx": "react",
