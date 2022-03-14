@@ -27,21 +27,19 @@ export const AutoResolvingTargets = [
  * Effects that a card can have (both spells and units)
  */
 export enum EffectType {
-    DRAW,
-    DEAL_DAMAGE, // to any target
-    CURSE_HAND, // adds one generic cost to cards in hand
-    DISCARD_HAND, // discard X cards at random
-    RAMP,
-    REVIVE,
-    SUMMON_UNITS,
-    HEAL, // to any target
-    BOUNCE, // to any target
-    BUFF_TEAM_ATTACK, // increases all attack for non-magic units
-    // BUFF_FIRE_ATTACK // increases all fire-based units attack
-    // BUFF_WATER_ATTACK
-    BUFF_TEAM_MAGIC, // increases attack for magic-units
-    BUFF_TEAM_HP, // increases maxHp and hp for whole team
-    BUFF_HAND_ATTACK, // buffs all creatures in hand
+    BOUNCE = 'Bounce', // to any target
+    BUFF_HAND_ATTACK = 'Buff hand attack', // buffs all creatures in hand
+    BUFF_TEAM_ATTACK = 'Buff team attack', // increases all attack for non-magic units
+    BUFF_TEAM_HP = 'Buff team hp', // increases maxHp and hp for whole team
+    BUFF_TEAM_MAGIC = 'Buff team magic', // increases attack for magic-units
+    CURSE_HAND = 'Curse Hand', // adds one generic cost to cards in hand
+    DEAL_DAMAGE = 'Deal Damage', // to any target
+    DISCARD_HAND = 'Discard Hand', // discard X cards at random
+    DRAW = 'Draw',
+    HEAL = 'Heal', // to any target
+    RAMP = 'Ramp',
+    REVIVE = 'Revive',
+    SUMMON_UNITS = 'Summon Units',
 }
 
 /**

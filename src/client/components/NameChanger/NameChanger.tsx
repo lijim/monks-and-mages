@@ -24,8 +24,9 @@ const NameChangerForm = styled.form`
         margin-bottom: 4px;
     }
     input {
-        height: 40px;
-        width: 300px;
+        height: 70px;
+        font-size: 50px;
+        width: 450px;
     }
 `;
 
