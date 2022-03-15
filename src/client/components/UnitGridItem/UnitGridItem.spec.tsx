@@ -45,17 +45,17 @@ describe('Unit Grid Item', () => {
 
     it('displays sleepiness', () => {
         render(<UnitGridItem card={UnitCards.LANCER} isOnBoard />);
-        expect(screen.getByText('💤💤💤')).toBeInTheDocument();
+        expect(screen.getByText('💤')).toBeInTheDocument();
     });
 
     it('hides sleepiness (not on board)', () => {
         render(<UnitGridItem card={UnitCards.LANCER} />);
-        expect(screen.queryByText('💤💤💤')).not.toBeInTheDocument();
+        expect(screen.queryByText('💤')).not.toBeInTheDocument();
     });
 
     it('hides sleepiness (quick units)', () => {
         render(<UnitGridItem card={UnitCards.KNIGHT_TEMPLAR} isOnBoard />);
-        expect(screen.queryByText('💤💤💤')).not.toBeInTheDocument();
+        expect(screen.queryByText('💤')).not.toBeInTheDocument();
     });
 
     it('renders unit name + casting cost', () => {
