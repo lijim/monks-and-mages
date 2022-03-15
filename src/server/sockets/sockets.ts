@@ -1,7 +1,7 @@
 import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
-import { Board, GameState, Player } from '@/types/board';
+import { Board, GameState } from '@/types/board';
 import { makeNewBoard } from '@/factories/board';
 import { obscureBoardInfo } from '../obscureBoardInfo';
 

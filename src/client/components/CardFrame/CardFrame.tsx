@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Colors } from '@/constants/colors';
 
 interface CardFrameProps {
+    isHighlighted?: boolean;
     isRaised?: boolean;
     isRotated?: boolean;
     primaryColor?: string;
@@ -38,7 +39,9 @@ export const CardFrame = styled.div<CardFrameProps>`
     grid-template-rows: auto 1fr 20px 120px auto;
     width: 220px;
     height: 320px;
-    border: 10px solid #240503;
+    border: 10px solid
+        ${({ isHighlighted }) =>
+            isHighlighted ? Colors.FOCUS_BLUE : '#240503'};
     border-radius: 4%;
     padding: 10px;
     color: white;
@@ -100,7 +103,7 @@ export const AttackHPFooter = styled.div`
     padding: 8px;
     font-weight: bold;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     background: rgba(0, 0, 0, 0.5);
 `;
 
@@ -115,6 +118,12 @@ export const AttackCell = styled.div<BuffedTextProps>`
         if (buffAmount < 0) return `color: ${Colors.DEBUFF_RED}`;
         return '';
     }}
+`;
+
+export const SleepyCell = styled.div<BuffedTextProps>`
+    color: transparent;
+    text-shadow: 0 0 0 white;
+    text-align: center;
 `;
 
 export const HPCell = styled.div<BuffedTextProps>`

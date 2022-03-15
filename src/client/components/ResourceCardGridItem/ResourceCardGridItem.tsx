@@ -7,12 +7,14 @@ import { CastingCostFrame } from '../CastingCost';
 
 interface ResourceCardGridItemProps {
     card: ResourceCard;
+    isHighlighted?: boolean;
     onClick?: () => void;
     zoomLevel?: number;
 }
 
 export const ResourceCardGridItem: React.FC<ResourceCardGridItemProps> = ({
     card,
+    isHighlighted,
     onClick,
     zoomLevel,
 }) => {
@@ -22,6 +24,7 @@ export const ResourceCardGridItem: React.FC<ResourceCardGridItemProps> = ({
             primaryColor={primaryColor}
             data-testid="ResourceCard-GridItem"
             onClick={onClick}
+            isHighlighted={isHighlighted}
             isRotated={card.isUsed}
             zoomLevel={zoomLevel}
             className="CardFrame"
