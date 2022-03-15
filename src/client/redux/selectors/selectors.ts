@@ -1,7 +1,7 @@
 import { GameState, Player } from '@/types/board';
 import { Effect } from '@/types/cards';
 import { TargetTypes } from '@/types/effects';
-import { RootState } from './store';
+import { RootState } from '../store';
 
 export const isUserInitialized = (state: Partial<RootState>): boolean =>
     !!state.user.name;

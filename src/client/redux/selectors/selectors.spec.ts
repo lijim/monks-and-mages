@@ -33,6 +33,17 @@ describe('selectors', () => {
         });
     });
 
+    describe('getAttackingUnit', () => {
+        it('returns the id of the attacking unit, if any', () => {
+            const state = {
+                clientSideGameExtras: {
+                    attackingUnit: 'a13f2-a2-4nm',
+                },
+            };
+            expect(getAttackingUnit(state)).toBe('a13f2-a2-4nm');
+        });
+    });
+
     describe('getSelfPlayer', () => {
         it('returns the player that matches the name', () => {
             const state = {

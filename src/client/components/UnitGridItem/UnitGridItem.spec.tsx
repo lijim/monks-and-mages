@@ -2,7 +2,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import { render } from '@/test-utils';
 
-import { UnitCards } from '@/cardDb/units';
+import { UnitCards } from '@/mocks/units';
 import { UnitGridItem } from './UnitGridItem';
 import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
 import { makeCard } from '@/factories/cards';
@@ -41,6 +41,21 @@ describe('Unit Grid Item', () => {
         expect(
             screen.getByText('Quick (can attack right away)')
         ).toBeInTheDocument();
+    });
+
+    it('displays sleepiness', () => {
+        render(<UnitGridItem card={UnitCards.LANCER} isOnBoard />);
+        expect(screen.getByText('💤')).toBeInTheDocument();
+    });
+
+    it('hides sleepiness (not on board)', () => {
+        render(<UnitGridItem card={UnitCards.LANCER} />);
+        expect(screen.queryByText('💤')).not.toBeInTheDocument();
+    });
+
+    it('hides sleepiness (quick units)', () => {
+        render(<UnitGridItem card={UnitCards.KNIGHT_TEMPLAR} isOnBoard />);
+        expect(screen.queryByText('💤')).not.toBeInTheDocument();
     });
 
     it('renders unit name + casting cost', () => {

@@ -14,6 +14,7 @@ import {
     HPCell,
     NameCell,
     RulesTextArea,
+    SleepyCell,
 } from '../CardFrame';
 import { getColorForCard } from '@/transformers/getColorForCard';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
@@ -21,6 +22,7 @@ import { getAttackingUnit } from '@/client/redux/selectors';
 
 interface UnitGridItemProps {
     card: UnitCard;
+    isHighlighted?: boolean;
     isOnBoard?: boolean;
     onClick?: () => void;
     zoomLevel?: number;
@@ -28,6 +30,7 @@ interface UnitGridItemProps {
 
 export const UnitGridItem: React.FC<UnitGridItemProps> = ({
     card,
+    isHighlighted = false,
     isOnBoard = false,
     onClick,
     zoomLevel,
@@ -46,6 +49,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         isRanged,
         isSoldier,
         name,
+        numAttacksLeft,
         originalCost,
         passiveEffects,
         totalHp,
@@ -57,6 +61,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
 
     return (
         <CardFrame
+            isHighlighted={isHighlighted}
             isRaised={attackUnitId === id}
             data-testid="UnitGridItem"
             primaryColor={getColorForCard(card)}
@@ -95,6 +100,9 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 <AttackCell data-testid="attack" buffAmount={attackBuff}>
                     {attack + attackBuff} ⚔️
                 </AttackCell>
+                <SleepyCell>
+                    {isOnBoard && numAttacksLeft === 0 && '💤'}
+                </SleepyCell>
                 <HPCell data-testid="hp" buffAmount={hpBuff}>
                     {isOnBoard && `${hp + hpBuff} / `} {totalHp + hpBuff} 💙
                 </HPCell>

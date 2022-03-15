@@ -11,6 +11,7 @@ interface CardGridItemProps {
     card: Card;
     hasOnClick?: boolean;
     hasTooltip?: boolean;
+    isHighlighted?: boolean;
     isOnBoard?: boolean;
     zoomLevel?: number;
 }
@@ -21,6 +22,7 @@ interface CardGridItemProps {
 export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
     card,
     hasOnClick,
+    isHighlighted,
     isOnBoard,
     zoomLevel,
 }) => {
@@ -32,6 +34,7 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
         return (
             <ResourceCardGridItem
                 card={card}
+                isHighlighted={isHighlighted}
                 onClick={hasOnClick ? onClick : undefined}
                 zoomLevel={zoomLevel}
             />
@@ -41,6 +44,7 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
         return (
             <SpellGridItem
                 card={card}
+                isHighlighted={isHighlighted}
                 onClick={hasOnClick ? onClick : undefined}
                 zoomLevel={zoomLevel}
             />
@@ -50,6 +54,7 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
         return (
             <UnitGridItem
                 card={card}
+                isHighlighted={isHighlighted}
                 onClick={hasOnClick ? onClick : undefined}
                 isOnBoard={isOnBoard}
                 zoomLevel={zoomLevel}
@@ -63,6 +68,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
     card,
     hasTooltip,
     hasOnClick,
+    isHighlighted,
     isOnBoard,
     zoomLevel = 1,
 }) => {
@@ -81,6 +87,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                 <CardGridSingleItem
                     key={card.id}
                     card={card}
+                    isHighlighted={isHighlighted}
                     isOnBoard={isOnBoard}
                     hasOnClick={hasOnClick}
                     zoomLevel={zoomLevel}

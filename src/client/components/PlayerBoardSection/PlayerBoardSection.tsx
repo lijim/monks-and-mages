@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { useSelector } from 'react-redux';
 import { Player } from '@/types/board';
 import { Colors } from '@/constants/colors';
 import { CardGridItem } from '../CardGridItem';
+import { getHighlightableCards } from '@/client/redux/selectors/getHighlightableCards';
 
 interface PlayerBoardSectionProps {
     isSelfPlayer?: boolean;
@@ -24,6 +26,8 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
     isSelfPlayer,
     player,
 }) => {
+    const highlightableUnits = useSelector(getHighlightableCards);
+
     if (!player?.units || !player?.resources) {
         return <PlayerBoardSectionContainer isSelfPlayer={isSelfPlayer} />;
     }
@@ -33,6 +37,7 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
             {units.map((unitCard) => (
                 <CardGridItem
                     card={unitCard}
+                    isHighlighted={highlightableUnits.indexOf(unitCard.id) > -1}
                     key={unitCard.id}
                     hasOnClick
                     hasTooltip

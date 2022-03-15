@@ -16,12 +16,14 @@ import { getColorForCard } from '@/transformers/getColorForCard';
 
 interface SpellGridItemProps {
     card: SpellCard;
+    isHighlighted?: boolean;
     onClick?: () => void;
     zoomLevel?: number;
 }
 
 export const SpellGridItem: React.FC<SpellGridItemProps> = ({
     card,
+    isHighlighted = false,
     onClick,
     zoomLevel,
 }) => {
@@ -29,6 +31,7 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
 
     return (
         <CardFrame
+            isHighlighted={isHighlighted}
             data-testid="SpellGridItem"
             primaryColor={getColorForCard(card)}
             onClick={onClick}
