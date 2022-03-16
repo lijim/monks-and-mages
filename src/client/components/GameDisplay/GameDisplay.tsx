@@ -43,6 +43,9 @@ const CenterColumn = styled.div`
 
 const RightColumn = styled.div`
     margin: 4px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow-y: hidden;
 `;
 
 const EmphText = styled.span`
@@ -62,8 +65,8 @@ const ChatBox = styled.div`
 `;
 
 const ChatMessages = styled.div`
-    position: absolute;
-    height: auto;
+    place-self: end;
+    height: calc(100% - 40px);
     bottom: 0;
     display: flex;
     align-content: flex-end;
@@ -71,6 +74,12 @@ const ChatMessages = styled.div`
     flex-direction: column;
     padding: 20px 4px;
     overflow-y: scroll;
+    overscroll-behavior-y: contain;
+    scroll-snap-type: y proximity;
+
+    div:last-child {
+        scroll-snap-align: end;
+    }
 `;
 
 /**
@@ -110,11 +119,13 @@ export const GameDisplay: React.FC = () => {
                 <HandOfCards />
             </CenterColumn>
             <RightColumn>
-                {lastEffect && (
-                    <EmphText>
-                        Resolving: {transformEffectToRulesText(lastEffect)}
-                    </EmphText>
-                )}
+                <div>
+                    {lastEffect && (
+                        <EmphText>
+                            Resolving: {transformEffectToRulesText(lastEffect)}
+                        </EmphText>
+                    )}
+                </div>
                 <ChatMessages>
                     {chats.map(({ id, message }) => (
                         <ChatBox key={id}>{message}</ChatBox>
