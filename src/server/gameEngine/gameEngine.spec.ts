@@ -32,6 +32,26 @@ describe('Game Action', () => {
             board.gameState = GameState.MULLIGANING;
         });
 
+        it('displays chat messages', () => {
+            let newBoardState = applyGameAction({
+                board,
+                gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
+                playerName: 'Timmy',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
+                gameAction: { type: GameActionTypes.REJECT_MULLIGAN },
+                playerName: 'Tommy',
+            });
+
+            expect(newBoardState.chatLog[0].message).toBe(
+                'Timmy has accepted a hand of 7 cards'
+            );
+            expect(newBoardState.chatLog[1].message).toBe(
+                'Tommy has thrown back a hand of 7 cards and is going down to 6 cards'
+            );
+        });
+
         it('starts the game when everyone has accepted a mulligan', () => {
             let newBoardState = applyGameAction({
                 board,
@@ -383,6 +403,29 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
             expect(newBoardState).toEqual(board);
+        });
+
+        it('broadcasts a chat message (attacking another unit)', () => {
+            const attacker = makeCard(UnitCards.LANCER);
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.chatLog[0].message).toBe(
+                '[[Lancer]] (Timmy) attacked [[Squire]] (Tommy)'
+            );
+            expect(newBoardState.chatLog[1].message).toBe(
+                '[[Lancer]] (Timmy) went to the cemetery'
+            );
         });
 
         it('performs a melee attack (non-lethal)', () => {
