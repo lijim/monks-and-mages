@@ -421,7 +421,7 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
             expect(newBoardState.chatLog[0].message).toBe(
-                '[[Lancer]] (Timmy) attacked [[Squire]] (Tommy)'
+                '[[Lancer]] (Timmy) ⚔️⚔️ [[Squire]] (Tommy)'
             );
             expect(newBoardState.chatLog[1].message).toBe(
                 '[[Lancer]] (Timmy) went to the cemetery'
@@ -704,7 +704,25 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });
 
-        it('attacks the opposing player', () => {
+        it('broadccast that it attacks the opposing player in chat', () => {
+            const attacker = makeCard(UnitCards.WATER_GUARDIAN);
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.chatLog[0].message).toEqual(
+                '[[Water Guardian]] (Timmy) 🪄🪄 Tommy'
+            );
+        });
+
+        it('attacks the opposing player (attack buff)', () => {
             const attacker = makeCard(UnitCards.WATER_GUARDIAN);
             attacker.attackBuff = 3;
             attacker.numAttacksLeft = 1;

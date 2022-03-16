@@ -279,6 +279,14 @@ export const applyGameAction = ({
                 return clonedBoard;
             }
 
+            let attackEmoji = '';
+            if (attacker.isMagical) attackEmoji = '🪄';
+            else if (attacker.isRanged) {
+                attackEmoji = '🏹';
+            } else {
+                attackEmoji = '⚔️';
+            }
+
             if (unitTarget) {
                 let defender: UnitCard = null;
                 let defendingPlayer: Player = null;
@@ -332,7 +340,7 @@ export const applyGameAction = ({
 
                 // Resolve units going to the cemetery
                 addSystemChat(
-                    `[[${attacker.name}]] (${activePlayer.name}) attacked [[${defender.name}]] (${defendingPlayer.name})`
+                    `[[${attacker.name}]] (${activePlayer.name}) ${attackEmoji}${attackEmoji} [[${defender.name}]] (${defendingPlayer.name})`
                 );
                 processBoardToCemetery(clonedBoard);
 
@@ -349,6 +357,10 @@ export const applyGameAction = ({
                 );
                 if (defendingPlayerHasSoldier && !attacker.isMagical)
                     return clonedBoard;
+
+                addSystemChat(
+                    `[[${attacker.name}]] (${activePlayer.name}) ${attackEmoji}${attackEmoji} ${defendingPlayer.name}`
+                );
                 defendingPlayer.health -= attacker.attack + attacker.attackBuff;
                 if (defendingPlayer.health < 0) {
                     defendingPlayer.isAlive = false;
