@@ -6,6 +6,7 @@ import { GameDisplay } from './GameDisplay';
 import { RootState } from '@/client/redux/store';
 import { makeNewBoard } from '@/factories/board';
 import { EffectType } from '@/types/effects';
+import { makeSystemChatMsg } from '@/factories/chat';
 
 describe('GameDisplay', () => {
     it('renders player names', () => {
@@ -18,6 +19,25 @@ describe('GameDisplay', () => {
         render(<GameDisplay />, { preloadedState });
         expect(screen.queryByText('Tommy')).toBeInTheDocument();
         expect(screen.queryByText('Timmy')).toBeInTheDocument();
+    });
+
+    it('displays chat messages', () => {
+        const board = makeNewBoard({
+            playerNames: ['Tommy', 'Timmy'],
+        });
+        board.chatLog = [makeSystemChatMsg('Tommy played [[Lancer]]')];
+
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Tommy',
+            },
+            board,
+        };
+        render(<GameDisplay />, { preloadedState });
+
+        expect(
+            screen.queryByText('Tommy played [[Lancer]]')
+        ).toBeInTheDocument();
     });
 
     it('renders active effects', () => {

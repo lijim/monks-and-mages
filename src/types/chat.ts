@@ -1,9 +1,10 @@
 type Chat = {
     dateTime: Date;
-    text: string;
+    id: string;
+    message: string;
 };
 
-interface SystemChat extends Chat {
+export interface SystemChat extends Chat {
     isFromSystem: true;
 }
 

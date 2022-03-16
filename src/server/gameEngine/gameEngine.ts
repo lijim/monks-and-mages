@@ -2,11 +2,13 @@ import cloneDeep from 'lodash.clonedeep';
 import shuffle from 'lodash.shuffle';
 
 import { Board, GameState, Player } from '@/types/board';
+import { ChatLog } from '@/types/chat';
 import { GameAction, GameActionTypes } from '@/types/gameActions';
 import { CardType, ResourceCard, UnitCard } from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
+import { makeSystemChatMsg } from '@/factories/chat';
 
 /**
  * @returns {Object} next player who has not readied yet (by accepting their mulligan) or
@@ -70,6 +72,12 @@ export const resetUnitCard = (unitCard: UnitCard) => {
     unitCard.cost = cloneDeep(unitCard.originalCost);
 };
 
+const addSystemChatFn =
+    (chatlog: ChatLog) =>
+    (message: string): void => {
+        chatlog.push(makeSystemChatMsg(message));
+    };
+
 /**
  * Mutates the board that's passed in.
  *
@@ -105,7 +113,8 @@ export const applyGameAction = ({
     playerName,
 }: ApplyGameActionParams): Board => {
     const clonedBoard = cloneDeep(board);
-    const { players } = clonedBoard;
+    const { players, chatLog } = clonedBoard;
+    const addSystemChat = addSystemChatFn(chatLog);
     let activePlayer = players.find((player) => player.isActivePlayer);
     const otherPlayers = players.filter((player) => !player.isActivePlayer);
 
@@ -244,6 +253,9 @@ export const applyGameAction = ({
                     cloneDeep(matchingCard.enterEffects)
                 );
                 activePlayer.hand.splice(matchingCardIndex, 1);
+                addSystemChat(
+                    `${activePlayer.name} played [[${matchingCard.name}]]`
+                );
             }
             return clonedBoard;
         }
