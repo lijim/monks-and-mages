@@ -13,5 +13,6 @@ export enum Colors {
     MAROON = '#800000',
     SECONDARY_GREEN = '#08A946',
     SECONDARY_GREEN_EMPHASIZED = '#057932',
+    VANTA_BLACK = '#101010', // for text against white
     WATER_BLUE = '#093FBE',
 }

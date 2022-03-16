@@ -16,6 +16,8 @@ import { PlayerBoardSection } from '../PlayerBoardSection';
 import { Effect } from '@/types/cards';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { CenterPromptBox } from '../CenterPromptBox';
+import { Colors } from '@/constants/colors';
+import { ChatLog } from '@/types/chat';
 
 const GameGrid = styled.div`
     width: 100%;
@@ -23,6 +25,7 @@ const GameGrid = styled.div`
     height: 100vh;
     display: grid;
     grid-template-columns: 185px 1fr 185px;
+    background-color: gainsboro;
 `;
 
 const LeftColumn = styled.div`
@@ -30,7 +33,7 @@ const LeftColumn = styled.div`
     grid-template-rows: 1fr 1fr 100px;
     place-items: center;
     z-index: 1;
-    background: white;
+    background-color: gainsboro;
 `;
 
 const CenterColumn = styled.div`
@@ -50,6 +53,26 @@ const EmphText = styled.span`
     color: white;
 `;
 
+const ChatBox = styled.div`
+    padding: 10px;
+    margin: 4px;
+    background: whitesmoke;
+    color: ${Colors.VANTA_BLACK};
+    box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+`;
+
+const ChatMessages = styled.div`
+    position: absolute;
+    height: auto;
+    bottom: 0;
+    display: flex;
+    align-content: flex-end;
+    align-items: flex-end;
+    flex-direction: column;
+    padding: 20px 4px;
+    overflow-y: scroll;
+`;
+
 /**
  * Shows the entire game board + player information + any visual effects / chat messages
  * needed for the player to understand the game state
@@ -60,6 +83,9 @@ export const GameDisplay: React.FC = () => {
     const otherPlayers = useSelector<RootState, Player[]>(getOtherPlayers);
     const lastEffect = useSelector<RootState, Effect>(
         getLastEffectForActivePlayer
+    );
+    const chats = useSelector<RootState, ChatLog>(
+        (state) => state.board.chatLog
     );
 
     return (
@@ -89,6 +115,11 @@ export const GameDisplay: React.FC = () => {
                         Resolving: {transformEffectToRulesText(lastEffect)}
                     </EmphText>
                 )}
+                <ChatMessages>
+                    {chats.map(({ id, message }) => (
+                        <ChatBox key={id}>{message}</ChatBox>
+                    ))}
+                </ChatMessages>
             </RightColumn>
         </GameGrid>
     );

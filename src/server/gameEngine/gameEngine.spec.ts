@@ -302,6 +302,28 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0]).toEqual(unitCard);
         });
 
+        it('emits a chat message', () => {
+            const unitCard = makeCard(UnitCards.CANNON);
+            board.players[0].hand = [unitCard];
+            board.players[0].numCardsInHand = 1;
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.IRON]: 3,
+            };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_UNIT,
+                    cardId: unitCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.chatLog[0]).toMatchObject({
+                isFromSystem: true,
+                message: 'Timmy played [[Cannon]]',
+            });
+        });
+
         it('causes an "enter the board" effect', () => {
             const unitCard = makeCard(UnitCards.MARTIAL_TRAINER);
             board.players[0].hand = [unitCard];

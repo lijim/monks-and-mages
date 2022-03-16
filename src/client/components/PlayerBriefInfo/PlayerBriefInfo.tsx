@@ -24,6 +24,7 @@ const PlayerBriefContainer = styled.div<PlayerBriefContainerProps>`
     display: grid;
     grid-auto-rows: auto 1fr auto;
     cursor: pointer;
+    background-color: whitesmoke;
 `;
 
 const UpperSection = styled.div`
@@ -45,6 +46,7 @@ const MiddleSection = styled.div`
     display: grid;
     place-items: end;
     align-self: flex-end;
+    z-index: 1;
     ::before {
         content: '';
         position: absolute;
