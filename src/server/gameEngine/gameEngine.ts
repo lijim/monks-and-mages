@@ -85,7 +85,9 @@ const addSystemChatFn =
  * them to the cemetry
  */
 export const processBoardToCemetery = (board: Board) => {
-    const { players } = board;
+    const { players, chatLog } = board;
+
+    const addSystemChat = addSystemChatFn(chatLog);
     if (!players?.length) return;
     players.forEach((player) => {
         const unitsHeadedToCemetery = player.units.filter(
@@ -97,6 +99,13 @@ export const processBoardToCemetery = (board: Board) => {
         );
 
         player.units = unitsLeft;
+        if (unitsHeadedToCemetery.length > 0) {
+            addSystemChat(
+                `${unitsHeadedToCemetery
+                    .map((unit) => `[[${unit.name}]]`)
+                    .join(', ')} (${player.name}) went to the cemetery`
+            );
+        }
         player.cemetery = player.cemetery.concat(unitsHeadedToCemetery);
         unitsHeadedToCemetery.forEach(resetUnitCard);
     });
@@ -126,6 +135,9 @@ export const applyGameAction = ({
     switch (gameAction.type) {
         case GameActionTypes.ACCEPT_MULLIGAN: {
             activePlayer.readyToStart = true;
+            addSystemChat(
+                `${activePlayer.name} has accepted a hand of ${activePlayer.hand.length} cards`
+            );
             const nextPlayer = getNextUnreadyPlayer(clonedBoard);
             if (!nextPlayer) {
                 // everyone has readied up, start the game
@@ -144,15 +156,14 @@ export const applyGameAction = ({
         case GameActionTypes.REJECT_MULLIGAN: {
             // shuffle and deal new cards (1 less than before)
             const currentHandSize = activePlayer.hand.length;
+            const newHandSize = Math.max(0, currentHandSize - 1);
+            addSystemChat(
+                `${activePlayer.name} has thrown back a hand of ${currentHandSize} cards and is going down to ${newHandSize} cards`
+            );
             activePlayer.deck = activePlayer.deck.concat(activePlayer.hand);
             const shuffledDeck = shuffle(activePlayer.deck);
-            activePlayer.deck = shuffledDeck.slice(
-                Math.max(0, currentHandSize - 1)
-            );
-            activePlayer.hand = shuffledDeck.slice(
-                0,
-                Math.max(0, currentHandSize - 1)
-            );
+            activePlayer.deck = shuffledDeck.slice(newHandSize);
+            activePlayer.hand = shuffledDeck.slice(0, newHandSize);
 
             // move to next player
             const nextPlayer = getNextUnreadyPlayer(clonedBoard);
@@ -320,7 +331,11 @@ export const applyGameAction = ({
                     : defenderHp - attack - attackBuff;
 
                 // Resolve units going to the cemetery
+                addSystemChat(
+                    `[[${attacker.name}]] (${activePlayer.name}) attacked [[${defender.name}]] (${defendingPlayer.name})`
+                );
                 processBoardToCemetery(clonedBoard);
+
                 return clonedBoard;
             }
 

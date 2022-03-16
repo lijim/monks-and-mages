@@ -117,7 +117,7 @@ export const resolveEffect = (
             });
         });
         targetText = unitTargets
-            .map((unitTarget) => unitTarget.unitCard.name)
+            .map((unitTarget) => `[[${unitTarget.unitCard.name}]]`)
             .join(', ');
     }
 

@@ -63,7 +63,7 @@ describe('resolve effect', () => {
             'Timmy'
         );
         expect(newBoard.chatLog[0].message).toBe(
-            'Timmy resolved "deal 1 damage to any target" ➡️ Squire'
+            'Timmy resolved "deal 1 damage to any target" ➡️ [[Squire]]'
         );
     });
 
