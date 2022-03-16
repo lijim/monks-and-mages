@@ -250,7 +250,7 @@ export const applyGameAction = ({
                 ).resourcePool;
                 activePlayer.units.push(matchingCard);
                 activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                    cloneDeep(matchingCard.enterEffects)
+                    cloneDeep(matchingCard.enterEffects).reverse()
                 );
                 activePlayer.hand.splice(matchingCardIndex, 1);
                 addSystemChat(
@@ -365,7 +365,7 @@ export const applyGameAction = ({
                 matchingCard
             ).resourcePool;
             activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                cloneDeep(matchingCard.effects)
+                cloneDeep(matchingCard.effects).reverse()
             );
             cemetery.push(hand.splice(matchingCardIndex, 1)[0]);
 

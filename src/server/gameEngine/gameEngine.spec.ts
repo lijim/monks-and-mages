@@ -340,7 +340,7 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
             expect(newBoardState.players[0].effectQueue).toEqual(
-                unitCard.enterEffects
+                unitCard.enterEffects.reverse()
             );
         });
 
@@ -782,9 +782,12 @@ describe('Game Action', () => {
 
     describe('cast spell', () => {
         it('casts a spell', () => {
-            const spellCard = makeCard(SpellCards.EMBER_SPEAR);
+            const spellCard = makeCard(SpellCards.A_THOUSAND_WINDS);
             board.players[0].hand.push(spellCard);
-            board.players[0].resourcePool = { [Resource.FIRE]: 1 };
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.WATER]: 1,
+            };
 
             const newBoardState = applyGameAction({
                 board,
@@ -795,8 +798,11 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
 
-            expect(newBoardState.players[0].effectQueue).toEqual(
-                spellCard.effects
+            expect(newBoardState.players[0].effectQueue[0]).toEqual(
+                spellCard.effects[1]
+            );
+            expect(newBoardState.players[0].effectQueue[1]).toEqual(
+                spellCard.effects[0]
             );
             expect(newBoardState.players[0].cemetery).toEqual([spellCard]);
         });
