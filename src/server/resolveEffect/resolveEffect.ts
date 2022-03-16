@@ -10,6 +10,8 @@ import {
 import { CardType, UnitCard } from '@/types/cards';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import { processBoardToCemetery, resetUnitCard } from '../gameEngine';
+import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
+import { makeSystemChatMsg } from '@/factories/chat';
 
 export const resolveEffect = (
     board: Board,
@@ -34,22 +36,27 @@ export const resolveEffect = (
     let playerTargets: Player[];
     let unitTargets: { player: Player; unitCard: UnitCard }[] = [];
     const target = effect.target || getDefaultTargetForEffect(effect.type);
+    let targetText;
 
     if (playerNames) {
         playerTargets = players.filter(
             (player) => playerNames.indexOf(player.name) > -1
         );
+        targetText = playerNames.join(', ');
     } else {
         switch (target) {
             case TargetTypes.ALL_PLAYERS: {
                 playerTargets = players;
+                targetText = 'all players';
                 break;
             }
             case TargetTypes.ALL_OPPONENTS: {
                 playerTargets = otherPlayers;
+                targetText = 'all opponents';
                 break;
             }
             case TargetTypes.SELF_PLAYER: {
+                targetText = 'theirself';
                 playerTargets = [activePlayer];
                 break;
             }
@@ -72,17 +79,21 @@ export const resolveEffect = (
     switch (target) {
         case TargetTypes.ALL_OPPOSING_UNITS: {
             unitTargets = otherPlayerUnits;
+            targetText = 'all opposing units';
             break;
         }
         case TargetTypes.ALL_SELF_UNITS: {
             unitTargets = selfPlayerUnits;
+            targetText = 'all self-owned units';
             break;
         }
         case TargetTypes.ALL_UNITS: {
             unitTargets = [...selfPlayerUnits, ...otherPlayerUnits];
+            targetText = 'all units';
             break;
         }
         case TargetTypes.ALL_SELF_UNITS_GRAVEYARD: {
+            targetText = 'all units in cemetery';
             activePlayer.cemetery.forEach((card) => {
                 if (card.cardType === CardType.UNIT)
                     unitTargets.push({
@@ -105,7 +116,22 @@ export const resolveEffect = (
                 }
             });
         });
+        targetText = unitTargets
+            .map((unitTarget) => unitTarget.unitCard.name)
+            .join(', ');
     }
+
+    /**
+     * Chat messages
+     */
+    const rulesText = transformEffectToRulesText(effect).toLowerCase();
+    clonedBoard.chatLog.push(
+        makeSystemChatMsg(
+            `${activePlayer.name} resolved "${rulesText}"${
+                targetText ? ` ➡️ ${targetText}` : ''
+            }`
+        )
+    );
 
     switch (effect.type) {
         case EffectType.BOUNCE: {

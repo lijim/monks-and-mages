@@ -40,6 +40,33 @@ describe('resolve effect', () => {
         expect(newBoard.players[0].effectQueue).toHaveLength(0);
     });
 
+    it('displays chat (auto-target)', () => {
+        const effect = { type: EffectType.DRAW, strength: 1 };
+        board.players[0].effectQueue = [effect];
+        const newBoard = resolveEffect(board, { effect }, 'Timmy');
+        expect(newBoard.chatLog[0].message).toBe(
+            'Timmy resolved "draw 1 cards" ➡️ theirself'
+        );
+    });
+
+    it('displays chat (target)', () => {
+        const effect = { type: EffectType.DEAL_DAMAGE, strength: 1 };
+        board.players[0].effectQueue = [effect];
+        const squire = makeCard(UnitCards.SQUIRE);
+        board.players[0].units = [squire];
+        const newBoard = resolveEffect(
+            board,
+            {
+                effect,
+                unitCardIds: [squire.id],
+            },
+            'Timmy'
+        );
+        expect(newBoard.chatLog[0].message).toBe(
+            'Timmy resolved "deal 1 damage to any target" ➡️ Squire'
+        );
+    });
+
     describe('Bounce units', () => {
         it('bounces a unit back to hand', () => {
             const squire = makeCard(UnitCards.SQUIRE);

@@ -17,7 +17,7 @@ const NameChangerContainer = styled.div`
 
     @keyframes fadein {
         from {
-            opacity: 0;
+            opacity: 0.01;
         }
         to {
             opacity: 1;
@@ -26,7 +26,7 @@ const NameChangerContainer = styled.div`
     @-moz-keyframes fadein {
         /* Firefox */
         from {
-            opacity: 0;
+            opacity: 0.01;
         }
         to {
             opacity: 1;
@@ -35,7 +35,7 @@ const NameChangerContainer = styled.div`
     @-webkit-keyframes fadein {
         /* Safari and Chrome */
         from {
-            opacity: 0;
+            opacity: 0.01;
         }
         to {
             opacity: 1;
@@ -44,7 +44,7 @@ const NameChangerContainer = styled.div`
     @-o-keyframes fadein {
         /* Opera */
         from {
-            opacity: 0;
+            opacity: 0.01;
         }
         to {
             opacity: 1;
