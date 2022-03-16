@@ -368,6 +368,7 @@ export const applyGameAction = ({
                 cloneDeep(matchingCard.effects).reverse()
             );
             cemetery.push(hand.splice(matchingCardIndex, 1)[0]);
+            addSystemChat(`${activePlayer.name} cast [[${matchingCard.name}]]`);
 
             return clonedBoard;
         }

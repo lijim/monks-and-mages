@@ -807,6 +807,28 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].cemetery).toEqual([spellCard]);
         });
 
+        it('broadcasts the spell to chat', () => {
+            const spellCard = makeCard(SpellCards.A_THOUSAND_WINDS);
+            board.players[0].hand.push(spellCard);
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.WATER]: 1,
+            };
+
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.CAST_SPELL,
+                    cardId: spellCard.id,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.chatLog[0].message).toEqual(
+                'Timmy cast [[A Thousand Winds]]'
+            );
+        });
+
         it("won't cast a spell that's too expensive", () => {
             const spellCard = makeCard(SpellCards.EMBER_SPEAR);
             board.players[0].hand.push(spellCard);
