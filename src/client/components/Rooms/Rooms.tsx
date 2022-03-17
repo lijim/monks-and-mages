@@ -26,7 +26,7 @@ const LeftColumn = styled.div`
     display: grid;
     grid-template-rows: auto auto 1fr;
     grid-gap: 10px;
-    padding: 20px;
+    padding: 16px;
     background: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(5px);
     color: white;
@@ -50,7 +50,7 @@ const MiddleColumn = styled.div`
     overflow-y: scroll;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(5px);
-    padding: 8px;
+    padding: 16px;
 `;
 const Spacer = styled.div`
     height: 8px;
