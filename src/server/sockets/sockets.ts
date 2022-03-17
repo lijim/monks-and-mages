@@ -202,7 +202,8 @@ export const configureIo = (server: HttpServer) => {
                 const newBoardState = resolveEffect(
                     board,
                     effectParams,
-                    playerName
+                    playerName,
+                    true
                 );
 
                 if (newBoardState) {

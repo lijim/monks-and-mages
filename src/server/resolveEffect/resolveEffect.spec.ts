@@ -29,6 +29,30 @@ describe('resolve effect', () => {
         ).toBeNull();
     });
 
+    it('does nothing if the effect does not verify with the board', () => {
+        board.players[0].effectQueue = [{ type: EffectType.DRAW, strength: 2 }];
+        expect(
+            resolveEffect(
+                board,
+                { effect: { type: EffectType.DRAW, strength: 1 } },
+                'Timmy',
+                true
+            )
+        ).toBeNull();
+    });
+
+    it('does proceed if the effect does not verify with the board', () => {
+        board.players[0].effectQueue = [{ type: EffectType.DRAW, strength: 1 }];
+        expect(
+            resolveEffect(
+                board,
+                { effect: { type: EffectType.DRAW, strength: 1 } },
+                'Timmy',
+                true
+            )
+        ).not.toBeNull();
+    });
+
     it('clears the effect off the stack', () => {
         const effect = { type: EffectType.DRAW, strength: 1 };
         board.players[0].effectQueue = [effect];
