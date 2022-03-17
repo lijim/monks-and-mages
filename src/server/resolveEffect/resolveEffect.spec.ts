@@ -45,12 +45,16 @@ describe('resolve effect', () => {
         board.players[0].effectQueue = [effect];
         const newBoard = resolveEffect(board, { effect }, 'Timmy');
         expect(newBoard.chatLog[0].message).toBe(
-            'Timmy resolved "draw 1 cards" ➡️ theirself'
+            'Timmy resolved "draw 1 cards"'
         );
     });
 
     it('displays chat (target)', () => {
-        const effect = { type: EffectType.DEAL_DAMAGE, strength: 1 };
+        const effect = {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ANY,
+        };
         board.players[0].effectQueue = [effect];
         const squire = makeCard(UnitCards.SQUIRE);
         board.players[0].units = [squire];
