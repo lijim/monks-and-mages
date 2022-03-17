@@ -20,6 +20,18 @@ const PlayerBoardSectionContainer = styled.div<PlayerBoardSectionContainerProps>
     background-color: ${({ isSelfPlayer }) =>
         isSelfPlayer ? Colors.FELT_GREEN_ALT : Colors.FELT_GREEN};
     box-shadow: 0 2px 2px rgb(0 0 0 / 50%);
+    display: grid;
+    align-items: center;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+`;
+
+const PlayerBoardSectionRow = styled.div`
+    display: grid;
+    grid-gap: 8px;
+    padding: 0 12px;
+    grid-template-columns: repeat(auto-fill, 117px);
+    grid-auto-flow: column;
+    overflow-x: auto;
 `;
 
 export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
@@ -33,7 +45,7 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
     }
     const { units, resources } = player;
     const unitsSection = (
-        <div>
+        <PlayerBoardSectionRow>
             {units.map((unitCard) => (
                 <CardGridItem
                     card={unitCard}
@@ -45,10 +57,10 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
                     zoomLevel={0.6}
                 />
             ))}
-        </div>
+        </PlayerBoardSectionRow>
     );
     const resourcesSection = (
-        <div>
+        <PlayerBoardSectionRow>
             {resources.map((resourceCard) => (
                 <CardGridItem
                     card={resourceCard}
@@ -57,7 +69,7 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
                     zoomLevel={0.6}
                 />
             ))}
-        </div>
+        </PlayerBoardSectionRow>
     );
     return (
         <PlayerBoardSectionContainer isSelfPlayer={isSelfPlayer}>

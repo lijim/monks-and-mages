@@ -35,6 +35,7 @@ export const resolveEffect = (
     // Determine targets to apply effects to
     let playerTargets: Player[];
     let unitTargets: { player: Player; unitCard: UnitCard }[] = [];
+    const originalTarget = effect.target;
     const target = effect.target || getDefaultTargetForEffect(effect.type);
     let targetText;
 
@@ -128,7 +129,7 @@ export const resolveEffect = (
     clonedBoard.chatLog.push(
         makeSystemChatMsg(
             `${activePlayer.name} resolved "${rulesText}"${
-                targetText ? ` ➡️ ${targetText}` : ''
+                targetText && originalTarget ? ` ➡️ ${targetText}` : ''
             }`
         )
     );
