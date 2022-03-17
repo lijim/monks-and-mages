@@ -30,10 +30,11 @@ const GameDisplay = React.lazy(() =>
     import('../GameDisplay').then((module) => ({ default: module.GameDisplay }))
 );
 const LobbyBackground = styled.div`
-    background: linear-gradient(70deg, #eed, transparent);
     height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr;
+    background-image: url(https://images.unsplash.com/photo-1618082445556-8b5e4fee89dd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80);
+    background-size: cover;
 `;
 
 const Centered = styled.div`

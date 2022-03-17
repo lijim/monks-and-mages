@@ -55,6 +55,9 @@ const NameChangerContainer = styled.div`
 const NameChangerForm = styled.form`
     display: grid;
     grid-gap: 12px;
+    padding: 12px;
+    background-color: cornsilk;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.12);
 
     label {
         display: block;
