@@ -4,7 +4,9 @@ import {
     SAMPLE_DECKLIST_3,
     SAMPLE_DECKLIST_4,
     SAMPLE_DECKLIST_5,
+    SAMPLE_DECKLIST_6,
 } from '@/factories/deck';
+import { DeckList } from '@/types/cards';
 
 export const DEFAULT_ROOM_NAMES = [
     'Aardvark Alley 🐜',
@@ -14,13 +16,15 @@ export const DEFAULT_ROOM_NAMES = [
 
 export enum DeckListSelections {
     FARMERS = 'farmers 👩‍🌾',
+    GENIES = 'genies 🧞‍♀️',
     MAGES_FIRE = 'mages 🔥',
     MAGES_WATER = 'mages 🌊',
     MAGES_WIND = 'mages 💨',
     MONKS = 'monks 🤺',
 }
 
-export const deckListMappings = {
+export const deckListMappings: Record<DeckListSelections, DeckList> = {
+    [DeckListSelections.GENIES]: SAMPLE_DECKLIST_6,
     [DeckListSelections.MONKS]: SAMPLE_DECKLIST_0,
     [DeckListSelections.MAGES_FIRE]: SAMPLE_DECKLIST_2,
     [DeckListSelections.MAGES_WATER]: SAMPLE_DECKLIST_3,

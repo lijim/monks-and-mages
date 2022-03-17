@@ -142,3 +142,22 @@ export const SAMPLE_DECKLIST_5: DeckList = [
     { card: SpellCards.FEED_TEAM, quantity: 4 },
     { card: SpellCards.RAIN_OF_ARROWS, quantity: 4 },
 ];
+
+// Crystal + Iron - (Genie Deck)
+export const SAMPLE_DECKLIST_6: DeckList = [
+    // Resources
+    { card: makeResourceCard(Resource.CRYSTAL), quantity: 10 },
+    { card: makeResourceCard(Resource.IRON), quantity: 10 },
+    // Other
+    { card: UnitCards.FORTUNE_PREDICTOR, quantity: 4 },
+    // Magicians
+    { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 4 },
+    // Soldiers
+    { card: UnitCards.CAPTAIN_OF_THE_GUARD, quantity: 4 },
+    { card: UnitCards.LANCER, quantity: 4 },
+    { card: UnitCards.SQUIRE, quantity: 3 },
+    { card: UnitCards.KNIGHT_TEMPLAR, quantity: 1 },
+    // Spells
+    { card: SpellCards.OPEN_NEBULA, quantity: 4 },
+    { card: SpellCards.SPECTRAL_GENESIS, quantity: 4 },
+];
