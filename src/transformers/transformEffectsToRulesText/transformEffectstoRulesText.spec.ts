@@ -108,6 +108,17 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    it('displays rules for forcing whole hand discard', () => {
+        const effect: Effect = {
+            type: EffectType.DISCARD_HAND,
+            strength: Number.MAX_SAFE_INTEGER,
+            target: TargetTypes.OPPONENT,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Make any opponent discard all cards`
+        );
+    });
+
     it('displays rules for drawing cards', () => {
         const effect: Effect = {
             type: EffectType.DRAW,

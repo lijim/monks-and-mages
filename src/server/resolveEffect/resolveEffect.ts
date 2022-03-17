@@ -1,5 +1,7 @@
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
+import difference from 'lodash.difference';
+import sampleSize from 'lodash.samplesize';
 
 import { ResolveEffectParams } from '@/types';
 import { Board, Player } from '@/types/board';
@@ -205,6 +207,25 @@ export const resolveEffect = (
             playerTargets.forEach((player) => {
                 player.health -= effectStrength;
                 if (player.health <= 0) player.isAlive = false;
+            });
+            return clonedBoard;
+        }
+        case EffectType.DISCARD_HAND: {
+            playerTargets.forEach((player) => {
+                const { hand } = player;
+                const cardsToDiscard = sampleSize(
+                    hand,
+                    Math.min(hand.length, effectStrength)
+                );
+                player.hand = difference(hand, cardsToDiscard);
+                player.cemetery = player.cemetery.concat(cardsToDiscard);
+                clonedBoard.chatLog.push(
+                    makeSystemChatMsg(
+                        `${player.name} discarded ${cardsToDiscard
+                            .map((card) => `[[${card.name}]]`)
+                            .join(', ')}`
+                    )
+                );
             });
             return clonedBoard;
         }

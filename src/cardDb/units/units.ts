@@ -82,7 +82,7 @@ const GOLEM_DRAGON: UnitCard = makeCard({
     totalHp: 3,
     attack: 3,
     numAttacks: 1,
-    isRanged: false,
+    isRanged: true,
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
@@ -566,6 +566,59 @@ const BAMBOO_FARMER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+// Saharan Units
+const FORTUNE_PREDICTOR: UnitCard = makeCard({
+    name: 'Fortune Predictor',
+    imgSrc: 'https://images.unsplash.com/photo-1508310621848-9b567e9621bf',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            strength: 1,
+            target: TargetTypes.ALL_OPPONENTS,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const CAPTAIN_OF_THE_GUARD: UnitCard = makeCard({
+    name: 'Captain of the Guard',
+    imgSrc: 'https://images.unsplash.com/photo-1554772279-37573acdd183',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.IRON]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+});
+
 export const UnitCards = {
     MAGICIANS_APPRENTICE,
     // FIRE
@@ -596,4 +649,7 @@ export const UnitCards = {
     CANNON,
     // MISC
     BAMBOO_FARMER,
+    // SAHARAN
+    FORTUNE_PREDICTOR,
+    CAPTAIN_OF_THE_GUARD,
 };

@@ -165,6 +165,52 @@ const HOLY_REVIVAL = makeCard({
     ],
 });
 
+// Crystal Magic
+const SPECTRAL_GENESIS = makeCard({
+    name: 'Spectral Genesis',
+    imgSrc: 'https://images.unsplash.com/photo-1535027155668-be985a82f93c',
+    cost: { [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
+            strength: 1,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
+            strength: 1,
+        },
+    ],
+});
+
+const OPEN_NEBULA = makeCard({
+    name: 'Open Nebula',
+    imgSrc: 'https://images.unsplash.com/photo-1484589065579-248aad0d8b13',
+    cost: { [Resource.CRYSTAL]: 3, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: Number.MAX_SAFE_INTEGER,
+        },
+        {
+            type: EffectType.DRAW,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 7,
+        },
+        {
+            type: EffectType.BOUNCE,
+            strength: 1,
+        },
+        {
+            type: EffectType.BUFF_TEAM_MAGIC,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 2,
+        },
+    ],
+});
+
 // Iron
 const THROW_SHURIKEN = makeCard({
     name: 'Throw Shuriken',
@@ -189,6 +235,11 @@ const FEED_TEAM = makeCard({
             type: EffectType.RAMP,
             resourceType: Resource.BAMBOO,
             strength: 1,
+        },
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.ALL_SELF_UNITS,
         },
         { type: EffectType.BUFF_TEAM_HP, strength: 1 },
     ],
@@ -229,6 +280,10 @@ export const SpellCards = {
     A_GENTLE_GUST,
     A_THOUSAND_WINDS,
     HOLY_REVIVAL,
+
+    // Crystal
+    SPECTRAL_GENESIS,
+    OPEN_NEBULA,
 
     // Iron
     THROW_SHURIKEN,

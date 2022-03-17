@@ -61,6 +61,9 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Deal ${strength} damage to ${targetName}`;
         }
         case EffectType.DISCARD_HAND: {
+            if (strength === Number.MAX_SAFE_INTEGER) {
+                return `Make ${targetName} discard all cards`;
+            }
             return `Make ${targetName} discard ${strength} cards at random`;
         }
         case EffectType.DRAW: {

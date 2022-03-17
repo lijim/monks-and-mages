@@ -374,6 +374,64 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Discard', () => {
+        it('discards random cards', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DISCARD_HAND,
+                        strength: 2,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE - 2
+            );
+        });
+
+        it('discards a whole hand', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DISCARD_HAND,
+                        strength: Number.MAX_SAFE_INTEGER,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(0);
+            expect(newBoard.players[0].cemetery).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE
+            );
+        });
+
+        it('broadcasts what was discarded', () => {
+            board.players[0].hand = [
+                makeCard(UnitCards.ASSASSIN),
+                makeCard(UnitCards.ASSASSIN),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DISCARD_HAND,
+                        strength: 2,
+                        target: TargetTypes.SELF_PLAYER,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.chatLog[1].message).toEqual(
+                'Timmy discarded [[Assassin]], [[Assassin]]'
+            );
+        });
+    });
+
     describe('Heal', () => {
         it('heals players', () => {
             const newBoard = resolveEffect(
