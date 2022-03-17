@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash.clonedeep';
+import isEqual from 'lodash.isequal';
 
 import { ResolveEffectParams } from '@/types';
 import { Board, Player } from '@/types/board';
@@ -16,7 +17,8 @@ import { makeSystemChatMsg } from '@/factories/chat';
 export const resolveEffect = (
     board: Board,
     { effect, playerNames, unitCardIds }: ResolveEffectParams,
-    playerName: string
+    playerName: string,
+    verifyEffect = false
 ): Board | null => {
     const clonedBoard = cloneDeep(board);
     const { strength: effectStrength = 0 } = effect;
@@ -29,8 +31,16 @@ export const resolveEffect = (
         return null;
     }
 
+    const { effectQueue } = activePlayer;
+    if (
+        verifyEffect &&
+        (!effectQueue?.length ||
+            !isEqual(effectQueue[effectQueue.length - 1], effect))
+    ) {
+        return null;
+    }
     // take the latest effect off the stack
-    activePlayer.effectQueue.pop();
+    effectQueue.pop();
 
     // Determine targets to apply effects to
     let playerTargets: Player[];
