@@ -10,7 +10,9 @@ import { WebSocketContext } from '../WebSockets';
 
 const NameDisplayer = styled.div`
     padding-left: 50px;
-    padding-top: 20px;
+    padding-top: 10px;
+    background-color: rgb(255, 255, 255, 0.8);
+    padding-bottom: 10px;
 `;
 
 /**
