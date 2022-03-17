@@ -36,6 +36,17 @@ type WidthLessContainerProps = {
 // This widthless parent container is a CSS trick to prevent the 1fr units from expanding completely
 const WidthLessContainer = styled.div<WidthLessContainerProps>`
     width: 0;
+
+    animation: fadein 1s;
+
+    @keyframes fadein {
+        from {
+            opacity: 0.01;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 `;
 
 const isCardDeployable = (card: Card, selfPlayer: Player) => {
