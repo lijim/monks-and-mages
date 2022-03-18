@@ -491,6 +491,27 @@ describe('resolve effect', () => {
             );
         });
     });
+
+    describe('Revive units', () => {
+        it('mass revives all units in your cemetery', () => {
+            const knight1 = makeCard(UnitCards.KNIGHT_TEMPLAR);
+            const knight2 = makeCard(UnitCards.KNIGHT_TEMPLAR);
+            board.players[0].cemetery = [knight1, knight2];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.REVIVE,
+                        strength: 2,
+                        target: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units).toHaveLength(2);
+            expect(newBoard.players[0].cemetery).toHaveLength(0);
+        });
+    });
     describe('Summon Unit', () => {
         it('summons 2 demons', () => {
             const newBoard = resolveEffect(
