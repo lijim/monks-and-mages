@@ -272,10 +272,16 @@ export const resolveEffect = (
                 );
             });
 
+            const unitsToRevive = unitTargets.map(({ unitCard }) => unitCard);
             // return to active players' board
-            activePlayer.units = activePlayer.units.concat(
-                unitTargets.map(({ unitCard }) => unitCard)
+            activePlayer.units = activePlayer.units.concat(unitsToRevive);
+
+            // add enter the board effects that need to resolve
+            const effectsToAdd = unitsToRevive.flatMap(
+                (unit) => unit.enterEffects
             );
+            activePlayer.effectQueue =
+                activePlayer.effectQueue.concat(effectsToAdd);
             return clonedBoard;
         }
         case EffectType.SUMMON_UNITS: {

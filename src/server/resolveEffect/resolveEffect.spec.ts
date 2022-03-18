@@ -511,6 +511,24 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].units).toHaveLength(2);
             expect(newBoard.players[0].cemetery).toHaveLength(0);
         });
+
+        it('triggers any enter the board effects', () => {
+            const fireMage = makeCard(UnitCards.FIRE_MAGE);
+            const waterGuardian = makeCard(UnitCards.WATER_GUARDIAN);
+            board.players[0].cemetery = [fireMage, waterGuardian];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.REVIVE,
+                        strength: 2,
+                        target: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].effectQueue).toHaveLength(3);
+        });
     });
     describe('Summon Unit', () => {
         it('summons 2 demons', () => {
