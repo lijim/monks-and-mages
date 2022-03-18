@@ -58,7 +58,7 @@ describe('Unit Grid Item', () => {
         expect(screen.queryByText('💤')).not.toBeInTheDocument();
     });
 
-    it('renders unit name + casting cost', () => {
+    it('renders attack and hp buffs', () => {
         const unitCard = makeCard(UnitCards.SQUIRE);
         unitCard.attackBuff = 5;
         unitCard.hpBuff = 6;
