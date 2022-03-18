@@ -7,7 +7,7 @@
     "scripts": {
         "build": "npx webpack",
         "ci": "yarn lint && jest",
-        "dev": "npx webpack --watch & cp src/server/homepage.html dist/homepage.html & -w & nodemon .",
+        "dev": "npx webpack --watch & nodemon .",
         "heroku-cleanup": "yarn install --dev",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
         "start": "npx webpack & cp src/server/homepage.html dist/homepage.html & node .",
@@ -62,6 +62,7 @@
         "eslint-plugin-import": "^2.25.4",
         "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-typescript-sort-keys": "^2.1.0",
+        "html-webpack-plugin": "^5.5.0",
         "jest": "^27.5.1",
         "nodemon": "^2.0.15",
         "prettier": "^2.5.1",

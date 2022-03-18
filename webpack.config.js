@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path');
 const { addDisplayNameTransformer } = require('ts-react-display-name')
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
@@ -76,10 +77,16 @@ const clientConfig = {
             '@': path.resolve(__dirname, 'src'),
         }
     },
+    plugins: [
+      new HtmlWebpackPlugin({
+          template: './src/server/homepage.html'
+      })
+    ],
     output: {
-        filename: '[name].bundle.js',
-        chunkFilename: '[name].bundle.js',
+        filename: '[name].[contenthash].bundle.js',
+        chunkFilename: '[name].[contenthash].bundle.js',
         path: path.resolve(__dirname, 'dist/public/js'),
+        clean: true,
     },
 };
 
