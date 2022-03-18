@@ -27,11 +27,11 @@ app.use((request, response, next): void | undefined => {
 });
 
 // Serves everything from dist/client as /client, e.g. http://localhost:3000/client/index.js
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public/js')));
 
 // Serves the base page
 app.get('/', (_, res) => {
-    res.sendFile(path.join(__dirname, 'homepage.html'));
+    res.sendFile(path.join(__dirname, 'public/js/index.html'));
 });
 
 app.get('*', (_, res) => {
