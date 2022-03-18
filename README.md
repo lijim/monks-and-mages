@@ -88,8 +88,21 @@ Unit testing is covered via [Jest](https://jestjs.io/) and [React Testing Librar
 # Game philosophy
 
 -   the game has 5 resources with separate identities:
+
     -   Bamboo 🎋: resource generation, minor healing effects, ranged units and ranged damage spells
     -   Iron 🛠: soldiers, sturdy units, minor damage spells
     -   Fire 🔥: direct damage, conjuration, curses (e.g. cursing an opponents' hand)
     -   Water 🌊: drawing cards, conjuration, returning units to hands (bounce)
     -   Crystal 🔮: drawing cards (minor), resurrection, augmenting other forms of magic
+
+-   Within the resources, we have 2 color combos that form unique sub-identities:
+    -   Crystal + Water: Water (more water spells accessible)
+    -   Crystal + Fire: Fire (more fire spells accessible)
+    -   Crystal + Iron: Saharan - Drawing / discarding
+    -   Crystal + Bamboo: Earth magic / primal / witchcraft (e.g. polymorph into frog)
+    -   Water + Fire: Wind
+    -   Water + Iron: Seafaring / pirates
+    -   Water + Bamboo: Coral Magic
+    -   Fire + Iron: Might and machinery (e.g. cannons, buff cards, damage-based boardwipes)
+    -   Fire + Bamboo: Dragon raising / Phoenixes
+    -   Bamboo + Iron: Ninjas / assassins
