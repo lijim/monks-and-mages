@@ -137,3 +137,21 @@ export const SAMPLE_DECKLIST_6: DeckList = [
     { card: SpellCards.OPEN_NEBULA, quantity: 4 },
     { card: SpellCards.SPECTRAL_GENESIS, quantity: 4 },
 ];
+
+// Crystal + Water + Fire - (Sorceror Deck)
+export const SAMPLE_DECKLIST_7: DeckList = [
+    // Resources
+    { card: makeResourceCard(Resource.CRYSTAL), quantity: 8 },
+    { card: makeResourceCard(Resource.WATER), quantity: 7 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 7 },
+    // Magicians
+    { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 4 },
+    { card: UnitCards.FIRE_MAGE, quantity: 4 },
+    { card: UnitCards.WATER_MAGE, quantity: 4 },
+    // Spells
+    { card: SpellCards.HOLY_REVIVAL, quantity: 4 },
+    { card: SpellCards.CONSTANT_REFILL, quantity: 3 },
+    { card: SpellCards.SUMMON_DEMONS, quantity: 2 },
+    { card: SpellCards.VOLCANIC_INFERNO, quantity: 3 },
+    { card: SpellCards.EMBER_SPEAR, quantity: 3 },
+];

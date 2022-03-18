@@ -362,7 +362,7 @@ export const applyGameAction = ({
                     `[[${attacker.name}]] (${activePlayer.name}) ${attackEmoji}${attackEmoji} ${defendingPlayer.name}`
                 );
                 defendingPlayer.health -= attacker.attack + attacker.attackBuff;
-                if (defendingPlayer.health < 0) {
+                if (defendingPlayer.health <= 0) {
                     defendingPlayer.isAlive = false;
                     applyWinState(clonedBoard);
                 }
