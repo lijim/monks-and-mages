@@ -3,11 +3,11 @@ import { screen } from '@testing-library/react';
 import { render } from '@/test-utils';
 
 import { makeNewPlayer } from '@/factories/player';
-import { SAMPLE_DECKLIST_1 } from '@/factories/deck';
 import { PlayerBoardSection } from './PlayerBoardSection';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import { UnitCards } from '@/cardDb/units';
 import { Resource } from '@/types/resources';
+import { SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 
 describe('Player Board Section', () => {
     it('renders unit cards', () => {

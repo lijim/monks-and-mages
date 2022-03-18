@@ -261,6 +261,29 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.REVIVE: {
+            const cardsIdsToRevive = new Set(
+                unitTargets.map(({ unitCard }) => unitCard.id)
+            );
+            // remove from cemeteries
+            players.forEach((player) => {
+                player.cemetery = player.cemetery.filter(
+                    (card) => !cardsIdsToRevive.has(card.id)
+                );
+            });
+
+            const unitsToRevive = unitTargets.map(({ unitCard }) => unitCard);
+            // return to active players' board
+            activePlayer.units = activePlayer.units.concat(unitsToRevive);
+
+            // add enter the board effects that need to resolve
+            const effectsToAdd = unitsToRevive.flatMap(
+                (unit) => unit.enterEffects
+            );
+            activePlayer.effectQueue =
+                activePlayer.effectQueue.concat(effectsToAdd);
+            return clonedBoard;
+        }
         case EffectType.SUMMON_UNITS: {
             const { summonType } = effect;
             if (!summonType) return clonedBoard;

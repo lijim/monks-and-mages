@@ -1,5 +1,5 @@
 import { makeCard, UnitCards } from '@/cardDb/units';
-import { SAMPLE_DECKLIST_1 } from '@/factories/deck';
+import { SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 import { makeNewPlayer } from '@/factories/player';
 import { Resource } from '@/types/resources';
 import { canPlayerPayForCard } from './canPlayerPayForCard';

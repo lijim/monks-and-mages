@@ -2,11 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import { PlayerBriefInfo } from './PlayerBriefInfo';
-import { SAMPLE_DECKLIST_1 } from '@/factories/deck';
 import { makeNewPlayer } from '@/factories/player';
 import { Resource } from '@/types/resources';
 import { makeCard } from '@/factories/cards';
 import { UnitCards } from '@/cardDb/units';
+import { SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 
 describe('Player Brief Info', () => {
     it('renders the player name', () => {

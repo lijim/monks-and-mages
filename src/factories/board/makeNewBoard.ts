@@ -1,9 +1,9 @@
+import { SAMPLE_DECKLIST_0 } from '@/constants/deckLists';
 import {
     deckListMappings,
     DeckListSelections,
 } from '@/constants/lobbyConstants';
 import { Board, GameState } from '@/types/board';
-import { SAMPLE_DECKLIST_0 } from '../deck';
 import { makeNewPlayer } from '../player';
 
 export type MakeNewBoardParams = {

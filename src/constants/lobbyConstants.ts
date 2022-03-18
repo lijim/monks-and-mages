@@ -5,7 +5,7 @@ import {
     SAMPLE_DECKLIST_4,
     SAMPLE_DECKLIST_5,
     SAMPLE_DECKLIST_6,
-} from '@/factories/deck';
+} from '@/constants/deckLists';
 import { DeckList } from '@/types/cards';
 
 export const DEFAULT_ROOM_NAMES = [

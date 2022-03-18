@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { OtherPlayerInfo } from './OtherPlayerInfo';
 import { makeNewPlayer } from '@/factories/player';
-import { SAMPLE_DECKLIST_1 } from '@/factories/deck';
+import { SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 
 describe('Other Player Info', () => {
     it("renders the other player's name", () => {
