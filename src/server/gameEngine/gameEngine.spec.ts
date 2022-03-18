@@ -748,7 +748,7 @@ describe('Game Action', () => {
             const attacker = makeCard(UnitCards.WATER_GUARDIAN);
             attacker.numAttacksLeft = 1;
             board.players[0].units = [attacker];
-            board.players[1].health = 1;
+            board.players[1].health = attacker.attack;
             const newBoardState = applyGameAction({
                 board,
                 gameAction: {

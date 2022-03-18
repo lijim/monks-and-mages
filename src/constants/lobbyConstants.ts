@@ -5,6 +5,7 @@ import {
     SAMPLE_DECKLIST_4,
     SAMPLE_DECKLIST_5,
     SAMPLE_DECKLIST_6,
+    SAMPLE_DECKLIST_7,
 } from '@/constants/deckLists';
 import { DeckList } from '@/types/cards';
 
@@ -21,6 +22,7 @@ export enum DeckListSelections {
     MAGES_WATER = 'mages 🌊',
     MAGES_WIND = 'mages 💨',
     MONKS = 'monks 🤺',
+    SORCERORS = 'sorcerors 🧙🏾‍♀️',
 }
 
 export const deckListMappings: Record<DeckListSelections, DeckList> = {
@@ -30,6 +32,7 @@ export const deckListMappings: Record<DeckListSelections, DeckList> = {
     [DeckListSelections.MAGES_WATER]: SAMPLE_DECKLIST_3,
     [DeckListSelections.MAGES_WIND]: SAMPLE_DECKLIST_4,
     [DeckListSelections.FARMERS]: SAMPLE_DECKLIST_5,
+    [DeckListSelections.SORCERORS]: SAMPLE_DECKLIST_7,
 };
 
 export const MAX_PLAYER_NAME_LENGTH = 25;

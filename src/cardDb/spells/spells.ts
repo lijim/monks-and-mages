@@ -64,6 +64,19 @@ const SUMMON_DEMONS = makeCard({
     ],
 });
 
+const VOLCANIC_INFERNO = makeCard({
+    name: 'Volcanic Inferno',
+    imgSrc: 'https://images.unsplash.com/photo-1620649332832-45f944292179',
+    cost: { [Resource.FIRE]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            target: TargetTypes.ALL_UNITS,
+        },
+    ],
+});
+
 // Water Magic
 const BUBBLE_BLAST = makeCard({
     name: 'Bubble Blast',
@@ -106,7 +119,7 @@ const SUMMON_SHARKS = makeCard({
 const CONSTANT_REFILL = makeCard({
     name: 'Constant Refill',
     imgSrc: 'https://images.unsplash.com/photo-1556509511-4ee17e467199',
-    cost: { [Resource.WATER]: 2, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 2 },
+    cost: { [Resource.WATER]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 2 },
     effects: [
         {
             type: EffectType.DRAW,
@@ -156,7 +169,12 @@ const A_THOUSAND_WINDS = makeCard({
 const HOLY_REVIVAL = makeCard({
     name: 'Holy Revival',
     imgSrc: 'https://images.unsplash.com/photo-1467139729426-3079e66d5a7a',
-    cost: { [Resource.FIRE]: 2, [Resource.WATER]: 2, [Resource.CRYSTAL]: 2 },
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.WATER]: 1,
+        [Resource.CRYSTAL]: 2,
+        [Resource.GENERIC]: 2,
+    },
     effects: [
         {
             type: EffectType.REVIVE,
@@ -269,6 +287,7 @@ export const SpellCards = {
     LIGHTNING_SLICK,
     CURSE_HAND,
     SUMMON_DEMONS,
+    VOLCANIC_INFERNO,
 
     // Water
     BUBBLE_BLAST,
