@@ -23,10 +23,11 @@ const HandContainer = styled.div<HandContainerProps>`
     grid-template-columns:
         repeat(
             ${({ handSize }) => Math.max(1, handSize - 1)},
-            minmax(5px, 195px)
+            minmax(5px, 199px)
         )
         260px;
     overflow-y: hidden;
+    padding-top: 8px;
 `;
 
 type WidthLessContainerProps = {
