@@ -1,5 +1,6 @@
+import { SAMPLE_DECKLIST_2 } from '@/constants/deckLists';
 import { DeckListSelections } from '@/constants/lobbyConstants';
-import { makeDeck, SAMPLE_DECKLIST_2 } from '../deck';
+import { makeDeck } from '../deck';
 import { makeNewBoard } from './makeNewBoard';
 
 describe('Make New Board', () => {
