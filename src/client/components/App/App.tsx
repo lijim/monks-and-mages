@@ -18,6 +18,11 @@ const Rooms = React.lazy(() =>
         default: module.Rooms,
     }))
 );
+const DeckManager = React.lazy(() =>
+    import('../DeckManager').then((module) => ({
+        default: module.DeckManager,
+    }))
+);
 const WebSocketProvider = React.lazy(() =>
     import('../WebSockets').then((module) => ({
         default: module.WebSocketProvider,
@@ -57,6 +62,14 @@ export const RouterRoutes: React.FC = () => {
                 }
             />
             <Route path="/ingame" element={<GameDisplay />} />
+            <Route
+                path="/decklist"
+                element={
+                    <LobbyBackground>
+                        <DeckManager />
+                    </LobbyBackground>
+                }
+            />
         </Routes>
     );
 };

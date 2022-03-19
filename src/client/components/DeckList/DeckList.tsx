@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Card } from '@/types/cards';
+import { Card, PileOfCards } from '@/types/cards';
 import { splitDeckListToPiles } from '@/transformers/splitDeckListToPiles';
 import { CardGridItem } from '../CardGridItem';
 import { QuantitySelector } from '../QuantitySelector';
@@ -43,10 +43,30 @@ const Piles = styled.div`
     row-gap: 240px;
 `;
 
+const getTotalCardsInPile = (pile: PileOfCards): number => {
+    const initialValue = 0;
+    return [...pile.cards.entries()]
+        .map(([, quantity]) => quantity)
+        .reduce(
+            (previousValue, currentValue) => previousValue + currentValue,
+            initialValue
+        );
+};
+
 export const DeckList: React.FC<DeckListProps> = ({ deck }) => {
     const piles = splitDeckListToPiles(deck);
     return (
         <Centering>
+            <div>
+                <b>Cards</b>: {deck.length} <hr />
+                {piles.map((pile, pileIndex) => (
+                    <span key={pileIndex}>
+                        {pileIndex !== 0 && <br />}
+                        <b>{pile.title}</b>: {getTotalCardsInPile(pile)}
+                    </span>
+                ))}
+            </div>
+            <hr />
             <Piles>
                 {piles.map((pile, pileIndex) => (
                     <Pile key={pileIndex}>

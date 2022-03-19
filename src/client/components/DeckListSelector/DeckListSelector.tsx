@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { DeckListSelections } from '@/constants/lobbyConstants';
@@ -40,6 +41,11 @@ export const DeckListSelector: React.FC = () => {
                     </option>
                 ))}
             </select>
+            <br />
+            <br />
+            <Link to="/decklist" style={{ color: 'white' }}>
+                View Decklist
+            </Link>
         </div>
     );
 };
