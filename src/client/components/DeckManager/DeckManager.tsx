@@ -25,9 +25,9 @@ const DeckListBackDrop = styled.div`
 `;
 
 export const DeckManager: React.FC = () => {
-    const premadeDeckList = useSelector<RootState, DeckListSelections>(
-        getPremadeDeckList
-    );
+    const premadeDeckList =
+        useSelector<RootState, DeckListSelections>(getPremadeDeckList) ||
+        DeckListSelections.MONKS;
     const deckList = deckListMappings[premadeDeckList];
     const deck = makeDeck(deckList);
     return (
