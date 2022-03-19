@@ -1,18 +1,52 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { RootState } from '@/client/redux/store';
 import { NameChanger } from '../NameChanger';
 import { WebSocketContext } from '../WebSockets';
 
-// TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
+const IntroScreenContainer = styled.div`
+    width: 700px;
+    margin: auto;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    animation: fadein 1s;
 
-const NameDisplayer = styled.div`
-    padding-left: 50px;
-    padding-top: 10px;
-    background-color: rgb(255, 255, 255, 0.8);
-    padding-bottom: 10px;
+    @keyframes fadein {
+        from {
+            opacity: 0.01;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes fadein {
+        /* Firefox */
+        from {
+            opacity: 0.01;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @-webkit-keyframes fadein {
+        /* Safari and Chrome */
+        from {
+            opacity: 0.01;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @-o-keyframes fadein {
+        /* Opera */
+        from {
+            opacity: 0.01;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 `;
 
 /**
@@ -21,29 +55,15 @@ const NameDisplayer = styled.div`
  * @returns {JSX.Element} Intro screen component
  */
 export const IntroScreen: React.FC = () => {
-    const name = useSelector<RootState, string>((state) => state.user.name);
     const webSocket = useContext(WebSocketContext);
 
     const handleSubmit = (newName: string) => {
         webSocket.chooseName(newName.trim());
     };
 
-    const logOut = () => {
-        webSocket.chooseName('');
-    };
     return (
-        <>
-            {name ? (
-                <NameDisplayer>
-                    👤 <b>{name}</b> (
-                    <a href="#" type="button" onClick={logOut}>
-                        Logout
-                    </a>
-                    )
-                </NameDisplayer>
-            ) : (
-                <NameChanger handleSubmit={handleSubmit} />
-            )}
-        </>
+        <IntroScreenContainer>
+            <NameChanger handleSubmit={handleSubmit} />
+        </IntroScreenContainer>
     );
 };
