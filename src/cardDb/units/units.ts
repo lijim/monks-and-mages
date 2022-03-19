@@ -278,7 +278,7 @@ const WIND_MAGE: UnitCard = makeCard({
     cost: {
         [Resource.FIRE]: 1,
         [Resource.WATER]: 1,
-        [Resource.GENERIC]: 3,
+        [Resource.GENERIC]: 4,
     },
     description: '',
     enterEffects: [
@@ -385,7 +385,7 @@ const TEMPLE_GUARDIAN: UnitCard = makeCard({
     name: 'Temple Guardian',
     imgSrc: 'https://images.unsplash.com/photo-1570998050878-44c852cf2246',
     cost: {
-        [Resource.IRON]: 2,
+        [Resource.IRON]: 1,
         [Resource.GENERIC]: 5,
     },
     description: '',
@@ -463,7 +463,7 @@ const STONE_SLINGER: UnitCard = makeCard({
     },
     description: '',
     enterEffects: [],
-    totalHp: 1,
+    totalHp: 2,
     attack: 1,
     numAttacks: 1,
     isRanged: true,
@@ -557,7 +557,7 @@ const BAMBOO_FARMER: UnitCard = makeCard({
             strength: 1,
         },
     ],
-    totalHp: 1,
+    totalHp: 2,
     attack: 1,
     numAttacks: 1,
     isRanged: false,
