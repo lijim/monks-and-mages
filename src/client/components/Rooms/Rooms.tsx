@@ -8,11 +8,9 @@ import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
 import { DetailedRoom } from '@/types';
 import { PrimaryColorButton } from '../Button';
-import {
-    DeckListSelections,
-    MAX_ROOM_NAME_LENGTH,
-} from '@/constants/lobbyConstants';
+import { MAX_ROOM_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { Colors } from '@/constants/colors';
+import { DeckListSelector } from '../DeckListSelector';
 
 const RoomsContainer = styled.div`
     display: grid;
@@ -95,16 +93,6 @@ export const Rooms: React.FC = () => {
         webSocket.startGame();
     };
 
-    const chooseDeck = (deckListSelection: string) => {
-        if (
-            (Object.values(DeckListSelections) as string[]).includes(
-                deckListSelection
-            )
-        ) {
-            webSocket.chooseDeck(deckListSelection as DeckListSelections);
-        }
-    };
-
     return (
         <>
             <TopNavBar />
@@ -143,30 +131,7 @@ export const Rooms: React.FC = () => {
                         </span>
                     </form>
 
-                    <div>
-                        <hr />
-                        <label htmlFor="deckSelection">
-                            <b>Choose a Deck</b>{' '}
-                        </label>
-                        <select
-                            id="deckSelection"
-                            onChange={(event) => {
-                                chooseDeck(event.target.value);
-                            }}
-                            defaultValue={DeckListSelections.MONKS}
-                        >
-                            {Object.values(DeckListSelections).map(
-                                (deckListSelection) => (
-                                    <option
-                                        value={deckListSelection}
-                                        key={deckListSelection}
-                                    >
-                                        {deckListSelection}
-                                    </option>
-                                )
-                            )}
-                        </select>
-                    </div>
+                    <DeckListSelector />
                 </LeftColumn>
                 <MiddleColumn>
                     <RoomsTab>Rooms</RoomsTab>
