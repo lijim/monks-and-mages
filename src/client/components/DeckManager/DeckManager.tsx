@@ -9,6 +9,7 @@ import { getPremadeDeckList } from '@/client/redux/selectors/getPremadeDeckList'
 import {
     deckListMappings,
     DeckListSelections,
+    PREMADE_DECKLIST_DEFAULT,
 } from '@/constants/lobbyConstants';
 import { RootState } from '@/client/redux/store';
 import { makeDeck } from '@/factories/deck';
@@ -27,7 +28,7 @@ const DeckListBackDrop = styled.div`
 export const DeckManager: React.FC = () => {
     const premadeDeckList =
         useSelector<RootState, DeckListSelections>(getPremadeDeckList) ||
-        DeckListSelections.MONKS;
+        PREMADE_DECKLIST_DEFAULT;
     const deckList = deckListMappings[premadeDeckList];
     const deck = makeDeck(deckList);
     return (

@@ -25,6 +25,8 @@ export enum DeckListSelections {
     SORCERORS = 'sorcerors 🧙🏾‍♀️',
 }
 
+export const PREMADE_DECKLIST_DEFAULT = DeckListSelections.MONKS;
+
 export const deckListMappings: Record<DeckListSelections, DeckList> = {
     [DeckListSelections.GENIES]: SAMPLE_DECKLIST_6,
     [DeckListSelections.MONKS]: SAMPLE_DECKLIST_0,

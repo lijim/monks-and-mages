@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
-import { DetailedRoom } from '@/types';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 
 type DeckListState = {
