@@ -166,6 +166,7 @@ export const configureIo = (server: HttpServer) => {
                 const name = idsToNames.get(socket.id);
                 if (!name) return;
                 nameToDeckListSelection.set(name, deckListSelection);
+                socket.emit('confirmPremadeDeckList', deckListSelection);
             });
 
             socket.on('chooseName', (name: string) => {
@@ -176,6 +177,8 @@ export const configureIo = (server: HttpServer) => {
                     if (roomName) socket.leave(roomName);
                     io.emit('listRooms', getDetailedRooms());
                     socket.emit('confirmName', '');
+                    // remove decklist on client
+                    socket.emit('confirmPremadeDeckList', undefined);
                     return;
                 }
                 if (!namesToIds.has(name)) {

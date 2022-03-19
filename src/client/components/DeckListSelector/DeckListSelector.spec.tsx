@@ -9,18 +9,6 @@ import { DeckListSelections } from '@/constants/lobbyConstants';
 describe('DeckListSelector', () => {
     it('chooses a deck', () => {
         const preloadedState: Partial<RootState> = {
-            lobby: {
-                rooms: [
-                    {
-                        roomName: 'Room 6',
-                        players: ['Kimmy', 'Jimmy', 'Timmy'],
-                    },
-                    {
-                        roomName: 'Room 7',
-                        players: ['Peter', 'Paul', 'Mary'],
-                    },
-                ],
-            },
             user: {
                 name: 'Jimmy',
             },
@@ -32,5 +20,19 @@ describe('DeckListSelector', () => {
         expect(webSocket.chooseDeck).toHaveBeenCalledWith(
             DeckListSelections.MAGES_FIRE
         );
+    });
+
+    it('displays the current deck list', () => {
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Jimmy',
+            },
+            deckList: {
+                premadeDecklist: DeckListSelections.GENIES,
+            },
+        };
+        render(<DeckListSelector />, { preloadedState });
+        const select = screen.getByLabelText('Choose a Deck');
+        expect(select).toHaveValue(DeckListSelections.GENIES);
     });
 });

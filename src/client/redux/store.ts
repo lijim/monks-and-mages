@@ -7,6 +7,7 @@ import { boardReducer } from './board';
 import { lobbyReducer } from './lobby';
 import { userReducer, userSlice } from './user';
 import { clientSideGameExtrasReducer } from './clientSideGameExtras';
+import { deckListReducer, deckListSlice } from './deckList';
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
     createReduxHistoryContext({
@@ -17,6 +18,7 @@ export const createRootReducer = () =>
     combineReducers({
         board: boardReducer,
         clientSideGameExtras: clientSideGameExtrasReducer,
+        deckList: deckListReducer,
         router: routerReducer,
         lobby: lobbyReducer,
         user: userReducer,
@@ -24,8 +26,10 @@ export const createRootReducer = () =>
 
 const preloadedState = {
     user: userSlice.getInitialState(),
+    deckList: deckListSlice.getInitialState(),
 };
 
+// Used for production
 export const store = configureStore({
     reducer: createRootReducer(),
     devTools: true,
@@ -33,6 +37,7 @@ export const store = configureStore({
     preloadedState,
 });
 
+// Used only for tests
 export const configureStoreWithMiddlewares = (
     stateOverrides = {},
     routerMiddlewareOveride = routerMiddleware

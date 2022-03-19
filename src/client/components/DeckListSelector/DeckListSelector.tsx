@@ -1,10 +1,15 @@
 import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { WebSocketContext } from '../WebSockets';
+import { RootState } from '@/client/redux/store';
 
 export const DeckListSelector: React.FC = () => {
     const webSocket = useContext(WebSocketContext);
+    const currentDeckList = useSelector<RootState, DeckListSelections>(
+        (state) => state.deckList.premadeDecklist
+    );
 
     const chooseDeck = (deckListSelection: string) => {
         if (
@@ -27,7 +32,7 @@ export const DeckListSelector: React.FC = () => {
                 onChange={(event) => {
                     chooseDeck(event.target.value);
                 }}
-                defaultValue={DeckListSelections.MONKS}
+                value={currentDeckList}
             >
                 {Object.values(DeckListSelections).map((deckListSelection) => (
                     <option value={deckListSelection} key={deckListSelection}>
