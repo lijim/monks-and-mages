@@ -169,9 +169,11 @@ export const configureIo = (server: HttpServer) => {
             });
 
             socket.on('chooseName', (name: string) => {
+                // log out
                 if (!name) {
                     disconnectFromGame(socket);
-                    socket.rooms.forEach((room) => socket.leave(room));
+                    const roomName = getRoomForSocket(socket);
+                    if (roomName) socket.leave(roomName);
                     io.emit('listRooms', getDetailedRooms());
                     socket.emit('confirmName', '');
                     return;
@@ -201,20 +203,21 @@ export const configureIo = (server: HttpServer) => {
 
             socket.on('startGame', () => {
                 // TODO: handle race condition where 2 people start game at same time
-                socket.rooms.forEach((roomName) => {
-                    const socketIds = io.sockets.adapter.rooms.get(roomName);
-                    const playerNames = getNamesFromIds([...socketIds]);
-                    const playerDeckListSelections =
-                        getDeckListSelectionsFromNames(playerNames);
-                    const board = makeNewBoard({
-                        playerDeckListSelections,
-                        playerNames,
-                    });
-                    board.gameState = GameState.MULLIGANING;
-                    startedBoards.set(roomName, board);
-                    io.to(roomName).emit('startGame');
-                    sendBoardForRoom(roomName);
+                const roomName = getRoomForSocket(socket);
+                if (!roomName) return;
+
+                const socketIds = io.sockets.adapter.rooms.get(roomName);
+                const playerNames = getNamesFromIds([...socketIds]);
+                const playerDeckListSelections =
+                    getDeckListSelectionsFromNames(playerNames);
+                const board = makeNewBoard({
+                    playerDeckListSelections,
+                    playerNames,
                 });
+                board.gameState = GameState.MULLIGANING;
+                startedBoards.set(roomName, board);
+                io.to(roomName).emit('startGame');
+                sendBoardForRoom(roomName);
                 io.emit('listRooms', getDetailedRooms());
             });
 
