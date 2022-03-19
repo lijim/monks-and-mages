@@ -16,7 +16,7 @@ export const REJECT_MULLIGAN_COPY = 'No, send it back (but have 1 fewer card)';
 const MulliganPrompt: React.FC = () => {
     const { takeGameAction } = useContext(WebSocketContext);
 
-    const selfPlayer = useSelector<RootState, Player>(getSelfPlayer);
+    const selfPlayer: Player = useSelector<RootState, Player>(getSelfPlayer);
     const otherPlayers = useSelector<RootState, Player[]>(getOtherPlayers);
     const isMulliganing = useSelector<RootState, boolean>(
         (state) => state.board.gameState === GameState.MULLIGANING
@@ -34,7 +34,7 @@ const MulliganPrompt: React.FC = () => {
     };
 
     if (!isMulliganing) return null;
-    if (selfPlayer.isActivePlayer) {
+    if (selfPlayer?.isActivePlayer) {
         return (
             <>
                 <div>
@@ -54,7 +54,9 @@ const MulliganPrompt: React.FC = () => {
     const mulliganingPlayer = otherPlayers.find(
         (player) => player.isActivePlayer
     );
-    return <>{mulliganingPlayer.name} is deciding whether to keep their hand</>;
+    return (
+        <>{mulliganingPlayer?.name} is deciding whether to keep their hand</>
+    );
 };
 
 const CenterPromptBoxContainer = styled.div`

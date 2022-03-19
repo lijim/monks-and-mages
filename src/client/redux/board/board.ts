@@ -13,6 +13,9 @@ export const boardSlice = createSlice({
                 state.chatLog.push(action.payload);
             }
         },
+        clearChat(state) {
+            state.chatLog = [];
+        },
         updateBoardState(state, action: PayloadAction<Board>) {
             state.gameState = action.payload.gameState;
             state.players = action.payload.players;
@@ -22,4 +25,4 @@ export const boardSlice = createSlice({
 
 export const boardReducer: Reducer<Board> = boardSlice.reducer;
 
-export const { addChatLog, updateBoardState } = boardSlice.actions;
+export const { addChatLog, clearChat, updateBoardState } = boardSlice.actions;

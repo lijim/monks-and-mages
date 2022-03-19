@@ -9,7 +9,7 @@ import {
 } from '@/client/redux/user';
 import { updateRoomsAndPlayers } from '@/client/redux/lobby';
 import { AppDispatch } from '@/client/redux/store';
-import { addChatLog, updateBoardState } from '@/client/redux/board';
+import { addChatLog, clearChat, updateBoardState } from '@/client/redux/board';
 import {
     ClientToServerEvents,
     ResolveEffectParams,
@@ -67,6 +67,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         });
 
         newSocket.on('startGame', () => {
+            dispatch(clearChat());
             dispatch(push('/ingame'));
         });
 
