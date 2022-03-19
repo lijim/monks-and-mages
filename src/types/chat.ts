@@ -13,4 +13,6 @@ interface PlayerChat extends Chat {
     playerName: string;
 }
 
-export type ChatLog = (SystemChat | PlayerChat)[];
+export type ChatMessage = SystemChat | PlayerChat;
+
+export type ChatLog = ChatMessage[];

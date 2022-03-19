@@ -65,15 +65,19 @@ describe('resolve effect', () => {
     });
 
     it('displays chat (auto-target)', () => {
+        const mockAddSystemChat = jest.fn();
         const effect = { type: EffectType.DRAW, strength: 1 };
         board.players[0].effectQueue = [effect];
-        const newBoard = resolveEffect(board, { effect }, 'Timmy');
-        expect(newBoard.chatLog[0].message).toBe(
+
+        resolveEffect(board, { effect }, 'Timmy', false, mockAddSystemChat);
+
+        expect(mockAddSystemChat).toHaveBeenCalledWith(
             'Timmy resolved "draw 1 cards"'
         );
     });
 
     it('displays chat (target)', () => {
+        const mockAddSystemChat = jest.fn();
         const effect = {
             type: EffectType.DEAL_DAMAGE,
             strength: 1,
@@ -82,15 +86,19 @@ describe('resolve effect', () => {
         board.players[0].effectQueue = [effect];
         const squire = makeCard(UnitCards.SQUIRE);
         board.players[0].units = [squire];
-        const newBoard = resolveEffect(
+
+        resolveEffect(
             board,
             {
                 effect,
                 unitCardIds: [squire.id],
             },
-            'Timmy'
+            'Timmy',
+            false,
+            mockAddSystemChat
         );
-        expect(newBoard.chatLog[0].message).toBe(
+
+        expect(mockAddSystemChat).toHaveBeenCalledWith(
             'Timmy resolved "deal 1 damage to any target" ➡️ [[Squire]]'
         );
     });
@@ -411,11 +419,12 @@ describe('resolve effect', () => {
         });
 
         it('broadcasts what was discarded', () => {
+            const mockAddSystemChat = jest.fn();
             board.players[0].hand = [
                 makeCard(UnitCards.ASSASSIN),
                 makeCard(UnitCards.ASSASSIN),
             ];
-            const newBoard = resolveEffect(
+            resolveEffect(
                 board,
                 {
                     effect: {
@@ -424,9 +433,12 @@ describe('resolve effect', () => {
                         target: TargetTypes.SELF_PLAYER,
                     },
                 },
-                'Timmy'
+                'Timmy',
+                false,
+                mockAddSystemChat
             );
-            expect(newBoard.chatLog[1].message).toEqual(
+            expect(mockAddSystemChat).toHaveBeenNthCalledWith(
+                2,
                 'Timmy discarded [[Assassin]], [[Assassin]]'
             );
         });

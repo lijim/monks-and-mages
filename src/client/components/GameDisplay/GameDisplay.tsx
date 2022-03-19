@@ -94,7 +94,7 @@ export const GameDisplay: React.FC = () => {
         getLastEffectForActivePlayer
     );
     const chats = useSelector<RootState, ChatLog>(
-        (state) => state.board.chatLog
+        (state) => state.board.chatLog || []
     );
 
     return (

@@ -33,21 +33,26 @@ describe('Game Action', () => {
         });
 
         it('displays chat messages', () => {
-            let newBoardState = applyGameAction({
+            const mockAddChatMessage = jest.fn();
+            const newBoardState = applyGameAction({
                 board,
                 gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
                 playerName: 'Timmy',
+                addChatMessage: mockAddChatMessage,
             });
-            newBoardState = applyGameAction({
+            applyGameAction({
                 board: newBoardState,
                 gameAction: { type: GameActionTypes.REJECT_MULLIGAN },
                 playerName: 'Tommy',
+                addChatMessage: mockAddChatMessage,
             });
 
-            expect(newBoardState.chatLog[0].message).toBe(
+            expect(mockAddChatMessage).toHaveBeenNthCalledWith(
+                1,
                 'Timmy has accepted a hand of 7 cards'
             );
-            expect(newBoardState.chatLog[1].message).toBe(
+            expect(mockAddChatMessage).toHaveBeenNthCalledWith(
+                2,
                 'Tommy has thrown back a hand of 7 cards and is going down to 6 cards'
             );
         });
@@ -323,6 +328,7 @@ describe('Game Action', () => {
         });
 
         it('emits a chat message', () => {
+            const mockAddChatMessage = jest.fn();
             const unitCard = makeCard(UnitCards.CANNON);
             board.players[0].hand = [unitCard];
             board.players[0].numCardsInHand = 1;
@@ -330,18 +336,19 @@ describe('Game Action', () => {
                 [Resource.FIRE]: 2,
                 [Resource.IRON]: 3,
             };
-            const newBoardState = applyGameAction({
+
+            applyGameAction({
                 board,
                 gameAction: {
                     type: GameActionTypes.DEPLOY_UNIT,
                     cardId: unitCard.id,
                 },
                 playerName: 'Timmy',
+                addChatMessage: mockAddChatMessage,
             });
-            expect(newBoardState.chatLog[0]).toMatchObject({
-                isFromSystem: true,
-                message: 'Timmy played [[Cannon]]',
-            });
+            expect(mockAddChatMessage).toHaveBeenCalledWith(
+                'Timmy played [[Cannon]]'
+            );
         });
 
         it('causes an "enter the board" effect', () => {
@@ -406,12 +413,14 @@ describe('Game Action', () => {
         });
 
         it('broadcasts a chat message (attacking another unit)', () => {
+            const mockAddChatMessage = jest.fn();
             const attacker = makeCard(UnitCards.LANCER);
             attacker.numAttacksLeft = 1;
             const defender = makeCard(UnitCards.SQUIRE);
             board.players[0].units = [attacker];
             board.players[1].units = [defender];
-            const newBoardState = applyGameAction({
+
+            applyGameAction({
                 board,
                 gameAction: {
                     type: GameActionTypes.PERFORM_ATTACK,
@@ -419,11 +428,15 @@ describe('Game Action', () => {
                     unitTarget: defender.id,
                 },
                 playerName: 'Timmy',
+                addChatMessage: mockAddChatMessage,
             });
-            expect(newBoardState.chatLog[0].message).toBe(
+
+            expect(mockAddChatMessage).toHaveBeenNthCalledWith(
+                1,
                 '[[Lancer]] (Timmy) ⚔️⚔️ [[Squire]] (Tommy)'
             );
-            expect(newBoardState.chatLog[1].message).toBe(
+            expect(mockAddChatMessage).toHaveBeenNthCalledWith(
+                2,
                 '[[Lancer]] (Timmy) went to the cemetery'
             );
         });
@@ -704,11 +717,13 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });
 
-        it('broadccast that it attacks the opposing player in chat', () => {
+        it('broadcasts that it attacks the opposing player in chat', () => {
+            const mockAddChatMessage = jest.fn();
             const attacker = makeCard(UnitCards.WATER_GUARDIAN);
             attacker.numAttacksLeft = 1;
             board.players[0].units = [attacker];
-            const newBoardState = applyGameAction({
+
+            applyGameAction({
                 board,
                 gameAction: {
                     type: GameActionTypes.PERFORM_ATTACK,
@@ -716,8 +731,10 @@ describe('Game Action', () => {
                     playerTarget: 'Tommy',
                 },
                 playerName: 'Timmy',
+                addChatMessage: mockAddChatMessage,
             });
-            expect(newBoardState.chatLog[0].message).toEqual(
+
+            expect(mockAddChatMessage).toHaveBeenCalledWith(
                 '[[Water Guardian]] (Timmy) 🪄🪄 Tommy'
             );
         });
@@ -869,6 +886,7 @@ describe('Game Action', () => {
         });
 
         it('broadcasts the spell to chat', () => {
+            const mockAddChatMessage = jest.fn();
             const spellCard = makeCard(SpellCards.A_THOUSAND_WINDS);
             board.players[0].hand.push(spellCard);
             board.players[0].resourcePool = {
@@ -876,16 +894,17 @@ describe('Game Action', () => {
                 [Resource.WATER]: 1,
             };
 
-            const newBoardState = applyGameAction({
+            applyGameAction({
                 board,
                 gameAction: {
                     type: GameActionTypes.CAST_SPELL,
                     cardId: spellCard.id,
                 },
                 playerName: 'Timmy',
+                addChatMessage: mockAddChatMessage,
             });
 
-            expect(newBoardState.chatLog[0].message).toEqual(
+            expect(mockAddChatMessage).toHaveBeenCalledWith(
                 'Timmy cast [[A Thousand Winds]]'
             );
         });

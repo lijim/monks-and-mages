@@ -1,10 +1,12 @@
 import { DeckListSelections } from './constants/lobbyConstants';
 import { Board } from './types/board';
 import { Effect } from './types/cards';
+import { ChatMessage } from './types/chat';
 import { GameAction } from './types/gameActions';
 
 export interface ServerToClientEvents {
     confirmName: (name: string) => void;
+    gameChatMessage: (message: ChatMessage) => void;
     listRooms: (rooms: DetailedRoom[]) => void;
     startGame: () => void;
     updateBoard: (board: Board) => void;

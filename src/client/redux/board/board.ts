@@ -1,12 +1,19 @@
 import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
 import { Board } from '@/types/board';
+import { ChatMessage } from '@/types/chat';
 
 export const boardSlice = createSlice({
     name: 'board',
     initialState: {} as Board,
     reducers: {
+        addChatLog(state, action: PayloadAction<ChatMessage>) {
+            if (!state.chatLog) {
+                state.chatLog = [action.payload];
+            } else {
+                state.chatLog.push(action.payload);
+            }
+        },
         updateBoardState(state, action: PayloadAction<Board>) {
-            state.chatLog = action.payload.chatLog;
             state.gameState = action.payload.gameState;
             state.players = action.payload.players;
         },
@@ -15,4 +22,4 @@ export const boardSlice = createSlice({
 
 export const boardReducer: Reducer<Board> = boardSlice.reducer;
 
-export const { updateBoardState } = boardSlice.actions;
+export const { addChatLog, updateBoardState } = boardSlice.actions;
