@@ -25,16 +25,12 @@ export const TopNavBar: React.FC = () => {
         webSocket.chooseName('');
     };
     return (
-        <>
-            (
-            <NameDisplayer>
-                👤 <b>{name}</b> (
-                <a href="#" type="button" onClick={logOut}>
-                    Logout
-                </a>
-                )
-            </NameDisplayer>
+        <NameDisplayer>
+            👤 <b>{name}</b> (
+            <a href="#" type="button" onClick={logOut}>
+                Logout
+            </a>
             )
-        </>
+        </NameDisplayer>
     );
 };
