@@ -8,6 +8,7 @@ import { obscureBoardInfo } from '../obscureBoardInfo';
 import {
     DeckListSelections,
     DEFAULT_ROOM_NAMES,
+    PREMADE_DECKLIST_DEFAULT,
 } from '@/constants/lobbyConstants';
 import {
     ClientToServerEvents,
@@ -185,6 +186,11 @@ export const configureIo = (server: HttpServer) => {
                     clearName(socket.id);
                     namesToIds.set(name, socket.id);
                     idsToNames.set(socket.id, name);
+                    nameToDeckListSelection.set(name, PREMADE_DECKLIST_DEFAULT);
+                    socket.emit(
+                        'confirmPremadeDeckList',
+                        PREMADE_DECKLIST_DEFAULT
+                    );
                     socket.emit('confirmName', name);
                 }
             });

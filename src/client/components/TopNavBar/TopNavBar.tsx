@@ -13,12 +13,18 @@ const NameDisplayer = styled.div`
     padding-top: 10px;
     background-color: rgb(255, 255, 255, 0.8);
     padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    .topNavBar-center {
+        place-self: center;
+    }
 `;
 
 /**
  * Top nav bar on the rooms page
  */
-export const TopNavBar: React.FC = () => {
+export const TopNavBar: React.FC = ({ children }) => {
     const name = useSelector<RootState, string>((state) => state.user.name);
     const webSocket = useContext(WebSocketContext);
 
@@ -27,8 +33,14 @@ export const TopNavBar: React.FC = () => {
     };
     return (
         <NameDisplayer>
-            👤 <b>{name}</b>{' '}
-            <SecondaryColorButton onClick={logOut}>Logout</SecondaryColorButton>
+            <div>
+                👤 <b>{name}</b>{' '}
+                <SecondaryColorButton onClick={logOut}>
+                    Logout
+                </SecondaryColorButton>
+            </div>
+            <div className="topNavBar-center">{children}</div>
+            <div></div>
         </NameDisplayer>
     );
 };

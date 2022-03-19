@@ -49,8 +49,8 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
             </CardImageContainer>
             <div>Spell</div>
             <RulesTextArea shouldCenter={effects.length === 1}>
-                {effects.map((effect) => (
-                    <div key={transformEffectToRulesText(effect)}>
+                {effects.map((effect, i) => (
+                    <div key={`${transformEffectToRulesText(effect)}-${i}`}>
                         {transformEffectToRulesText(effect)}
                     </div>
                 ))}

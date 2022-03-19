@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
 import { io, Socket } from 'socket.io-client';
+import { HistoryRouter as Router } from 'redux-first-history/rr6';
 
 import {
     AppDispatch,
@@ -106,9 +107,11 @@ export function render(
         }, []);
         return (
             <Provider store={store}>
-                <WebSocketContextMockProvider ws={mockWebSocket}>
-                    {children}
-                </WebSocketContextMockProvider>
+                <Router history={history}>
+                    <WebSocketContextMockProvider ws={mockWebSocket}>
+                        {children}
+                    </WebSocketContextMockProvider>
+                </Router>
             </Provider>
         );
     }
