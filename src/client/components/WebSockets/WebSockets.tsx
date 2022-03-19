@@ -17,6 +17,7 @@ import {
 } from '@/types';
 import { GameAction } from '@/types/gameActions';
 import { DeckListSelections } from '@/constants/lobbyConstants';
+import { confirmPremadeDecklist } from '@/client/redux/deckList';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
@@ -53,6 +54,13 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         newSocket.on('confirmName', (name: string) => {
             dispatch(chooseNameReducer({ name }));
         });
+
+        newSocket.on(
+            'confirmPremadeDeckList',
+            (premadeDeck: DeckListSelections) => {
+                dispatch(confirmPremadeDecklist(premadeDeck));
+            }
+        );
 
         newSocket.on('connect', () => {
             dispatch(initializeUser({ id: newSocket.id }));

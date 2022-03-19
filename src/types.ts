@@ -6,6 +6,7 @@ import { GameAction } from './types/gameActions';
 
 export interface ServerToClientEvents {
     confirmName: (name: string) => void;
+    confirmPremadeDeckList: (deckListSelection?: DeckListSelections) => void;
     gameChatMessage: (message: ChatMessage) => void;
     listRooms: (rooms: DetailedRoom[]) => void;
     startGame: () => void;
