@@ -6,7 +6,7 @@ import { GameDisplay } from './GameDisplay';
 import { RootState } from '@/client/redux/store';
 import { makeNewBoard } from '@/factories/board';
 import { EffectType } from '@/types/effects';
-import { makeSystemChatMsg } from '@/factories/chat';
+import { makeSystemChatMessage } from '@/factories/chat';
 
 describe('GameDisplay', () => {
     it('renders player names', () => {
@@ -25,7 +25,7 @@ describe('GameDisplay', () => {
         const board = makeNewBoard({
             playerNames: ['Tommy', 'Timmy'],
         });
-        board.chatLog = [makeSystemChatMsg('Tommy played [[Lancer]]')];
+        board.chatLog = [makeSystemChatMessage('Tommy played [[Lancer]]')];
 
         const preloadedState: Partial<RootState> = {
             user: {

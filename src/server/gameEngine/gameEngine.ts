@@ -2,13 +2,13 @@ import cloneDeep from 'lodash.clonedeep';
 import shuffle from 'lodash.shuffle';
 
 import { Board, GameState, Player } from '@/types/board';
-import { ChatLog } from '@/types/chat';
+import { ChatMessage } from '@/types/chat';
 import { GameAction, GameActionTypes } from '@/types/gameActions';
 import { CardType, ResourceCard, UnitCard } from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
-import { makeSystemChatMsg } from '@/factories/chat';
+import { makeSystemChatMessage } from '@/factories/chat';
 
 /**
  * @returns {Object} next player who has not readied yet (by accepting their mulligan) or
@@ -72,22 +72,18 @@ export const resetUnitCard = (unitCard: UnitCard) => {
     unitCard.cost = cloneDeep(unitCard.originalCost);
 };
 
-const addSystemChatFn =
-    (chatlog: ChatLog) =>
-    (message: string): void => {
-        chatlog.push(makeSystemChatMsg(message));
-    };
-
 /**
  * Mutates the board that's passed in.
  *
  * Cleans up all units where the hp (including buffs) is <= 0 and seend
  * them to the cemetry
  */
-export const processBoardToCemetery = (board: Board) => {
-    const { players, chatLog } = board;
+export const processBoardToCemetery = (
+    board: Board,
+    addSystemChat: (chatMessage: string) => void
+) => {
+    const { players } = board;
 
-    const addSystemChat = addSystemChatFn(chatLog);
     if (!players?.length) return;
     players.forEach((player) => {
         const unitsHeadedToCemetery = player.units.filter(
@@ -112,18 +108,20 @@ export const processBoardToCemetery = (board: Board) => {
 };
 
 type ApplyGameActionParams = {
+    addChatMessage?: (chatMessage: string) => void;
     board: Board;
     gameAction: GameAction;
     playerName: string; // player name taking the action
 };
 export const applyGameAction = ({
+    addChatMessage,
     board,
     gameAction,
     playerName,
 }: ApplyGameActionParams): Board => {
     const clonedBoard = cloneDeep(board);
-    const { players, chatLog } = clonedBoard;
-    const addSystemChat = addSystemChatFn(chatLog);
+    const { players } = clonedBoard;
+    const addSystemChat = (message: string) => addChatMessage?.(message);
     let activePlayer = players.find((player) => player.isActivePlayer);
     const otherPlayers = players.filter((player) => !player.isActivePlayer);
 
@@ -342,7 +340,7 @@ export const applyGameAction = ({
                 addSystemChat(
                     `[[${attacker.name}]] (${activePlayer.name}) ${attackEmoji}${attackEmoji} [[${defender.name}]] (${defendingPlayer.name})`
                 );
-                processBoardToCemetery(clonedBoard);
+                processBoardToCemetery(clonedBoard, addSystemChat);
 
                 return clonedBoard;
             }

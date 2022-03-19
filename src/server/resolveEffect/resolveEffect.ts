@@ -14,13 +14,14 @@ import { CardType, UnitCard } from '@/types/cards';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import { processBoardToCemetery, resetUnitCard } from '../gameEngine';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
-import { makeSystemChatMsg } from '@/factories/chat';
+import { makeSystemChatMessage } from '@/factories/chat';
 
 export const resolveEffect = (
     board: Board,
     { effect, playerNames, unitCardIds }: ResolveEffectParams,
     playerName: string,
-    verifyEffect = false
+    verifyEffect = false,
+    addChatMessage?: (message: string) => void
 ): Board | null => {
     const clonedBoard = cloneDeep(board);
     const { strength: effectStrength = 0 } = effect;
@@ -138,12 +139,11 @@ export const resolveEffect = (
      * Chat messages
      */
     const rulesText = transformEffectToRulesText(effect).toLowerCase();
-    clonedBoard.chatLog.push(
-        makeSystemChatMsg(
-            `${activePlayer.name} resolved "${rulesText}"${
-                targetText && originalTarget ? ` ➡️ ${targetText}` : ''
-            }`
-        )
+    const addSystemChat = (message: string) => addChatMessage?.(message);
+    addSystemChat(
+        `${activePlayer.name} resolved "${rulesText}"${
+            targetText && originalTarget ? ` ➡️ ${targetText}` : ''
+        }`
     );
 
     switch (effect.type) {
@@ -172,7 +172,7 @@ export const resolveEffect = (
                 });
             });
             // in case debuffing causes units to go to cemtery
-            processBoardToCemetery(clonedBoard);
+            processBoardToCemetery(clonedBoard, addSystemChat);
             return clonedBoard;
         }
         case EffectType.BUFF_TEAM_MAGIC: {
@@ -201,7 +201,7 @@ export const resolveEffect = (
                 unitTargets.forEach(({ unitCard }) => {
                     unitCard.hp -= effectStrength;
                 });
-                processBoardToCemetery(clonedBoard);
+                processBoardToCemetery(clonedBoard, addSystemChat);
             }
 
             playerTargets.forEach((player) => {
@@ -219,12 +219,10 @@ export const resolveEffect = (
                 );
                 player.hand = difference(hand, cardsToDiscard);
                 player.cemetery = player.cemetery.concat(cardsToDiscard);
-                clonedBoard.chatLog.push(
-                    makeSystemChatMsg(
-                        `${player.name} discarded ${cardsToDiscard
-                            .map((card) => `[[${card.name}]]`)
-                            .join(', ')}`
-                    )
+                addSystemChat(
+                    `${player.name} discarded ${cardsToDiscard
+                        .map((card) => `[[${card.name}]]`)
+                        .join(', ')}`
                 );
             });
             return clonedBoard;

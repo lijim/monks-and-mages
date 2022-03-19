@@ -17,6 +17,8 @@ import {
 } from '@/types';
 import { applyGameAction } from '../gameEngine';
 import { resolveEffect } from '../resolveEffect';
+import { ChatMessage } from '@/types/chat';
+import { makeSystemChatMessage } from '@/factories/chat';
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -85,6 +87,13 @@ export const configureIo = (server: HttpServer) => {
         const board = startedBoards.get(firstRoomName);
         return board;
     };
+
+    const sendChatMessageForRoom =
+        (socket: Socket) => (chatMessage: string) => {
+            const firstRoomName = getRoomForSocket(socket);
+            const systemMessage = makeSystemChatMessage(chatMessage);
+            io.sockets.in(firstRoomName).emit('gameChatMessage', systemMessage);
+        };
 
     // TODO: use adapters instead to get rooms => games
     // implement one that just retrieves shallowly all the rooms
@@ -189,6 +198,7 @@ export const configureIo = (server: HttpServer) => {
                     board,
                     gameAction,
                     playerName,
+                    addChatMessage: sendChatMessageForRoom(socket),
                 }); // calculate new state after actions is taken
                 // TODO: add error handling when user tries to take an invalid action
                 startedBoards.set(roomName, newBoardState); // apply state changes to in-memory storage of boards
@@ -203,7 +213,8 @@ export const configureIo = (server: HttpServer) => {
                     board,
                     effectParams,
                     playerName,
-                    true
+                    true,
+                    sendChatMessageForRoom(socket)
                 );
 
                 if (newBoardState) {

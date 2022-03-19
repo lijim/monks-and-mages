@@ -1,1 +1,1 @@
-export * from './makeChatMsg';
+export * from './makeChatMessage';

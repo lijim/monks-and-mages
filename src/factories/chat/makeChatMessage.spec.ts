@@ -1,13 +1,13 @@
-import { makeSystemChatMsg } from './makeChatMsg';
+import { makeSystemChatMessage } from './makeChatMessage';
 
 describe('Make chat message', () => {
     it('makes a chat message', () => {
-        const msg = makeSystemChatMsg(
+        const message = makeSystemChatMessage(
             'Make sure to walk around outside and drink water'
         );
-        expect(msg.message).toBe(
+        expect(message.message).toBe(
             'Make sure to walk around outside and drink water'
         );
-        expect(msg.isFromSystem).toBe(true);
+        expect(message.isFromSystem).toBe(true);
     });
 });
