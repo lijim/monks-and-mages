@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
+import { SecondaryColorButton } from '../Button';
 
 // TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
 
@@ -26,11 +27,8 @@ export const TopNavBar: React.FC = () => {
     };
     return (
         <NameDisplayer>
-            👤 <b>{name}</b> (
-            <a href="#" type="button" onClick={logOut}>
-                Logout
-            </a>
-            )
+            👤 <b>{name}</b>{' '}
+            <SecondaryColorButton onClick={logOut}>Logout</SecondaryColorButton>
         </NameDisplayer>
     );
 };

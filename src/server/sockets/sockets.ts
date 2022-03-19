@@ -17,7 +17,6 @@ import {
 } from '@/types';
 import { applyGameAction } from '../gameEngine';
 import { resolveEffect } from '../resolveEffect';
-import { ChatMessage } from '@/types/chat';
 import { makeSystemChatMessage } from '@/factories/chat';
 
 export const configureIo = (server: HttpServer) => {
@@ -129,6 +128,35 @@ export const configureIo = (server: HttpServer) => {
         return detailedRooms;
     };
 
+    const disconnectFromGame = (
+        socket: Socket<ClientToServerEvents, ServerToClientEvents>,
+        shouldClearName = true
+    ) => {
+        const board = getBoardForSocket(socket);
+        const roomName = getRoomForSocket(socket);
+        const name = idsToNames.get(socket.id);
+        if (shouldClearName) clearName(socket.id);
+        if (board) {
+            const player = board.players.find((p) => p.name === name);
+
+            if (player) {
+                sendChatMessageForRoom(socket)(
+                    `${player.name} has left the game`
+                );
+                player.health = 0;
+                player.isAlive = false;
+            }
+
+            const playerLeft = board.players.find((p) => p.isAlive);
+            if (!playerLeft) {
+                startedBoards.delete(roomName);
+            } else {
+                sendBoardForRoom(roomName);
+            }
+        }
+        io.emit('listRooms', getDetailedRooms());
+    };
+
     io.on(
         'connection',
         (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
@@ -141,14 +169,17 @@ export const configureIo = (server: HttpServer) => {
             });
 
             socket.on('chooseName', (name: string) => {
+                // log out
                 if (!name) {
-                    clearName(socket.id);
-                    socket.rooms.forEach((room) => socket.leave(room));
+                    disconnectFromGame(socket);
+                    const roomName = getRoomForSocket(socket);
+                    if (roomName) socket.leave(roomName);
                     io.emit('listRooms', getDetailedRooms());
                     socket.emit('confirmName', '');
                     return;
                 }
                 if (!namesToIds.has(name)) {
+                    clearName(socket.id);
                     namesToIds.set(name, socket.id);
                     idsToNames.set(socket.id, name);
                     socket.emit('confirmName', name);
@@ -162,27 +193,31 @@ export const configureIo = (server: HttpServer) => {
             socket.on('joinRoom', (roomName) => {
                 if (!roomName) return; // blank-string room name not allowed
                 const prevRoom = getRoomForSocket(socket);
-                if (prevRoom) socket.leave(prevRoom);
+                if (prevRoom) {
+                    disconnectFromGame(socket, false);
+                    socket.leave(prevRoom);
+                }
                 socket.join(`public-${roomName}`);
                 io.emit('listRooms', getDetailedRooms());
             });
 
             socket.on('startGame', () => {
                 // TODO: handle race condition where 2 people start game at same time
-                socket.rooms.forEach((roomName) => {
-                    const socketIds = io.sockets.adapter.rooms.get(roomName);
-                    const playerNames = getNamesFromIds([...socketIds]);
-                    const playerDeckListSelections =
-                        getDeckListSelectionsFromNames(playerNames);
-                    const board = makeNewBoard({
-                        playerDeckListSelections,
-                        playerNames,
-                    });
-                    board.gameState = GameState.MULLIGANING;
-                    startedBoards.set(roomName, board);
-                    io.to(roomName).emit('startGame');
-                    sendBoardForRoom(roomName);
+                const roomName = getRoomForSocket(socket);
+                if (!roomName) return;
+
+                const socketIds = io.sockets.adapter.rooms.get(roomName);
+                const playerNames = getNamesFromIds([...socketIds]);
+                const playerDeckListSelections =
+                    getDeckListSelectionsFromNames(playerNames);
+                const board = makeNewBoard({
+                    playerDeckListSelections,
+                    playerNames,
                 });
+                board.gameState = GameState.MULLIGANING;
+                startedBoards.set(roomName, board);
+                io.to(roomName).emit('startGame');
+                sendBoardForRoom(roomName);
                 io.emit('listRooms', getDetailedRooms());
             });
 
@@ -224,25 +259,7 @@ export const configureIo = (server: HttpServer) => {
             });
 
             socket.on('disconnecting', () => {
-                const board = getBoardForSocket(socket);
-                const roomName = getRoomForSocket(socket);
-                const name = idsToNames.get(socket.id);
-                clearName(socket.id);
-                if (board) {
-                    const player = board.players.find((p) => p.name === name);
-                    if (player) {
-                        player.health = 0;
-                        player.isAlive = false;
-                    }
-
-                    const playerLeft = board.players.find((p) => p.isAlive);
-                    if (!playerLeft) {
-                        startedBoards.delete(roomName);
-                    } else {
-                        sendBoardForRoom(roomName);
-                    }
-                }
-                io.emit('listRooms', getDetailedRooms());
+                disconnectFromGame(socket);
             });
         }
     );
