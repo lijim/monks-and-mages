@@ -459,7 +459,7 @@ const STONE_SLINGER: UnitCard = makeCard({
     name: 'Stone Slinger',
     imgSrc: 'https://images.unsplash.com/photo-1523441114522-8da17c0d51bf',
     cost: {
-        [Resource.BAMBOO]: 1,
+        [Resource.IRON]: 1,
     },
     description: '',
     enterEffects: [],

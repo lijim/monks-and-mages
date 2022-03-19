@@ -18,6 +18,7 @@ export const AutoResolvingTargets = [
     TargetTypes.ALL_OPPONENTS,
     TargetTypes.ALL_OPPOSING_UNITS,
     TargetTypes.ALL_PLAYERS,
+    TargetTypes.ALL_SELF_UNITS,
     TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
     TargetTypes.ALL_UNITS,
     TargetTypes.SELF_PLAYER,
