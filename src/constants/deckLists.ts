@@ -103,20 +103,19 @@ export const SAMPLE_DECKLIST_4: DeckList = [
 // Bamboo + Iron - revised version (not used in mocks)
 export const SAMPLE_DECKLIST_5: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.BAMBOO), quantity: 14 },
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 12 },
     { card: makeResourceCard(Resource.IRON), quantity: 8 },
     // Other
     { card: UnitCards.BAMBOO_FARMER, quantity: 4 },
     // Soldiers
-    { card: UnitCards.LANCER, quantity: 2 },
+    { card: UnitCards.LANCER, quantity: 4 },
     { card: UnitCards.TEMPLE_GUARDIAN, quantity: 4 },
     // Ranged
-    { card: UnitCards.LONGBOWMAN, quantity: 2 },
-    { card: UnitCards.JAVELINEER, quantity: 2 },
+    { card: UnitCards.LONGBOWMAN, quantity: 4 },
+    { card: UnitCards.JAVELINEER, quantity: 4 },
+    { card: UnitCards.STONE_SLINGER, quantity: 4 },
     // Spells
-    { card: SpellCards.THROW_SHURIKEN, quantity: 4 },
     { card: SpellCards.FEED_TEAM, quantity: 4 },
-    { card: SpellCards.RAIN_OF_ARROWS, quantity: 4 },
 ];
 
 // Crystal + Iron - (Genie Deck)
