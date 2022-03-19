@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { RoomSquare } from '../RoomSquare/RoomSquare';
+import { TopNavBar } from '../TopNavBar';
+import { RoomSquare } from '../RoomSquare';
 import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
 import { DetailedRoom } from '@/types';
@@ -105,92 +106,95 @@ export const Rooms: React.FC = () => {
     };
 
     return (
-        <RoomsContainer>
-            <LeftColumn>
-                <form
-                    onSubmit={(event) => {
-                        event.preventDefault();
-                        joinRoom(newRoomName);
-                    }}
-                >
-                    <label htmlFor="newRoomName">
-                        <b>Create New Room</b>{' '}
-                    </label>
-                    <input
-                        value={newRoomName}
-                        maxLength={MAX_ROOM_NAME_LENGTH}
-                        id="newRoomName"
-                        type="text"
-                        placeholder="The Training Grounds"
-                        onChange={(event) => {
-                            setNewRoomName(event.target.value);
+        <>
+            <TopNavBar />
+            <RoomsContainer>
+                <LeftColumn>
+                    <form
+                        onSubmit={(event) => {
+                            event.preventDefault();
+                            joinRoom(newRoomName);
                         }}
-                    />
-                    <Spacer />
-                    <span>
-                        <PrimaryColorButton
-                            onClick={() => {
-                                joinRoom(newRoomName);
-                            }}
-                            disabled={!newRoomName}
-                            type="submit"
-                        >
-                            Create
-                        </PrimaryColorButton>
-                    </span>
-                </form>
-
-                <div>
-                    <hr />
-                    <label htmlFor="deckSelection">
-                        <b>Choose a Deck</b>{' '}
-                    </label>
-                    <select
-                        id="deckSelection"
-                        onChange={(event) => {
-                            chooseDeck(event.target.value);
-                        }}
-                        defaultValue={DeckListSelections.MONKS}
                     >
-                        {Object.values(DeckListSelections).map(
-                            (deckListSelection) => (
-                                <option
-                                    value={deckListSelection}
-                                    key={deckListSelection}
-                                >
-                                    {deckListSelection}
-                                </option>
-                            )
-                        )}
-                    </select>
-                </div>
-            </LeftColumn>
-            <MiddleColumn>
-                <RoomsTab>Rooms</RoomsTab>
-                {rooms &&
-                    [...rooms]
-                        .sort((roomA, roomB) =>
-                            roomA.roomName
-                                .toLowerCase()
-                                .localeCompare(roomB.roomName.toLowerCase())
-                        )
-                        .map((detailedRoom) => (
-                            <RoomSquare
-                                hasJoined={joinedRoom === detailedRoom}
-                                joinRoom={() => {
-                                    const normalizedRoomName =
-                                        detailedRoom.roomName.replace(
-                                            'public-',
-                                            ''
-                                        );
-                                    joinRoom(normalizedRoomName);
+                        <label htmlFor="newRoomName">
+                            <b>Create New Room</b>{' '}
+                        </label>
+                        <input
+                            value={newRoomName}
+                            maxLength={MAX_ROOM_NAME_LENGTH}
+                            id="newRoomName"
+                            type="text"
+                            placeholder="The Training Grounds"
+                            onChange={(event) => {
+                                setNewRoomName(event.target.value);
+                            }}
+                        />
+                        <Spacer />
+                        <span>
+                            <PrimaryColorButton
+                                onClick={() => {
+                                    joinRoom(newRoomName);
                                 }}
-                                detailedRoom={detailedRoom}
-                                key={detailedRoom.roomName}
-                                onStartGameClicked={startGame}
-                            />
-                        ))}
-            </MiddleColumn>
-        </RoomsContainer>
+                                disabled={!newRoomName}
+                                type="submit"
+                            >
+                                Create
+                            </PrimaryColorButton>
+                        </span>
+                    </form>
+
+                    <div>
+                        <hr />
+                        <label htmlFor="deckSelection">
+                            <b>Choose a Deck</b>{' '}
+                        </label>
+                        <select
+                            id="deckSelection"
+                            onChange={(event) => {
+                                chooseDeck(event.target.value);
+                            }}
+                            defaultValue={DeckListSelections.MONKS}
+                        >
+                            {Object.values(DeckListSelections).map(
+                                (deckListSelection) => (
+                                    <option
+                                        value={deckListSelection}
+                                        key={deckListSelection}
+                                    >
+                                        {deckListSelection}
+                                    </option>
+                                )
+                            )}
+                        </select>
+                    </div>
+                </LeftColumn>
+                <MiddleColumn>
+                    <RoomsTab>Rooms</RoomsTab>
+                    {rooms &&
+                        [...rooms]
+                            .sort((roomA, roomB) =>
+                                roomA.roomName
+                                    .toLowerCase()
+                                    .localeCompare(roomB.roomName.toLowerCase())
+                            )
+                            .map((detailedRoom) => (
+                                <RoomSquare
+                                    hasJoined={joinedRoom === detailedRoom}
+                                    joinRoom={() => {
+                                        const normalizedRoomName =
+                                            detailedRoom.roomName.replace(
+                                                'public-',
+                                                ''
+                                            );
+                                        joinRoom(normalizedRoomName);
+                                    }}
+                                    detailedRoom={detailedRoom}
+                                    key={detailedRoom.roomName}
+                                    onStartGameClicked={startGame}
+                                />
+                            ))}
+                </MiddleColumn>
+            </RoomsContainer>
+        </>
     );
 };

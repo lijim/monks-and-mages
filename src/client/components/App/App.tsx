@@ -52,8 +52,7 @@ export const RouterRoutes: React.FC = () => {
                 path="/"
                 element={
                     <LobbyBackground>
-                        <IntroScreen />
-                        {isUserPastIntroScreen && <Rooms />}
+                        {isUserPastIntroScreen ? <Rooms /> : <IntroScreen />}
                     </LobbyBackground>
                 }
             />
