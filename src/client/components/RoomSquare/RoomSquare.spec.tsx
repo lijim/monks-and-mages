@@ -164,7 +164,7 @@ describe('Room Square', () => {
             expect(screen.queryByText('Join')).not.toBeInTheDocument();
         });
 
-        it('hides the join room option', () => {
+        it('hides the join room option when there are 4 players', () => {
             const mockJoinRoom = jest.fn();
             render(
                 <RoomSquare
