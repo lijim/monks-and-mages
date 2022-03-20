@@ -8,7 +8,7 @@ import { Board } from '@/types/board';
  */
 export const obscureBoardInfo = (
     board: Board,
-    forPlayerName: string
+    forPlayerName?: string
 ): Board => {
     const obscuredBoard = cloneDeep(board);
 

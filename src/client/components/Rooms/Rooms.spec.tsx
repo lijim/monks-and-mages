@@ -14,10 +14,12 @@ describe('Rooms', () => {
                     {
                         roomName: 'Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
+                        spectators: [],
                     },
                 ],
             },
@@ -35,10 +37,12 @@ describe('Rooms', () => {
                     {
                         roomName: 'Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
+                        spectators: [],
                     },
                 ],
             },

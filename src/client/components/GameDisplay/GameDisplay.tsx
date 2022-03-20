@@ -28,9 +28,14 @@ const GameGrid = styled.div`
     background-color: gainsboro;
 `;
 
-const CenterColumn = styled.div`
+type CenterColumnsProps = {
+    isSpectating: boolean;
+};
+
+const CenterColumn = styled.div<CenterColumnsProps>`
     display: grid;
-    grid-template-rows: 1fr 100px;
+    grid-template-rows: 1fr ${({ isSpectating }) =>
+            isSpectating ? '100px' : ''};
 
     section {
         zoom: 0.7;
@@ -113,6 +118,111 @@ const ChatMessages = styled.div`
 type GameBoardProps = {
     otherPlayers: Player[];
     selfPlayer: Player;
+};
+
+type SpectatorBoardProps = {
+    otherPlayers: Player[];
+};
+
+const SpectatorBoard: React.FC<SpectatorBoardProps> = ({ otherPlayers }) => {
+    if (otherPlayers.length <= 1) {
+        return <></>;
+    }
+
+    // 2 players
+    if (otherPlayers.length === 2) {
+        return (
+            <TwoPlayerBoard>
+                <section className="left">
+                    <OtherPlayerInfo
+                        key={otherPlayers[0].name}
+                        player={otherPlayers[0]}
+                    />
+                </section>
+                <PlayerBoardSection player={otherPlayers[0]} />
+                <section className="left">
+                    <OtherPlayerInfo
+                        key={otherPlayers[1].name}
+                        player={otherPlayers[1]}
+                    />
+                </section>
+                <PlayerBoardSection player={otherPlayers[1]} isSelfPlayer />
+            </TwoPlayerBoard>
+        );
+    }
+
+    // 3 players
+    if (otherPlayers.length === 3) {
+        return (
+            <MultiPlayerBoard>
+                <section className="left">
+                    <OtherPlayerInfo
+                        key={otherPlayers[0].name}
+                        player={otherPlayers[0]}
+                    />
+                </section>
+                <TwoBoardsOnSameRow>
+                    <PlayerBoardSection player={otherPlayers[0]} />
+                    <PlayerBoardSection player={otherPlayers[1]} />
+                </TwoBoardsOnSameRow>
+                <section className="right">
+                    <OtherPlayerInfo
+                        key={otherPlayers[1].name}
+                        player={otherPlayers[1]}
+                    />
+                </section>
+                <section className="left">
+                    <OtherPlayerInfo
+                        key={otherPlayers[2].name}
+                        player={otherPlayers[2]}
+                    />
+                </section>
+                <PlayerBoardSection player={otherPlayers[2]} isSelfPlayer />
+            </MultiPlayerBoard>
+        );
+    }
+
+    if (otherPlayers.length === 4) {
+        return (
+            <MultiPlayerBoard>
+                <section className="left">
+                    <OtherPlayerInfo
+                        key={otherPlayers[0].name}
+                        player={otherPlayers[0]}
+                    />
+                </section>
+                <TwoBoardsOnSameRow>
+                    <PlayerBoardSection player={otherPlayers[0]} />
+                    <PlayerBoardSection player={otherPlayers[1]} />
+                </TwoBoardsOnSameRow>
+                <section className="right">
+                    <OtherPlayerInfo
+                        key={otherPlayers[1].name}
+                        player={otherPlayers[1]}
+                    />
+                </section>
+                <section className="left">
+                    <OtherPlayerInfo
+                        key={otherPlayers[3].name}
+                        player={otherPlayers[3]}
+                    />
+                </section>
+                <TwoBoardsOnSameRow>
+                    <PlayerBoardSection player={otherPlayers[3]} isSelfPlayer />
+                    <PlayerBoardSection player={otherPlayers[2]} />
+                </TwoBoardsOnSameRow>
+
+                <section className="left">
+                    <OtherPlayerInfo
+                        key={otherPlayers[2].name}
+                        player={otherPlayers[2]}
+                    />
+                </section>
+            </MultiPlayerBoard>
+        );
+    }
+
+    return <></>;
 };
 
 const GameBoard: React.FC<GameBoardProps> = ({ otherPlayers, selfPlayer }) => {
@@ -224,11 +334,16 @@ export const GameDisplay: React.FC = () => {
 
     return (
         <GameGrid>
-            <CenterColumn>
-                <GameBoard
-                    otherPlayers={otherPlayers}
-                    selfPlayer={selfPlayer}
-                />
+            <CenterColumn isSpectating={!!selfPlayer}>
+                {selfPlayer ? (
+                    <GameBoard
+                        otherPlayers={otherPlayers}
+                        selfPlayer={selfPlayer}
+                    />
+                ) : (
+                    <SpectatorBoard otherPlayers={otherPlayers} />
+                )}
+
                 <CenterPromptBox />
                 <HandOfCards />
             </CenterColumn>

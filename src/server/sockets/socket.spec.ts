@@ -74,6 +74,7 @@ describe('sockets', () => {
                     return {
                         roomName: `public-${roomName}`,
                         players: [],
+                        spectators: [],
                         hasStartedGame: false,
                     };
                 }
@@ -83,6 +84,7 @@ describe('sockets', () => {
                     {
                         roomName: 'public-treehouse-1',
                         players: ['Dora Wini'],
+                        spectators: [],
                         hasStartedGame: false,
                     },
                     ...defaultRooms,

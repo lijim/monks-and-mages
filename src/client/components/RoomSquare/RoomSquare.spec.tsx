@@ -10,6 +10,7 @@ describe('Room Square', () => {
                 detailedRoom={{
                     roomName: 'Room 6',
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
+                    spectators: [],
                 }}
             />
         );
@@ -25,6 +26,7 @@ describe('Room Square', () => {
                 detailedRoom={{
                     roomName: 'public-Room 6',
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
+                    spectators: [],
                 }}
             />
         );
@@ -40,6 +42,7 @@ describe('Room Square', () => {
                         hasStartedGame: true,
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
                     }}
                     rejoinRoom={mockRejoinGame}
                     hasJoined
@@ -57,6 +60,7 @@ describe('Room Square', () => {
                         hasStartedGame: true,
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
                     }}
                     rejoinRoom={mockRejoinGame}
                 />
@@ -71,12 +75,59 @@ describe('Room Square', () => {
                     detailedRoom={{
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
                     }}
                     rejoinRoom={mockRejoinGame}
                     hasJoined
                 />
             );
             expect(screen.queryAllByText('Re-join game!')).toHaveLength(0);
+        });
+    });
+
+    describe('spectate button', () => {
+        it('spectates the room', () => {
+            const mockSpectateRoom = jest.fn();
+            render(
+                <RoomSquare
+                    detailedRoom={{
+                        roomName: 'public-Room 6',
+                        players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
+                    }}
+                    spectateRoom={mockSpectateRoom}
+                />
+            );
+            fireEvent.click(screen.getByText('Spectate'));
+            expect(mockSpectateRoom).toHaveBeenCalled();
+        });
+
+        it('hides the spectate button if the game is already spectated', () => {
+            render(
+                <RoomSquare
+                    detailedRoom={{
+                        roomName: 'public-Room 6',
+                        players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
+                    }}
+                    isSpectacting
+                />
+            );
+            expect(screen.queryByText('Spectate')).toBeNull();
+        });
+
+        it('hides the spectate button if the game is started', () => {
+            render(
+                <RoomSquare
+                    detailedRoom={{
+                        roomName: 'public-Room 6',
+                        players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
+                        hasStartedGame: true,
+                    }}
+                />
+            );
+            expect(screen.queryByText('Spectate')).toBeNull();
         });
     });
 
@@ -87,6 +138,7 @@ describe('Room Square', () => {
                 detailedRoom={{
                     roomName: 'public-Room 6',
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
+                    spectators: [],
                 }}
                 joinRoom={mockJoinRoom}
             />
@@ -102,6 +154,7 @@ describe('Room Square', () => {
                 detailedRoom={{
                     roomName: 'public-Room 6',
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
+                    spectators: [],
                 }}
                 hasJoined
                 joinRoom={mockJoinRoom}
@@ -116,6 +169,7 @@ describe('Room Square', () => {
                 detailedRoom={{
                     roomName: 'Room 6',
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
+                    spectators: [],
                     hasStartedGame: true,
                 }}
             />
@@ -130,6 +184,7 @@ describe('Room Square', () => {
                 detailedRoom={{
                     roomName: 'Room 6',
                     players: ['Kimmy'],
+                    spectators: [],
                     hasStartedGame: false,
                 }}
                 hasJoined
@@ -147,6 +202,7 @@ describe('Room Square', () => {
                 detailedRoom={{
                     roomName: 'Room 6',
                     players: ['Kimmy', 'Jimmy'],
+                    spectators: [],
                     hasStartedGame: true,
                 }}
                 hasJoined
@@ -164,6 +220,7 @@ describe('Room Square', () => {
                 detailedRoom={{
                     roomName: 'Room 6',
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
+                    spectators: [],
                     hasStartedGame: false,
                 }}
                 hasJoined

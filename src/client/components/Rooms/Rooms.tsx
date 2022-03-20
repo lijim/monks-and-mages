@@ -84,11 +84,23 @@ export const Rooms: React.FC = () => {
     const joinedRoom = rooms.find((detailedRoom) =>
         detailedRoom.players.find((player) => player === name)
     );
+    const spectatedRoom = rooms.find((detailedRoom) =>
+        detailedRoom.spectators.find((spectator) => spectator === name)
+    );
+    const sortedRooms = [...rooms].sort((roomA, roomB) =>
+        roomA.roomName.toLowerCase().localeCompare(roomB.roomName.toLowerCase())
+    );
     const [newRoomName, setNewRoomName] = useState('Room 1 🥑');
     const webSocket = useContext(WebSocketContext);
 
     const joinRoom = (roomName: string) => {
-        webSocket.joinRoom(roomName);
+        const normalizedRoomName = roomName.slice('public-'.length);
+        webSocket.joinRoom(normalizedRoomName);
+    };
+
+    const spectateRoom = (roomName: string) => {
+        const normalizedRoomName = roomName.slice('public-'.length);
+        webSocket.spectateRoom(normalizedRoomName);
     };
 
     const rejoinRoom = () => {
@@ -141,30 +153,22 @@ export const Rooms: React.FC = () => {
                 </LeftColumn>
                 <MiddleColumn>
                     <RoomsTab>Rooms</RoomsTab>
-                    {rooms &&
-                        [...rooms]
-                            .sort((roomA, roomB) =>
-                                roomA.roomName
-                                    .toLowerCase()
-                                    .localeCompare(roomB.roomName.toLowerCase())
-                            )
-                            .map((detailedRoom) => (
-                                <RoomSquare
-                                    hasJoined={joinedRoom === detailedRoom}
-                                    joinRoom={() => {
-                                        const normalizedRoomName =
-                                            detailedRoom.roomName.replace(
-                                                'public-',
-                                                ''
-                                            );
-                                        joinRoom(normalizedRoomName);
-                                    }}
-                                    rejoinRoom={rejoinRoom}
-                                    detailedRoom={detailedRoom}
-                                    key={detailedRoom.roomName}
-                                    onStartGameClicked={startGame}
-                                />
-                            ))}
+                    {sortedRooms.map((detailedRoom) => (
+                        <RoomSquare
+                            hasJoined={joinedRoom === detailedRoom}
+                            isSpectacting={spectatedRoom === detailedRoom}
+                            joinRoom={() => {
+                                joinRoom(detailedRoom.roomName);
+                            }}
+                            spectateRoom={() => {
+                                spectateRoom(detailedRoom.roomName);
+                            }}
+                            rejoinRoom={rejoinRoom}
+                            detailedRoom={detailedRoom}
+                            key={detailedRoom.roomName}
+                            onStartGameClicked={startGame}
+                        />
+                    ))}
                 </MiddleColumn>
             </RoomsContainer>
         </>
