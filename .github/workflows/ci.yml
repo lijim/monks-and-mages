@@ -30,6 +30,22 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
+            # https://dev.to/mpocock1/how-to-cache-nodemodules-in-github-actions-with-yarn-24eh
+            - uses: actions/cache@v2
+              name: Cache node_modules
+              id: cache-node-modules
+              with:
+                  path: '**/node_modules'
+                  key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+            # based on: https://github.com/microsoft/chart-parts/pull/71
+            - uses: actions/cache@v1
+              name: Cache Jest cache
+              id: cache-jest-cache
+              with:
+                  path: .jest-cache
+                  key: ${{ runner.os }}-${{ matrix.node-version }}-jest
+
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v2
               with:

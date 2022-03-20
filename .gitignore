@@ -3,3 +3,4 @@ dist
 .DS_STORE
 yarn-error.log
 coverage
+.jest-cache
