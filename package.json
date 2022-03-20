@@ -6,7 +6,7 @@
     "private": true,
     "scripts": {
         "build": "npx webpack",
-        "ci": "yarn lint && jest --maxWorkers=2",
+        "ci": "yarn lint && jest --runInBand",
         "dev": "npx webpack --watch & nodemon .",
         "heroku-cleanup": "yarn install --dev",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
