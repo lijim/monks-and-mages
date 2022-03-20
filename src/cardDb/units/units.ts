@@ -187,7 +187,7 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
         },
     ],
     totalHp: 5,
-    attack: 4,
+    attack: 1,
     numAttacks: 1,
     isRanged: true,
     isMagical: true,
@@ -422,8 +422,9 @@ const BOUNTY_COLLECTOR: UnitCard = makeCard({
     name: 'Bounty Collector',
     imgSrc: 'https://images.unsplash.com/photo-1614882914068-3b235f59cb38',
     cost: {
-        [Resource.IRON]: 2,
+        [Resource.IRON]: 1,
         [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [],
@@ -441,7 +442,8 @@ const SHADOW_STRIKER: UnitCard = makeCard({
     imgSrc: 'https://images.unsplash.com/photo-1518740028517-36c686a4a001',
     cost: {
         [Resource.IRON]: 1,
-        [Resource.BAMBOO]: 2,
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [],
@@ -511,7 +513,8 @@ const CAVALRY_ARCHER: UnitCard = makeCard({
     name: 'Cavalry Archer',
     imgSrc: 'https://images.unsplash.com/photo-1560884854-6c1de51e4e15',
     cost: {
-        [Resource.BAMBOO]: 2,
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 2,
     },
     description: '',
     enterEffects: [],
@@ -522,6 +525,28 @@ const CAVALRY_ARCHER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+});
+
+const MERRY_RALLIER: UnitCard = makeCard({
+    name: 'Merry Rallier',
+    imgSrc: 'https://images.pexels.com/photos/9935713/pexels-photo-9935713.jpeg',
+    cost: {
+        [Resource.BAMBOO]: 2,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW_PER_UNIT,
+        },
+    ],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
 });
 
 const CANNON: UnitCard = makeCard({
@@ -646,6 +671,7 @@ export const UnitCards = {
     JAVELINEER,
     LONGBOWMAN,
     CAVALRY_ARCHER,
+    MERRY_RALLIER,
     CANNON,
     // MISC
     BAMBOO_FARMER,

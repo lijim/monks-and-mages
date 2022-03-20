@@ -12,7 +12,11 @@ import {
 } from '@/types/effects';
 import { CardType, UnitCard } from '@/types/cards';
 import { makeCard, makeResourceCard } from '@/factories/cards';
-import { processBoardToCemetery, resetUnitCard } from '../gameEngine';
+import {
+    applyWinState,
+    processBoardToCemetery,
+    resetUnitCard,
+} from '../gameEngine';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 
 export const resolveEffect = (
@@ -207,6 +211,7 @@ export const resolveEffect = (
                 player.health -= effectStrength;
                 if (player.health <= 0) player.isAlive = false;
             });
+            applyWinState(clonedBoard);
             return clonedBoard;
         }
         case EffectType.DISCARD_HAND: {
@@ -233,6 +238,18 @@ export const resolveEffect = (
                     player.isAlive = false;
                 }
                 player.hand = hand.concat(deck.splice(-effectStrength));
+            });
+            applyWinState(clonedBoard);
+            return clonedBoard;
+        }
+        case EffectType.DRAW_PER_UNIT: {
+            playerTargets.forEach((player) => {
+                const cardsToDraw = player.units.length;
+                const { hand, deck } = player;
+                if (cardsToDraw > deck.length) {
+                    player.isAlive = false;
+                }
+                player.hand = hand.concat(deck.splice(-cardsToDraw));
             });
             return clonedBoard;
         }

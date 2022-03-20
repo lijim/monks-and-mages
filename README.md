@@ -89,9 +89,9 @@ Unit testing is covered via [Jest](https://jestjs.io/) and [React Testing Librar
 
 -   the game has 5 resources with separate identities:
 
-    -   Bamboo 🎋: resource generation, minor healing effects, ranged units and ranged damage spells
-    -   Iron 🛠: soldiers, sturdy units, minor damage spells
-    -   Fire 🔥: direct damage, conjuration, curses (e.g. cursing an opponents' hand)
+    -   Bamboo 🎋: resource generation, minor healing effects, buffing hp, ranged units and ranged damage spells
+    -   Iron 🛠: soldiers, sturdy units, minor damage spells, buffing attack and hp
+    -   Fire 🔥: direct damage, conjuration, curses (e.g. cursing an opponents' hand), buffing attack
     -   Water 🌊: drawing cards, conjuration, returning units to hands (bounce)
     -   Crystal 🔮: drawing cards (minor), resurrection, augmenting other forms of magic
 

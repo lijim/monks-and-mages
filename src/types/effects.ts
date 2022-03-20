@@ -37,6 +37,7 @@ export enum EffectType {
     DEAL_DAMAGE = 'Deal Damage', // to any target
     DISCARD_HAND = 'Discard Hand', // discard X cards at random
     DRAW = 'Draw',
+    DRAW_PER_UNIT = 'Draw Per Unit',
     HEAL = 'Heal', // to any target
     RAMP = 'Ramp',
     REVIVE = 'Revive',
@@ -51,6 +52,7 @@ export const getDefaultTargetForEffect = (
 ): TargetTypes => {
     return {
         [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
+        [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
         [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
         [EffectType.CURSE_HAND]: TargetTypes.OPPONENT,
         [EffectType.DISCARD_HAND]: TargetTypes.OPPONENT,

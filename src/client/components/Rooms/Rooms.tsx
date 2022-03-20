@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'redux-first-history';
 import styled from 'styled-components';
 
 import { TopNavBar } from '../TopNavBar';
@@ -11,7 +12,6 @@ import { PrimaryColorButton } from '../Button';
 import { MAX_ROOM_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { Colors } from '@/constants/colors';
 import { DeckListSelector } from '../DeckListSelector';
-import { push } from 'redux-first-history';
 
 const RoomsContainer = styled.div`
     display: grid;

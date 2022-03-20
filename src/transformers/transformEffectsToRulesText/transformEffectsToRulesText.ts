@@ -74,6 +74,14 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 isTargetTypePlural(target) ? '' : 's'
             } ${strength} cards`;
         }
+        case EffectType.DRAW_PER_UNIT: {
+            if (!target) {
+                return `Draw a card for every unit owned on board`;
+            }
+            return `${titleize(targetName)} draw${
+                isTargetTypePlural(target) ? '' : 's'
+            } a card for every unit owned on board`;
+        }
         case EffectType.HEAL: {
             return `Restore ${strength} HP to ${targetName}`;
         }
