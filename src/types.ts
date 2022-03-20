@@ -24,6 +24,7 @@ export interface ClientToServerEvents {
     chooseName: (name: string) => void;
     getRooms: () => void;
     joinRoom: (roomName: string) => void;
+    leaveRoom: () => void; // leave the current room
     resolveEffect: ({
         effect,
         playerNames,
