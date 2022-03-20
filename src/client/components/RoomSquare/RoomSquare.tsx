@@ -33,7 +33,7 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
 }) => {
     const normalizedRoomName = roomName.replace('public-', '');
     const shouldShowSpectate = !hasStartedGame && !isSpectacting;
-    const shouldShowJoin = !hasJoined && !hasStartedGame;
+    const shouldShowJoin = !hasJoined && !hasStartedGame && players.length < 4;
     return (
         <div>
             <h2>

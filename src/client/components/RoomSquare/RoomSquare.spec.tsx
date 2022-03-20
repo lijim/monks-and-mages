@@ -113,7 +113,7 @@ describe('Room Square', () => {
                     isSpectacting
                 />
             );
-            expect(screen.queryByText('Spectate')).toBeNull();
+            expect(screen.queryByText('Spectate')).not.toBeInTheDocument();
         });
 
         it('hides the spectate button if the game is started', () => {
@@ -127,40 +127,57 @@ describe('Room Square', () => {
                     }}
                 />
             );
-            expect(screen.queryByText('Spectate')).toBeNull();
+            expect(screen.queryByText('Spectate')).not.toBeInTheDocument();
         });
     });
 
-    it('joins the room', () => {
-        const mockJoinRoom = jest.fn();
-        render(
-            <RoomSquare
-                detailedRoom={{
-                    roomName: 'public-Room 6',
-                    players: ['Kimmy', 'Jimmy', 'Timmy'],
-                    spectators: [],
-                }}
-                joinRoom={mockJoinRoom}
-            />
-        );
-        fireEvent.click(screen.getByText('Join'));
-        expect(mockJoinRoom).toHaveBeenCalled();
-    });
+    describe('join room button', () => {
+        it('joins the room', () => {
+            const mockJoinRoom = jest.fn();
+            render(
+                <RoomSquare
+                    detailedRoom={{
+                        roomName: 'public-Room 6',
+                        players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
+                    }}
+                    joinRoom={mockJoinRoom}
+                />
+            );
+            fireEvent.click(screen.getByText('Join'));
+            expect(mockJoinRoom).toHaveBeenCalled();
+        });
 
-    it('hides the join room option', () => {
-        const mockJoinRoom = jest.fn();
-        render(
-            <RoomSquare
-                detailedRoom={{
-                    roomName: 'public-Room 6',
-                    players: ['Kimmy', 'Jimmy', 'Timmy'],
-                    spectators: [],
-                }}
-                hasJoined
-                joinRoom={mockJoinRoom}
-            />
-        );
-        expect(screen.queryByText('Join')).not.toBeInTheDocument();
+        it('hides the join room option if the player has joined', () => {
+            const mockJoinRoom = jest.fn();
+            render(
+                <RoomSquare
+                    detailedRoom={{
+                        roomName: 'public-Room 6',
+                        players: ['Kimmy', 'Jimmy', 'Timmy'],
+                        spectators: [],
+                    }}
+                    hasJoined
+                    joinRoom={mockJoinRoom}
+                />
+            );
+            expect(screen.queryByText('Join')).not.toBeInTheDocument();
+        });
+
+        it('hides the join room option', () => {
+            const mockJoinRoom = jest.fn();
+            render(
+                <RoomSquare
+                    detailedRoom={{
+                        roomName: 'public-Room 6',
+                        players: ['Kimmy', 'Jimmy', 'Timmy', 'Player 4'],
+                        spectators: [],
+                    }}
+                    joinRoom={mockJoinRoom}
+                />
+            );
+            expect(screen.queryByText('Join')).not.toBeInTheDocument();
+        });
     });
 
     it('renders Started if a game has started', () => {
