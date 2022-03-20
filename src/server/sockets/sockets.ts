@@ -16,7 +16,7 @@ import {
     ResolveEffectParams,
     ServerToClientEvents,
 } from '@/types';
-import { applyGameAction } from '../gameEngine';
+import { applyGameAction, applyWinState } from '../gameEngine';
 import { resolveEffect } from '../resolveEffect';
 import { makeSystemChatMessage } from '@/factories/chat';
 
@@ -174,6 +174,8 @@ export const configureIo = (server: HttpServer) => {
             }
 
             const playerLeft = board.players.find((p) => p.isAlive);
+            // update win state if there are only 1 players alive left
+            applyWinState(board);
             if (!playerLeft) {
                 startedBoards.delete(roomName);
             } else {
@@ -232,6 +234,15 @@ export const configureIo = (server: HttpServer) => {
                     socket.leave(prevRoom);
                 }
                 socket.join(`public-${roomName}`);
+                io.emit('listRooms', getDetailedRooms());
+            });
+
+            socket.on('leaveRoom', () => {
+                const prevRoom = getRoomForSocket(socket);
+                if (prevRoom) {
+                    disconnectFromGame(socket, false);
+                    socket.leave(prevRoom);
+                }
                 io.emit('listRooms', getDetailedRooms());
             });
 

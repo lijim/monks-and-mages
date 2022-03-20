@@ -88,6 +88,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('joinRoom', roomName);
         };
 
+        const leaveRoom = () => {
+            newSocket.emit('leaveRoom');
+        };
+
         const spectateRoom = (roomName: string) => {
             newSocket.emit('spectateRoom', roomName);
         };
@@ -118,6 +122,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             chooseDeck,
             chooseName,
             joinRoom,
+            leaveRoom,
             resolveEffect,
             spectateRoom,
             startGame,

@@ -48,8 +48,10 @@ interface RenderValue {
         chooseDeck: jest.Mock;
         chooseName: jest.Mock;
         joinRoom: jest.Mock;
+        leaveRoom: jest.Mock;
         resolveEffect: jest.Mock;
         socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+        spectateRoom: jest.Mock;
         startGame: jest.Mock;
         takeGameAction: jest.Mock;
     };
@@ -92,6 +94,8 @@ export function render(
         chooseDeck: jest.fn(),
         chooseName: jest.fn(),
         joinRoom: jest.fn(),
+        leaveRoom: jest.fn(),
+        spectateRoom: jest.fn(),
         resolveEffect: jest.fn(),
         startGame: jest.fn(),
         takeGameAction: jest.fn(),

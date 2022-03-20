@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'redux-first-history';
 import styled from 'styled-components';
 
 import { getOtherPlayers, getSelfPlayer } from '@/client/redux/selectors';
@@ -59,6 +60,35 @@ const MulliganPrompt: React.FC = () => {
     );
 };
 
+const GameOverPrompt: React.FC = () => {
+    const dispatch = useDispatch();
+    const { leaveRoom } = useContext(WebSocketContext);
+
+    const gameWinner = useSelector<RootState, string>(
+        (state) => state.board.players.find((player) => player.isAlive)?.name
+    );
+
+    const gameOverCopy = gameWinner
+        ? `Game over - ${gameWinner} won`
+        : 'Game over (tie)';
+    const returnToLobby = () => {
+        dispatch(push('/'));
+        leaveRoom();
+    };
+
+    return (
+        <>
+            <div>
+                {gameOverCopy}
+                <br />
+                <PrimaryColorButton onClick={returnToLobby}>
+                    Return to Lobby
+                </PrimaryColorButton>
+            </div>
+        </>
+    );
+};
+
 const CenterPromptBoxContainer = styled.div`
     position: fixed;
     width: 0;
@@ -82,6 +112,22 @@ export const CenterPromptBox: React.FC = () => {
     const isMulliganing = useSelector<RootState, boolean>(
         (state) => state.board.gameState === GameState.MULLIGANING
     );
+
+    const isGameOver = useSelector<RootState, boolean>(
+        (state) =>
+            state.board.gameState === GameState.WIN ||
+            state.board.gameState === GameState.TIE
+    );
+
+    if (isGameOver) {
+        return (
+            <CenterPromptBoxContainer>
+                <CenterPromptBoxInnerContainer>
+                    <GameOverPrompt />
+                </CenterPromptBoxInnerContainer>
+            </CenterPromptBoxContainer>
+        );
+    }
 
     if (isMulliganing) {
         return (
