@@ -14,7 +14,6 @@ import { CardType, UnitCard } from '@/types/cards';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import { processBoardToCemetery, resetUnitCard } from '../gameEngine';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
-import { makeSystemChatMessage } from '@/factories/chat';
 
 export const resolveEffect = (
     board: Board,
