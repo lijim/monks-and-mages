@@ -51,4 +51,4 @@ jobs:
               run: yarn build
 
             - name: Test
-              run: yarn ci
+              run: yarn ci --changedSince ${{ github.event.pull_request.base.sha }}
