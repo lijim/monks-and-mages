@@ -9,6 +9,7 @@ type RoomSquareProps = {
     hasJoined?: boolean;
     joinRoom?: () => void;
     onStartGameClicked?: () => void;
+    rejoinRoom?: () => void;
 };
 
 const PlayerList = styled.ul`
@@ -24,6 +25,7 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
     hasJoined,
     joinRoom,
     onStartGameClicked,
+    rejoinRoom,
 }) => {
     const normalizedRoomName = roomName.replace('public-', '');
     return (
@@ -35,6 +37,11 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
                     {!hasJoined && (
                         <SecondaryColorButton onClick={joinRoom}>
                             Join
+                        </SecondaryColorButton>
+                    )}
+                    {hasJoined && hasStartedGame && (
+                        <SecondaryColorButton onClick={rejoinRoom}>
+                            Re-join game!
                         </SecondaryColorButton>
                     )}
                     {!hasStartedGame && players.length > 1 && hasJoined && (

@@ -31,6 +31,55 @@ describe('Room Square', () => {
         expect(screen.getByText('Room 6')).toBeInTheDocument();
     });
 
+    describe('rejoin button', () => {
+        it('re-joins the room', () => {
+            const mockRejoinGame = jest.fn();
+            render(
+                <RoomSquare
+                    detailedRoom={{
+                        hasStartedGame: true,
+                        roomName: 'public-Room 6',
+                        players: ['Kimmy', 'Jimmy', 'Timmy'],
+                    }}
+                    rejoinRoom={mockRejoinGame}
+                    hasJoined
+                />
+            );
+            fireEvent.click(screen.getByText('Re-join game!'));
+            expect(mockRejoinGame).toHaveBeenCalled();
+        });
+
+        it("hides rejoin if you haven't joined", () => {
+            const mockRejoinGame = jest.fn();
+            render(
+                <RoomSquare
+                    detailedRoom={{
+                        hasStartedGame: true,
+                        roomName: 'public-Room 6',
+                        players: ['Kimmy', 'Jimmy', 'Timmy'],
+                    }}
+                    rejoinRoom={mockRejoinGame}
+                />
+            );
+            expect(screen.queryAllByText('Re-join game!')).toHaveLength(0);
+        });
+
+        it("hides rejoin if you haven't started", () => {
+            const mockRejoinGame = jest.fn();
+            render(
+                <RoomSquare
+                    detailedRoom={{
+                        roomName: 'public-Room 6',
+                        players: ['Kimmy', 'Jimmy', 'Timmy'],
+                    }}
+                    rejoinRoom={mockRejoinGame}
+                    hasJoined
+                />
+            );
+            expect(screen.queryAllByText('Re-join game!')).toHaveLength(0);
+        });
+    });
+
     it('joins the room', () => {
         const mockJoinRoom = jest.fn();
         render(
