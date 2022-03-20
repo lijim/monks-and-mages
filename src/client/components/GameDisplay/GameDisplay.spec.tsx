@@ -21,6 +21,22 @@ describe('GameDisplay', () => {
         expect(screen.queryByText('Timmy')).toBeInTheDocument();
     });
 
+    it('renders player names (4 player)', () => {
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Tommy',
+            },
+            board: makeNewBoard({
+                playerNames: ['Tommy', 'Timmy', 'Celeste', 'Rover'],
+            }),
+        };
+        render(<GameDisplay />, { preloadedState });
+        expect(screen.queryByText('Tommy')).toBeInTheDocument();
+        expect(screen.queryByText('Timmy')).toBeInTheDocument();
+        expect(screen.queryByText('Rover')).toBeInTheDocument();
+        expect(screen.queryByText('Celeste')).toBeInTheDocument();
+    });
+
     it('displays chat messages', () => {
         const board = makeNewBoard({
             playerNames: ['Tommy', 'Timmy'],

@@ -82,7 +82,7 @@ export const HandOfCards: React.FC = () => {
 
     if (!handSize) return <></>;
     return (
-        <HandContainer handSize={handSize}>
+        <HandContainer className="hand-of-cards" handSize={handSize}>
             {selfPlayer.hand.map((card) => (
                 <CardInHand
                     key={card.id}
