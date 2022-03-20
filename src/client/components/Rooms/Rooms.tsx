@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { TopNavBar } from '../TopNavBar';
@@ -11,6 +11,7 @@ import { PrimaryColorButton } from '../Button';
 import { MAX_ROOM_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { Colors } from '@/constants/colors';
 import { DeckListSelector } from '../DeckListSelector';
+import { push } from 'redux-first-history';
 
 const RoomsContainer = styled.div`
     display: grid;
@@ -75,6 +76,7 @@ const RoomsTab = styled.h1`
  * @returns @{JSX.Element}
  */
 export const Rooms: React.FC = () => {
+    const dispatch = useDispatch();
     const name = useSelector<RootState, string>((state) => state.user.name);
     const rooms = useSelector<RootState, DetailedRoom[]>(
         (state) => state.lobby.rooms || []
@@ -87,6 +89,10 @@ export const Rooms: React.FC = () => {
 
     const joinRoom = (roomName: string) => {
         webSocket.joinRoom(roomName);
+    };
+
+    const rejoinRoom = () => {
+        dispatch(push('/ingame'));
     };
 
     const startGame = () => {
@@ -153,6 +159,7 @@ export const Rooms: React.FC = () => {
                                             );
                                         joinRoom(normalizedRoomName);
                                     }}
+                                    rejoinRoom={rejoinRoom}
                                     detailedRoom={detailedRoom}
                                     key={detailedRoom.roomName}
                                     onStartGameClicked={startGame}
