@@ -36,13 +36,25 @@ export const splitDeckListToPiles = (deck: Card[]): PileOfCards[] => {
         title: 'Units',
         cards: new Map(),
     };
-    Object.values(UnitCards).forEach((unitCard) => {
-        const unitCards = deck.filter(
+    const unitCards = Object.values(UnitCards);
+    unitCards.sort((a, b) => {
+        const totalCostA = Object.values(a.cost).reduce(
+            (prev, curr) => prev + curr,
+            0
+        );
+        const totalCostB = Object.values(b.cost).reduce(
+            (prev, curr) => prev + curr,
+            0
+        );
+        return totalCostA - totalCostB;
+    });
+    unitCards.forEach((unitCard) => {
+        const matchingCards = deck.filter(
             (card) =>
                 card.cardType === CardType.UNIT && card.name === unitCard.name
         );
-        if (unitCards.length > 0)
-            unitsPile.cards.set(makeCard(unitCards[0]), unitCards.length);
+        if (matchingCards.length > 0)
+            unitsPile.cards.set(makeCard(unitCard), matchingCards.length);
     });
     if (unitsPile.cards.size > 0) piles.push(unitsPile);
 
@@ -51,13 +63,26 @@ export const splitDeckListToPiles = (deck: Card[]): PileOfCards[] => {
         title: 'Spells',
         cards: new Map(),
     };
-    Object.values(SpellCards).forEach((spellCard) => {
-        const spellCards = deck.filter(
+
+    const spellCards = Object.values(SpellCards);
+    spellCards.sort((a, b) => {
+        const totalCostA = Object.values(a.cost).reduce(
+            (prev, curr) => prev + curr,
+            0
+        );
+        const totalCostB = Object.values(b.cost).reduce(
+            (prev, curr) => prev + curr,
+            0
+        );
+        return totalCostA - totalCostB;
+    });
+    spellCards.forEach((spellCard) => {
+        const matchingCards = deck.filter(
             (card) =>
                 card.cardType === CardType.SPELL && card.name === spellCard.name
         );
-        if (spellCards.length > 0)
-            spellsPile.cards.set(makeCard(spellCards[0]), spellCards.length);
+        if (matchingCards.length > 0)
+            spellsPile.cards.set(makeCard(spellCard), matchingCards.length);
     });
     if (spellsPile.cards.size > 0) piles.push(spellsPile);
     return piles;

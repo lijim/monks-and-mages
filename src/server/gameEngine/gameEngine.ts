@@ -49,7 +49,7 @@ const getNextPlayer = (board: Board): Player => {
     return activePlayer;
 };
 
-const applyWinState = (board: Board): Board => {
+export const applyWinState = (board: Board): Board => {
     const { players } = board;
     if (players.filter((player) => player.isAlive).length === 1) {
         board.gameState = GameState.WIN;

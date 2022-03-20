@@ -149,6 +149,15 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    it('displays rules for drawing cards (per unit)', () => {
+        const effect: Effect = {
+            type: EffectType.DRAW_PER_UNIT,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Draw a card for every unit owned on board`
+        );
+    });
+
     it('displays rules for healing', () => {
         const effect: Effect = {
             type: EffectType.HEAL,

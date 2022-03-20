@@ -100,6 +100,11 @@ const GENEROUS_GEYSER = makeCard({
             type: EffectType.DRAW,
             strength: 2,
         },
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 2,
+        },
     ],
 });
 
@@ -136,15 +141,11 @@ const A_GENTLE_GUST = makeCard({
     effects: [
         {
             type: EffectType.BUFF_TEAM_ATTACK,
-            strength: 1,
+            strength: 2,
         },
         {
             type: EffectType.BUFF_TEAM_MAGIC,
-            strength: 1,
-        },
-        {
-            type: EffectType.BUFF_TEAM_HP,
-            strength: 1,
+            strength: 2,
         },
     ],
 });

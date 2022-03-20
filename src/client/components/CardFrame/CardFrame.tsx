@@ -105,6 +105,8 @@ export const AttackHPFooter = styled.div`
     display: grid;
     grid-template-columns: auto auto auto;
     background: rgba(0, 0, 0, 0.5);
+    zoom: 1.2;
+    font-size: 17px;
 `;
 
 interface BuffedTextProps {

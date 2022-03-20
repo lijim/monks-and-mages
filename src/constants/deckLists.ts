@@ -7,8 +7,8 @@ import { makeResourceCard } from '@/factories/cards';
 // Bamboo + Iron - revised version (not used in mocks)
 export const SAMPLE_DECKLIST_0: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.BAMBOO), quantity: 11 },
-    { card: makeResourceCard(Resource.IRON), quantity: 12 },
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 10 },
+    { card: makeResourceCard(Resource.IRON), quantity: 10 },
     // Soldiers
     { card: UnitCards.SQUIRE, quantity: 3 },
     { card: UnitCards.LANCER, quantity: 2 },
@@ -22,6 +22,7 @@ export const SAMPLE_DECKLIST_0: DeckList = [
     // Ranged
     { card: UnitCards.LONGBOWMAN, quantity: 2 },
     { card: UnitCards.JAVELINEER, quantity: 2 },
+    { card: UnitCards.MERRY_RALLIER, quantity: 3 },
     // Spells
     { card: SpellCards.THROW_SHURIKEN, quantity: 3 },
     { card: SpellCards.RAIN_OF_ARROWS, quantity: 3 },
@@ -108,15 +109,15 @@ export const SAMPLE_DECKLIST_5: DeckList = [
     // Other
     { card: UnitCards.BAMBOO_FARMER, quantity: 4 },
     // Soldiers
-    { card: UnitCards.LANCER, quantity: 4 },
-    { card: UnitCards.TEMPLE_GUARDIAN, quantity: 2 },
+    { card: UnitCards.TEMPLE_GUARDIAN, quantity: 3 },
     // Ranged
-    { card: UnitCards.LONGBOWMAN, quantity: 4 },
+    { card: UnitCards.LONGBOWMAN, quantity: 3 },
     { card: UnitCards.JAVELINEER, quantity: 4 },
-    { card: UnitCards.STONE_SLINGER, quantity: 4 },
+    { card: UnitCards.CAVALRY_ARCHER, quantity: 3 },
+    { card: UnitCards.MERRY_RALLIER, quantity: 4 },
     // Spells
     { card: SpellCards.FEED_TEAM, quantity: 4 },
-    { card: SpellCards.RAIN_OF_ARROWS, quantity: 2 },
+    { card: SpellCards.RAIN_OF_ARROWS, quantity: 3 },
 ];
 
 // Crystal + Iron - (Genie Deck)
@@ -142,16 +143,18 @@ export const SAMPLE_DECKLIST_6: DeckList = [
 export const SAMPLE_DECKLIST_7: DeckList = [
     // Resources
     { card: makeResourceCard(Resource.CRYSTAL), quantity: 8 },
-    { card: makeResourceCard(Resource.WATER), quantity: 7 },
+    { card: makeResourceCard(Resource.WATER), quantity: 5 },
     { card: makeResourceCard(Resource.FIRE), quantity: 7 },
     // Magicians
     { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 4 },
     { card: UnitCards.FIRE_MAGE, quantity: 4 },
-    { card: UnitCards.WATER_MAGE, quantity: 4 },
+    { card: UnitCards.WATER_MAGE, quantity: 1 },
+    { card: UnitCards.INFERNO_SORCEROR, quantity: 1 },
+    { card: UnitCards.WIND_MAGE, quantity: 1 },
     // Spells
-    { card: SpellCards.HOLY_REVIVAL, quantity: 4 },
+    { card: SpellCards.HOLY_REVIVAL, quantity: 3 },
     { card: SpellCards.CONSTANT_REFILL, quantity: 3 },
-    { card: SpellCards.SUMMON_DEMONS, quantity: 2 },
+    { card: SpellCards.SUMMON_DEMONS, quantity: 4 },
     { card: SpellCards.VOLCANIC_INFERNO, quantity: 3 },
-    { card: SpellCards.EMBER_SPEAR, quantity: 3 },
+    { card: SpellCards.EMBER_SPEAR, quantity: 4 },
 ];

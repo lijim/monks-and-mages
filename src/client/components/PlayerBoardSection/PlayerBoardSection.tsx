@@ -6,6 +6,7 @@ import { Player } from '@/types/board';
 import { Colors } from '@/constants/colors';
 import { CardGridItem } from '../CardGridItem';
 import { getHighlightableCards } from '@/client/redux/selectors/getHighlightableCards';
+import { ORDERED_RESOURCES } from '@/types/resources';
 
 interface PlayerBoardSectionProps {
     isSelfPlayer?: boolean;
@@ -44,6 +45,11 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
         return <PlayerBoardSectionContainer isSelfPlayer={isSelfPlayer} />;
     }
     const { units, resources } = player;
+    const sortedResources = [...resources].sort(
+        (a, b) =>
+            ORDERED_RESOURCES.indexOf(a.resourceType) -
+            ORDERED_RESOURCES.indexOf(b.resourceType)
+    );
     const unitsSection = (
         <PlayerBoardSectionRow>
             {units.map((unitCard) => (
@@ -61,7 +67,7 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
     );
     const resourcesSection = (
         <PlayerBoardSectionRow>
-            {resources.map((resourceCard) => (
+            {sortedResources.map((resourceCard) => (
                 <CardGridItem
                     card={resourceCard}
                     key={resourceCard.id}
