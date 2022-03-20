@@ -72,11 +72,17 @@ export const configureIo = (server: HttpServer) => {
             if (!name) return;
             io.to(socketId).emit('updateBoard', obscureBoardInfo(board, name));
         });
+        // broadcast to spectators as well
+        io.to(`publicSpectate-${roomName.slice('public-'.length)}`).emit(
+            'updateBoard',
+            obscureBoardInfo(board)
+        );
     };
 
     const getRoomForSocket = (socket: Socket): string | null => {
-        const firstRoomName = [...socket.rooms].filter((room) =>
-            room.startsWith('public-')
+        const firstRoomName = [...socket.rooms].filter(
+            (room) =>
+                room.startsWith('public-') || room.startsWith('publicSpectate-')
         )[0];
         return firstRoomName || null;
     };
@@ -93,6 +99,9 @@ export const configureIo = (server: HttpServer) => {
             const firstRoomName = getRoomForSocket(socket);
             const systemMessage = makeSystemChatMessage(chatMessage);
             io.sockets.in(firstRoomName).emit('gameChatMessage', systemMessage);
+            io.to(
+                `publicSpectate-${firstRoomName.slice('public-'.length)}`
+            ).emit('gameChatMessage', systemMessage);
         };
 
     // TODO: use adapters instead to get rooms => games
@@ -107,24 +116,40 @@ export const configureIo = (server: HttpServer) => {
             (roomName) => `public-${roomName}`
         ).filter((roomName) => !roomsAndIds.has(roomName));
 
+        // Process public rooms
         [...roomsAndIds.entries()].forEach(([roomName, socketIds]) => {
-            if (!roomName.startsWith('public-')) return; // skip private rooms
+            if (!roomName.startsWith('public-')) return; // process public rooms
 
             const room = {
                 roomName,
                 players: getNamesFromIds([...socketIds]),
                 hasStartedGame: startedBoards.has(roomName),
+                spectators: [] as string[],
             };
             detailedRooms.push(room);
         });
 
+        // Process empty default rooms
         defaultRoomNames.forEach((roomName) => {
             const room: DetailedRoom = {
                 roomName,
                 players: [] as string[],
                 hasStartedGame: false,
+                spectators: [],
             };
             detailedRooms.push(room);
+        });
+
+        // Process Spectators
+        [...roomsAndIds.entries()].forEach(([roomName, socketIds]) => {
+            if (!roomName.startsWith('publicSpectate-')) return;
+
+            const sanitizedRoomName = roomName.slice('publicSpectate-'.length);
+            const room = detailedRooms.find(
+                (detailedRoom) =>
+                    detailedRoom.roomName === `public-${sanitizedRoomName}`
+            );
+            room.spectators = getNamesFromIds([...socketIds]);
         });
         return detailedRooms;
     };
@@ -210,6 +235,17 @@ export const configureIo = (server: HttpServer) => {
                 io.emit('listRooms', getDetailedRooms());
             });
 
+            socket.on('spectateRoom', (roomName) => {
+                if (!roomName) return; // blank-string room name not allowed
+                const prevRoom = getRoomForSocket(socket);
+                if (prevRoom) {
+                    disconnectFromGame(socket, false);
+                    socket.leave(prevRoom);
+                }
+                socket.join(`publicSpectate-${roomName}`);
+                io.emit('listRooms', getDetailedRooms());
+            });
+
             socket.on('startGame', () => {
                 // TODO: handle race condition where 2 people start game at same time
                 const roomName = getRoomForSocket(socket);
@@ -226,6 +262,9 @@ export const configureIo = (server: HttpServer) => {
                 board.gameState = GameState.MULLIGANING;
                 startedBoards.set(roomName, board);
                 io.to(roomName).emit('startGame');
+                io.to(
+                    `publicSpectate-${roomName.slice('public-'.length)}`
+                ).emit('startGame');
                 sendBoardForRoom(roomName);
                 io.emit('listRooms', getDetailedRooms());
             });

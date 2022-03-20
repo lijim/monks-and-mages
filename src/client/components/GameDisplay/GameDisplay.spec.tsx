@@ -21,6 +21,18 @@ describe('GameDisplay', () => {
         expect(screen.queryByText('Timmy')).toBeInTheDocument();
     });
 
+    it('renders player names (spectator mode)', () => {
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Tortimer',
+            },
+            board: makeNewBoard({ playerNames: ['Tommy', 'Timmy'] }),
+        };
+        render(<GameDisplay />, { preloadedState });
+        expect(screen.queryByText('Tommy')).toBeInTheDocument();
+        expect(screen.queryByText('Timmy')).toBeInTheDocument();
+    });
+
     it('renders player names (4 player)', () => {
         const preloadedState: Partial<RootState> = {
             user: {

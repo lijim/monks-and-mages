@@ -29,6 +29,7 @@ export interface ClientToServerEvents {
         playerNames,
         unitCardIds,
     }: ResolveEffectParams) => void;
+    spectateRoom: (roomName: string) => void;
     startGame: () => void;
     takeGameAction: (gameAction: GameAction) => void;
 }
@@ -37,4 +38,5 @@ export type DetailedRoom = {
     hasStartedGame?: boolean;
     players: string[];
     roomName: string;
+    spectators: string[];
 };
