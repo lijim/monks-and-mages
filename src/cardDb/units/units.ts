@@ -35,6 +35,23 @@ const DEMON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const FALCON: UnitCard = makeCard({
+    name: 'Falcon',
+    imgSrc: 'https://images.pexels.com/photos/3674987/pexels-photo-3674987.jpeg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.QUICK],
+});
+
 const MANTA_RAY: UnitCard = makeCard({
     name: 'Manta Ray',
     imgSrc: 'https://images.unsplash.com/photo-1621911864149-fc37d035bae9',
@@ -90,6 +107,7 @@ const GOLEM_DRAGON: UnitCard = makeCard({
 
 export const Tokens = {
     DEMON,
+    FALCON,
     GOLEM_DRAGON,
     MANTA_RAY,
     SHARK,
@@ -527,6 +545,30 @@ const CAVALRY_ARCHER: UnitCard = makeCard({
     passiveEffects: [PassiveEffect.QUICK],
 });
 
+const FALCON_RIDER: UnitCard = makeCard({
+    name: 'Falcon Rider',
+    imgSrc: 'https://images.pexels.com/photos/5275480/pexels-photo-5275480.jpeg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            strength: 2,
+            type: EffectType.SUMMON_UNITS,
+            summonType: FALCON,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const MERRY_RALLIER: UnitCard = makeCard({
     name: 'Merry Rallier',
     imgSrc: 'https://images.pexels.com/photos/9935713/pexels-photo-9935713.jpeg',
@@ -568,6 +610,7 @@ const CANNON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+// Misc
 const BAMBOO_FARMER: UnitCard = makeCard({
     name: 'Bamboo Farmer',
     imgSrc: 'https://images.unsplash.com/photo-1512631118612-7bf02594062b',
@@ -671,6 +714,7 @@ export const UnitCards = {
     JAVELINEER,
     LONGBOWMAN,
     CAVALRY_ARCHER,
+    FALCON_RIDER,
     MERRY_RALLIER,
     CANNON,
     // MISC
