@@ -39,6 +39,7 @@ export enum EffectType {
     DRAW = 'Draw',
     DRAW_PER_UNIT = 'Draw Per Unit',
     HEAL = 'Heal', // to any target
+    LEARN = 'Learn', // add spells / units to hand
     RAMP = 'Ramp',
     REVIVE = 'Revive',
     SUMMON_UNITS = 'Summon Units',
@@ -51,20 +52,21 @@ export const getDefaultTargetForEffect = (
     effectType: EffectType
 ): TargetTypes => {
     return {
-        [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
-        [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
-        [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
+        [EffectType.BOUNCE]: TargetTypes.UNIT,
+        [EffectType.BUFF_HAND_ATTACK]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_TEAM_ATTACK]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_TEAM_HP]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_TEAM_MAGIC]: TargetTypes.SELF_PLAYER,
         [EffectType.CURSE_HAND]: TargetTypes.OPPONENT,
+        [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
         [EffectType.DISCARD_HAND]: TargetTypes.OPPONENT,
+        [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
+        [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
+        [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+        [EffectType.LEARN]: TargetTypes.SELF_PLAYER,
         [EffectType.RAMP]: TargetTypes.SELF_PLAYER,
         [EffectType.REVIVE]: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
         [EffectType.SUMMON_UNITS]: TargetTypes.SELF_PLAYER,
-        [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
-        [EffectType.BOUNCE]: TargetTypes.UNIT,
-        [EffectType.BUFF_TEAM_ATTACK]: TargetTypes.SELF_PLAYER,
-        [EffectType.BUFF_TEAM_MAGIC]: TargetTypes.SELF_PLAYER,
-        [EffectType.BUFF_TEAM_HP]: TargetTypes.SELF_PLAYER,
-        [EffectType.BUFF_HAND_ATTACK]: TargetTypes.SELF_PLAYER,
     }[effectType];
 };
 

@@ -528,6 +528,26 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Learn', () => {
+        it('adds cards to hand', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.LEARN,
+                        cardName: 'LANCER',
+                        strength: 2,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 2
+            );
+        });
+    });
+
     describe('Ramp Player', () => {
         it('increases resources deployed', () => {
             const newBoard = resolveEffect(

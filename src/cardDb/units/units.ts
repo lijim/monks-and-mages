@@ -184,6 +184,42 @@ const FIRE_MAGE: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const PRACTICAL_SCHOLAR: UnitCard = makeCard({
+    name: 'Practical Scholar',
+    imgSrc: 'https://images.pexels.com/photos/8390504/pexels-photo-8390504.jpeg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.WATER]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'EMBER_SPEAR',
+            strength: 1,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'BUBBLE_BLAST',
+            strength: 1,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'SPECTRAL_GENESIS',
+            strength: 1,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const INFERNO_SORCEROR: UnitCard = makeCard({
     name: 'Inferno Sorceror',
     imgSrc: 'https://images.unsplash.com/photo-1476611550464-4b94f060e1c6',
@@ -634,6 +670,29 @@ const BAMBOO_FARMER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const RELAXED_ROWBOATER: UnitCard = makeCard({
+    name: 'Relaxed Rowboater',
+    imgSrc: 'https://images.pexels.com/photos/10178456/pexels-photo-10178456.jpeg',
+    cost: {
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'GENEROUS_GEYSER',
+            strength: 1,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 // Saharan Units
 const FORTUNE_PREDICTOR: UnitCard = makeCard({
     name: 'Fortune Predictor',
@@ -670,20 +729,55 @@ const CAPTAIN_OF_THE_GUARD: UnitCard = makeCard({
     enterEffects: [
         {
             type: EffectType.DISCARD_HAND,
-            strength: 1,
+            strength: 2,
             target: TargetTypes.SELF_PLAYER,
         },
         {
             type: EffectType.DRAW,
-            strength: 2,
+            strength: 3,
         },
     ],
-    totalHp: 2,
+    totalHp: 3,
     attack: 2,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
     isSoldier: true,
+    passiveEffects: [],
+});
+
+// Coral
+const DEEP_SEA_EXPLORER: UnitCard = makeCard({
+    name: 'Deep Sea Explorer',
+    imgSrc: 'https://images.pexels.com/photos/3113226/pexels-photo-3113226.jpeg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+        {
+            type: EffectType.SUMMON_UNITS,
+            summonType: Tokens.MANTA_RAY,
+            strength: 1,
+        },
+        {
+            type: EffectType.SUMMON_UNITS,
+            summonType: Tokens.SHARK,
+            strength: 1,
+        },
+    ],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
     passiveEffects: [],
 });
 
@@ -719,7 +813,12 @@ export const UnitCards = {
     CANNON,
     // MISC
     BAMBOO_FARMER,
+    RELAXED_ROWBOATER,
     // SAHARAN
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,
+    // SOCEROR
+    PRACTICAL_SCHOLAR,
+    // CORAL
+    DEEP_SEA_EXPLORER,
 };

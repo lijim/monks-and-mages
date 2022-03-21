@@ -63,6 +63,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         <CardFrame
             isHighlighted={isHighlighted}
             isRaised={attackUnitId === id}
+            isUnitCard
             data-testid="UnitGridItem"
             primaryColor={getColorForCard(card)}
             onClick={onClick}
