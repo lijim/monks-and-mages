@@ -16,8 +16,7 @@ import { PlayerBoardSection } from '../PlayerBoardSection';
 import { Effect } from '@/types/cards';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { CenterPromptBox } from '../CenterPromptBox';
-import { Colors } from '@/constants/colors';
-import { ChatLog } from '@/types/chat';
+import { GameChatMessages } from '../GameChatMessages';
 
 const GameGrid = styled.div`
     width: 100%;
@@ -87,32 +86,6 @@ const EmphText = styled.span`
     padding: 10px;
     background: brown;
     color: white;
-`;
-
-const ChatBox = styled.div`
-    padding: 10px;
-    margin: 4px;
-    background: whitesmoke;
-    color: ${Colors.VANTA_BLACK};
-    box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
-`;
-
-const ChatMessages = styled.div`
-    place-self: end;
-    height: calc(100% - 40px);
-    bottom: 0;
-    display: flex;
-    align-content: flex-end;
-    align-items: flex-end;
-    flex-direction: column;
-    padding: 20px 4px;
-    overflow-y: scroll;
-    overscroll-behavior-y: contain;
-    scroll-snap-type: y proximity;
-
-    div:last-child {
-        scroll-snap-align: end;
-    }
 `;
 
 type GameBoardProps = {
@@ -328,9 +301,6 @@ export const GameDisplay: React.FC = () => {
     const lastEffect = useSelector<RootState, Effect>(
         getLastEffectForActivePlayer
     );
-    const chats = useSelector<RootState, ChatLog>(
-        (state) => state.board.chatLog || []
-    );
 
     return (
         <GameGrid>
@@ -355,11 +325,7 @@ export const GameDisplay: React.FC = () => {
                         </EmphText>
                     )}
                 </div>
-                <ChatMessages>
-                    {chats.map(({ id, message }) => (
-                        <ChatBox key={id}>{message}</ChatBox>
-                    ))}
-                </ChatMessages>
+                <GameChatMessages />
             </RightColumn>
         </GameGrid>
     );
