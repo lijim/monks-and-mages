@@ -10,7 +10,7 @@ import {
     getDefaultTargetForEffect,
     TargetTypes,
 } from '@/types/effects';
-import { CardType, UnitCard } from '@/types/cards';
+import { CardType, SpellCard, UnitCard } from '@/types/cards';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import {
     applyWinState,
@@ -18,6 +18,8 @@ import {
     resetUnitCard,
 } from '../gameEngine';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
+import { SpellCards } from '@/cardDb/spells';
+import { Tokens, UnitCards } from '@/cardDb/units';
 
 export const resolveEffect = (
     board: Board,
@@ -27,7 +29,7 @@ export const resolveEffect = (
     addChatMessage?: (message: string) => void
 ): Board | null => {
     const clonedBoard = cloneDeep(board);
-    const { strength: effectStrength = 0 } = effect;
+    const { strength: effectStrength = 0, cardName } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
     const otherPlayers = players.filter((player) => !player.isActivePlayer);
@@ -262,6 +264,24 @@ export const resolveEffect = (
                     unitCard.totalHp,
                     unitCard.hp + effectStrength
                 );
+            });
+            return clonedBoard;
+        }
+        case EffectType.LEARN: {
+            let cardToMake: UnitCard | SpellCard;
+            const cardPool = { ...SpellCards, ...UnitCards, ...Tokens };
+
+            Object.entries(cardPool).forEach(([key, card]) => {
+                if (key === cardName) {
+                    cardToMake = card;
+                }
+            });
+
+            if (!cardToMake) return clonedBoard;
+            playerTargets.forEach((player) => {
+                for (let i = 0; i < Math.min(effectStrength, 50); i += 1) {
+                    player.hand.push(makeCard(cardToMake));
+                }
             });
             return clonedBoard;
         }

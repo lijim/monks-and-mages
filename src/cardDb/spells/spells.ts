@@ -216,15 +216,20 @@ const OPEN_NEBULA = makeCard({
         {
             type: EffectType.DRAW,
             target: TargetTypes.ALL_PLAYERS,
-            strength: 7,
+            strength: 4,
+        },
+        {
+            type: EffectType.DRAW,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 3,
         },
         {
             type: EffectType.BOUNCE,
             strength: 1,
         },
         {
-            type: EffectType.BUFF_TEAM_MAGIC,
-            target: TargetTypes.ALL_PLAYERS,
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
             strength: 2,
         },
     ],

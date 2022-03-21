@@ -1,3 +1,5 @@
+import { SpellCards } from '@/cardDb/spells';
+import { Tokens, UnitCards } from '@/cardDb/units';
 import { Effect } from '@/types/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 
@@ -32,7 +34,7 @@ const titleize = (str: string): string => {
 };
 
 export const transformEffectToRulesText = (effect: Effect): string => {
-    const { strength, target, resourceType, summonType } = effect;
+    const { cardName, strength, target, resourceType, summonType } = effect;
     const targetName = TARGET_TYPES_TO_RULES_TEXT[target || TargetTypes.ANY];
     switch (effect.type) {
         case EffectType.BOUNCE: {
@@ -85,6 +87,18 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         case EffectType.HEAL: {
             return `Restore ${strength} HP to ${targetName}`;
         }
+        case EffectType.LEARN: {
+            let sanitizedCardName = '';
+            const cardPool = { ...SpellCards, ...UnitCards, ...Tokens };
+            Object.entries(cardPool).forEach(([key, card]) => {
+                if (key === cardName) {
+                    sanitizedCardName = card.name;
+                }
+            });
+            return `Add ${strength} ${sanitizedCardName} ${
+                strength > 1 ? 'cards' : 'card'
+            } to your hand`;
+        }
         case EffectType.RAMP: {
             return `Increase ${resourceType.toLowerCase()} resources by ${strength}`;
         }
@@ -92,7 +106,9 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Revive ${targetName}`;
         }
         case EffectType.SUMMON_UNITS: {
-            return `Summon ${strength} ${summonType.name}s (${summonType.attack} Attack, ${summonType.totalHp} HP)`;
+            return `Summon ${strength} ${summonType.name}${
+                strength > 1 ? 's' : ''
+            } - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙`;
         }
         default: {
             return '';

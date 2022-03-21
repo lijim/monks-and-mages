@@ -5,6 +5,7 @@ interface CardFrameProps {
     isHighlighted?: boolean;
     isRaised?: boolean;
     isRotated?: boolean;
+    isUnitCard?: boolean;
     primaryColor?: string;
     zoomLevel?: number;
 }
@@ -36,7 +37,12 @@ export const CardFrame = styled.div<CardFrameProps>`
     cursor: pointer;
     font-size: 14px;
     display: inline-grid;
-    grid-template-rows: auto 1fr 20px 120px auto;
+    grid-template-rows:
+        auto 1fr 20px minmax(
+            ${({ isUnitCard }) => (isUnitCard ? 80 : 120)}px,
+            auto
+        )
+        auto;
     width: 220px;
     height: 320px;
     border: 10px solid

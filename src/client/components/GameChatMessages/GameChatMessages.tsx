@@ -18,6 +18,7 @@ const ChatBox = styled.div`
 const ChatContainer = styled.div`
     display: grid;
     grid-template-rows: 1fr auto;
+    overflow-y: hidden;
 `;
 
 const ChatMessages = styled.div`
@@ -47,7 +48,7 @@ export const GameChatMessages: React.FC = () => {
 
     const submitPlayerMessage = (event: FormEvent) => {
         event.preventDefault();
-        sendChatMessage(playerMessage);
+        if (playerMessage) sendChatMessage(playerMessage);
         return false;
     };
 

@@ -169,6 +169,28 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    it('displays rules for learning a card (spells)', () => {
+        const effect: Effect = {
+            type: EffectType.LEARN,
+            strength: 4,
+            cardName: 'EMBER_SPEAR',
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Add 4 Ember Spear cards to your hand`
+        );
+    });
+
+    it('displays rules for learning a card (u its)', () => {
+        const effect: Effect = {
+            type: EffectType.LEARN,
+            strength: 1,
+            cardName: 'LANCER',
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Add 1 Lancer card to your hand`
+        );
+    });
+
     it('displays rules for ramping bamboo', () => {
         const effect: Effect = {
             type: EffectType.RAMP,
@@ -240,7 +262,7 @@ describe('transformEffectstoRulesText', () => {
             summonType: Tokens.DEMON,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
-            `Summon 2 Demons (1 Attack, 1 HP)`
+            `Summon 2 Demons - 1 ⚔️ 1 💙`
         );
     });
 });
