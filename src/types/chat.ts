@@ -6,9 +6,10 @@ type Chat = {
 
 export interface SystemChat extends Chat {
     isFromSystem: true;
+    playerName?: '';
 }
 
-interface PlayerChat extends Chat {
+export interface PlayerChat extends Chat {
     isFromSystem: false;
     playerName: string;
 }

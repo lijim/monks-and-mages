@@ -18,7 +18,7 @@ import {
 } from '@/types';
 import { applyGameAction, applyWinState } from '../gameEngine';
 import { resolveEffect } from '../resolveEffect';
-import { makeSystemChatMessage } from '@/factories/chat';
+import { makePlayerChatMessage, makeSystemChatMessage } from '@/factories/chat';
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -79,6 +79,12 @@ export const configureIo = (server: HttpServer) => {
         );
     };
 
+    /**
+     * Sockets have their own rooms, but we want to expose just the one
+     * that players have joined (public rooms)
+     * @param socket - socket.io socket
+     * @returns matching room
+     */
     const getRoomForSocket = (socket: Socket): string | null => {
         const firstRoomName = [...socket.rooms].filter(
             (room) =>
@@ -315,6 +321,30 @@ export const configureIo = (server: HttpServer) => {
                     startedBoards.set(roomName, newBoardState);
                     sendBoardForRoom(roomName);
                 }
+            });
+
+            socket.on('sendChatMessage', (message: string) => {
+                // TODO: handle race condition where 2 people start game at same time
+                const roomName = getRoomForSocket(socket);
+                const playerName = idsToNames.get(socket.id);
+                if (!roomName?.startsWith('public-') || !playerName) return;
+
+                io.to(roomName).emit(
+                    'gameChatMessage',
+                    makePlayerChatMessage({
+                        message,
+                        playerName,
+                    })
+                );
+                io.to(
+                    `publicSpectate-${roomName.slice('public-'.length)}`
+                ).emit(
+                    'gameChatMessage',
+                    makePlayerChatMessage({
+                        message,
+                        playerName,
+                    })
+                );
             });
 
             socket.on('disconnecting', () => {

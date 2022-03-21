@@ -30,6 +30,7 @@ export interface ClientToServerEvents {
         playerNames,
         unitCardIds,
     }: ResolveEffectParams) => void;
+    sendChatMessage: (message: string) => void;
     spectateRoom: (roomName: string) => void;
     startGame: () => void;
     takeGameAction: (gameAction: GameAction) => void;

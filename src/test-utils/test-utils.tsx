@@ -50,6 +50,7 @@ interface RenderValue {
         joinRoom: jest.Mock;
         leaveRoom: jest.Mock;
         resolveEffect: jest.Mock;
+        sendChatMessage: jest.Mock;
         socket: Socket<ServerToClientEvents, ClientToServerEvents>;
         spectateRoom: jest.Mock;
         startGame: jest.Mock;
@@ -95,6 +96,7 @@ export function render(
         chooseName: jest.fn(),
         joinRoom: jest.fn(),
         leaveRoom: jest.fn(),
+        sendChatMessage: jest.fn(),
         spectateRoom: jest.fn(),
         resolveEffect: jest.fn(),
         startGame: jest.fn(),

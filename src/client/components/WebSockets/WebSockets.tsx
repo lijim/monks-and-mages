@@ -108,6 +108,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('resolveEffect', params);
         };
 
+        const sendChatMessage = (message: string) => {
+            newSocket.emit('sendChatMessage', message);
+        };
+
         const startGame = () => {
             newSocket.emit('startGame');
         };
@@ -124,6 +128,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             joinRoom,
             leaveRoom,
             resolveEffect,
+            sendChatMessage,
             spectateRoom,
             startGame,
             takeGameAction,
