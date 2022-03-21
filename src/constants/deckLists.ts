@@ -104,7 +104,7 @@ export const SAMPLE_DECKLIST_4: DeckList = [
 // Bamboo + Iron - Farmer deck
 export const SAMPLE_DECKLIST_5: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.BAMBOO), quantity: 12 },
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 11 },
     { card: makeResourceCard(Resource.IRON), quantity: 8 },
     // Other
     { card: UnitCards.BAMBOO_FARMER, quantity: 4 },
@@ -112,8 +112,9 @@ export const SAMPLE_DECKLIST_5: DeckList = [
     { card: UnitCards.TEMPLE_GUARDIAN, quantity: 3 },
     // Ranged
     { card: UnitCards.LONGBOWMAN, quantity: 3 },
-    { card: UnitCards.JAVELINEER, quantity: 4 },
+    { card: UnitCards.JAVELINEER, quantity: 3 },
     { card: UnitCards.CAVALRY_ARCHER, quantity: 3 },
+    { card: UnitCards.FALCON_RIDER, quantity: 2 },
     { card: UnitCards.MERRY_RALLIER, quantity: 4 },
     // Spells
     { card: SpellCards.FEED_TEAM, quantity: 4 },
