@@ -19,7 +19,7 @@ const RoomsContainer = styled.div`
     grid-template-columns: 250px 1fr;
     overflow-y: hidden;
     grid-gap: 20px;
-    width: 60%;
+    width: 80%;
 `;
 
 const LeftColumn = styled.div`
