@@ -30,9 +30,6 @@ export const Button = styled.button.attrs(
     :not(:disabled):hover {
         background: ${({ hoverBackgroundColor }) => hoverBackgroundColor};
     }
-    :not(:disabled) {
-        box-shadow: 0 1px 2px rgb(0 0 0 / 50%);
-    }
     :active {
         top: 2px;
         left: 2px;
