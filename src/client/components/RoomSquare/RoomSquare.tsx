@@ -57,7 +57,7 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
                     )}{' '}
                     {shouldShowSpectate && (
                         <SecondaryColorButton onClick={spectateRoom}>
-                            Spectate
+                            {hasJoined ? 'Switch to spectating' : 'Spectate'}
                         </SecondaryColorButton>
                     )}
                 </span>
