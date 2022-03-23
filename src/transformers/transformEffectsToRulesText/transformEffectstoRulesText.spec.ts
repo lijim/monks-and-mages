@@ -158,6 +158,18 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    it('displays rules for extracting cards from a deck', () => {
+        const effect: Effect = {
+            type: EffectType.EXTRACT_CARD,
+            strength: 2,
+            cardName: 'Iron',
+            target: TargetTypes.OPPONENT,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Extract 2 Iron cards from any opponent's deck`
+        );
+    });
+
     it('displays rules for healing', () => {
         const effect: Effect = {
             type: EffectType.HEAL,

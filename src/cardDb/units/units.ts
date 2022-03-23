@@ -693,6 +693,30 @@ const RELAXED_ROWBOATER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const QUARRY_WORKER: UnitCard = makeCard({
+    name: 'Quarry Worker',
+    imgSrc: 'https://images.unsplash.com/photo-1623438803816-1f7456b240fa',
+    cost: {
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Iron',
+            strength: 1,
+            target: TargetTypes.PLAYER,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 // Saharan Units
 const FORTUNE_PREDICTOR: UnitCard = makeCard({
     name: 'Fortune Predictor',
@@ -814,6 +838,7 @@ export const UnitCards = {
     // MISC
     BAMBOO_FARMER,
     RELAXED_ROWBOATER,
+    QUARRY_WORKER,
     // SAHARAN
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,

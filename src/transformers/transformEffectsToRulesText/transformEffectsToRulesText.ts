@@ -19,6 +19,22 @@ const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.UNIT]: 'any unit',
 };
 
+const TARGET_TYPES_TO_RULES_TEXT_POSSESIVE = {
+    [TargetTypes.ALL_OPPONENTS]: "all opponents'",
+    [TargetTypes.ALL_OPPOSING_UNITS]: "all opposing units'",
+    [TargetTypes.ALL_PLAYERS]: "all players'",
+    [TargetTypes.ALL_SELF_UNITS_GRAVEYARD]: "all your graveyard units'",
+    [TargetTypes.ALL_SELF_UNITS]: "all your units'",
+    [TargetTypes.ALL_UNITS]: "all units'",
+    [TargetTypes.ANY]: "any target's",
+    [TargetTypes.OPPONENT]: "any opponent's",
+    [TargetTypes.OPPOSING_UNIT]: "any unit controlled by an opponent's",
+    [TargetTypes.OWN_UNIT]: "any of your unit's",
+    [TargetTypes.PLAYER]: "any player's",
+    [TargetTypes.SELF_PLAYER]: 'your',
+    [TargetTypes.UNIT]: "any unit's",
+};
+
 const PLURAL_TARGET_TYPES = [
     TargetTypes.ALL_OPPONENTS,
     TargetTypes.ALL_OPPOSING_UNITS,
@@ -36,6 +52,9 @@ const titleize = (str: string): string => {
 export const transformEffectToRulesText = (effect: Effect): string => {
     const { cardName, strength, target, resourceType, summonType } = effect;
     const targetName = TARGET_TYPES_TO_RULES_TEXT[target || TargetTypes.ANY];
+    const targetNamePossessive =
+        TARGET_TYPES_TO_RULES_TEXT_POSSESIVE[target || TargetTypes.ANY];
+    const pluralizationEffectStrength = strength > 1 ? 's' : '';
     switch (effect.type) {
         case EffectType.BOUNCE: {
             return `Return ${targetName} back to ${
@@ -84,6 +103,12 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 isTargetTypePlural(target) ? '' : 's'
             } a card for every unit owned on board`;
         }
+        case EffectType.EXTRACT_CARD: {
+            if (!target) {
+                return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from your deck`;
+            }
+            return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
+        }
         case EffectType.HEAL: {
             return `Restore ${strength} HP to ${targetName}`;
         }
@@ -106,9 +131,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Revive ${targetName}`;
         }
         case EffectType.SUMMON_UNITS: {
-            return `Summon ${strength} ${summonType.name}${
-                strength > 1 ? 's' : ''
-            } - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙`;
+            return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙`;
         }
         default: {
             return '';

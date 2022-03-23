@@ -178,3 +178,20 @@ export const SAMPLE_DECKLIST_8: DeckList = [
     { card: SpellCards.BUBBLE_BLAST, quantity: 1 },
     { card: SpellCards.RAIN_OF_ARROWS, quantity: 3 },
 ];
+
+// Iron + Fire (Cannoneers)
+export const SAMPLE_DECKLIST_9: DeckList = [
+    // Resources
+    { card: makeResourceCard(Resource.IRON), quantity: 10 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 10 },
+    // Units
+    { card: UnitCards.FIRE_TECHNICIAN, quantity: 4 },
+    { card: UnitCards.QUARRY_WORKER, quantity: 4 },
+    { card: UnitCards.SQUIRE, quantity: 4 },
+    { card: UnitCards.MARTIAL_TRAINER, quantity: 4 },
+    { card: UnitCards.FIRE_MAGE, quantity: 4 },
+    { card: UnitCards.CANNON, quantity: 4 },
+
+    // Spells
+    { card: SpellCards.EMBER_SPEAR, quantity: 4 },
+];

@@ -255,6 +255,23 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.EXTRACT_CARD: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.deck.filter(
+                    (card) => card.name === cardName
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.deck = player.deck.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
         case EffectType.HEAL: {
             playerTargets.forEach((player) => {
                 player.health += effectStrength;
