@@ -4,7 +4,7 @@ import { makeNewBoard } from '@/factories/board';
 import { Board } from '@/types/board';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { resolveEffect } from './resolveEffect';
-import { makeCard } from '@/factories/cards';
+import { makeCard, makeResourceCard } from '@/factories/cards';
 import { Tokens, UnitCards } from '@/mocks/units';
 import { UnitCard } from '@/types/cards';
 import { Resource } from '@/types/resources';
@@ -484,6 +484,29 @@ describe('resolve effect', () => {
             expect(mockAddSystemChat).toHaveBeenNthCalledWith(
                 2,
                 'Timmy discarded [[Assassin]], [[Assassin]]'
+            );
+        });
+    });
+
+    describe('Extract', () => {
+        it('extracts cards from a deck', () => {
+            board.players[0].deck.push(makeResourceCard(Resource.WATER));
+            board.players[0].deck.push(makeResourceCard(Resource.WATER));
+            board.players[1].deck.push(makeResourceCard(Resource.WATER));
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.EXTRACT_CARD,
+                        cardName: 'Water',
+                        strength: 2,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 3
             );
         });
     });

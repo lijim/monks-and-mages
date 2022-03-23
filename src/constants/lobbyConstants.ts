@@ -7,6 +7,7 @@ import {
     SAMPLE_DECKLIST_6,
     SAMPLE_DECKLIST_7,
     SAMPLE_DECKLIST_8,
+    SAMPLE_DECKLIST_9,
 } from '@/constants/deckLists';
 import { DeckList } from '@/types/cards';
 
@@ -17,6 +18,7 @@ export const DEFAULT_ROOM_NAMES = [
 ];
 
 export enum DeckListSelections {
+    CANNONEER = 'cannoneers 🧨',
     DIVERS = 'divers 🤿',
     FARMERS = 'farmers 👩‍🌾',
     GENIES = 'genies 🧞‍♀️',
@@ -30,6 +32,7 @@ export enum DeckListSelections {
 export const PREMADE_DECKLIST_DEFAULT = DeckListSelections.MONKS;
 
 export const deckListMappings: Record<DeckListSelections, DeckList> = {
+    [DeckListSelections.CANNONEER]: SAMPLE_DECKLIST_9,
     [DeckListSelections.DIVERS]: SAMPLE_DECKLIST_8,
     [DeckListSelections.GENIES]: SAMPLE_DECKLIST_6,
     [DeckListSelections.MONKS]: SAMPLE_DECKLIST_0,
