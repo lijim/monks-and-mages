@@ -22,6 +22,7 @@ describe('Rooms', () => {
                         spectators: [],
                     },
                 ],
+                latestGameResults: [],
             },
         };
         render(<Rooms />, { preloadedState });
@@ -45,6 +46,7 @@ describe('Rooms', () => {
                         spectators: [],
                     },
                 ],
+                latestGameResults: [],
             },
             user: {
                 name: 'Jimmy',

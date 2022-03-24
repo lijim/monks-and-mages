@@ -19,6 +19,8 @@ import {
 import { applyGameAction, applyWinState } from '../gameEngine';
 import { resolveEffect } from '../resolveEffect';
 import { makePlayerChatMessage, makeSystemChatMessage } from '@/factories/chat';
+import { GameResult } from '@/types/games';
+import { calculateGameResult } from '@/factories/games';
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -31,6 +33,8 @@ export const configureIo = (server: HttpServer) => {
     instrument(io, {
         auth: false,
     });
+
+    let latestResults: GameResult[] = [];
 
     const idsToNames = new Map<string, string>(); // mapping of socket ids to user-chosen names
     const namesToIds = new Map<string, string>(); // reverse map of idsToNames
@@ -77,6 +81,14 @@ export const configureIo = (server: HttpServer) => {
             'updateBoard',
             obscureBoardInfo(board)
         );
+    };
+
+    const addGameResult = (gameResult: GameResult | null): void => {
+        if (gameResult) {
+            latestResults.push(gameResult);
+            latestResults = latestResults.slice(-20);
+            io.emit('listLatestGameResults', latestResults);
+        }
     };
 
     /**
@@ -181,7 +193,10 @@ export const configureIo = (server: HttpServer) => {
 
             const playerLeft = board.players.find((p) => p.isAlive);
             // update win state if there are only 1 players alive left
+            const prevGameState = board.gameState;
             applyWinState(board);
+            const gameResult = calculateGameResult(prevGameState, board);
+            addGameResult(gameResult);
             if (!playerLeft) {
                 startedBoards.delete(roomName);
             } else {
@@ -294,12 +309,20 @@ export const configureIo = (server: HttpServer) => {
                     // TODO: add error handling emits down to the client, display via error toasts
                     return;
                 }
+
+                const prevGameState = board.gameState;
                 const newBoardState = applyGameAction({
                     board,
                     gameAction,
                     playerName,
                     addChatMessage: sendChatMessageForRoom(socket),
                 }); // calculate new state after actions is taken
+                const gameResult = calculateGameResult(
+                    prevGameState,
+                    newBoardState
+                );
+                if (gameResult) addGameResult(gameResult);
+
                 // TODO: add error handling when user tries to take an invalid action
                 startedBoards.set(roomName, newBoardState); // apply state changes to in-memory storage of boards
                 sendBoardForRoom(roomName); // update clients with changes
@@ -309,6 +332,8 @@ export const configureIo = (server: HttpServer) => {
                 const board = getBoardForSocket(socket);
                 const roomName = getRoomForSocket(socket);
                 const playerName = idsToNames.get(socket.id);
+
+                const prevGameState = board.gameState;
                 const newBoardState = resolveEffect(
                     board,
                     effectParams,
@@ -320,6 +345,12 @@ export const configureIo = (server: HttpServer) => {
                 if (newBoardState) {
                     startedBoards.set(roomName, newBoardState);
                     sendBoardForRoom(roomName);
+
+                    const gameResult = calculateGameResult(
+                        prevGameState,
+                        newBoardState
+                    );
+                    if (gameResult) addGameResult(gameResult);
                 }
             });
 

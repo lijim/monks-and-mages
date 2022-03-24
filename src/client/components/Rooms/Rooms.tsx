@@ -12,11 +12,12 @@ import { PrimaryColorButton } from '../Button';
 import { MAX_ROOM_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { Colors } from '@/constants/colors';
 import { DeckListSelector } from '../DeckListSelector';
+import { LatestWinners } from '../LatestWinners';
 
 const RoomsContainer = styled.div`
     display: grid;
     padding: 50px;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 250px 1fr 300px;
     overflow-y: hidden;
     grid-gap: 20px;
     width: 100%;
@@ -54,6 +55,13 @@ const MiddleColumn = styled.div`
 `;
 const Spacer = styled.div`
     height: 8px;
+`;
+
+const RightColumn = styled.div`
+    overflow-y: scroll;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    padding: 16px;
 `;
 
 const RoomsTab = styled.h1`
@@ -170,6 +178,9 @@ export const Rooms: React.FC = () => {
                         />
                     ))}
                 </MiddleColumn>
+                <RightColumn>
+                    <LatestWinners />
+                </RightColumn>
             </RoomsContainer>
         </>
     );
