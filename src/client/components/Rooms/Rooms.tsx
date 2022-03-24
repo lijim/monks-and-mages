@@ -15,11 +15,11 @@ import { DeckListSelector } from '../DeckListSelector';
 
 const RoomsContainer = styled.div`
     display: grid;
-    margin: 50px;
+    padding: 50px;
     grid-template-columns: 250px 1fr;
     overflow-y: hidden;
     grid-gap: 20px;
-    width: 80%;
+    width: 100%;
 `;
 
 const LeftColumn = styled.div`
@@ -63,7 +63,7 @@ const RoomsTab = styled.h1`
     display: inline-grid;
     outline: auto;
     place-items: center;
-    height: 40px;
+    height: 54px;
     padding: 7px;
     border-top-right-radius: 8px;
     border-bottom-left-radius: 8px;

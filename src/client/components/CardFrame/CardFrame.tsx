@@ -43,8 +43,8 @@ export const CardFrame = styled.div<CardFrameProps>`
             auto
         )
         auto;
-    width: 220px;
-    height: 320px;
+    width: 260px;
+    height: 360px;
     border: 10px solid
         ${({ isHighlighted }) =>
             isHighlighted ? Colors.FOCUS_BLUE : '#240503'};

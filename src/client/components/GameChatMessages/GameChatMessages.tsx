@@ -22,7 +22,6 @@ const ChatContainer = styled.div`
 `;
 
 const ChatMessages = styled.div`
-    place-self: end;
     height: calc(100% - 40px);
     bottom: 0;
     display: flex;
