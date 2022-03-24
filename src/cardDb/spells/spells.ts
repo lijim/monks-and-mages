@@ -41,7 +41,7 @@ const LIGHTNING_SLICK = makeCard({
 const CURSE_HAND = makeCard({
     name: 'Curse Hand',
     imgSrc: 'https://images.unsplash.com/photo-1571931468289-38ebb2c5a1c2?',
-    cost: { [Resource.FIRE]: 2 },
+    cost: { [Resource.FIRE]: 1, [Resource.GENERIC]: 1 },
     effects: [
         {
             type: EffectType.CURSE_HAND,
@@ -203,11 +203,33 @@ const SPECTRAL_GENESIS = makeCard({
     ],
 });
 
+const DISTORT_REALITY = makeCard({
+    name: 'Distort Reality',
+    imgSrc: 'https://images.pexels.com/photos/6492151/pexels-photo-6492151.jpeg',
+    cost: { [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 1,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.UNIT,
+            strength: 1,
+        },
+    ],
+});
+
 const OPEN_NEBULA = makeCard({
     name: 'Open Nebula',
     imgSrc: 'https://images.unsplash.com/photo-1484589065579-248aad0d8b13',
-    cost: { [Resource.CRYSTAL]: 3, [Resource.GENERIC]: 1 },
+    cost: { [Resource.CRYSTAL]: 3, [Resource.GENERIC]: 3 },
     effects: [
+        {
+            type: EffectType.BOUNCE,
+            strength: 1,
+        },
         {
             type: EffectType.DISCARD_HAND,
             target: TargetTypes.ALL_PLAYERS,
@@ -222,10 +244,6 @@ const OPEN_NEBULA = makeCard({
             type: EffectType.DRAW,
             target: TargetTypes.SELF_PLAYER,
             strength: 3,
-        },
-        {
-            type: EffectType.BOUNCE,
-            strength: 1,
         },
         {
             type: EffectType.DEAL_DAMAGE,
@@ -287,6 +305,38 @@ const RAIN_OF_ARROWS = makeCard({
     ],
 });
 
+// Cannon
+const IGNITE_SPARKS = makeCard({
+    name: 'Ignite Sparks',
+    imgSrc: 'https://images.pexels.com/photos/1098402/pexels-photo-1098402.jpeg',
+    cost: { [Resource.IRON]: 1, [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
+            strength: 2,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'SPARK_JOY',
+            strength: 1,
+        },
+    ],
+});
+
+const SPARK_JOY = makeCard({
+    name: 'Spark Joy',
+    imgSrc: 'https://images.pexels.com/photos/668254/pexels-photo-668254.jpeg',
+    cost: { [Resource.IRON]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
+            strength: 1,
+        },
+    ],
+});
+
 export const SpellCards = {
     // Fire
     EMBER_SPEAR,
@@ -307,6 +357,7 @@ export const SpellCards = {
     HOLY_REVIVAL,
 
     // Crystal
+    DISTORT_REALITY,
     SPECTRAL_GENESIS,
     OPEN_NEBULA,
 
@@ -316,4 +367,8 @@ export const SpellCards = {
     // Bamboo
     FEED_TEAM,
     RAIN_OF_ARROWS,
+
+    // Cannon
+    IGNITE_SPARKS,
+    SPARK_JOY,
 };

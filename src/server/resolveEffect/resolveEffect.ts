@@ -307,7 +307,9 @@ export const resolveEffect = (
             if (!resourceType) return clonedBoard;
             playerTargets.forEach((player) => {
                 for (let i = 0; i < Math.min(50, effectStrength); i += 1) {
-                    player.resources.push(makeResourceCard(resourceType));
+                    const resourceCard = makeResourceCard(resourceType);
+                    resourceCard.isUsed = true;
+                    player.resources.push(resourceCard);
                 }
             });
             return clonedBoard;
