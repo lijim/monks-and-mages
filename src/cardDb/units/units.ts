@@ -236,6 +236,11 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
             target: TargetTypes.ANY,
         },
         {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+        },
+        {
             type: EffectType.BUFF_TEAM_MAGIC,
             strength: 3,
         },
@@ -610,7 +615,7 @@ const MERRY_RALLIER: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/9935713/pexels-photo-9935713.jpeg',
     cost: {
         [Resource.BAMBOO]: 2,
-        [Resource.GENERIC]: 2,
+        [Resource.GENERIC]: 3,
     },
     description: '',
     enterEffects: [
