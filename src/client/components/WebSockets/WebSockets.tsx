@@ -7,7 +7,10 @@ import {
     chooseName as chooseNameReducer,
     initializeUser,
 } from '@/client/redux/user';
-import { updateRoomsAndPlayers } from '@/client/redux/lobby';
+import {
+    updateLatestGameResults,
+    updateRoomsAndPlayers,
+} from '@/client/redux/lobby';
 import { AppDispatch } from '@/client/redux/store';
 import { addChatLog, clearChat, updateBoardState } from '@/client/redux/board';
 import {
@@ -68,6 +71,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
 
         newSocket.on('gameChatMessage', (chatMessage) => {
             dispatch(addChatLog(chatMessage));
+        });
+
+        newSocket.on('listLatestGameResults', (gameResults) => {
+            dispatch(updateLatestGameResults(gameResults));
         });
 
         newSocket.on('listRooms', (detailedRooms) => {
