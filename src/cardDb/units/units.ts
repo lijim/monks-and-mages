@@ -184,14 +184,14 @@ const FIRE_MAGE: UnitCard = makeCard({
     passiveEffects: [],
 });
 
-const PRACTICAL_SCHOLAR: UnitCard = makeCard({
-    name: 'Practical Scholar',
+const BRIGHT_SCHOLAR: UnitCard = makeCard({
+    name: 'Bright Scholar',
     imgSrc: 'https://images.pexels.com/photos/8390504/pexels-photo-8390504.jpeg',
     cost: {
         [Resource.FIRE]: 1,
         [Resource.WATER]: 1,
         [Resource.CRYSTAL]: 1,
-        [Resource.GENERIC]: 1,
+        [Resource.GENERIC]: 2,
     },
     description: '',
     enterEffects: [
@@ -226,7 +226,7 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
     cost: {
         [Resource.CRYSTAL]: 1,
         [Resource.FIRE]: 3,
-        [Resource.GENERIC]: 2,
+        [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [
@@ -661,7 +661,7 @@ const BAMBOO_FARMER: UnitCard = makeCard({
             strength: 1,
         },
     ],
-    totalHp: 2,
+    totalHp: 1,
     attack: 1,
     numAttacks: 1,
     isRanged: false,
@@ -777,7 +777,7 @@ const DEEP_SEA_EXPLORER: UnitCard = makeCard({
     cost: {
         [Resource.BAMBOO]: 1,
         [Resource.WATER]: 1,
-        [Resource.GENERIC]: 3,
+        [Resource.GENERIC]: 4,
     },
     description: '',
     enterEffects: [
@@ -843,7 +843,7 @@ export const UnitCards = {
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,
     // SOCEROR
-    PRACTICAL_SCHOLAR,
+    BRIGHT_SCHOLAR,
     // CORAL
     DEEP_SEA_EXPLORER,
 };

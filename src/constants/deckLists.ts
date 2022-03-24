@@ -10,8 +10,8 @@ export const SAMPLE_DECKLIST_0: DeckList = [
     { card: makeResourceCard(Resource.BAMBOO), quantity: 10 },
     { card: makeResourceCard(Resource.IRON), quantity: 10 },
     // Soldiers
-    { card: UnitCards.SQUIRE, quantity: 3 },
-    { card: UnitCards.LANCER, quantity: 2 },
+    { card: UnitCards.SQUIRE, quantity: 2 },
+    { card: UnitCards.LANCER, quantity: 3 },
     { card: UnitCards.MARTIAL_TRAINER, quantity: 2 },
     { card: UnitCards.KNIGHT_TEMPLAR, quantity: 2 },
     { card: UnitCards.TEMPLE_GUARDIAN, quantity: 1 },
@@ -22,9 +22,9 @@ export const SAMPLE_DECKLIST_0: DeckList = [
     // Ranged
     { card: UnitCards.LONGBOWMAN, quantity: 2 },
     { card: UnitCards.JAVELINEER, quantity: 2 },
-    { card: UnitCards.MERRY_RALLIER, quantity: 3 },
+    { card: UnitCards.MERRY_RALLIER, quantity: 4 },
     // Spells
-    { card: SpellCards.THROW_SHURIKEN, quantity: 3 },
+    { card: SpellCards.THROW_SHURIKEN, quantity: 2 },
     { card: SpellCards.RAIN_OF_ARROWS, quantity: 3 },
 ];
 
@@ -53,13 +53,14 @@ export const SAMPLE_DECKLIST_2: DeckList = [
     { card: makeResourceCard(Resource.FIRE), quantity: 13 },
     { card: makeResourceCard(Resource.CRYSTAL), quantity: 8 },
     // Units
-    { card: UnitCards.FIRE_TECHNICIAN, quantity: 4 },
+    { card: UnitCards.FIRE_TECHNICIAN, quantity: 3 },
     { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 4 },
     { card: UnitCards.FIRE_MAGE, quantity: 4 },
     { card: UnitCards.INFERNO_SORCEROR, quantity: 2 },
     // Spells
     { card: SpellCards.EMBER_SPEAR, quantity: 4 },
-    { card: SpellCards.LIGHTNING_SLICK, quantity: 3 },
+    { card: SpellCards.LIGHTNING_SLICK, quantity: 2 },
+    { card: SpellCards.VOLCANIC_INFERNO, quantity: 2 },
     { card: SpellCards.CURSE_HAND, quantity: 2 },
     { card: SpellCards.SUMMON_DEMONS, quantity: 4 },
 ];
@@ -134,9 +135,10 @@ export const SAMPLE_DECKLIST_6: DeckList = [
     // Soldiers
     { card: UnitCards.CAPTAIN_OF_THE_GUARD, quantity: 4 },
     { card: UnitCards.LANCER, quantity: 4 },
-    { card: UnitCards.KNIGHT_TEMPLAR, quantity: 3 },
+    { card: UnitCards.KNIGHT_TEMPLAR, quantity: 1 },
     // Spells
-    { card: SpellCards.OPEN_NEBULA, quantity: 4 },
+    { card: SpellCards.DISTORT_REALITY, quantity: 4 },
+    { card: SpellCards.OPEN_NEBULA, quantity: 2 },
     { card: SpellCards.SPECTRAL_GENESIS, quantity: 4 },
 ];
 
@@ -150,7 +152,7 @@ export const SAMPLE_DECKLIST_7: DeckList = [
     { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 4 },
     { card: UnitCards.FIRE_MAGE, quantity: 3 },
     { card: UnitCards.WATER_MAGE, quantity: 1 },
-    { card: UnitCards.PRACTICAL_SCHOLAR, quantity: 3 },
+    { card: UnitCards.BRIGHT_SCHOLAR, quantity: 3 },
     { card: UnitCards.INFERNO_SORCEROR, quantity: 1 },
     { card: UnitCards.WIND_MAGE, quantity: 1 },
     // Spells
@@ -185,13 +187,14 @@ export const SAMPLE_DECKLIST_9: DeckList = [
     { card: makeResourceCard(Resource.IRON), quantity: 10 },
     { card: makeResourceCard(Resource.FIRE), quantity: 10 },
     // Units
-    { card: UnitCards.FIRE_TECHNICIAN, quantity: 4 },
+    { card: UnitCards.FIRE_TECHNICIAN, quantity: 3 },
     { card: UnitCards.QUARRY_WORKER, quantity: 4 },
-    { card: UnitCards.SQUIRE, quantity: 4 },
-    { card: UnitCards.MARTIAL_TRAINER, quantity: 4 },
+    { card: UnitCards.SQUIRE, quantity: 3 },
+    { card: UnitCards.MARTIAL_TRAINER, quantity: 2 },
     { card: UnitCards.FIRE_MAGE, quantity: 4 },
     { card: UnitCards.CANNON, quantity: 4 },
 
     // Spells
     { card: SpellCards.EMBER_SPEAR, quantity: 4 },
+    { card: SpellCards.IGNITE_SPARKS, quantity: 4 },
 ];
