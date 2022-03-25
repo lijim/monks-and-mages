@@ -10,6 +10,14 @@ import { performAttack } from '@/client/redux/clientSideGameExtras';
 import { handleClickOnPlayer } from './handleClickPlayer';
 import { SpellCards } from '@/cardDb/spells';
 import { GameState } from '@/types/board';
+import { playAudio } from '@/audioHelpers/playAudio';
+import { Sounds } from '@/constants/sounds';
+
+jest.mock('@/audioHelpers/playAudio', () => ({
+    __esModule: true, // this property makes it work
+    default: 'mockedDefaultExport',
+    playAudio: jest.fn(),
+}));
 
 describe('handle click on player', () => {
     let dispatch: AppDispatch;
@@ -17,6 +25,7 @@ describe('handle click on player', () => {
     let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
     beforeEach((done) => {
+        jest.clearAllMocks();
         dispatch = jest.fn();
         socket = io();
         socket.emit = jest.fn();
@@ -77,6 +86,22 @@ describe('handle click on player', () => {
                 cardId: unitCard.id,
                 playerTarget: 'Marc Antony',
             });
+        });
+
+        it('plays a sound', () => {
+            const unitCard = makeCard(UnitCards.LANCER);
+            unitCard.numAttacksLeft = 1;
+            state.board.players[0].units.push(unitCard);
+            state.clientSideGameExtras = { attackingUnit: unitCard.id };
+
+            handleClickOnPlayer({
+                player: state.board.players[1],
+                dispatch,
+                state,
+                socket,
+            });
+
+            expect(playAudio).toHaveBeenCalledWith(Sounds.ATTACK);
         });
 
         it('does nothing if the game is over', () => {

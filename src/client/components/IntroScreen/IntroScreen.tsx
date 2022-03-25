@@ -49,6 +49,21 @@ const IntroScreenContainer = styled.div`
     }
 `;
 
+const Footer = styled.div`
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    color: white;
+    padding: 20px;
+    font-size: 1.2rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    text-align: right;
+
+    a {
+        color: white;
+    }
+`;
+
 /**
  * The Intro Screen is where people set their names / see games in
  * lobbies that they can join.
@@ -62,8 +77,35 @@ export const IntroScreen: React.FC = () => {
     };
 
     return (
-        <IntroScreenContainer>
-            <NameChanger handleSubmit={handleSubmit} />
-        </IntroScreenContainer>
+        <>
+            <IntroScreenContainer>
+                <NameChanger handleSubmit={handleSubmit} />
+            </IntroScreenContainer>
+
+            <Footer>
+                <div>
+                    A passion project by{' '}
+                    <a href="https://github.com/lijim" target="_blank">
+                        Jimmy Li
+                    </a>{' '}
+                    source code on{' '}
+                    <a
+                        href="https://github.com/lijim/monks-and-mages/"
+                        target="_blank"
+                    >
+                        Github
+                    </a>
+                </div>
+
+                <div>
+                    <a
+                        href="https://breakingcopyright.com/song/cjbeards-fire-and-thunder"
+                        target="_blank"
+                    >
+                        Credits: Intro Music (Fire and Thunder by Cjbeards)
+                    </a>
+                </div>
+            </Footer>
+        </>
     );
 };

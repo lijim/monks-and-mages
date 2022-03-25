@@ -14,6 +14,13 @@ import {
 } from '@/client/redux/clientSideGameExtras';
 import { SpellCards } from '@/cardDb/spells';
 import { GameState } from '@/types/board';
+import { playAudio } from '@/audioHelpers/playAudio';
+
+jest.mock('@/audioHelpers/playAudio', () => ({
+    __esModule: true, // this property makes it work
+    default: 'mockedDefaultExport',
+    playAudio: jest.fn(),
+}));
 
 describe('handle click on card', () => {
     let dispatch: AppDispatch;
@@ -21,6 +28,7 @@ describe('handle click on card', () => {
     let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
     beforeEach((done) => {
+        jest.clearAllMocks();
         dispatch = jest.fn();
         socket = io();
         socket.emit = jest.fn();
@@ -164,6 +172,26 @@ describe('handle click on card', () => {
                 cardId: unitCard.id,
                 unitTarget: defender.id,
             });
+        });
+
+        it('plays a sound', () => {
+            const unitCard = makeCard(UnitCards.LANCER);
+            const defender = makeCard(UnitCards.INFERNO_SORCEROR);
+            unitCard.numAttacksLeft = 1;
+            state.board.players[0].units.push(unitCard);
+            state.board.players[1].units.push(defender);
+            state.clientSideGameExtras = { attackingUnit: unitCard.id };
+
+            handleClickOnCard({
+                cardId: defender.id,
+                dispatch,
+                state,
+                socket,
+            });
+
+            expect(playAudio).toHaveBeenCalledWith(
+                'https://freesound.org/data/previews/390/390377_7074051-lq.mp3'
+            );
         });
     });
 

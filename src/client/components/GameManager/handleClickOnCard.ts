@@ -17,6 +17,8 @@ import {
     selectAttackingUnit,
 } from '@/client/redux/clientSideGameExtras';
 import { getDefaultTargetForEffect, TargetTypes } from '@/types/effects';
+import { playAudio } from '@/audioHelpers/playAudio';
+import { Sounds } from '@/constants/sounds';
 
 interface HandleClickOnCardParams {
     cardId: string;
@@ -166,6 +168,7 @@ export const handleClickOnCard = ({
 
     // Matching Units (Other Players)
     if (matchingCardInOtherUnits && attackingUnit) {
+        playAudio(Sounds.ATTACK);
         dispatch(performAttack());
         socket.emit('takeGameAction', {
             type: GameActionTypes.PERFORM_ATTACK,

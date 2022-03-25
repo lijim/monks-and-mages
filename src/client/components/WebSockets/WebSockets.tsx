@@ -21,6 +21,7 @@ import {
 import { GameAction } from '@/types/gameActions';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { confirmPremadeDecklist } from '@/client/redux/deckList';
+import { playAudio } from '@/audioHelpers/playAudio';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
@@ -84,6 +85,9 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         newSocket.on('startGame', () => {
             dispatch(clearChat());
             dispatch(push('/ingame'));
+            playAudio(
+                'https://freesound.org/data/previews/403/403018_5121236-lq.mp3'
+            );
         });
 
         newSocket.on('updateBoard', (board) => {

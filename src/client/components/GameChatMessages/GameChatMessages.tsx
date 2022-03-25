@@ -13,6 +13,7 @@ const ChatBox = styled.div`
     background: whitesmoke;
     color: ${Colors.VANTA_BLACK};
     box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+    font-family: 'Quattrocento', serif;
 `;
 
 const ChatContainer = styled.div`

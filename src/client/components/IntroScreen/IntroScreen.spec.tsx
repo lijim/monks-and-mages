@@ -4,6 +4,12 @@ import { fireEvent, screen } from '@testing-library/react';
 import { render } from '@/test-utils';
 import { IntroScreen } from './IntroScreen';
 
+jest.mock('@/audioHelpers/playAudio', () => ({
+    __esModule: true, // this property makes it work
+    default: 'mockedDefaultExport',
+    startBackgroundMusic: jest.fn(),
+}));
+
 describe('Intro Screen', () => {
     it('submits a name', () => {
         const { webSocket } = render(<IntroScreen />);
