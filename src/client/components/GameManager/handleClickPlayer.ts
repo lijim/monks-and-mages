@@ -13,6 +13,8 @@ import { GameActionTypes } from '@/types/gameActions';
 import { performAttack } from '@/client/redux/clientSideGameExtras';
 import { Player } from '@/types/board';
 import { getDefaultTargetForEffect, TargetTypes } from '@/types/effects';
+import { playAudio } from '@/audioHelpers/playAudio';
+import { Sounds } from '@/constants/sounds';
 
 interface HandleClickOnPlayerParams {
     dispatch: AppDispatch;
@@ -85,6 +87,7 @@ export const handleClickOnPlayer = ({
     if (matchingOtherPlayer) {
         // Perform Attack
         dispatch(performAttack());
+        playAudio(Sounds.ATTACK);
         socket.emit('takeGameAction', {
             type: GameActionTypes.PERFORM_ATTACK,
             cardId: attackingUnit,

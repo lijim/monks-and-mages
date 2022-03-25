@@ -18,15 +18,15 @@ export const DEFAULT_ROOM_NAMES = [
 ];
 
 export enum DeckListSelections {
-    CANNONEER = 'cannoneers 🧨',
-    DIVERS = 'divers 🤿',
-    FARMERS = 'farmers 👩‍🌾',
-    GENIES = 'genies 🧞‍♀️',
-    MAGES_FIRE = 'mages 🔥',
-    MAGES_WATER = 'mages 🌊',
-    MAGES_WIND = 'mages 💨',
-    MONKS = 'monks 🤺',
-    SORCERORS = 'sorcerors 🧙🏾‍♀️',
+    CANNONEER = 'Cannoneers 🧨',
+    DIVERS = 'Divers 🤿',
+    FARMERS = 'Farmers 👩‍🌾',
+    GENIES = 'Genies 🧞‍♀️',
+    MAGES_FIRE = 'Mages 🔥',
+    MAGES_WATER = 'Mages 🌊',
+    MAGES_WIND = 'Mages 💨',
+    MONKS = 'Monks 🤺',
+    SORCERORS = 'Sorcerors 🧙🏾‍♀️',
 }
 
 export const PREMADE_DECKLIST_DEFAULT = DeckListSelections.MONKS;

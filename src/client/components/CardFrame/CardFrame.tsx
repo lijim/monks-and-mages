@@ -63,6 +63,7 @@ export const CardHeader = styled.div`
 
 export const NameCell = styled.div`
     font-style: italic;
+    font-family: 'Quattrocento', serif;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 2px;
     font-weight: 500;
