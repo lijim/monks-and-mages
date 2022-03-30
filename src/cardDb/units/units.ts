@@ -196,18 +196,18 @@ const BRIGHT_SCHOLAR: UnitCard = makeCard({
     description: '',
     enterEffects: [
         {
-            type: EffectType.LEARN,
-            cardName: 'EMBER_SPEAR',
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Ember Spear',
             strength: 1,
         },
         {
-            type: EffectType.LEARN,
-            cardName: 'BUBBLE_BLAST',
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Bubble Blast',
             strength: 1,
         },
         {
-            type: EffectType.LEARN,
-            cardName: 'SPECTRAL_GENESIS',
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Spectral Genesis',
             strength: 1,
         },
     ],
@@ -307,7 +307,8 @@ const WATER_GUARDIAN: UnitCard = makeCard({
     imgSrc: 'https://images.unsplash.com/photo-1616123654898-ee836f578193',
     cost: {
         [Resource.CRYSTAL]: 2,
-        [Resource.WATER]: 3,
+        [Resource.WATER]: 2,
+        [Resource.GENERIC]: 2,
     },
     description: '',
     enterEffects: [
@@ -431,7 +432,7 @@ const KNIGHT_TEMPLAR: UnitCard = makeCard({
     },
     description: '',
     enterEffects: [],
-    totalHp: 4,
+    totalHp: 5,
     attack: 3,
     numAttacks: 1,
     isRanged: false,
@@ -506,7 +507,7 @@ const SHADOW_STRIKER: UnitCard = makeCard({
     },
     description: '',
     enterEffects: [],
-    totalHp: 1,
+    totalHp: 2,
     attack: 1,
     numAttacks: 1,
     isRanged: true,
@@ -737,6 +738,11 @@ const FORTUNE_PREDICTOR: UnitCard = makeCard({
             strength: 1,
             target: TargetTypes.ALL_OPPONENTS,
         },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ALL_OPPONENTS,
+        },
     ],
     totalHp: 1,
     attack: 1,
@@ -752,7 +758,8 @@ const CAPTAIN_OF_THE_GUARD: UnitCard = makeCard({
     imgSrc: 'https://images.unsplash.com/photo-1554772279-37573acdd183',
     cost: {
         [Resource.CRYSTAL]: 1,
-        [Resource.IRON]: 2,
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [
@@ -852,10 +859,3 @@ export const UnitCards = {
     // CORAL
     DEEP_SEA_EXPLORER,
 };
-
-/**
- * TODO: (balance)
- * practical scholar should extract, not add to hand
- * wind mage needs more draw
- * water guardian might need to cost 1 more
- */
