@@ -15,6 +15,7 @@ import {
 import { SpellCards } from '@/cardDb/spells';
 import { GameState } from '@/types/board';
 import { playAudio } from '@/audioHelpers/playAudio';
+import { Sounds } from '@/constants/sounds';
 
 jest.mock('@/audioHelpers/playAudio', () => ({
     __esModule: true, // this property makes it work
@@ -189,9 +190,7 @@ describe('handle click on card', () => {
                 socket,
             });
 
-            expect(playAudio).toHaveBeenCalledWith(
-                'https://freesound.org/data/previews/390/390377_7074051-lq.mp3'
-            );
+            expect(playAudio).toHaveBeenCalledWith(Sounds.ATTACK);
         });
     });
 

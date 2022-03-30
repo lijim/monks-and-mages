@@ -30,6 +30,8 @@ app.use((request, response, next): void | undefined => {
 app.use(express.static(path.join(__dirname, 'public/js')));
 
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/music', express.static(path.join(__dirname, 'public/music')));
+app.use('/sounds', express.static(path.join(__dirname, 'public/sounds')));
 
 // Serves the base page
 app.get('/', (_, res) => {
