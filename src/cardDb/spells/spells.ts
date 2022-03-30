@@ -160,8 +160,7 @@ const A_THOUSAND_WINDS = makeCard({
             strength: 3,
         },
         {
-            type: EffectType.RAMP,
-            resourceType: Resource.WATER,
+            type: EffectType.DRAW,
             strength: 1,
         },
     ],
@@ -210,7 +209,7 @@ const DISTORT_REALITY = makeCard({
     effects: [
         {
             type: EffectType.DISCARD_HAND,
-            target: TargetTypes.ALL_PLAYERS,
+            target: TargetTypes.ALL_OPPONENTS,
             strength: 1,
         },
         {
