@@ -1,3 +1,4 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path');
 const { addDisplayNameTransformer } = require('ts-react-display-name')
@@ -30,9 +31,17 @@ const serverConfig = {
             '@': path.resolve(__dirname, 'src'),
         }
     },
+    plugins: [
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'assets', to: 'public' }
+            ]
+        }),
+    ],
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
+        clean: true
     },
     externals: [nodeExternals()],
 };
@@ -78,9 +87,9 @@ const clientConfig = {
         }
     },
     plugins: [
-      new HtmlWebpackPlugin({
-          template: './src/server/homepage.html'
-      })
+        new HtmlWebpackPlugin({
+            template: './src/server/homepage.html'
+        })
     ],
     output: {
         filename: '[name].[contenthash].bundle.js',

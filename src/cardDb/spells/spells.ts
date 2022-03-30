@@ -308,7 +308,8 @@ const RAIN_OF_ARROWS = makeCard({
 // Cannon
 const IGNITE_SPARKS = makeCard({
     name: 'Ignite Sparks',
-    imgSrc: 'https://images.pexels.com/photos/1098402/pexels-photo-1098402.jpeg',
+    // https://images.pexels.com/photos/1098402/pexels-photo-1098402.jpeg
+    imgSrc: '/images/igniteSparks.avif',
     cost: { [Resource.IRON]: 1, [Resource.FIRE]: 1 },
     effects: [
         {
