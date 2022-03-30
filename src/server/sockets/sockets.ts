@@ -34,11 +34,15 @@ export const configureIo = (server: HttpServer) => {
         auth: false,
     });
 
+    /* Stateful Objects */
     let latestResults: GameResult[] = [];
 
     const idsToNames = new Map<string, string>(); // mapping of socket ids to user-chosen names
     const namesToIds = new Map<string, string>(); // reverse map of idsToNames
     const nameToDeckListSelection = new Map<string, DeckListSelections>();
+    const startedBoards = new Map<string, Board>();
+
+    /* Utility functions */
     const clearName = (idToMatch: string) => {
         const matchingName = [...namesToIds.entries()].find(
             ([, id]) => id === idToMatch
@@ -64,8 +68,6 @@ export const configureIo = (server: HttpServer) => {
             nameToDeckListSelection.get(playerName)
         );
     };
-
-    const startedBoards = new Map<string, Board>();
 
     const sendBoardForRoom = (roomName: string): void => {
         const board = startedBoards.get(roomName);

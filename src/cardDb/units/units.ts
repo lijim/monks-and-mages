@@ -852,3 +852,10 @@ export const UnitCards = {
     // CORAL
     DEEP_SEA_EXPLORER,
 };
+
+/**
+ * TODO: (balance)
+ * practical scholar should extract, not add to hand
+ * wind mage needs more draw
+ * water guardian might need to cost 1 more
+ */
