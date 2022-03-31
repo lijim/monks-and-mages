@@ -219,9 +219,16 @@ export const applyGameAction = ({
             }
             activePlayer.resourcesLeftToDeploy -= 1;
 
-            resources.push(
-                hand.splice(matchingCardIndex, 1)[0] as ResourceCard
-            );
+            const resourceCard = hand.splice(
+                matchingCardIndex,
+                1
+            )[0] as ResourceCard;
+            resources.push(resourceCard);
+            if (resourceCard.enterEffects) {
+                activePlayer.effectQueue = activePlayer.effectQueue.concat(
+                    cloneDeep(resourceCard.enterEffects).reverse()
+                );
+            }
             return clonedBoard;
         }
         case GameActionTypes.TAP_RESOURCE: {

@@ -11,11 +11,14 @@ export const makeDeck = (deckList: DeckList): Card[] => {
     const cards: Card[] = [];
     deckList.forEach(({ card, quantity }) => {
         [...new Array(quantity)].forEach(() => {
-            const newCard =
-                card.cardType === CardType.RESOURCE
-                    ? makeResourceCard(card.resourceType)
-                    : makeCard(card);
-            cards.push(newCard);
+            if (card.cardType !== CardType.RESOURCE) {
+                cards.push(makeCard(card));
+                return;
+            }
+            if (card.isAdvanced) {
+                cards.push(makeCard(card));
+            }
+            cards.push(makeResourceCard(card.resourceType));
         });
     });
     return cards;

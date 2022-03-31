@@ -116,7 +116,7 @@ export const Tokens = {
 // Mages
 const MAGICIANS_APPRENTICE: UnitCard = makeCard({
     name: "Magician's Apprentice",
-    imgSrc: 'https://images.unsplash.com/photo-1615962122149-ef6987cf19f4',
+    imgSrc: '/images/units/magicians-apprentice.avif', // https://images.unsplash.com/photo-1615962122149-ef6987cf19f4'
     cost: {
         [Resource.CRYSTAL]: 1,
         [Resource.GENERIC]: 1,
@@ -363,7 +363,7 @@ const WIND_MAGE: UnitCard = makeCard({
 // Soldiers
 const LANCER: UnitCard = makeCard({
     name: 'Lancer',
-    imgSrc: 'https://images.unsplash.com/photo-1569183602073-580599d8df15?',
+    imgSrc: '/images/units/lancer.avif', // https://images.unsplash.com/photo-1569183602073-580599d8df15?
     cost: {
         [Resource.IRON]: 1,
     },
@@ -425,7 +425,7 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
 
 const KNIGHT_TEMPLAR: UnitCard = makeCard({
     name: 'Knight Templar',
-    imgSrc: 'https://images.unsplash.com/photo-1562128755-08baa2257ae2',
+    imgSrc: '/images/units/knight-templar.avif', // https://images.unsplash.com/photo-1562128755-08baa2257ae2
     cost: {
         [Resource.IRON]: 2,
         [Resource.GENERIC]: 3,
@@ -726,7 +726,7 @@ const QUARRY_WORKER: UnitCard = makeCard({
 // Saharan Units
 const FORTUNE_PREDICTOR: UnitCard = makeCard({
     name: 'Fortune Predictor',
-    imgSrc: 'https://images.unsplash.com/photo-1508310621848-9b567e9621bf',
+    imgSrc: '/images/units/fortune-predictor.avif', // https://images.unsplash.com/photo-1508310621848-9b567e9621bf
     cost: {
         [Resource.CRYSTAL]: 1,
         [Resource.IRON]: 1,
@@ -755,7 +755,7 @@ const FORTUNE_PREDICTOR: UnitCard = makeCard({
 
 const CAPTAIN_OF_THE_GUARD: UnitCard = makeCard({
     name: 'Captain of the Guard',
-    imgSrc: 'https://images.unsplash.com/photo-1554772279-37573acdd183',
+    imgSrc: 'images/units/captain-of-the-guard.avif', // https://images.unsplash.com/photo-1554772279-37573acdd183
     cost: {
         [Resource.CRYSTAL]: 1,
         [Resource.IRON]: 1,

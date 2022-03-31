@@ -6,6 +6,7 @@ import { ResourceCardGridItem } from '../ResourceCardGridItem';
 import { SpellGridItem } from '../SpellGridItem';
 import { UnitGridItem } from '../UnitGridItem';
 import { GameManagerContext } from '../GameManager';
+import { AdvancedResourceCardGridItem } from '../AdvancedResourceCardGridItem.tsx';
 
 interface CardGridItemProps {
     card: Card;
@@ -30,9 +31,19 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
     const onClick = () => {
         handleClickCard(card.id);
     };
-    if (card.cardType === CardType.RESOURCE) {
+    if (card.cardType === CardType.RESOURCE && !card.isAdvanced) {
         return (
             <ResourceCardGridItem
+                card={card}
+                isHighlighted={isHighlighted}
+                onClick={hasOnClick ? onClick : undefined}
+                zoomLevel={zoomLevel}
+            />
+        );
+    }
+    if (card.cardType === CardType.RESOURCE && card.isAdvanced) {
+        return (
+            <AdvancedResourceCardGridItem
                 card={card}
                 isHighlighted={isHighlighted}
                 onClick={hasOnClick ? onClick : undefined}
