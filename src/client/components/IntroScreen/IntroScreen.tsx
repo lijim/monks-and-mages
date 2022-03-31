@@ -87,7 +87,8 @@ export const IntroScreen: React.FC = () => {
                     A passion project by{' '}
                     <a href="https://github.com/lijim" target="_blank">
                         Jimmy Li
-                    </a>{' '}
+                    </a>
+                    <br />
                     source code on{' '}
                     <a
                         href="https://github.com/lijim/monks-and-mages/"
@@ -98,11 +99,18 @@ export const IntroScreen: React.FC = () => {
                 </div>
 
                 <div>
+                    Credits:{' '}
                     <a
                         href="https://breakingcopyright.com/song/cjbeards-fire-and-thunder"
                         target="_blank"
                     >
-                        Credits: Intro Music (Fire and Thunder by Cjbeards)
+                        Intro Music (Fire and Thunder by Cjbeards)
+                    </a>
+                    <a
+                        href="https://www.flaticon.com/free-icons/monk"
+                        title="monk icons"
+                    >
+                        Monk icons created by max.icons - Flaticon
                     </a>
                 </div>
             </Footer>
