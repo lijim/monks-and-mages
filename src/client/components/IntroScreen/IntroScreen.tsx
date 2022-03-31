@@ -89,7 +89,7 @@ export const IntroScreen: React.FC = () => {
                         Jimmy Li
                     </a>
                     <br />
-                    source code on{' '}
+                    Source code on{' '}
                     <a
                         href="https://github.com/lijim/monks-and-mages/"
                         target="_blank"
@@ -97,15 +97,16 @@ export const IntroScreen: React.FC = () => {
                         Github
                     </a>
                 </div>
+                <br />
 
                 <div>
-                    Credits:{' '}
                     <a
                         href="https://breakingcopyright.com/song/cjbeards-fire-and-thunder"
                         target="_blank"
                     >
                         Intro Music (Fire and Thunder by Cjbeards)
                     </a>
+                    <br />
                     <a
                         href="https://www.flaticon.com/free-icons/monk"
                         title="monk icons"
