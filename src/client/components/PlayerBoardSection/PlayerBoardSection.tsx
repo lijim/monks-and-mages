@@ -71,6 +71,7 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
                 <CardGridItem
                     card={resourceCard}
                     key={resourceCard.id}
+                    hasTooltip
                     hasOnClick
                     zoomLevel={0.6}
                 />

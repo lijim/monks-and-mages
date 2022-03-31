@@ -91,6 +91,9 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
         visible,
     } = usePopperTooltip();
 
+    const cardModifiedForTooltip =
+        card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;
+
     return (
         <>
             {/* The card itself */}
@@ -111,7 +114,10 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                         className: 'tooltip-container',
                     })}
                 >
-                    <CardGridSingleItem isOnBoard={isOnBoard} card={card} />
+                    <CardGridSingleItem
+                        isOnBoard={isOnBoard}
+                        card={cardModifiedForTooltip}
+                    />
                     <div
                         {...getArrowProps({
                             className: 'tooltip-arrow',
