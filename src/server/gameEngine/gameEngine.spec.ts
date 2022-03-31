@@ -7,6 +7,7 @@ import { Board, GameState } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
 import { Resource } from '@/types/resources';
 import { applyGameAction } from './gameEngine';
+import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 
 describe('Game Action', () => {
     let board: Board;
@@ -245,7 +246,7 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].resourcesLeftToDeploy).toBe(0);
         });
 
-        it('limits to 1 per turn', () => {
+        it('is limited to 1 per turn', () => {
             const resourceCard = makeResourceCard(Resource.BAMBOO);
             const resourceCard2 = makeResourceCard(Resource.FIRE);
             board.players[0].hand = [resourceCard, resourceCard2];
@@ -268,6 +269,21 @@ describe('Game Action', () => {
             });
             expect(newBoardState.players[0].resources).toHaveLength(1);
             expect(newBoardState.players[0].resourcesLeftToDeploy).toBe(0);
+        });
+
+        it('applies effects', () => {
+            const resourceCard = makeCard(AdvancedResourceCards.SAHARAN_DESERT);
+            board.players[0].hand = [resourceCard];
+            board.players[0].numCardsInHand = 1;
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_RESOURCE,
+                    cardId: resourceCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].effectQueue).toHaveLength(1);
         });
     });
 

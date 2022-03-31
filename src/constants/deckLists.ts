@@ -3,6 +3,7 @@ import { UnitCards } from '@/cardDb/units';
 import { DeckList } from '@/types/cards';
 import { Resource } from '@/types/resources';
 import { makeResourceCard } from '@/factories/cards';
+import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 
 // Bamboo + Iron - revised version (not used in mocks)
 export const SAMPLE_DECKLIST_0: DeckList = [
@@ -123,8 +124,9 @@ export const SAMPLE_DECKLIST_5: DeckList = [
 // Crystal + Iron - (Genie Deck)
 export const SAMPLE_DECKLIST_6: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.CRYSTAL), quantity: 10 },
-    { card: makeResourceCard(Resource.IRON), quantity: 11 },
+    { card: makeResourceCard(Resource.CRYSTAL), quantity: 8 },
+    { card: makeResourceCard(Resource.IRON), quantity: 9 },
+    { card: AdvancedResourceCards.SAHARAN_DESERT, quantity: 4 },
     // Other
     { card: UnitCards.FORTUNE_PREDICTOR, quantity: 4 },
     // Magicians

@@ -6,6 +6,7 @@ import { ResourceCardGridItem } from '../ResourceCardGridItem';
 import { SpellGridItem } from '../SpellGridItem';
 import { UnitGridItem } from '../UnitGridItem';
 import { GameManagerContext } from '../GameManager';
+import { AdvancedResourceCardGridItem } from '../AdvancedResourceCardGridItem.tsx';
 
 interface CardGridItemProps {
     card: Card;
@@ -30,9 +31,19 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
     const onClick = () => {
         handleClickCard(card.id);
     };
-    if (card.cardType === CardType.RESOURCE) {
+    if (card.cardType === CardType.RESOURCE && !card.isAdvanced) {
         return (
             <ResourceCardGridItem
+                card={card}
+                isHighlighted={isHighlighted}
+                onClick={hasOnClick ? onClick : undefined}
+                zoomLevel={zoomLevel}
+            />
+        );
+    }
+    if (card.cardType === CardType.RESOURCE && card.isAdvanced) {
+        return (
+            <AdvancedResourceCardGridItem
                 card={card}
                 isHighlighted={isHighlighted}
                 onClick={hasOnClick ? onClick : undefined}
@@ -80,6 +91,9 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
         visible,
     } = usePopperTooltip();
 
+    const cardModifiedForTooltip =
+        card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;
+
     return (
         <>
             {/* The card itself */}
@@ -100,7 +114,10 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                         className: 'tooltip-container',
                     })}
                 >
-                    <CardGridSingleItem isOnBoard={isOnBoard} card={card} />
+                    <CardGridSingleItem
+                        isOnBoard={isOnBoard}
+                        card={cardModifiedForTooltip}
+                    />
                     <div
                         {...getArrowProps({
                             className: 'tooltip-arrow',

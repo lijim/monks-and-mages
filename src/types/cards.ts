@@ -10,10 +10,14 @@ export enum CardType {
 
 export type ResourceCard = {
     cardType: CardType.RESOURCE;
+    enterEffects?: Effect[];
     id?: string;
-    isUsed: boolean;
+    imgSrc?: string;
+    isAdvanced?: boolean;
+    isUsed: boolean; // if true, player has currently used up this resource for turn
     name: string;
-    resourceType: Resource; // if true, player has currently used up this resource for turn
+    resourceType: Resource;
+    secondaryResourceType?: Resource;
 };
 
 /**

@@ -1,3 +1,4 @@
+import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 import { SpellCards } from '@/cardDb/spells';
 import { UnitCards } from '@/cardDb/units';
 import { makeCard, makeResourceCard } from '@/factories/cards';
@@ -17,11 +18,13 @@ export const splitDeckListToPiles = (deck: Card[]): PileOfCards[] => {
         title: 'Resources',
         cards: new Map(),
     };
+    // Basic resources
     ORDERED_RESOURCES.forEach((resource) => {
         const resourceCards = deck.filter(
             (card) =>
                 card.cardType === CardType.RESOURCE &&
-                card.resourceType === resource
+                card.resourceType === resource &&
+                !card.isAdvanced
         );
         if (resourceCards.length > 0)
             resourcePile.cards.set(
@@ -29,6 +32,32 @@ export const splitDeckListToPiles = (deck: Card[]): PileOfCards[] => {
                 resourceCards.length
             );
     });
+
+    // Advanced resources
+    const advancedResourceCards = Object.values(AdvancedResourceCards);
+    advancedResourceCards.sort((a, b) => {
+        const totalPriorityA =
+            ORDERED_RESOURCES.indexOf(a.resourceType) +
+            ORDERED_RESOURCES.indexOf(a.secondaryResourceType) * 0.1;
+        const totalPriorityB =
+            ORDERED_RESOURCES.indexOf(b.resourceType) +
+            ORDERED_RESOURCES.indexOf(b.secondaryResourceType) * 0.1;
+
+        return totalPriorityA - totalPriorityB;
+    });
+    advancedResourceCards.forEach((resourceCard) => {
+        const matchingCards = deck.filter(
+            (card) =>
+                card.cardType === CardType.RESOURCE &&
+                card.name === resourceCard.name
+        );
+        if (matchingCards.length > 0)
+            resourcePile.cards.set(
+                makeCard(resourceCard),
+                matchingCards.length
+            );
+    });
+
     if (resourcePile.cards.size > 0) piles.push(resourcePile);
 
     // Unit Cards

@@ -186,7 +186,7 @@ const HOLY_REVIVAL = makeCard({
 // Crystal Magic
 const SPECTRAL_GENESIS = makeCard({
     name: 'Spectral Genesis',
-    imgSrc: 'https://images.unsplash.com/photo-1535027155668-be985a82f93c',
+    imgSrc: '/images/spells/spectral-genesis.avif', // https://images.unsplash.com/photo-1535027155668-be985a82f93c
     cost: { [Resource.CRYSTAL]: 1 },
     effects: [
         {
@@ -204,7 +204,7 @@ const SPECTRAL_GENESIS = makeCard({
 
 const DISTORT_REALITY = makeCard({
     name: 'Distort Reality',
-    imgSrc: 'https://images.pexels.com/photos/6492151/pexels-photo-6492151.jpeg',
+    imgSrc: '/images/spells/distort-reality.avif', // https://images.pexels.com/photos/6492151/pexels-photo-6492151.jpeg
     cost: { [Resource.CRYSTAL]: 1 },
     effects: [
         {
@@ -222,7 +222,7 @@ const DISTORT_REALITY = makeCard({
 
 const OPEN_NEBULA = makeCard({
     name: 'Open Nebula',
-    imgSrc: 'https://images.unsplash.com/photo-1484589065579-248aad0d8b13',
+    imgSrc: '/images/spells/open-nebula.avif', // https://images.unsplash.com/photo-1484589065579-248aad0d8b13
     cost: { [Resource.CRYSTAL]: 3, [Resource.GENERIC]: 3 },
     effects: [
         {
@@ -308,7 +308,7 @@ const RAIN_OF_ARROWS = makeCard({
 const IGNITE_SPARKS = makeCard({
     name: 'Ignite Sparks',
     // https://images.pexels.com/photos/1098402/pexels-photo-1098402.jpeg
-    imgSrc: '/images/igniteSparks.avif',
+    imgSrc: '/images/spells/ignite-sparks.avif',
     cost: { [Resource.IRON]: 1, [Resource.FIRE]: 1 },
     effects: [
         {

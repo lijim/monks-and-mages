@@ -5,8 +5,9 @@ interface CardFrameProps {
     isHighlighted?: boolean;
     isRaised?: boolean;
     isRotated?: boolean;
-    isUnitCard?: boolean;
     primaryColor?: string;
+    secondaryColor?: string;
+    shouldShowTallImage?: boolean;
     zoomLevel?: number;
 }
 /**
@@ -39,7 +40,7 @@ export const CardFrame = styled.div<CardFrameProps>`
     display: inline-grid;
     grid-template-rows:
         auto 1fr 20px minmax(
-            ${({ isUnitCard }) => (isUnitCard ? 80 : 120)}px,
+            ${({ shouldShowTallImage }) => (shouldShowTallImage ? 80 : 120)}px,
             auto
         )
         auto;
@@ -53,7 +54,15 @@ export const CardFrame = styled.div<CardFrameProps>`
     color: white;
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     ${({ isRotated }) => (isRotated ? 'transform: rotate(90deg)' : '')};
-    background-color: ${({ primaryColor }) => primaryColor || '#5c4d50'};
+    ${({ primaryColor, secondaryColor }) => {
+        if (!primaryColor) {
+            return `background-color: #5c4d50;`;
+        }
+        if (!secondaryColor) {
+            return `background-color: ${primaryColor};`;
+        }
+        return `background-image: linear-gradient(to bottom right, ${primaryColor}, ${secondaryColor});`;
+    }};
 `;
 
 export const CardHeader = styled.div`
@@ -75,18 +84,19 @@ export const CostHeaderCell = styled.div`
 `;
 
 export const CardImageContainer = styled.div`
-    display: grid;
     border: 1px solid white;
     margin-top: 7px;
     margin-bottom: 4px;
     place-content: center;
     height: auto;
-    max-height: 140px;
+    max-height: 180px;
     overflow: hidden;
 `;
 
 export const CardImage = styled.img`
     width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 interface RulesTextAreaProps {

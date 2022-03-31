@@ -9,6 +9,7 @@ import { Resource } from '@/types/resources';
 import { CardGridItem } from './CardGridItem';
 import { UnitCards } from '@/cardDb/units';
 import { SpellCards } from '@/cardDb/spells';
+import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 
 describe('Card (Grid Item)', () => {
     it('renders a resource card', () => {
@@ -16,6 +17,15 @@ describe('Card (Grid Item)', () => {
         render(<CardGridItem card={resourceCard} />);
         expect(screen.getByText('Crystal')).toBeInTheDocument();
         expect(screen.getByText('Resource')).toBeInTheDocument();
+    });
+
+    it('renders an advanced resource card', () => {
+        render(
+            <CardGridItem
+                card={makeCard(AdvancedResourceCards.SAHARAN_DESERT)}
+            />
+        );
+        expect(screen.getByText('Saharan Desert')).toBeInTheDocument();
     });
 
     it('renders a unit card', () => {
