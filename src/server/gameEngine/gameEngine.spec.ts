@@ -7,7 +7,10 @@ import { Board, GameState } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
 import { Resource } from '@/types/resources';
 import { applyGameAction } from './gameEngine';
-import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
+import {
+    AdvancedResourceCards,
+    makeAdvancedResourceCard,
+} from '@/cardDb/resources/advancedResources';
 
 describe('Game Action', () => {
     let board: Board;
@@ -302,6 +305,24 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].resources[0].isUsed).toBe(true);
             expect(newBoardState.players[0].resourcePool).toEqual({
                 [Resource.BAMBOO]: 1,
+            });
+        });
+
+        it('taps a dual resource', () => {
+            const resourceCard = makeCard(AdvancedResourceCards.SAHARAN_DESERT);
+            board.players[0].resources = [resourceCard];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.TAP_RESOURCE,
+                    cardId: resourceCard.id,
+                    resourceType: resourceCard.secondaryResourceType,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].resources[0].isUsed).toBe(true);
+            expect(newBoardState.players[0].resourcePool).toEqual({
+                [resourceCard.secondaryResourceType]: 1,
             });
         });
 

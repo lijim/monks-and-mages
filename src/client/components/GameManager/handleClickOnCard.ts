@@ -19,10 +19,14 @@ import {
 import { getDefaultTargetForEffect, TargetTypes } from '@/types/effects';
 import { playAudio } from '@/audioHelpers/playAudio';
 import { Sounds } from '@/constants/sounds';
+import { Resource } from '@/types/resources';
 
-interface HandleClickOnCardParams {
+export interface HandleClickOnCardParams {
     cardId: string;
     dispatch: AppDispatch;
+    extras?: {
+        resourceType?: Resource;
+    };
     socket: Socket<ServerToClientEvents, ClientToServerEvents>;
     state: RootState;
 }
@@ -40,6 +44,7 @@ export const handleClickOnCard = ({
     dispatch,
     state,
     socket,
+    extras,
 }: HandleClickOnCardParams) => {
     // Match the card ID to see what, if anything to emit
     const selfPlayer = getSelfPlayer(state);
@@ -155,6 +160,7 @@ export const handleClickOnCard = ({
             socket.emit('takeGameAction', {
                 type: GameActionTypes.TAP_RESOURCE,
                 cardId,
+                resourceType: extras?.resourceType,
             });
         }
         return;

@@ -17,8 +17,9 @@ export const makeDeck = (deckList: DeckList): Card[] => {
             }
             if (card.isAdvanced) {
                 cards.push(makeCard(card));
+            } else {
+                cards.push(makeResourceCard(card.resourceType));
             }
-            cards.push(makeResourceCard(card.resourceType));
         });
     });
     return cards;

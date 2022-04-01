@@ -232,7 +232,7 @@ export const applyGameAction = ({
             return clonedBoard;
         }
         case GameActionTypes.TAP_RESOURCE: {
-            const { cardId } = gameAction;
+            const { cardId, resourceType } = gameAction;
             const { resources, resourcePool } = activePlayer;
             const matchingCard = resources.find(
                 (card) =>
@@ -243,8 +243,11 @@ export const applyGameAction = ({
                 return clonedBoard;
             }
 
-            const { resourceType } = matchingCard;
-            resourcePool[resourceType] = (resourcePool[resourceType] || 0) + 1;
+            const { resourceType: cardResourceType } = matchingCard;
+
+            const resourceTypeToUse = resourceType || cardResourceType;
+            resourcePool[resourceTypeToUse] =
+                (resourcePool[resourceTypeToUse] || 0) + 1;
             matchingCard.isUsed = true;
             return clonedBoard;
         }
