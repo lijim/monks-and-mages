@@ -7,6 +7,7 @@ import { SpellGridItem } from '../SpellGridItem';
 import { UnitGridItem } from '../UnitGridItem';
 import { GameManagerContext } from '../GameManager';
 import { AdvancedResourceCardGridItem } from '../AdvancedResourceCardGridItem.tsx';
+import { HandleClickOnCardParams } from '../GameManager/handleClickOnCard';
 
 interface CardGridItemProps {
     card: Card;
@@ -28,8 +29,8 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
     zoomLevel,
 }) => {
     const { handleClickCard } = useContext(GameManagerContext) || {};
-    const onClick = () => {
-        handleClickCard(card.id);
+    const onClick = (extras?: HandleClickOnCardParams['extras']) => {
+        handleClickCard(card.id, extras);
     };
     if (card.cardType === CardType.RESOURCE && !card.isAdvanced) {
         return (
@@ -47,6 +48,7 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
                 card={card}
                 isHighlighted={isHighlighted}
                 onClick={hasOnClick ? onClick : undefined}
+                isOnBoard={isOnBoard}
                 zoomLevel={zoomLevel}
             />
         );

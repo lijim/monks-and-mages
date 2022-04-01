@@ -1,3 +1,5 @@
+import { Resource } from './resources';
+
 export enum GameActionTypes {
     ACCEPT_MULLIGAN = 'ACCEPT_MULLIGAN',
     CAST_SPELL = 'CAST_SPELL',
@@ -28,6 +30,7 @@ export interface DeployResource {
 
 export interface TapResource {
     cardId: string;
+    resourceType?: Resource;
     type: GameActionTypes.TAP_RESOURCE;
 }
 

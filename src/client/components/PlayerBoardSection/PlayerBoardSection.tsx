@@ -73,6 +73,7 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
                     key={resourceCard.id}
                     hasTooltip
                     hasOnClick
+                    isOnBoard
                     zoomLevel={0.6}
                 />
             ))}
