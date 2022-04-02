@@ -196,7 +196,7 @@ export const SAMPLE_DECKLIST_9: DeckList = [
     // Resources
     { card: makeResourceCard(Resource.IRON), quantity: 8 },
     { card: makeResourceCard(Resource.FIRE), quantity: 8 },
-    { card: AdvancedResourceCards.SMELTING_FORGE, quantity: 2 },
+    { card: AdvancedResourceCards.SMELTING_FORGE, quantity: 4 },
     // Units
     { card: UnitCards.FIRE_TECHNICIAN, quantity: 3 },
     { card: UnitCards.QUARRY_WORKER, quantity: 4 },

@@ -19,6 +19,7 @@ import {
 import { getColorForCard } from '@/transformers/getColorForCard';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { getAttackingUnit } from '@/client/redux/selectors';
+import { getImgSrcForCard } from '@/transformers/getImgSrcForCard';
 
 interface UnitGridItemProps {
     card: UnitCard;
@@ -44,7 +45,6 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         hp,
         hpBuff,
         id,
-        imgSrc,
         isMagical,
         isRanged,
         isSoldier,
@@ -77,7 +77,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 </CostHeaderCell>
             </CardHeader>
             <CardImageContainer>
-                <CardImage src={imgSrc}></CardImage>
+                <CardImage src={getImgSrcForCard(card)}></CardImage>
             </CardImageContainer>
             <div>Unit{unitType ? ` - ${unitType}` : ''}</div>
             <RulesTextArea

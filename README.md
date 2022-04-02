@@ -28,9 +28,7 @@ open https://admin.socket.io/#/sockets while running the app
 This project also strives for extensive TDD and unit testing. To run tests in watch mode:
 
 ```
-
 yarn test
-
 ```
 
 To run tests for a particular file:
@@ -42,9 +40,7 @@ yarn test src/server/gameEngine/gameEngine.spec.ts
 To run tests once through:
 
 ```
-
 yarn ci
-
 ```
 
 # Core technologies
@@ -106,3 +102,34 @@ Unit testing is covered via [Jest](https://jestjs.io/) and [React Testing Librar
     -   Fire + Iron: Might and machinery (e.g. cannons, buff cards, damage-based boardwipes)
     -   Fire + Bamboo: Dragon raising / Phoenixes
     -   Bamboo + Iron: Ninjas / assassins
+
+# Scripts
+
+Normally, downloading images from pexels / unsplash, processing them to be 520px in width, converting them to avif is a very manual process that we do through tools like https://squoosh.app/
+
+Luckily, we've written some scripts to help with this process.
+
+For all the cards in cardDb, imgSrc is not used in the components, but rather in these scripts as part of the 'download -> compress' chain. The img src's for each card are actually calculated via `@/transformers/getImgSrcForCard`
+
+To run these scripts:
+
+```
+yarn scrapeImages
+yarn compressImages
+```
+
+To get an image into assets/images:
+
+0. Make sure to `brew install imagemagick`
+1. add a new unit / spell / token card to `src/cardDb`
+2. set that imgSrc to be a jpg image off the internet (starting with http)
+3. run the scripts above ^
+4. prosper!
+
+Note: on occassion, some imageMagick conversions will rotate the image b/c of orientation. The camera may have originally recorded the picture in a different rotation, and imageMagick is trying to re-orient it:
+
+https://legacy.imagemagick.org/discourse-server/viewtopic.php?t=33900
+
+To fix this, I recommend taking a screenshot of the image and pushing it through https://squoosh.app - it's hacky, but it gets the job done.
+
+Also in terms of dev tooling on Macs, the easiest way to inspect the generated avif's is actually through Github Desktop client.
