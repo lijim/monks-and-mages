@@ -40,7 +40,7 @@ export const CardFrame = styled.div<CardFrameProps>`
     display: inline-grid;
     grid-template-rows:
         auto 1fr 20px minmax(
-            ${({ shouldShowTallImage }) => (shouldShowTallImage ? 80 : 120)}px,
+            ${({ shouldShowTallImage }) => (shouldShowTallImage ? 70 : 120)}px,
             auto
         )
         auto;

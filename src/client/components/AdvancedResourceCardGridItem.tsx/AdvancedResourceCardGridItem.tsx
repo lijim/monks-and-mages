@@ -14,6 +14,7 @@ import {
 import { CastingCostFrame } from '../CastingCost';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { HandleClickOnCardParams } from '../GameManager/handleClickOnCard';
+import { getImgSrcForCard } from '@/transformers/getImgSrcForCard';
 
 interface AdvancedResourceCardGridItemProps {
     card: ResourceCard;
@@ -47,7 +48,7 @@ const DecisionFrame = styled.div`
 export const AdvancedResourceCardGridItem: React.FC<
     AdvancedResourceCardGridItemProps
 > = ({ card, isHighlighted, isOnBoard, onClick, zoomLevel }) => {
-    const { imgSrc, resourceType, secondaryResourceType, enterEffects } = card;
+    const { resourceType, secondaryResourceType, enterEffects } = card;
     const { icon, primaryColor } = RESOURCE_GLOSSARY[resourceType];
     const secondaryResource = RESOURCE_GLOSSARY[secondaryResourceType];
 
@@ -123,7 +124,7 @@ export const AdvancedResourceCardGridItem: React.FC<
                 <NameCell>{card.name}</NameCell>
             </CardHeader>
             <CardImageContainer>
-                <CardImage src={imgSrc}></CardImage>
+                <CardImage src={getImgSrcForCard(card)}></CardImage>
             </CardImageContainer>
 
             <div>Resource - Advanced</div>

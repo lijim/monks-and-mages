@@ -13,6 +13,7 @@ import {
 } from '../CardFrame';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { getColorForCard } from '@/transformers/getColorForCard';
+import { getImgSrcForCard } from '@/transformers/getImgSrcForCard';
 
 interface SpellGridItemProps {
     card: SpellCard;
@@ -27,7 +28,7 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
     onClick,
     zoomLevel,
 }) => {
-    const { cost, imgSrc, name, effects, originalCost } = card;
+    const { cost, name, effects, originalCost } = card;
 
     return (
         <CardFrame
@@ -45,7 +46,7 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
                 </CostHeaderCell>
             </CardHeader>
             <CardImageContainer>
-                <CardImage src={imgSrc}></CardImage>
+                <CardImage src={getImgSrcForCard(card)}></CardImage>
             </CardImageContainer>
             <div>Spell</div>
             <RulesTextArea shouldCenter={effects.length === 1}>
