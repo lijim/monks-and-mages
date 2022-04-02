@@ -335,6 +335,8 @@ export const configureIo = (server: HttpServer) => {
                 const roomName = getRoomForSocket(socket);
                 const playerName = idsToNames.get(socket.id);
 
+                if (!board) return;
+
                 const prevGameState = board.gameState;
                 const newBoardState = resolveEffect(
                     board,
