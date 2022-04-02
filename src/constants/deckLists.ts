@@ -8,8 +8,9 @@ import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 // Bamboo + Iron - revised version (not used in mocks)
 export const SAMPLE_DECKLIST_0: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.BAMBOO), quantity: 10 },
-    { card: makeResourceCard(Resource.IRON), quantity: 11 },
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 8 },
+    { card: makeResourceCard(Resource.IRON), quantity: 9 },
+    { card: AdvancedResourceCards.TANGLED_RUINS, quantity: 4 },
     // Soldiers
     { card: UnitCards.SQUIRE, quantity: 2 },
     { card: UnitCards.LANCER, quantity: 4 },
@@ -48,8 +49,9 @@ export const SAMPLE_DECKLIST_1: DeckList = [
 // Fire + Crystal
 export const SAMPLE_DECKLIST_2: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.FIRE), quantity: 13 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 9 },
     { card: makeResourceCard(Resource.CRYSTAL), quantity: 8 },
+    { card: AdvancedResourceCards.STRATOVOLCANO, quantity: 4 },
     // Units
     { card: UnitCards.FIRE_TECHNICIAN, quantity: 3 },
     { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 4 },
@@ -66,8 +68,9 @@ export const SAMPLE_DECKLIST_2: DeckList = [
 // Water + Crystal
 export const SAMPLE_DECKLIST_3: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.WATER), quantity: 12 },
-    { card: makeResourceCard(Resource.CRYSTAL), quantity: 8 },
+    { card: makeResourceCard(Resource.WATER), quantity: 9 },
+    { card: makeResourceCard(Resource.CRYSTAL), quantity: 7 },
+    { card: AdvancedResourceCards.SEASIDE_TOWN, quantity: 4 },
     // Units
     { card: UnitCards.RELAXED_ROWBOATER, quantity: 4 },
     { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 4 },
@@ -85,8 +88,9 @@ export const SAMPLE_DECKLIST_3: DeckList = [
 // Water + Fire (aka wind)
 export const SAMPLE_DECKLIST_4: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.WATER), quantity: 10 },
-    { card: makeResourceCard(Resource.FIRE), quantity: 10 },
+    { card: makeResourceCard(Resource.WATER), quantity: 8 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 8 },
+    { card: AdvancedResourceCards.CLOUD_HAVEN, quantity: 4 },
     // Units
     { card: UnitCards.FIRE_TECHNICIAN, quantity: 4 },
     { card: UnitCards.RELAXED_ROWBOATER, quantity: 2 },
@@ -104,8 +108,9 @@ export const SAMPLE_DECKLIST_4: DeckList = [
 // Bamboo + Iron - Farmer deck
 export const SAMPLE_DECKLIST_5: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.BAMBOO), quantity: 11 },
-    { card: makeResourceCard(Resource.IRON), quantity: 8 },
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 9 },
+    { card: makeResourceCard(Resource.IRON), quantity: 6 },
+    { card: AdvancedResourceCards.TANGLED_RUINS, quantity: 4 },
     // Other
     { card: UnitCards.BAMBOO_FARMER, quantity: 4 },
     // Soldiers
@@ -144,9 +149,12 @@ export const SAMPLE_DECKLIST_6: DeckList = [
 // Crystal + Water + Fire - (Sorceror Deck)
 export const SAMPLE_DECKLIST_7: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.CRYSTAL), quantity: 8 },
-    { card: makeResourceCard(Resource.WATER), quantity: 5 },
-    { card: makeResourceCard(Resource.FIRE), quantity: 7 },
+    { card: makeResourceCard(Resource.CRYSTAL), quantity: 4 },
+    { card: makeResourceCard(Resource.WATER), quantity: 2 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 4 },
+    { card: AdvancedResourceCards.CLOUD_HAVEN, quantity: 4 },
+    { card: AdvancedResourceCards.SEASIDE_TOWN, quantity: 3 },
+    { card: AdvancedResourceCards.STRATOVOLCANO, quantity: 3 },
     // Magicians
     { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 3 },
     { card: UnitCards.FIRE_MAGE, quantity: 2 },
@@ -167,8 +175,9 @@ export const SAMPLE_DECKLIST_7: DeckList = [
 // Water + Bamboo (Coral)
 export const SAMPLE_DECKLIST_8: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.WATER), quantity: 10 },
-    { card: makeResourceCard(Resource.BAMBOO), quantity: 10 },
+    { card: makeResourceCard(Resource.WATER), quantity: 8 },
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 8 },
+    { card: AdvancedResourceCards.LUSH_REEF, quantity: 4 },
     // Units
     { card: UnitCards.BAMBOO_FARMER, quantity: 4 },
     { card: UnitCards.RELAXED_ROWBOATER, quantity: 4 },
@@ -185,8 +194,9 @@ export const SAMPLE_DECKLIST_8: DeckList = [
 // Iron + Fire (Cannoneers)
 export const SAMPLE_DECKLIST_9: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.IRON), quantity: 10 },
-    { card: makeResourceCard(Resource.FIRE), quantity: 10 },
+    { card: makeResourceCard(Resource.IRON), quantity: 8 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 8 },
+    { card: AdvancedResourceCards.SMELTING_FORGE, quantity: 2 },
     // Units
     { card: UnitCards.FIRE_TECHNICIAN, quantity: 3 },
     { card: UnitCards.QUARRY_WORKER, quantity: 4 },
