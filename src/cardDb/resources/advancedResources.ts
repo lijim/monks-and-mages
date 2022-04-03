@@ -19,7 +19,7 @@ const STRATOVOLCANO = makeAdvancedResourceCard({
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            strength: 2,
+            strength: 1,
             target: TargetTypes.SELF_PLAYER,
         },
     ],
@@ -33,7 +33,7 @@ const SEASIDE_TOWN = makeAdvancedResourceCard({
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            strength: 2,
+            strength: 1,
             target: TargetTypes.SELF_PLAYER,
         },
     ],
@@ -47,7 +47,7 @@ const SAHARAN_DESERT = makeAdvancedResourceCard({
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            strength: 2,
+            strength: 1,
             target: TargetTypes.SELF_PLAYER,
         },
     ],
@@ -61,7 +61,7 @@ const CLOUD_HAVEN = makeAdvancedResourceCard({
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            strength: 2,
+            strength: 1,
             target: TargetTypes.SELF_PLAYER,
         },
     ],
@@ -75,7 +75,7 @@ const SMELTING_FORGE = makeAdvancedResourceCard({
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            strength: 2,
+            strength: 1,
             target: TargetTypes.SELF_PLAYER,
         },
     ],
@@ -89,7 +89,7 @@ const LUSH_REEF = makeAdvancedResourceCard({
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            strength: 2,
+            strength: 1,
             target: TargetTypes.SELF_PLAYER,
         },
     ],
@@ -103,7 +103,7 @@ const TANGLED_RUINS = makeAdvancedResourceCard({
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            strength: 2,
+            strength: 1,
             target: TargetTypes.SELF_PLAYER,
         },
     ],

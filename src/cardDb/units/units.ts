@@ -69,6 +69,23 @@ const MANTA_RAY: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const MANATEE: UnitCard = makeCard({
+    name: 'Manatee',
+    imgSrc: 'https://images.pexels.com/photos/5254812/pexels-photo-5254812.jpeg',
+    cost: {
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const SHARK: UnitCard = makeCard({
     name: 'Shark',
     imgSrc: 'https://images.unsplash.com/photo-1564731071754-001b53a902fb',
@@ -110,6 +127,7 @@ export const Tokens = {
     FALCON,
     GOLEM_DRAGON,
     MANTA_RAY,
+    MANATEE,
     SHARK,
 };
 
@@ -176,7 +194,7 @@ const FIRE_MAGE: UnitCard = makeCard({
         },
     ],
     totalHp: 2,
-    attack: 3,
+    attack: 2,
     numAttacks: 1,
     isRanged: true,
     isMagical: true,
@@ -242,11 +260,11 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
         },
         {
             type: EffectType.BUFF_TEAM_MAGIC,
-            strength: 3,
+            strength: 1,
         },
     ],
     totalHp: 5,
-    attack: 1,
+    attack: 3,
     numAttacks: 1,
     isRanged: true,
     isMagical: true,
@@ -270,6 +288,30 @@ const MANTA_RAY_CONJURER: UnitCard = makeCard({
         },
     ],
     totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const TINY_MERMAID: UnitCard = makeCard({
+    name: 'Tiny Mermaid',
+    imgSrc: 'https://images.unsplash.com/photo-1573386843695-7d98e77ad72b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.MANATEE,
+        },
+    ],
+    totalHp: 1,
     attack: 1,
     numAttacks: 1,
     isRanged: true,
@@ -825,6 +867,7 @@ export const UnitCards = {
     INFERNO_SORCEROR,
     // WATER
     MANTA_RAY_CONJURER,
+    TINY_MERMAID,
     WATER_MAGE,
     WATER_GUARDIAN,
     // WIND
