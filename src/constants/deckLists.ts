@@ -46,7 +46,7 @@ export const SAMPLE_DECKLIST_1: DeckList = [
     { card: UnitCards.JAVELINEER, quantity: 3 },
 ];
 
-// Fire + Crystal
+// Fire + Crystal (Fire Mage)
 export const SAMPLE_DECKLIST_2: DeckList = [
     // Resources
     { card: makeResourceCard(Resource.FIRE), quantity: 9 },
@@ -65,7 +65,7 @@ export const SAMPLE_DECKLIST_2: DeckList = [
     { card: SpellCards.SUMMON_DEMONS, quantity: 4 },
 ];
 
-// Water + Crystal
+// Water + Crystal (Water Mage)
 export const SAMPLE_DECKLIST_3: DeckList = [
     // Resources
     { card: makeResourceCard(Resource.WATER), quantity: 9 },
@@ -74,15 +74,16 @@ export const SAMPLE_DECKLIST_3: DeckList = [
     // Units
     { card: UnitCards.RELAXED_ROWBOATER, quantity: 4 },
     { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 4 },
+    { card: UnitCards.TINY_MERMAID, quantity: 4 },
     { card: UnitCards.MANTA_RAY_CONJURER, quantity: 4 },
     { card: UnitCards.WATER_MAGE, quantity: 3 },
     { card: UnitCards.WATER_GUARDIAN, quantity: 2 },
 
     // Spells
     { card: SpellCards.BUBBLE_BLAST, quantity: 3 },
-    { card: SpellCards.GENEROUS_GEYSER, quantity: 3 },
-    { card: SpellCards.SUMMON_SHARKS, quantity: 3 },
-    { card: SpellCards.CONSTANT_REFILL, quantity: 2 },
+    { card: SpellCards.GENEROUS_GEYSER, quantity: 1 },
+    { card: SpellCards.SUMMON_SHARKS, quantity: 2 },
+    { card: SpellCards.CONSTANT_REFILL, quantity: 1 },
 ];
 
 // Water + Fire (aka wind)

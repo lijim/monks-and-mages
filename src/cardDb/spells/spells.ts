@@ -33,7 +33,12 @@ const LIGHTNING_SLICK = makeCard({
         {
             type: EffectType.DEAL_DAMAGE,
             target: TargetTypes.OPPOSING_UNIT,
-            strength: 5,
+            strength: 4,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ALL_OPPONENTS,
         },
     ],
 });
@@ -45,6 +50,11 @@ const CURSE_HAND = makeCard({
     effects: [
         {
             type: EffectType.CURSE_HAND,
+            strength: 1,
+            target: TargetTypes.ALL_OPPONENTS,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
             strength: 1,
             target: TargetTypes.ALL_OPPONENTS,
         },
@@ -60,6 +70,11 @@ const SUMMON_DEMONS = makeCard({
             type: EffectType.SUMMON_UNITS,
             strength: 3,
             summonType: Tokens.DEMON,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ALL_OPPONENTS,
         },
     ],
 });
@@ -103,7 +118,7 @@ const GENEROUS_GEYSER = makeCard({
         {
             type: EffectType.HEAL,
             target: TargetTypes.SELF_PLAYER,
-            strength: 2,
+            strength: 1,
         },
     ],
 });
@@ -299,7 +314,7 @@ const RAIN_OF_ARROWS = makeCard({
         {
             type: EffectType.DEAL_DAMAGE,
             target: TargetTypes.ALL_OPPONENTS,
-            strength: 3,
+            strength: 2,
         },
     ],
 });
