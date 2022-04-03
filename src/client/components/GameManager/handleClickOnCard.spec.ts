@@ -12,7 +12,7 @@ import {
     performAttack,
     selectAttackingUnit,
 } from '@/client/redux/clientSideGameExtras';
-import { SpellCards } from '@/cardDb/spells';
+import { SpellCards } from '@/mocks/spells';
 import { GameState } from '@/types/board';
 import { playAudio } from '@/audioHelpers/playAudio';
 import { Sounds } from '@/constants/sounds';
