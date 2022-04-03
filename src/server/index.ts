@@ -33,6 +33,11 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/music', express.static(path.join(__dirname, 'public/music')));
 app.use('/sounds', express.static(path.join(__dirname, 'public/sounds')));
 
+// health check
+app.get('/healthz', (_, res) => {
+    res.status(200).send('Ok');
+});
+
 // Serves the base page
 app.get('/', (_, res) => {
     res.sendFile(path.join(__dirname, 'public/js/index.html'));
