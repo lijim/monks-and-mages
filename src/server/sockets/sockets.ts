@@ -212,6 +212,7 @@ export const configureIo = (server: HttpServer) => {
         'connection',
         (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
             socket.emit('listRooms', getDetailedRooms());
+            socket.emit('listLatestGameResults', latestResults);
 
             socket.on('chooseDeck', (deckListSelection: DeckListSelections) => {
                 const name = idsToNames.get(socket.id);
