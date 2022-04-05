@@ -68,7 +68,7 @@ export const SAMPLE_DECKLIST_2: DeckList = [
 // Water + Crystal (Water Mage)
 export const SAMPLE_DECKLIST_3: DeckList = [
     // Resources
-    { card: makeResourceCard(Resource.WATER), quantity: 9 },
+    { card: makeResourceCard(Resource.WATER), quantity: 8 },
     { card: makeResourceCard(Resource.CRYSTAL), quantity: 7 },
     { card: AdvancedResourceCards.SEASIDE_TOWN, quantity: 4 },
     // Units
@@ -80,9 +80,10 @@ export const SAMPLE_DECKLIST_3: DeckList = [
     { card: UnitCards.WATER_GUARDIAN, quantity: 2 },
 
     // Spells
-    { card: SpellCards.BUBBLE_BLAST, quantity: 3 },
+    { card: SpellCards.BUBBLE_BLAST, quantity: 2 },
     { card: SpellCards.GENEROUS_GEYSER, quantity: 1 },
     { card: SpellCards.SUMMON_SHARKS, quantity: 2 },
+    { card: SpellCards.RAGING_WHIRLPOOL, quantity: 2 },
     { card: SpellCards.CONSTANT_REFILL, quantity: 1 },
 ];
 

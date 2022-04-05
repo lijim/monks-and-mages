@@ -73,7 +73,7 @@ export const resetUnitCard = (unitCard: UnitCard) => {
 /**
  * Mutates the board that's passed in.
  *
- * Cleans up all units where the hp (including buffs) is <= 0 and seend
+ * Cleans up all units where the hp (including buffs) is <= 0 and send
  * them to the cemetry
  */
 export const processBoardToCemetery = (
@@ -305,12 +305,16 @@ export const applyGameAction = ({
                     });
                 });
                 if (!defender) return clonedBoard;
-                const defenderHasPoisonous = defender.passiveEffects.some(
-                    (passiveEffect) => passiveEffect === PassiveEffect.POISONED
-                );
-                const attackerHasPoisonous = attacker.passiveEffects.some(
-                    (passiveEffect) => passiveEffect === PassiveEffect.POISONED
-                );
+                const defenderHasPoisonous =
+                    defender.passiveEffects.some(
+                        (passiveEffect) =>
+                            passiveEffect === PassiveEffect.POISONED
+                    ) && defender.attack + defender.attackBuff > 0;
+                const attackerHasPoisonous =
+                    attacker.passiveEffects.some(
+                        (passiveEffect) =>
+                            passiveEffect === PassiveEffect.POISONED
+                    ) && attacker.attack + attacker.attackBuff > 0;
 
                 // Soldiers prevent attacks vs. non-soldiers (unless magical)
                 const defendingPlayerHasSoldier = defendingPlayer.units.some(

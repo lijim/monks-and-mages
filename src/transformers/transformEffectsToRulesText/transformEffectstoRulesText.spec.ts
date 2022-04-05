@@ -38,6 +38,7 @@ describe('transformEffectstoRulesText', () => {
     it('displays rules for buffing your hand (attack)', () => {
         const effect: Effect = {
             type: EffectType.BUFF_HAND_ATTACK,
+            target: TargetTypes.SELF_PLAYER,
             strength: 5,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
@@ -48,6 +49,7 @@ describe('transformEffectstoRulesText', () => {
     it('displays rules for buffing your team attack', () => {
         const effect: Effect = {
             type: EffectType.BUFF_TEAM_ATTACK,
+            target: TargetTypes.SELF_PLAYER,
             strength: 5,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
@@ -55,9 +57,21 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    it("displays rules for debuffing your opponents' attack", () => {
+        const effect: Effect = {
+            type: EffectType.BUFF_TEAM_ATTACK,
+            strength: -2,
+            target: TargetTypes.ALL_OPPONENTS,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Decrease attack of all opponents' non-magic units by 2`
+        );
+    });
+
     it('displays rules for buffing your team hp', () => {
         const effect: Effect = {
             type: EffectType.BUFF_TEAM_HP,
+            target: TargetTypes.SELF_PLAYER,
             strength: 5,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
@@ -68,6 +82,7 @@ describe('transformEffectstoRulesText', () => {
     it('displays rules for buffing your team magic', () => {
         const effect: Effect = {
             type: EffectType.BUFF_TEAM_MAGIC,
+            target: TargetTypes.SELF_PLAYER,
             strength: 5,
         };
         expect(transformEffectToRulesText(effect)).toEqual(

@@ -22,6 +22,9 @@ const slugifyName = (name: string) => {
         if (!fs.existsSync(`tmp/${newName}.jpg`)) {
             return;
         }
+        if (fs.existsSync(`assets/images/units/${newName}.avif`)) {
+            return;
+        }
         imageMagick.resize(
             {
                 srcPath: `tmp/${newName}.jpg`,
@@ -43,6 +46,13 @@ Object.entries(SpellCards).forEach(([name, card]) => {
         return;
     }
     const newName = slugifyName(name);
+
+    if (!fs.existsSync(`tmp/${newName}.jpg`)) {
+        return;
+    }
+    if (fs.existsSync(`assets/images/spells/${newName}.avif`)) {
+        return;
+    }
     imageMagick.resize(
         {
             srcPath: `tmp/${newName}.jpg`,

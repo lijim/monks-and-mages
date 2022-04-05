@@ -7,10 +7,7 @@ import { Board, GameState } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
 import { Resource } from '@/types/resources';
 import { applyGameAction } from './gameEngine';
-import {
-    AdvancedResourceCards,
-    makeAdvancedResourceCard,
-} from '@/cardDb/resources/advancedResources';
+import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 
 describe('Game Action', () => {
     let board: Board;
@@ -639,6 +636,28 @@ describe('Game Action', () => {
                 defender.name
             );
             expect(newBoardState.players[1].units).toHaveLength(0);
+        });
+
+        it('does not have lethal if the poisonous card is debuffed', () => {
+            const attacker = makeCard(UnitCards.BOUNTY_COLLECTOR);
+            attacker.attackBuff = -2;
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.SQUIRE);
+            defender.hpBuff = 3;
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].units).toHaveLength(1);
+            expect(newBoardState.players[1].cemetery).toHaveLength(0);
+            expect(newBoardState.players[1].units).toHaveLength(1);
         });
 
         it('performs a ranged attack (lethal for both through poisonous)', () => {

@@ -184,7 +184,6 @@ describe('resolve effect', () => {
                 board,
                 {
                     effect: { type: EffectType.BUFF_TEAM_ATTACK, strength: 2 },
-                    unitCardIds: [squire.id],
                 },
                 'Timmy'
             );
@@ -192,6 +191,29 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].units[0].attackBuff).toEqual(2);
             expect(newBoard.players[0].units[1].attackBuff).toEqual(2);
             expect(newBoard.players[0].units[2].attackBuff).toEqual(0);
+        });
+
+        it('does not debuff past 0 attack', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const cannon = makeCard(UnitCards.CANNON);
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[1].units = [squire, cannon, apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_TEAM_ATTACK,
+                        target: TargetTypes.ALL_OPPONENTS,
+                        strength: -3,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[1].units[0].attackBuff).toEqual(-2);
+            expect(newBoard.players[1].units[1].attackBuff).toEqual(-3);
+            expect(newBoard.players[1].units[2].attackBuff).toEqual(0);
         });
 
         it('buffs hp of units on your board', () => {
@@ -204,7 +226,6 @@ describe('resolve effect', () => {
                 board,
                 {
                     effect: { type: EffectType.BUFF_TEAM_HP, strength: 2 },
-                    unitCardIds: [squire.id],
                 },
                 'Timmy'
             );
@@ -224,7 +245,6 @@ describe('resolve effect', () => {
                 board,
                 {
                     effect: { type: EffectType.BUFF_TEAM_MAGIC, strength: 2 },
-                    unitCardIds: [squire.id],
                 },
                 'Timmy'
             );

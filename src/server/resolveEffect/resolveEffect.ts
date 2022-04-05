@@ -166,6 +166,9 @@ export const resolveEffect = (
                     if (!unit.isMagical) {
                         unit.attackBuff += effectStrength;
                     }
+                    if (unit.attackBuff < -unit.attack) {
+                        unit.attackBuff = -unit.attack;
+                    }
                 });
             });
             return clonedBoard;
@@ -185,6 +188,9 @@ export const resolveEffect = (
                 player.units.forEach((unit) => {
                     if (unit.isMagical) {
                         unit.attackBuff += effectStrength;
+                    }
+                    if (unit.attackBuff < -unit.attack) {
+                        unit.attackBuff = -unit.attack;
                     }
                 });
             });
