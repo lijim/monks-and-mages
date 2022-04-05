@@ -67,13 +67,19 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Increase attack of units in your hand by ${strength}`;
         }
         case EffectType.BUFF_TEAM_ATTACK: {
-            return `Increase attack of your non-magic units by ${strength}`;
+            if (strength < 0)
+                return `Decrease attack of ${targetNamePossessive} non-magic units by ${-strength}`;
+            return `Increase attack of ${targetNamePossessive} non-magic units by ${strength}`;
         }
         case EffectType.BUFF_TEAM_HP: {
-            return `Increase HP of your units by ${strength}`;
+            if (strength < 0)
+                return `Decrease HP of ${targetNamePossessive} units by ${-strength}`;
+            return `Increase HP of ${targetNamePossessive} units by ${strength}`;
         }
         case EffectType.BUFF_TEAM_MAGIC: {
-            return `Increase attack of your magic units by ${strength}`;
+            if (strength < 0)
+                return `Decrease attack of ${targetNamePossessive} magic units by ${-strength}`;
+            return `Increase attack of ${targetNamePossessive} magic units by ${strength}`;
         }
         case EffectType.CURSE_HAND: {
             return `Increase cost of cards in hand by ${strength} (generic) for ${targetName}`;

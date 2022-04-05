@@ -136,6 +136,24 @@ const SUMMON_SHARKS = makeCard({
     ],
 });
 
+const RAGING_WHIRLPOOL = makeCard({
+    name: 'Raging Whirlpool',
+    imgSrc: 'https://images.pexels.com/photos/312105/pexels-photo-312105.jpeg',
+    cost: { [Resource.WATER]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.BUFF_TEAM_ATTACK,
+            strength: -2,
+            target: TargetTypes.ALL_OPPONENTS,
+        },
+        {
+            type: EffectType.BUFF_TEAM_MAGIC,
+            strength: -2,
+            target: TargetTypes.ALL_OPPONENTS,
+        },
+    ],
+});
+
 const CONSTANT_REFILL = makeCard({
     name: 'Constant Refill',
     imgSrc: 'https://images.unsplash.com/photo-1556509511-4ee17e467199',
@@ -364,6 +382,7 @@ export const SpellCards = {
     BUBBLE_BLAST,
     GENEROUS_GEYSER,
     CONSTANT_REFILL,
+    RAGING_WHIRLPOOL,
     SUMMON_SHARKS,
 
     // Wind
