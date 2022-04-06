@@ -259,6 +259,7 @@ export const resolveEffect = (
                 }
                 player.hand = hand.concat(deck.splice(-cardsToDraw));
             });
+            applyWinState(clonedBoard);
             return clonedBoard;
         }
         case EffectType.EXTRACT_CARD: {

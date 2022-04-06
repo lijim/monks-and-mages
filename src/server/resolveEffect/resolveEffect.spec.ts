@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash.clonedeep';
 import { PlayerConstants } from '@/constants/gameConstants';
 import { makeNewBoard } from '@/factories/board';
-import { Board } from '@/types/board';
+import { Board, GameState } from '@/types/board';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { resolveEffect } from './resolveEffect';
 import { makeCard, makeResourceCard } from '@/factories/cards';
@@ -321,6 +321,7 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].deck).toEqual([]);
             expect(newBoard.players[0].isAlive).toEqual(false);
+            expect(newBoard.gameState).toEqual(GameState.WIN);
         });
     });
 
@@ -356,7 +357,7 @@ describe('resolve effect', () => {
 
             const newBoard = resolveEffect(
                 board,
-                { effect: { type: EffectType.DRAW, strength: deckLength + 1 } },
+                { effect: { type: EffectType.DRAW_PER_UNIT } },
                 'Timmy'
             );
 
@@ -365,6 +366,7 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].deck).toEqual([]);
             expect(newBoard.players[0].isAlive).toEqual(false);
+            expect(newBoard.gameState).toEqual(GameState.WIN);
         });
     });
 
