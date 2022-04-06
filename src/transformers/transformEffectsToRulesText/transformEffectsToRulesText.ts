@@ -1,7 +1,11 @@
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
 import { Effect } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import {
+    EffectType,
+    getDefaultTargetForEffect,
+    TargetTypes,
+} from '@/types/effects';
 
 const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.ALL_OPPONENTS]: 'all opponents',
@@ -50,10 +54,14 @@ const titleize = (str: string): string => {
 };
 
 export const transformEffectToRulesText = (effect: Effect): string => {
-    const { cardName, strength, target, resourceType, summonType } = effect;
-    const targetName = TARGET_TYPES_TO_RULES_TEXT[target || TargetTypes.ANY];
+    const { cardName, strength, target, resourceType, summonType, type } =
+        effect;
+    const targetName =
+        TARGET_TYPES_TO_RULES_TEXT[target || getDefaultTargetForEffect(type)];
     const targetNamePossessive =
-        TARGET_TYPES_TO_RULES_TEXT_POSSESIVE[target || TargetTypes.ANY];
+        TARGET_TYPES_TO_RULES_TEXT_POSSESIVE[
+            target || getDefaultTargetForEffect(type)
+        ];
     const pluralizationEffectStrength = strength > 1 ? 's' : '';
     switch (effect.type) {
         case EffectType.BOUNCE: {
@@ -94,7 +102,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Make ${targetName} discard ${strength} cards at random`;
         }
         case EffectType.DRAW: {
-            if (!target) {
+            if (!target || target === TargetTypes.SELF_PLAYER) {
                 return `Draw ${strength} cards`;
             }
             return `${titleize(targetName)} draw${

@@ -49,7 +49,6 @@ describe('transformEffectstoRulesText', () => {
     it('displays rules for buffing your team attack', () => {
         const effect: Effect = {
             type: EffectType.BUFF_TEAM_ATTACK,
-            target: TargetTypes.SELF_PLAYER,
             strength: 5,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
