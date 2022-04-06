@@ -1,9 +1,10 @@
-import { SAMPLE_DECKLIST_0 } from '@/constants/deckLists';
+import { SAMPLE_DECKLIST_0, SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 import {
     deckListMappings,
     DeckListSelections,
 } from '@/constants/lobbyConstants';
 import { Board, GameState } from '@/types/board';
+import sampleSize from 'lodash.samplesize';
 import { makeNewPlayer } from '../player';
 
 export type MakeNewBoardParams = {
@@ -19,10 +20,17 @@ export const makeNewBoard = ({
 }: MakeNewBoardParams): Board => {
     let i = 0;
     const players = playerNames.map((playerName) => {
-        const deckList =
-            (playerDeckListSelections?.[i] &&
-                deckListMappings[playerDeckListSelections?.[i]]) ||
-            SAMPLE_DECKLIST_0;
+        const selection = playerDeckListSelections?.[i];
+        let deckList =
+            (selection && deckListMappings[selection]) || SAMPLE_DECKLIST_0;
+        if (selection === DeckListSelections.RANDOM) {
+            [deckList] = sampleSize(
+                Object.values(deckListMappings).filter(
+                    (deck) => deck !== SAMPLE_DECKLIST_1
+                ),
+                1
+            );
+        }
         i += 1;
         return makeNewPlayer(playerName, deckList);
     });

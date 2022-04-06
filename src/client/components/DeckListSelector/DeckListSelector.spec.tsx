@@ -35,4 +35,17 @@ describe('DeckListSelector', () => {
         const select = screen.getByLabelText('Choose a Deck');
         expect(select).toHaveValue(DeckListSelections.GENIES);
     });
+
+    it('hides the view deck list button for random', () => {
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Jimmy',
+            },
+            deckList: {
+                premadeDecklist: DeckListSelections.RANDOM,
+            },
+        };
+        render(<DeckListSelector />, { preloadedState });
+        expect(screen.queryByText('View Decklist')).toBeNull();
+    });
 });

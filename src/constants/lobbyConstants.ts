@@ -1,5 +1,6 @@
 import {
     SAMPLE_DECKLIST_0,
+    SAMPLE_DECKLIST_1,
     SAMPLE_DECKLIST_2,
     SAMPLE_DECKLIST_3,
     SAMPLE_DECKLIST_4,
@@ -26,6 +27,7 @@ export enum DeckListSelections {
     MAGES_WATER = 'Mages 🌊',
     MAGES_WIND = 'Mages 💨',
     MONKS = 'Monks 🤺',
+    RANDOM = 'Random ⁉️',
     SORCERORS = 'Sorcerors 🧙🏾‍♀️',
 }
 
@@ -40,6 +42,7 @@ export const deckListMappings: Record<DeckListSelections, DeckList> = {
     [DeckListSelections.MAGES_WATER]: SAMPLE_DECKLIST_3,
     [DeckListSelections.MAGES_WIND]: SAMPLE_DECKLIST_4,
     [DeckListSelections.FARMERS]: SAMPLE_DECKLIST_5,
+    [DeckListSelections.RANDOM]: SAMPLE_DECKLIST_1,
     [DeckListSelections.SORCERORS]: SAMPLE_DECKLIST_7,
 };
 

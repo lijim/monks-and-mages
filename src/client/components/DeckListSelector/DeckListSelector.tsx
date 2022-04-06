@@ -43,9 +43,11 @@ export const DeckListSelector: React.FC = () => {
             </select>
             <br />
             <br />
-            <Link to="/decklist" style={{ color: 'white' }}>
-                View Decklist
-            </Link>
+            {currentDeckList !== DeckListSelections.RANDOM && (
+                <Link to="/decklist" style={{ color: 'white' }}>
+                    View Decklist
+                </Link>
+            )}
         </div>
     );
 };
