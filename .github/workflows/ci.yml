@@ -3,7 +3,7 @@
 
 name: Install / Build / Test
 
-on: [pull_request, push]
+on: [push]
 
 jobs:
     pre_job:
