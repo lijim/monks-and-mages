@@ -48,6 +48,11 @@ export const DeckListSelector: React.FC = () => {
                     View Decklist
                 </Link>
             )}
+
+            <br />
+            <Link to="/customize" style={{ color: 'white' }}>
+                Customize (in beta)
+            </Link>
         </div>
     );
 };

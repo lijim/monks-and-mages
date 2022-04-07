@@ -211,3 +211,21 @@ export const SAMPLE_DECKLIST_9: DeckList = [
     { card: SpellCards.EMBER_SPEAR, quantity: 4 },
     { card: SpellCards.IGNITE_SPARKS, quantity: 4 },
 ];
+
+// For debugging / gamebuilding purposes
+export const ALL_CARDS: DeckList = [
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 1 },
+    { card: makeResourceCard(Resource.CRYSTAL), quantity: 1 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 1 },
+    { card: makeResourceCard(Resource.IRON), quantity: 1 },
+    { card: makeResourceCard(Resource.WATER), quantity: 1 },
+    ...Object.values(AdvancedResourceCards).map((card) => {
+        return { card, quantity: 1 };
+    }),
+    ...Object.values(SpellCards).map((card) => {
+        return { card, quantity: 1 };
+    }),
+    ...Object.values(UnitCards).map((card) => {
+        return { card, quantity: 1 };
+    }),
+];

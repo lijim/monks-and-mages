@@ -1,4 +1,5 @@
 import {
+    ALL_CARDS,
     SAMPLE_DECKLIST_0,
     SAMPLE_DECKLIST_1,
     SAMPLE_DECKLIST_2,
@@ -43,7 +44,7 @@ export const deckListMappings: Record<DeckListSelections, DeckList> = {
     [DeckListSelections.MAGES_WIND]: SAMPLE_DECKLIST_4,
     [DeckListSelections.FARMERS]: SAMPLE_DECKLIST_5,
     [DeckListSelections.RANDOM]: SAMPLE_DECKLIST_1,
-    [DeckListSelections.SORCERORS]: SAMPLE_DECKLIST_7,
+    [DeckListSelections.SORCERORS]: ALL_CARDS,
 };
 
 export const MAX_PLAYER_NAME_LENGTH = 25;

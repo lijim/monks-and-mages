@@ -15,6 +15,7 @@ interface CardGridItemProps {
     hasTooltip?: boolean;
     isHighlighted?: boolean;
     isOnBoard?: boolean;
+    onClick?: () => void; // if provided overrides the default one from hasOnClick
     zoomLevel?: number;
 }
 
@@ -26,10 +27,11 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
     hasOnClick,
     isHighlighted,
     isOnBoard,
+    onClick,
     zoomLevel,
 }) => {
     const { handleClickCard } = useContext(GameManagerContext) || {};
-    const onClick = (extras?: HandleClickOnCardParams['extras']) => {
+    const defaultOnClick = (extras?: HandleClickOnCardParams['extras']) => {
         handleClickCard(card.id, extras);
     };
     if (card.cardType === CardType.RESOURCE && !card.isAdvanced) {
@@ -37,7 +39,7 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
             <ResourceCardGridItem
                 card={card}
                 isHighlighted={isHighlighted}
-                onClick={hasOnClick ? onClick : undefined}
+                onClick={onClick || (hasOnClick ? defaultOnClick : undefined)}
                 zoomLevel={zoomLevel}
             />
         );
@@ -47,7 +49,7 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
             <AdvancedResourceCardGridItem
                 card={card}
                 isHighlighted={isHighlighted}
-                onClick={hasOnClick ? onClick : undefined}
+                onClick={onClick || (hasOnClick ? defaultOnClick : undefined)}
                 isOnBoard={isOnBoard}
                 zoomLevel={zoomLevel}
             />
@@ -58,7 +60,7 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
             <SpellGridItem
                 card={card}
                 isHighlighted={isHighlighted}
-                onClick={hasOnClick ? onClick : undefined}
+                onClick={onClick || (hasOnClick ? defaultOnClick : undefined)}
                 zoomLevel={zoomLevel}
             />
         );
@@ -68,7 +70,7 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
             <UnitGridItem
                 card={card}
                 isHighlighted={isHighlighted}
-                onClick={hasOnClick ? onClick : undefined}
+                onClick={onClick || (hasOnClick ? defaultOnClick : undefined)}
                 isOnBoard={isOnBoard}
                 zoomLevel={zoomLevel}
             />
@@ -83,6 +85,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
     hasOnClick,
     isHighlighted,
     isOnBoard,
+    onClick,
     zoomLevel = 1,
 }) => {
     const {
@@ -99,13 +102,17 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
     return (
         <>
             {/* The card itself */}
-            <div style={{ display: 'inline-grid' }} ref={setTriggerRef}>
+            <div
+                style={{ display: 'inline-grid' }}
+                ref={hasTooltip && setTriggerRef}
+            >
                 <CardGridSingleItem
                     key={card.id}
                     card={card}
                     isHighlighted={isHighlighted}
                     isOnBoard={isOnBoard}
                     hasOnClick={hasOnClick}
+                    onClick={onClick}
                     zoomLevel={zoomLevel}
                 />
             </div>
