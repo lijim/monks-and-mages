@@ -7,7 +7,7 @@ import { TopNavBar } from '../TopNavBar';
 import { makeDeck } from '@/factories/deck';
 import { ALL_CARDS } from '@/constants/deckLists';
 import { CompactDeckList } from '../CompactDeckList';
-import { Card, CardType } from '@/types/cards';
+import { Card, CardType, DeckList as DeckListType } from '@/types/cards';
 import { makeCard } from '@/factories/cards';
 
 const DeckListContainers = styled.div`
@@ -35,38 +35,45 @@ type DeckBuilderProps = {
     isConstructed?: boolean;
 };
 
-function spliceNoMutate(myArray: Card[], indexToRemove: number) {
-    return myArray
-        .slice(0, indexToRemove)
-        .concat(myArray.slice(indexToRemove + 1));
-}
-
 export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     cardPool = makeDeck(ALL_CARDS),
     isConstructed = true,
 }) => {
-    const [myDeck, setMyDeck] = useState(makeDeck([]));
+    const [myDeck, setMyDeck] = useState<DeckListType>([]);
 
     const addCard = (card: Card) => {
         const isCardNotBasicResource = !(
             card.cardType === CardType.RESOURCE && !card.isAdvanced
         );
+
+        const matchingCardSlot = myDeck.find(
+            (cardSlot) => cardSlot.card.name === card.name
+        );
+
+        // on constructed mode, everything except basic resourcs is capped at 4
         if (
             isConstructed &&
             isCardNotBasicResource &&
-            myDeck.filter((c) => c.name === card.name).length >= 4
+            (matchingCardSlot?.quantity || 0 >= 4)
         )
             return;
-        setMyDeck(myDeck.concat([makeCard(card)]));
+
+        if (matchingCardSlot) {
+            matchingCardSlot.quantity += 1;
+        } else {
+            myDeck.push({ card, quantity: 1 });
+        }
+        setMyDeck([...myDeck]);
     };
     const removeCard = (card: Card) => {
-        const firstMatchingIndex = myDeck.findIndex(
-            (c) => c.name === card.name
+        const matchingCardSlot = myDeck.find(
+            (cardSlot) => cardSlot.card.name === card.name
         );
 
-        if (firstMatchingIndex > -1) {
-            setMyDeck(spliceNoMutate(myDeck, firstMatchingIndex));
+        if (matchingCardSlot) {
+            matchingCardSlot.quantity -= 1;
         }
+        setMyDeck([...myDeck.filter((cardSlot) => cardSlot.quantity > 0)]);
     };
     return (
         <>
@@ -83,7 +90,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                 </DeckListBackDrop>
                 <DeckListBackDrop data-testid="MyDeck">
                     <DeckList
-                        deck={myDeck}
+                        deck={makeDeck(myDeck)}
                         addCard={addCard}
                         removeCard={removeCard}
                     />

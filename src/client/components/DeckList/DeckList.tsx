@@ -99,7 +99,6 @@ export const DeckList: React.FC<DeckListProps> = ({
                                     <CardGridItem
                                         card={card}
                                         onClick={() => {
-                                            console.log('removing card');
                                             removeCard?.(card);
                                         }}
                                     />
