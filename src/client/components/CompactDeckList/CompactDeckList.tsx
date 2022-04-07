@@ -10,9 +10,12 @@ import { RESOURCE_GLOSSARY } from '@/types/resources';
 
 interface CompactDeckListProps {
     deck: Card[];
+    onClickCard?: (card: Card) => void;
+    shouldShowQuantity?: boolean;
 }
 
 type MiniCardFrameProps = {
+    hasOnClick: boolean;
     primaryColor: string;
 };
 
@@ -28,6 +31,7 @@ const MiniCardFrame = styled.div<MiniCardFrameProps>`
     align-items: center;
     color: white;
     background: ${({ primaryColor }) => primaryColor};
+    cursor: ${({ hasOnClick }) => (hasOnClick ? 'pointer' : 'inherit')};
 `;
 
 type NameCellProps = {
@@ -48,7 +52,11 @@ const CostCell = styled.div`
     color: white;
 `;
 
-export const CompactDeckList: React.FC<CompactDeckListProps> = ({ deck }) => {
+export const CompactDeckList: React.FC<CompactDeckListProps> = ({
+    deck,
+    onClickCard,
+    shouldShowQuantity = true,
+}) => {
     const piles = splitDeckListToPiles(deck);
     return (
         <>
@@ -57,10 +65,19 @@ export const CompactDeckList: React.FC<CompactDeckListProps> = ({ deck }) => {
                     <h3>{pile.title}</h3>
                     {[...pile.cards.entries()].map(([card, quantity]) => (
                         <MiniCardFrame
+                            hasOnClick={!!onClickCard}
                             primaryColor={getColorForCard(card)}
                             key={card.name}
+                            onClick={() => {
+                                onClickCard(card);
+                            }}
                         >
-                            <QuantitySelector hasNoBorder quantity={quantity} />
+                            {shouldShowQuantity && (
+                                <QuantitySelector
+                                    hasNoBorder
+                                    quantity={quantity}
+                                />
+                            )}
                             <div>
                                 <NameCell
                                     primaryColor={

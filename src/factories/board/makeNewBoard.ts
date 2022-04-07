@@ -1,10 +1,10 @@
+import sampleSize from 'lodash.samplesize';
 import { SAMPLE_DECKLIST_0, SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 import {
     deckListMappings,
     DeckListSelections,
 } from '@/constants/lobbyConstants';
 import { Board, GameState } from '@/types/board';
-import sampleSize from 'lodash.samplesize';
 import { makeNewPlayer } from '../player';
 
 export type MakeNewBoardParams = {

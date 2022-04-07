@@ -7,7 +7,11 @@ import { CardGridItem } from '../CardGridItem';
 import { QuantitySelector } from '../QuantitySelector';
 
 interface DeckListProps {
+    addCard?: (card: Card) => void;
     deck: Card[];
+    removeCard?: (card: Card) => void;
+    shouldShowQuantity?: boolean;
+    shouldShowSummary?: boolean;
 }
 
 interface DeckListCardSlotProps {
@@ -53,20 +57,29 @@ const getTotalCardsInPile = (pile: PileOfCards): number => {
         );
 };
 
-export const DeckList: React.FC<DeckListProps> = ({ deck }) => {
+export const DeckList: React.FC<DeckListProps> = ({
+    deck,
+    removeCard,
+    shouldShowQuantity = true,
+    shouldShowSummary = true,
+}) => {
     const piles = splitDeckListToPiles(deck);
     return (
         <Centering>
-            <div>
-                <b>Cards</b>: {deck.length} <hr />
-                {piles.map((pile, pileIndex) => (
-                    <span key={pileIndex}>
-                        {pileIndex !== 0 && <br />}
-                        <b>{pile.title}</b>: {getTotalCardsInPile(pile)}
-                    </span>
-                ))}
-            </div>
-            <hr />
+            {shouldShowSummary && (
+                <>
+                    <div>
+                        <b>Cards</b>: {deck.length} <hr />
+                        {piles.map((pile, pileIndex) => (
+                            <span key={pileIndex}>
+                                {pileIndex !== 0 && <br />}
+                                <b>{pile.title}</b>: {getTotalCardsInPile(pile)}
+                            </span>
+                        ))}
+                    </div>
+                    <hr />
+                </>
+            )}
             <Piles>
                 {piles.map((pile, pileIndex) => (
                     <Pile key={pileIndex}>
@@ -77,11 +90,18 @@ export const DeckList: React.FC<DeckListProps> = ({ deck }) => {
                                     position={cardIndex}
                                     key={cardIndex}
                                 >
-                                    <QuantitySelector
-                                        quantity={quantity}
-                                    ></QuantitySelector>
+                                    {shouldShowQuantity && (
+                                        <QuantitySelector
+                                            quantity={quantity}
+                                        ></QuantitySelector>
+                                    )}
                                     {'  '}
-                                    <CardGridItem card={card} />
+                                    <CardGridItem
+                                        card={card}
+                                        onClick={() => {
+                                            removeCard?.(card);
+                                        }}
+                                    />
                                 </DeckListCardSlot>
                             )
                         )}

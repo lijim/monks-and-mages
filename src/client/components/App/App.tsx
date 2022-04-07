@@ -18,6 +18,11 @@ const Rooms = React.lazy(() =>
         default: module.Rooms,
     }))
 );
+const DeckBuilder = React.lazy(() =>
+    import('../DeckBuilder').then((module) => ({
+        default: module.DeckBuilder,
+    }))
+);
 const DeckManager = React.lazy(() =>
     import('../DeckManager').then((module) => ({
         default: module.DeckManager,
@@ -67,6 +72,14 @@ export const RouterRoutes: React.FC = () => {
                 element={
                     <LobbyBackground>
                         <DeckManager />
+                    </LobbyBackground>
+                }
+            />
+            <Route
+                path="/customize"
+                element={
+                    <LobbyBackground>
+                        <DeckBuilder />
                     </LobbyBackground>
                 }
             />

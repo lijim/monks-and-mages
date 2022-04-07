@@ -127,3 +127,6 @@ export function render(
         webSocket: mockWebSocket,
     };
 }
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+export { screen, fireEvent, waitFor, within } from '@testing-library/react';
