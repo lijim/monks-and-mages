@@ -63,6 +63,9 @@ export const DeckList: React.FC<DeckListProps> = ({
     shouldShowQuantity = true,
     shouldShowSummary = true,
 }) => {
+    if (deck.length === 0) {
+        return <Centering />;
+    }
     const piles = splitDeckListToPiles(deck);
     return (
         <Centering>

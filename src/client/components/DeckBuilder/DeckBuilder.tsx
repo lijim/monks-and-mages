@@ -54,7 +54,8 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         if (
             isConstructed &&
             isCardNotBasicResource &&
-            (matchingCardSlot?.quantity || 0 >= 4)
+            matchingCardSlot &&
+            matchingCardSlot.quantity >= 4
         )
             return;
 

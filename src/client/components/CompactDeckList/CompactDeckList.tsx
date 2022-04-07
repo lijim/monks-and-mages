@@ -5,7 +5,10 @@ import { Card, CardType } from '@/types/cards';
 import { splitDeckListToPiles } from '@/transformers/splitDeckListToPiles';
 import { QuantitySelector } from '../QuantitySelector';
 import { CastingCost } from '../CastingCost';
-import { getColorForCard } from '@/transformers/getColorForCard';
+import {
+    getColorForCard,
+    getSecondaryColorForCard,
+} from '@/transformers/getColorForCard';
 import { RESOURCE_GLOSSARY } from '@/types/resources';
 
 interface CompactDeckListProps {
@@ -36,11 +39,20 @@ const MiniCardFrame = styled.div<MiniCardFrameProps>`
 
 type NameCellProps = {
     primaryColor?: string;
+    secondaryColor?: string;
 };
 
 export const NameCell = styled.span<NameCellProps>`
     font-style: italic;
-    background: ${({ primaryColor }) => primaryColor || 'rgba(0, 0, 0, 0.2)'};
+    ${({ primaryColor, secondaryColor }) => {
+        if (!primaryColor) {
+            return `background-color: rgba(0, 0, 0, 0.2);`;
+        }
+        if (!secondaryColor) {
+            return `background-color: ${primaryColor};`;
+        }
+        return `background-image: linear-gradient(to right, ${primaryColor}, ${secondaryColor});`;
+    }};
     border-radius: 2px;
     font-weight: 500;
     padding: 3px 6px;
@@ -87,6 +99,9 @@ export const CompactDeckList: React.FC<CompactDeckListProps> = ({
                                               ].primaryColor
                                             : undefined
                                     }
+                                    secondaryColor={getSecondaryColorForCard(
+                                        card
+                                    )}
                                 >
                                     {card.name}
                                 </NameCell>
