@@ -1,8 +1,14 @@
+import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 import { SpellCards } from '@/cardDb/spells';
 import { UnitCards } from '@/cardDb/units';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
-import { getColorForCard, GOLD_COLOR, RESOURCE_COLOR } from './getColorForCard';
+import {
+    getColorForCard,
+    getSecondaryColorForCard,
+    GOLD_COLOR,
+    RESOURCE_COLOR,
+} from './getColorForCard';
 
 describe('getColorForCard', () => {
     it('returns white for a resource card', () => {
@@ -34,4 +40,10 @@ describe('getColorForCard', () => {
             RESOURCE_GLOSSARY[Resource.FIRE].primaryColor
         );
     });
+});
+
+describe('Secondary color for card', () => {
+    expect(
+        getSecondaryColorForCard(makeCard(AdvancedResourceCards.LUSH_REEF))
+    ).toEqual(RESOURCE_GLOSSARY[Resource.BAMBOO].primaryColor);
 });

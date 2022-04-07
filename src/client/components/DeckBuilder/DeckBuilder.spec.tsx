@@ -21,7 +21,9 @@ describe('DeckBuilder', () => {
             fireEvent.click(within(cardPool).getByText('Lancer'));
         }
         expect(within(myDeck).queryByText('5')).not.toBeInTheDocument();
+        expect(within(myDeck).getByText('4')).toBeInTheDocument();
     });
+
     it('allows more than 4 basic resources (constructed)', () => {
         render(<DeckBuilder />);
         const cardPool = screen.getByTestId('CardPool');
