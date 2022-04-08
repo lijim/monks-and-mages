@@ -89,6 +89,11 @@ export type Card = ResourceCard | UnitCard | SpellCard;
 
 export type DeckList = { card: Card; quantity: number }[];
 
+// type of decklist where the cards are 
+// used for sending client -> server deck decisions + 
+// in the copy/paste decklist feature
+export type Skeleton = { card: string; quantity: number }[];
+
 export type PileOfCards = {
     cards: Map<Card, number>;
     title: string;
