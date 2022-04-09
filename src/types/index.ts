@@ -1,9 +1,9 @@
-import { DeckListSelections } from './constants/lobbyConstants';
-import { Board } from './types/board';
-import { Effect } from './types/cards';
-import { ChatMessage } from './types/chat';
-import { GameAction } from './types/gameActions';
-import { GameResult } from './types/games';
+import { DeckListSelections } from '../constants/lobbyConstants';
+import { Board } from './board';
+import { Effect } from './cards';
+import { ChatMessage } from './chat';
+import { GameAction } from './gameActions';
+import { GameResult } from './games';
 
 export interface ServerToClientEvents {
     confirmName: (name: string) => void;
