@@ -8,7 +8,9 @@ import { makeDeck } from '@/factories/deck';
 import { ALL_CARDS } from '@/constants/deckLists';
 import { CompactDeckList } from '../CompactDeckList';
 import { Card, CardType, DeckList as DeckListType } from '@/types/cards';
-import { makeCard } from '@/factories/cards';
+import { SecondaryColorButton } from '../Button';
+import { getSkeletonFromDeckList } from '@/transformers/getSkeletonFromDeckList/getSkeletonFromDeckList';
+import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/getDeckListFromSkeleton';
 
 const DeckListContainers = styled.div`
     display: grid;
@@ -76,6 +78,26 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         }
         setMyDeck([...myDeck.filter((cardSlot) => cardSlot.quantity > 0)]);
     };
+
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(
+            JSON.stringify(getSkeletonFromDeckList(myDeck))
+        );
+    };
+
+    const importFromClipboard = async () => {
+        const clipboardTxt = await navigator.clipboard.readText();
+        try {
+            const { decklist, errors } = getDeckListFromSkeleton(
+                JSON.parse(clipboardTxt)
+            );
+            if (!errors?.length) setMyDeck(decklist);
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        }
+    };
+
     return (
         <>
             <TopNavBar>
@@ -90,6 +112,15 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                     />
                 </DeckListBackDrop>
                 <DeckListBackDrop data-testid="MyDeck">
+                    <SecondaryColorButton onClick={copyToClipboard}>
+                        Copy decklist to clipboard
+                    </SecondaryColorButton>
+                    &nbsp;&nbsp;
+                    <SecondaryColorButton onClick={importFromClipboard}>
+                        Import decklist from clipboard
+                    </SecondaryColorButton>
+                    <br />
+                    <br />
                     <DeckList
                         deck={makeDeck(myDeck)}
                         addCard={addCard}

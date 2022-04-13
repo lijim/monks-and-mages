@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, within } from '@/test-utils';
+import { act, fireEvent, render, screen, within } from '@/test-utils';
 import { DeckBuilder } from './DeckBuilder';
 
 describe('DeckBuilder', () => {
@@ -49,7 +49,39 @@ describe('DeckBuilder', () => {
         expect(within(myDeck).getByText('4')).toBeInTheDocument();
     });
     it.todo('removes cards via a quantity selector');
-    it.todo('exports the decklist');
-    it.todo('imports a decklist');
+
+    it('exports the decklist', () => {
+        Object.assign(navigator, {
+            clipboard: {
+                writeText: () => {},
+            },
+        });
+
+        navigator.clipboard.writeText = jest.fn();
+        render(<DeckBuilder />);
+        fireEvent.click(screen.getByText('Lancer'));
+
+        fireEvent.click(screen.getByText('Copy decklist to clipboard'));
+
+        expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+            `[{"card":"Lancer","quantity":1}]`
+        );
+    });
+
+    it('imports a decklist', async () => {
+        Object.assign(navigator, {
+            clipboard: {
+                readText: () => `[{"card":"Lancer","quantity":1}]`,
+            },
+        });
+
+        navigator.clipboard.writeText = jest.fn();
+        render(<DeckBuilder />);
+        const myDeck = screen.getByTestId('MyDeck');
+
+        fireEvent.click(screen.getByText('Import decklist from clipboard'));
+
+        expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
+    });
     it.todo('displays errors for importing a malformed decklist');
 });

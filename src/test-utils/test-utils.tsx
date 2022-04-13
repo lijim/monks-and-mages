@@ -129,4 +129,10 @@ export function render(
 }
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-export { screen, fireEvent, waitFor, within } from '@testing-library/react';
+export {
+    act,
+    screen,
+    fireEvent,
+    waitFor,
+    within,
+} from '@testing-library/react';
