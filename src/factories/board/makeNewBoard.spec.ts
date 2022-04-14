@@ -1,5 +1,7 @@
+import { UnitCards } from '@/cardDb/units';
 import { SAMPLE_DECKLIST_2 } from '@/constants/deckLists';
 import { DeckListSelections } from '@/constants/lobbyConstants';
+import { Skeleton } from '@/types/cards';
 import { makeDeck } from '../deck';
 import { makeNewBoard } from './makeNewBoard';
 
@@ -40,6 +42,18 @@ describe('Make New Board', () => {
                 board.players[1].isActivePlayer &&
                 board.players[2].isActivePlayer
         ).toEqual(false);
+    });
+
+    it('makes a board with custom decklists', () => {
+        const nameToCustomDeckSkeleton = new Map<string, Skeleton>();
+        nameToCustomDeckSkeleton.set('Hal', [
+            { card: 'Assassin', quantity: 4 },
+        ]);
+        const board = makeNewBoard({
+            playerNames: ['Hal', 'Orin', 'Samus'],
+            nameToCustomDeckSkeleton,
+        });
+        expect(board.players[0].hand[0].name).toEqual('Assassin');
     });
 
     it.todo('caps at 4 players and makes everyone else a spectator');

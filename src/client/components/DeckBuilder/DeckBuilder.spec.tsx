@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render, screen, within } from '@/test-utils';
+import { act, fireEvent, render, screen, within } from '@/test-utils';
 import { DeckBuilder } from './DeckBuilder';
+import { push } from 'redux-first-history';
 
 describe('DeckBuilder', () => {
     it('adds cards from the entire card pool (constructed mode)', () => {
@@ -84,4 +85,38 @@ describe('DeckBuilder', () => {
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
     });
     it.todo('displays errors for importing a malformed decklist');
+    it('submits a deck', async () => {
+        Object.assign(navigator, {
+            clipboard: {
+                readText: () => `[{"card":"Lancer","quantity":1}]`,
+            },
+        });
+
+        navigator.clipboard.writeText = jest.fn();
+        const { webSocket, dispatch } = render(<DeckBuilder />);
+        const myDeck = screen.getByTestId('MyDeck');
+
+        fireEvent.click(screen.getByText('Import decklist from clipboard'));
+        expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
+
+        fireEvent.click(screen.getByText('Submit Decklist'));
+        expect(webSocket.chooseCustomDeck).toHaveBeenCalledWith([
+            { card: 'Lancer', quantity: 1 },
+        ]);
+        expect(dispatch).toHaveBeenCalledWith(push('/'));
+    });
+    it('loads a deck if one was already created', () => {
+        render(<DeckBuilder />, {
+            preloadedState: {
+                deckList: {
+                    customDeckList: [{ card: 'Lancer', quantity: 1 }],
+                    premadeDecklist: null,
+                },
+            },
+        });
+        const myDeck = screen.getByTestId('MyDeck');
+
+        expect(within(myDeck).getByText('Lancer')).toBeInTheDocument();
+    });
+    it.todo('errors for not enough cards in a deck');
 });

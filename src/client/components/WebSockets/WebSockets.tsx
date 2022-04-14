@@ -20,9 +20,13 @@ import {
 } from '@/types';
 import { GameAction } from '@/types/gameActions';
 import { DeckListSelections } from '@/constants/lobbyConstants';
-import { confirmPremadeDecklist } from '@/client/redux/deckList';
+import {
+    confirmCustomDeckList,
+    confirmPremadeDecklist,
+} from '@/client/redux/deckList';
 import { playAudio } from '@/audioHelpers/playAudio';
 import { Sounds } from '@/constants/sounds';
+import { Skeleton } from '@/types/cards';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
@@ -56,6 +60,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             io();
 
         // Server-to-client events
+        newSocket.on('confirmCustomDeck', (skeleton: Skeleton) => {
+            dispatch(confirmCustomDeckList(skeleton));
+        });
+
         newSocket.on('confirmName', (name: string) => {
             dispatch(chooseNameReducer({ name }));
         });
@@ -106,6 +114,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('spectateRoom', roomName);
         };
 
+        const chooseCustomDeck = (deckListSelection: Skeleton) => {
+            newSocket.emit('chooseCustomDeck', deckListSelection);
+        };
+
         const chooseDeck = (deckListSelection: DeckListSelections) => {
             newSocket.emit('chooseDeck', deckListSelection);
         };
@@ -133,6 +145,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         setSocket(newSocket);
         setWs({
             socket: newSocket,
+            chooseCustomDeck,
             chooseDeck,
             chooseName,
             joinRoom,

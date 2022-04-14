@@ -21,6 +21,7 @@ import { resolveEffect } from '../resolveEffect';
 import { makePlayerChatMessage, makeSystemChatMessage } from '@/factories/chat';
 import { GameResult } from '@/types/games';
 import { calculateGameResult } from '@/factories/games';
+import { Skeleton } from '@/types/cards';
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -40,6 +41,7 @@ export const configureIo = (server: HttpServer) => {
     const idsToNames = new Map<string, string>(); // mapping of socket ids to user-chosen names
     const namesToIds = new Map<string, string>(); // reverse map of idsToNames
     const nameToDeckListSelection = new Map<string, DeckListSelections>();
+    const nameToCustomDeckSkeleton = new Map<string, Skeleton>();
     const startedBoards = new Map<string, Board>();
 
     /* Utility functions */
@@ -50,6 +52,7 @@ export const configureIo = (server: HttpServer) => {
         if (!matchingName) return;
         namesToIds.delete(matchingName[0]);
         nameToDeckListSelection.delete(matchingName[0]);
+        nameToCustomDeckSkeleton.delete(matchingName[0]);
         idsToNames.delete(idToMatch);
     };
 
@@ -214,11 +217,21 @@ export const configureIo = (server: HttpServer) => {
             socket.emit('listRooms', getDetailedRooms());
             socket.emit('listLatestGameResults', latestResults);
 
+            socket.on('chooseCustomDeck', (skeleton: Skeleton) => {
+                const name = idsToNames.get(socket.id);
+                if (!name) return;
+                nameToCustomDeckSkeleton.set(name, skeleton);
+                socket.emit('confirmCustomDeck', skeleton);
+            });
+
             socket.on('chooseDeck', (deckListSelection: DeckListSelections) => {
                 const name = idsToNames.get(socket.id);
                 if (!name) return;
                 nameToDeckListSelection.set(name, deckListSelection);
                 socket.emit('confirmPremadeDeckList', deckListSelection);
+                // clear any previous custom decks
+                nameToCustomDeckSkeleton.delete(name);
+                socket.emit('confirmCustomDeck', null);
             });
 
             socket.on('chooseName', (name: string) => {
@@ -293,6 +306,7 @@ export const configureIo = (server: HttpServer) => {
                 const board = makeNewBoard({
                     playerDeckListSelections,
                     playerNames,
+                    nameToCustomDeckSkeleton,
                 });
                 board.gameState = GameState.MULLIGANING;
                 startedBoards.set(roomName, board);

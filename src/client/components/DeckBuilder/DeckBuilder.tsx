@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'redux-first-history';
 import styled from 'styled-components';
 
 import { DeckList } from '../DeckList';
@@ -7,10 +9,17 @@ import { TopNavBar } from '../TopNavBar';
 import { makeDeck } from '@/factories/deck';
 import { ALL_CARDS } from '@/constants/deckLists';
 import { CompactDeckList } from '../CompactDeckList';
-import { Card, CardType, DeckList as DeckListType } from '@/types/cards';
+import {
+    Card,
+    CardType,
+    DeckList as DeckListType,
+    Skeleton,
+} from '@/types/cards';
 import { SecondaryColorButton } from '../Button';
 import { getSkeletonFromDeckList } from '@/transformers/getSkeletonFromDeckList/getSkeletonFromDeckList';
 import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/getDeckListFromSkeleton';
+import { WebSocketContext } from '../WebSockets';
+import { RootState } from '@/client/redux/store';
 
 const DeckListContainers = styled.div`
     display: grid;
@@ -42,6 +51,17 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     isConstructed = true,
 }) => {
     const [myDeck, setMyDeck] = useState<DeckListType>([]);
+    const webSocket = useContext(WebSocketContext);
+    const skeleton = useSelector<RootState, Skeleton>(
+        (state) => state.deckList.customDeckList
+    );
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (skeleton) {
+            setMyDeck(getDeckListFromSkeleton(skeleton).decklist);
+        }
+    }, []);
 
     const addCard = (card: Card) => {
         const isCardNotBasicResource = !(
@@ -98,6 +118,11 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         }
     };
 
+    const submitDecklist = () => {
+        webSocket.chooseCustomDeck(getSkeletonFromDeckList(myDeck));
+        dispatch(push('/'));
+    };
+
     return (
         <>
             <TopNavBar>
@@ -118,6 +143,10 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                     &nbsp;&nbsp;
                     <SecondaryColorButton onClick={importFromClipboard}>
                         Import decklist from clipboard
+                    </SecondaryColorButton>
+                    &nbsp;&nbsp;
+                    <SecondaryColorButton onClick={submitDecklist}>
+                        Submit Decklist
                     </SecondaryColorButton>
                     <br />
                     <br />
