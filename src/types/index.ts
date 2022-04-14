@@ -1,11 +1,12 @@
 import { DeckListSelections } from '../constants/lobbyConstants';
 import { Board } from './board';
-import { Effect } from './cards';
+import { Effect, Skeleton } from './cards';
 import { ChatMessage } from './chat';
 import { GameAction } from './gameActions';
 import { GameResult } from './games';
 
 export interface ServerToClientEvents {
+    confirmCustomDeck: (skeleton: Skeleton) => void;
     confirmName: (name: string) => void;
     confirmPremadeDeckList: (deckListSelection?: DeckListSelections) => void;
     gameChatMessage: (message: ChatMessage) => void;
@@ -22,6 +23,7 @@ export interface ResolveEffectParams {
 }
 
 export interface ClientToServerEvents {
+    chooseCustomDeck: (skeleton: Skeleton) => void;
     chooseDeck: (deckListSelection: DeckListSelections) => void;
     chooseName: (name: string) => void;
     getRooms: () => void;

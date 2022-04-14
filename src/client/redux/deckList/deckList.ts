@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
 import { DeckListSelections } from '@/constants/lobbyConstants';
+import { Skeleton } from '@/types/cards';
 
 type DeckListState = {
+    customDeckList?: Skeleton;
     premadeDecklist: DeckListSelections;
 };
 
 const initialState: DeckListState = {
+    customDeckList: null,
     premadeDecklist: DeckListSelections.MONKS,
 };
 
@@ -13,6 +16,9 @@ export const deckListSlice = createSlice({
     name: 'deckList',
     initialState,
     reducers: {
+        confirmCustomDeckList(state, action: PayloadAction<Skeleton>) {
+            state.customDeckList = action.payload;
+        },
         confirmPremadeDecklist(
             state,
             action: PayloadAction<DeckListSelections>
@@ -24,4 +30,5 @@ export const deckListSlice = createSlice({
 
 export const deckListReducer: Reducer<DeckListState> = deckListSlice.reducer;
 
-export const { confirmPremadeDecklist } = deckListSlice.actions;
+export const { confirmCustomDeckList, confirmPremadeDecklist } =
+    deckListSlice.actions;
