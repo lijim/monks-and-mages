@@ -4,3 +4,8 @@ export type GameResult = {
     result: 'TIE' | 'WIN';
     winners: string[];
 };
+
+export enum Format {
+    SINGLETON = 'SINGLETON',
+    STANDARD = 'STANDARD',
+}

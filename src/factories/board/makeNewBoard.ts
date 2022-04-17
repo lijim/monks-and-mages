@@ -8,6 +8,7 @@ import { Board, GameState } from '@/types/board';
 import { makeNewPlayer } from '../player';
 import { Skeleton } from '@/types/cards';
 import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/getDeckListFromSkeleton';
+import { isDeckValidForFormat } from '@/transformers/isDeckValidForFomat';
 
 export type MakeNewBoardParams = {
     nameToCustomDeckSkeleton?: Map<string, Skeleton>;
@@ -26,10 +27,10 @@ export const makeNewBoard = ({
     const players = playerNames.map((playerName) => {
         const skeleton = nameToCustomDeckSkeleton?.get(playerName);
         if (skeleton) {
-            return makeNewPlayer(
-                playerName,
-                getDeckListFromSkeleton(skeleton).decklist
-            );
+            const { decklist } = getDeckListFromSkeleton(skeleton);
+            if (isDeckValidForFormat(decklist)) {
+                return makeNewPlayer(playerName, decklist);
+            }
         }
 
         const selection = playerDeckListSelections?.[i];
