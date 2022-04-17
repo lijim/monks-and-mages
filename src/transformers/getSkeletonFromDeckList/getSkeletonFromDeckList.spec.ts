@@ -28,7 +28,7 @@ describe('get skeleton from decklist', () => {
                 quantity: 4,
             },
             {
-                card: 'Seaside Town',
+                card: 'Seaside Cove',
                 quantity: 4,
             },
         ]);
