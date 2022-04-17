@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { push } from 'redux-first-history';
 import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
 import { SecondaryColorButton } from '../Button';
@@ -27,9 +28,11 @@ const NameDisplayer = styled.div`
 export const TopNavBar: React.FC = ({ children }) => {
     const name = useSelector<RootState, string>((state) => state.user.name);
     const webSocket = useContext(WebSocketContext);
+    const dispatch = useDispatch();
 
     const logOut = () => {
         webSocket.chooseName('');
+        dispatch(push('/'));
     };
     return (
         <NameDisplayer>
