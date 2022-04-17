@@ -11,6 +11,9 @@ export const DeckListSelector: React.FC = () => {
     const currentDeckList = useSelector<RootState, DeckListSelections>(
         (state) => state.deckList.premadeDecklist
     );
+    const hasCustomDecklist = useSelector<RootState, boolean>(
+        (state) => !!state.deckList.customDeckList
+    );
 
     const chooseDeck = (deckListSelection: string) => {
         if (
@@ -33,13 +36,16 @@ export const DeckListSelector: React.FC = () => {
                 onChange={(event) => {
                     chooseDeck(event.target.value);
                 }}
-                value={currentDeckList}
+                value={hasCustomDecklist ? 'custom' : currentDeckList}
             >
                 {Object.values(DeckListSelections).map((deckListSelection) => (
                     <option value={deckListSelection} key={deckListSelection}>
                         {deckListSelection}
                     </option>
                 ))}
+                {hasCustomDecklist && (
+                    <option value="custom">Custom deck</option>
+                )}
             </select>
             <br />
             <br />
