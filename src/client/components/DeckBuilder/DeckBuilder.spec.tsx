@@ -1,7 +1,7 @@
 import React from 'react';
+import { push } from 'redux-first-history';
 import { act, fireEvent, render, screen, within } from '@/test-utils';
 import { DeckBuilder } from './DeckBuilder';
-import { push } from 'redux-first-history';
 
 describe('DeckBuilder', () => {
     it('adds cards from the entire card pool (constructed mode)', () => {
