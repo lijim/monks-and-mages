@@ -48,4 +48,22 @@ describe('DeckListSelector', () => {
         render(<DeckListSelector />, { preloadedState });
         expect(screen.queryByText('View Decklist')).toBeNull();
     });
+
+    it('displays custom decklist as the option', () => {
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Jimmy',
+            },
+            deckList: {
+                premadeDecklist: DeckListSelections.RANDOM,
+                customDeckList: [
+                    { card: 'Lancer', quantity: 4 },
+                    { card: 'Iron', quantity: 44 },
+                ],
+            },
+        };
+        render(<DeckListSelector />, { preloadedState });
+        expect(screen.queryByText('Custom deck')).toBeInTheDocument();
+        expect(screen.queryByLabelText('Choose a Deck')).toHaveValue('custom');
+    });
 });
