@@ -20,6 +20,8 @@ import { getSkeletonFromDeckList } from '@/transformers/getSkeletonFromDeckList/
 import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/getDeckListFromSkeleton';
 import { WebSocketContext } from '../WebSockets';
 import { RootState } from '@/client/redux/store';
+import { isDeckValidForFormat } from '@/transformers/isDeckValidForFomat';
+import { Colors } from '@/constants/colors';
 
 const DeckListContainers = styled.div`
     display: grid;
@@ -39,6 +41,11 @@ const DeckListBackDrop = styled.div`
 
     margin: auto;
     overflow-y: scroll;
+`;
+
+const ValidationMsg = styled.div`
+    color: ${Colors.DEBUFF_RED};
+    padding-top: 12px;
 `;
 
 type DeckBuilderProps = {
@@ -123,6 +130,9 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         dispatch(push('/'));
     };
 
+    const { isValid: isMyDeckValid, reason: reasonForDeckInvalid } =
+        isDeckValidForFormat(myDeck);
+
     return (
         <>
             <TopNavBar>
@@ -145,10 +155,14 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                         Import decklist from clipboard
                     </SecondaryColorButton>
                     &nbsp;&nbsp;
-                    <SecondaryColorButton onClick={submitDecklist}>
+                    <SecondaryColorButton
+                        onClick={submitDecklist}
+                        disabled={!isMyDeckValid}
+                    >
                         Submit Decklist
                     </SecondaryColorButton>
                     <br />
+                    <ValidationMsg>{reasonForDeckInvalid}</ValidationMsg>
                     <br />
                     <DeckList
                         deck={makeDeck(myDeck)}

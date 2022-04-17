@@ -84,11 +84,12 @@ describe('DeckBuilder', () => {
 
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
     });
-    it.todo('displays errors for importing a malformed decklist');
+
     it('submits a deck', async () => {
         Object.assign(navigator, {
             clipboard: {
-                readText: () => `[{"card":"Lancer","quantity":1}]`,
+                readText: () =>
+                    `[{"card":"Iron","quantity":44},{"card":"Lancer","quantity":4}]`,
             },
         });
 
@@ -101,10 +102,29 @@ describe('DeckBuilder', () => {
 
         fireEvent.click(screen.getByText('Submit Decklist'));
         expect(webSocket.chooseCustomDeck).toHaveBeenCalledWith([
-            { card: 'Lancer', quantity: 1 },
+            { card: 'Iron', quantity: 44 },
+            { card: 'Lancer', quantity: 4 },
         ]);
         expect(dispatch).toHaveBeenCalledWith(push('/'));
     });
+
+    it('validates a deck', async () => {
+        Object.assign(navigator, {
+            clipboard: {
+                readText: () => `[{"card":"Lancer","quantity":1}]`,
+            },
+        });
+
+        navigator.clipboard.writeText = jest.fn();
+        render(<DeckBuilder />);
+        const myDeck = screen.getByTestId('MyDeck');
+
+        fireEvent.click(screen.getByText('Import decklist from clipboard'));
+        expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
+
+        expect(screen.getByText('Submit Decklist')).toBeDisabled();
+    });
+
     it('loads a deck if one was already created', () => {
         render(<DeckBuilder />, {
             preloadedState: {
