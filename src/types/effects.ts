@@ -3,7 +3,7 @@ export enum TargetTypes {
     ALL_OPPOSING_UNITS = 'ALL_OPPOSING_UNITS',
     ALL_PLAYERS = 'ALL_PLAYERS',
     ALL_SELF_UNITS = 'ALL_SELF_UNITS',
-    ALL_SELF_UNITS_GRAVEYARD = 'ALL_SELF_UNITS_GRAVEYARD',
+    ALL_SELF_UNITS_CEMETERY = 'ALL_SELF_UNITS_CEMETERY',
     ALL_UNITS = 'ALL_UNITS',
     ANY = 'ANY',
     OPPONENT = 'OPPONENT',
@@ -19,7 +19,7 @@ export const AutoResolvingTargets = [
     TargetTypes.ALL_OPPOSING_UNITS,
     TargetTypes.ALL_PLAYERS,
     TargetTypes.ALL_SELF_UNITS,
-    TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+    TargetTypes.ALL_SELF_UNITS_CEMETERY,
     TargetTypes.ALL_UNITS,
     TargetTypes.SELF_PLAYER,
 ];
@@ -41,9 +41,10 @@ export enum EffectType {
     EXTRACT_CARD = 'Extract Card', // extract X of {cardName} card from deck
     HEAL = 'Heal', // to any target
     LEARN = 'Learn', // add spells / units to hand
-    RAMP = 'Ramp',
-    REVIVE = 'Revive',
-    SUMMON_UNITS = 'Summon Units',
+    RAMP = 'Ramp', // add resources (tapped)
+    RETURN_FROM_CEMETERY = 'Return from cemetry', // Return X cards from cemetery -> board
+    REVIVE = 'Revive', // revive units from the cemetery -> board
+    SUMMON_UNITS = 'Summon Units', //
 }
 
 /**
@@ -64,10 +65,11 @@ export const getDefaultTargetForEffect = (
         [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_CARD]: TargetTypes.SELF_PLAYER,
-        [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+        [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.LEARN]: TargetTypes.SELF_PLAYER,
         [EffectType.RAMP]: TargetTypes.SELF_PLAYER,
-        [EffectType.REVIVE]: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+        [EffectType.REVIVE]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
+        [EffectType.RETURN_FROM_CEMETERY]: TargetTypes.SELF_PLAYER,
         [EffectType.SUMMON_UNITS]: TargetTypes.SELF_PLAYER,
     }[effectType];
 };

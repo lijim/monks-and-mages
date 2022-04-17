@@ -272,13 +272,24 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    it('displays rules for returning from cemetery', () => {
+        const effect: Effect = {
+            type: EffectType.RETURN_FROM_CEMETERY,
+            strength: 3,
+            cardName: 'Ember Spear',
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Return 3 Ember Spear cards from your cemetery`
+        );
+    });
+
     it('displays rules for reviving', () => {
         const effect: Effect = {
             type: EffectType.REVIVE,
-            target: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+            target: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
-            `Revive all units in your graveyard`
+            `Revive all units in your cemetery`
         );
     });
     it('displays rules for ramping water', () => {

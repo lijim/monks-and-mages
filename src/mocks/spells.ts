@@ -151,7 +151,7 @@ const HOLY_REVIVAL = makeCard({
     effects: [
         {
             type: EffectType.REVIVE,
-            target: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+            target: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         },
     ],
 });

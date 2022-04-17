@@ -765,6 +765,37 @@ const QUARRY_WORKER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const ELITE_WEAPONS_MASTER: UnitCard = makeCard({
+    name: 'Elite Weapons Master',
+    imgSrc: 'https://images.pexels.com/photos/7780078/pexels-photo-7780078.jpeg',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Throw Shuriken',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+        {
+            type: EffectType.RETURN_FROM_CEMETERY,
+            cardName: 'Throw Shuriken',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 // Saharan Units
 const FORTUNE_PREDICTOR: UnitCard = makeCard({
     name: 'Fortune Predictor',
@@ -894,6 +925,7 @@ export const UnitCards = {
     BAMBOO_FARMER,
     RELAXED_ROWBOATER,
     QUARRY_WORKER,
+    ELITE_WEAPONS_MASTER,
     // SAHARAN
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,

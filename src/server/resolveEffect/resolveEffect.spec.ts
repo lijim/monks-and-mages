@@ -613,6 +613,26 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Return from cemetery', () => {
+        it('returns from cemetery', () => {
+            board.players[0].cemetery.push(makeCard(UnitCards.KNIGHT_TEMPLAR));
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RETURN_FROM_CEMETERY,
+                        strength: 2,
+                        cardName: 'Knight Templar',
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 1
+            );
+        });
+    });
+
     describe('Revive units', () => {
         it('mass revives all units in your cemetery', () => {
             const knight1 = makeCard(UnitCards.KNIGHT_TEMPLAR);
@@ -624,7 +644,7 @@ describe('resolve effect', () => {
                     effect: {
                         type: EffectType.REVIVE,
                         strength: 2,
-                        target: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+                        target: TargetTypes.ALL_SELF_UNITS_CEMETERY,
                     },
                 },
                 'Timmy'
@@ -643,7 +663,7 @@ describe('resolve effect', () => {
                     effect: {
                         type: EffectType.REVIVE,
                         strength: 2,
-                        target: TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+                        target: TargetTypes.ALL_SELF_UNITS_CEMETERY,
                     },
                 },
                 'Timmy'
