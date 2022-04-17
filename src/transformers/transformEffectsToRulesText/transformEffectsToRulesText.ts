@@ -11,7 +11,7 @@ const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.ALL_OPPONENTS]: 'all opponents',
     [TargetTypes.ALL_OPPOSING_UNITS]: 'all opposing units',
     [TargetTypes.ALL_PLAYERS]: 'all players',
-    [TargetTypes.ALL_SELF_UNITS_GRAVEYARD]: 'all units in your graveyard',
+    [TargetTypes.ALL_SELF_UNITS_CEMETERY]: 'all units in your cemetery',
     [TargetTypes.ALL_SELF_UNITS]: 'all your units',
     [TargetTypes.ALL_UNITS]: 'all units',
     [TargetTypes.ANY]: 'any target',
@@ -27,7 +27,7 @@ const TARGET_TYPES_TO_RULES_TEXT_POSSESIVE = {
     [TargetTypes.ALL_OPPONENTS]: "all opponents'",
     [TargetTypes.ALL_OPPOSING_UNITS]: "all opposing units'",
     [TargetTypes.ALL_PLAYERS]: "all players'",
-    [TargetTypes.ALL_SELF_UNITS_GRAVEYARD]: "all your graveyard units'",
+    [TargetTypes.ALL_SELF_UNITS_CEMETERY]: "all your cemetery units'",
     [TargetTypes.ALL_SELF_UNITS]: "all your units'",
     [TargetTypes.ALL_UNITS]: "all units'",
     [TargetTypes.ANY]: "any target's",
@@ -44,7 +44,7 @@ const PLURAL_TARGET_TYPES = [
     TargetTypes.ALL_OPPOSING_UNITS,
     TargetTypes.ALL_PLAYERS,
     TargetTypes.ALL_SELF_UNITS,
-    TargetTypes.ALL_SELF_UNITS_GRAVEYARD,
+    TargetTypes.ALL_SELF_UNITS_CEMETERY,
 ];
 const isTargetTypePlural = (targetType: TargetTypes): boolean =>
     PLURAL_TARGET_TYPES.indexOf(targetType) > -1;
@@ -140,6 +140,9 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         }
         case EffectType.RAMP: {
             return `Increase ${resourceType.toLowerCase()} resources by ${strength}`;
+        }
+        case EffectType.RETURN_FROM_CEMETERY: {
+            return `Return ${strength} ${cardName} card${pluralizationEffectStrength} from your cemetery`;
         }
         case EffectType.REVIVE: {
             return `Revive ${targetName}`;

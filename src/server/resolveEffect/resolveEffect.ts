@@ -111,7 +111,7 @@ export const resolveEffect = (
             targetText = 'all units';
             break;
         }
-        case TargetTypes.ALL_SELF_UNITS_GRAVEYARD: {
+        case TargetTypes.ALL_SELF_UNITS_CEMETERY: {
             targetText = 'all units in cemetery';
             activePlayer.cemetery.forEach((card) => {
                 if (card.cardType === CardType.UNIT)
@@ -318,6 +318,23 @@ export const resolveEffect = (
                     resourceCard.isUsed = true;
                     player.resources.push(resourceCard);
                 }
+            });
+            return clonedBoard;
+        }
+        case EffectType.RETURN_FROM_CEMETERY: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.cemetery.filter(
+                    (card) => card.name === cardName
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.cemetery = player.cemetery.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
             });
             return clonedBoard;
         }
