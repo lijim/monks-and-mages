@@ -1,7 +1,11 @@
 import { Card, CardType } from '@/types/cards';
 
 const slugifyName = (name: string): string => {
-    return name.replace(/ /g, '-').replace(/'/g, '').toLowerCase();
+    return name
+        .replace(/ /g, '-')
+        .replace(/'/g, '')
+        .replace(/:/g, '')
+        .toLowerCase();
 };
 
 export const getImgSrcForCard = (card: Card): string => {

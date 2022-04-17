@@ -18,6 +18,23 @@ export const makeCard = (unitBase: UnitBase): UnitCard => {
 };
 
 // Tokens
+const FROG: UnitCard = makeCard({
+    name: 'Frog',
+    imgSrc: 'https://images.pexels.com/photos/67290/frog-golden-eyes-macro-royalty-free-67290.jpeg',
+    cost: {
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 0,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const DEMON: UnitCard = makeCard({
     name: 'Demon',
     imgSrc: 'https://images.unsplash.com/photo-1519235624215-85175d5eb36e',
@@ -125,6 +142,7 @@ const GOLEM_DRAGON: UnitCard = makeCard({
 export const Tokens = {
     DEMON,
     FALCON,
+    FROG,
     GOLEM_DRAGON,
     MANTA_RAY,
     MANATEE,
@@ -973,6 +991,86 @@ const YELLOW_DRAGON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+// Witches
+const COVEN_NOVICE: UnitCard = makeCard({
+    name: 'Coven Novice',
+    imgSrc: 'https://images.pexels.com/photos/1548743/pexels-photo-1548743.jpeg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            strength: 1,
+            cardName: 'SPECTRAL_GENESIS',
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const POTION_BREWER: UnitCard = makeCard({
+    name: 'Potion Brewer',
+    imgSrc: 'https://images.pexels.com/photos/4355630/pexels-photo-4355630.jpeg',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            strength: 1,
+            cardName: 'POLYMORPH_FROG',
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const BOG_WARLOCK: UnitCard = makeCard({
+    name: 'Bog Warlock',
+    imgSrc: 'https://images.pexels.com/photos/11009468/pexels-photo-11009468.jpeg',
+    cost: {
+        [Resource.GENERIC]: 2,
+        [Resource.CRYSTAL]: 2,
+        [Resource.BAMBOO]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            strength: 1,
+            cardName: 'POLYMORPH_FROG',
+        },
+        {
+            type: EffectType.LEARN,
+            strength: 1,
+            cardName: 'DISTORT_REALITY',
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 export const UnitCards = {
     MAGICIANS_APPRENTICE,
     // FIRE
@@ -1020,4 +1118,8 @@ export const UnitCards = {
     BABY_DRAGON,
     BRONZE_DRAGON,
     YELLOW_DRAGON,
+    // Witches
+    COVEN_NOVICE,
+    POTION_BREWER,
+    BOG_WARLOCK,
 };
