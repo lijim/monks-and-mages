@@ -70,7 +70,7 @@ export const SAMPLE_DECKLIST_3: DeckList = [
     // Resources
     { card: makeResourceCard(Resource.WATER), quantity: 8 },
     { card: makeResourceCard(Resource.CRYSTAL), quantity: 7 },
-    { card: AdvancedResourceCards.SEASIDE_TOWN, quantity: 4 },
+    { card: AdvancedResourceCards.SEASIDE_COVE, quantity: 4 },
     // Units
     { card: UnitCards.RELAXED_ROWBOATER, quantity: 4 },
     { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 4 },
@@ -155,7 +155,7 @@ export const SAMPLE_DECKLIST_7: DeckList = [
     { card: makeResourceCard(Resource.WATER), quantity: 2 },
     { card: makeResourceCard(Resource.FIRE), quantity: 4 },
     { card: AdvancedResourceCards.CLOUD_HAVEN, quantity: 4 },
-    { card: AdvancedResourceCards.SEASIDE_TOWN, quantity: 3 },
+    { card: AdvancedResourceCards.SEASIDE_COVE, quantity: 3 },
     { card: AdvancedResourceCards.STRATOVOLCANO, quantity: 3 },
     // Magicians
     { card: UnitCards.MAGICIANS_APPRENTICE, quantity: 3 },

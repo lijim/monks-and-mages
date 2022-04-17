@@ -4,6 +4,7 @@ import fs from 'fs';
 
 import { Tokens, UnitCards } from '@/cardDb/units';
 import { SpellCards } from '@/cardDb/spells';
+import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 
 async function downloadImage(url: string, filepath: string) {
     const response = await Axios({
@@ -31,12 +32,14 @@ const slugifyName = (name: string) => {
     ...Object.entries(UnitCards),
     ...Object.entries(Tokens),
     ...Object.entries(SpellCards),
+    ...Object.entries(AdvancedResourceCards),
 ].forEach(([name, card]) => {
     if (!card.imgSrc.startsWith('http')) return;
     const newName = slugifyName(name);
     if (
         fs.existsSync(`assets/images/units/${newName}.avif`) ||
-        fs.existsSync(`assets/images/spells/${newName}.avif`)
+        fs.existsSync(`assets/images/spells/${newName}.avif`) ||
+        fs.existsSync(`assets/images/resources/${newName}.avif`)
     ) {
         // eslint-disable-next-line
         console.log(`skipping ${newName} - already have an asset`);

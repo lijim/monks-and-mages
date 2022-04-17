@@ -929,7 +929,7 @@ export const UnitCards = {
     // SAHARAN
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,
-    // SOCEROR
+    // SORCEROR
     BRIGHT_SCHOLAR,
     // CORAL
     DEEP_SEA_EXPLORER,

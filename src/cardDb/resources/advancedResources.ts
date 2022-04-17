@@ -25,11 +25,25 @@ const STRATOVOLCANO = makeAdvancedResourceCard({
     ],
 });
 
-const SEASIDE_TOWN = makeAdvancedResourceCard({
-    name: 'Seaside Town',
+const SEASIDE_COVE = makeAdvancedResourceCard({
+    name: 'Seaside Cove',
     resourceType: Resource.CRYSTAL,
     secondaryResourceType: Resource.WATER,
-    imgSrc: 'images/resources/seaside-town.avif', // https://www.pexels.com/photo/a-city-built-between-the-mountain-and-the-sea-2899726/
+    imgSrc: 'images/resources/seaside-cove.avif', // https://www.pexels.com/photo/a-city-built-between-the-mountain-and-the-sea-2899726/
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+});
+
+const BLACK_MARSH = makeAdvancedResourceCard({
+    name: 'Black Marsh',
+    resourceType: Resource.CRYSTAL,
+    secondaryResourceType: Resource.BAMBOO,
+    imgSrc: 'https://images.pexels.com/photos/5618266/pexels-photo-5618266.jpeg',
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
@@ -57,7 +71,21 @@ const CLOUD_HAVEN = makeAdvancedResourceCard({
     name: 'Cloud Haven',
     resourceType: Resource.FIRE,
     secondaryResourceType: Resource.WATER,
-    imgSrc: 'images/resources/cloud-haven.avif', // https://www.pexels.com/photo/light-sun-cloud-japan-45848/
+    imgSrc: 'https://images.pexels.com/photos/5823989/pexels-photo-5823989.jpeg',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+});
+
+const DRAGONS_NEST = makeAdvancedResourceCard({
+    name: "Dragon's Nest",
+    resourceType: Resource.FIRE,
+    secondaryResourceType: Resource.BAMBOO,
+    imgSrc: 'https://images.pexels.com/photos/356653/pexels-photo-356653.jpeg',
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
@@ -95,6 +123,20 @@ const LUSH_REEF = makeAdvancedResourceCard({
     ],
 });
 
+const HARBOR_TOWN = makeAdvancedResourceCard({
+    name: 'Harbor Town',
+    resourceType: Resource.WATER,
+    secondaryResourceType: Resource.IRON,
+    imgSrc: 'https://images.pexels.com/photos/4254555/pexels-photo-4254555.jpeg',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+});
+
 const TANGLED_RUINS = makeAdvancedResourceCard({
     name: 'Tangled Ruins',
     resourceType: Resource.BAMBOO,
@@ -111,10 +153,13 @@ const TANGLED_RUINS = makeAdvancedResourceCard({
 
 export const AdvancedResourceCards = {
     STRATOVOLCANO,
-    SEASIDE_TOWN,
+    SEASIDE_COVE,
+    BLACK_MARSH,
     SAHARAN_DESERT,
     CLOUD_HAVEN,
+    DRAGONS_NEST,
     SMELTING_FORGE,
     LUSH_REEF,
+    HARBOR_TOWN,
     TANGLED_RUINS,
 };
