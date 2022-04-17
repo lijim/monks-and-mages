@@ -143,7 +143,7 @@ export const configureIo = (server: HttpServer) => {
         [...roomsAndIds.entries()].forEach(([roomName, socketIds]) => {
             if (!roomName.startsWith('public-')) return; // process public rooms
 
-            const room = {
+            const room: DetailedRoom = {
                 roomName,
                 players: getNamesFromIds([...socketIds]),
                 hasStartedGame: startedBoards.has(roomName),
@@ -168,10 +168,20 @@ export const configureIo = (server: HttpServer) => {
             if (!roomName.startsWith('publicSpectate-')) return;
 
             const sanitizedRoomName = roomName.slice('publicSpectate-'.length);
-            const room = detailedRooms.find(
+            let room = detailedRooms.find(
                 (detailedRoom) =>
                     detailedRoom.roomName === `public-${sanitizedRoomName}`
             );
+            if (!room) {
+                const originalRoomName = `public-${sanitizedRoomName}`;
+                room = {
+                    roomName: originalRoomName,
+                    players: [],
+                    hasStartedGame: false,
+                    spectators: [],
+                };
+                detailedRooms.push(room);
+            }
             room.spectators = getNamesFromIds([...socketIds]);
         });
         return detailedRooms;

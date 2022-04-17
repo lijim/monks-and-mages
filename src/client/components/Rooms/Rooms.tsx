@@ -78,6 +78,11 @@ const RoomsTab = styled.h1`
     box-shadow: 0px 2px 10px rgb(0 0 0 / 8%);
 `;
 
+const normalizeRoomName = (roomName: string): string => {
+    if (roomName.startsWith('public-')) return roomName.slice('public-'.length);
+    return roomName;
+};
+
 /**
  * Rooms is the primary lobby component responsible for rendering what users
  * see when they've selected a name
@@ -102,12 +107,12 @@ export const Rooms: React.FC = () => {
     const webSocket = useContext(WebSocketContext);
 
     const joinRoom = (roomName: string) => {
-        const normalizedRoomName = roomName.slice('public-'.length);
+        const normalizedRoomName = normalizeRoomName(roomName);
         webSocket.joinRoom(normalizedRoomName);
     };
 
     const spectateRoom = (roomName: string) => {
-        const normalizedRoomName = roomName.slice('public-'.length);
+        const normalizedRoomName = normalizeRoomName(roomName);
         webSocket.spectateRoom(normalizedRoomName);
     };
 
