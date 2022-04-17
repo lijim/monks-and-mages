@@ -16,7 +16,7 @@ import { transformEffectToRulesText } from '@/transformers/transformEffectsToRul
 import { HandleClickOnCardParams } from '../GameManager/handleClickOnCard';
 import { getImgSrcForCard } from '@/transformers/getImgSrcForCard';
 
-interface AdvancedResourceCardGridItemProps {
+interface AdvancedResourceGridItemProps {
     card: ResourceCard;
     isHighlighted?: boolean;
     isOnBoard?: boolean;
@@ -45,8 +45,8 @@ const DecisionFrame = styled.div`
     }
 `;
 
-export const AdvancedResourceCardGridItem: React.FC<
-    AdvancedResourceCardGridItemProps
+export const AdvancedResourceGridItem: React.FC<
+    AdvancedResourceGridItemProps
 > = ({ card, isHighlighted, isOnBoard, onClick, zoomLevel }) => {
     const { resourceType, secondaryResourceType, enterEffects } = card;
     const { icon, primaryColor } = RESOURCE_GLOSSARY[resourceType];

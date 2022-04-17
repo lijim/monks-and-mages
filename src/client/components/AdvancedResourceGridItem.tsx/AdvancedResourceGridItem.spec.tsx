@@ -6,7 +6,7 @@ import { Resource } from '@/types/resources';
 import { EffectType } from '@/types/effects';
 import { render } from '@/test-utils';
 
-import { AdvancedResourceCardGridItem } from './AdvancedResourceCardGridItem';
+import { AdvancedResourceGridItem } from './AdvancedResourceGridItem';
 
 describe('Advanced Resource Card Grid Item', () => {
     it('renders rules text about tapping for 1 resources', () => {
@@ -22,7 +22,7 @@ describe('Advanced Resource Card Grid Item', () => {
             ],
         });
 
-        render(<AdvancedResourceCardGridItem card={advancedResourceCard} />);
+        render(<AdvancedResourceGridItem card={advancedResourceCard} />);
         expect(screen.getByTestId('RulesTextArea')).toHaveTextContent(
             'Tap to add 🛠️ to your casting pool'
         );
@@ -42,7 +42,7 @@ describe('Advanced Resource Card Grid Item', () => {
             ],
         });
 
-        render(<AdvancedResourceCardGridItem card={advancedResourceCard} />);
+        render(<AdvancedResourceGridItem card={advancedResourceCard} />);
         expect(screen.getByTestId('RulesTextArea')).toHaveTextContent(
             'Tap to add 🛠️ or 🌊 to your casting pool'
         );
@@ -63,7 +63,7 @@ describe('Advanced Resource Card Grid Item', () => {
         const mockOnClick = jest.fn();
 
         render(
-            <AdvancedResourceCardGridItem
+            <AdvancedResourceGridItem
                 card={advancedResourceCard}
                 onClick={mockOnClick}
                 isOnBoard
@@ -88,7 +88,7 @@ describe('Advanced Resource Card Grid Item', () => {
         });
         const mockOnClick = jest.fn();
         render(
-            <AdvancedResourceCardGridItem
+            <AdvancedResourceGridItem
                 card={advancedResourceCard}
                 onClick={mockOnClick}
                 isOnBoard
@@ -118,7 +118,7 @@ describe('Advanced Resource Card Grid Item', () => {
         });
         const mockOnClick = jest.fn();
         render(
-            <AdvancedResourceCardGridItem
+            <AdvancedResourceGridItem
                 isOnBoard
                 card={advancedResourceCard}
                 onClick={mockOnClick}
