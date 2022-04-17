@@ -593,6 +593,24 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Polymorph', () => {
+        it('turns a unit into a token', () => {
+            board.players[1].units.push(makeCard(UnitCards.KNIGHT_TEMPLAR));
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.POLYMORPH,
+                        summonType: Tokens.MANTA_RAY,
+                        target: TargetTypes.ALL_OPPOSING_UNITS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].units[0].name).toBe('Manta Ray');
+        });
+    });
+
     describe('Ramp Player', () => {
         it('increases resources deployed', () => {
             const newBoard = resolveEffect(

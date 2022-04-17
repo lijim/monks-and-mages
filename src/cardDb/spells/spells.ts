@@ -370,6 +370,20 @@ const SPARK_JOY = makeCard({
     ],
 });
 
+// Witches
+const POLYMORPH_FROG = makeCard({
+    name: 'Polymorph: Frog',
+    imgSrc: 'https://images.pexels.com/photos/73798/frog-marbled-reed-frog-amphibian-animal-73798.jpeg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.POLYMORPH,
+            target: TargetTypes.UNIT,
+            summonType: Tokens.FROG,
+        },
+    ],
+});
+
 export const SpellCards = {
     // Fire
     EMBER_SPEAR,
@@ -405,4 +419,7 @@ export const SpellCards = {
     // Cannon
     IGNITE_SPARKS,
     SPARK_JOY,
+
+    // Witch
+    POLYMORPH_FROG,
 };

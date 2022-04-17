@@ -41,6 +41,7 @@ export enum EffectType {
     EXTRACT_CARD = 'Extract Card', // extract X of {cardName} card from deck
     HEAL = 'Heal', // to any target
     LEARN = 'Learn', // add spells / units to hand
+    POLYMORPH = 'Polymorph', // polymorph a unit into a token type
     RAMP = 'Ramp', // add resources (tapped)
     RETURN_FROM_CEMETERY = 'Return from cemetry', // Return X cards from cemetery -> board
     REVIVE = 'Revive', // revive units from the cemetery -> board
@@ -67,6 +68,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.EXTRACT_CARD]: TargetTypes.SELF_PLAYER,
         [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.LEARN]: TargetTypes.SELF_PLAYER,
+        [EffectType.POLYMORPH]: TargetTypes.UNIT,
         [EffectType.RAMP]: TargetTypes.SELF_PLAYER,
         [EffectType.REVIVE]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.RETURN_FROM_CEMETERY]: TargetTypes.SELF_PLAYER,

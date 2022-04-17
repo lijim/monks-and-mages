@@ -138,6 +138,9 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 strength > 1 ? 'cards' : 'card'
             } to your hand`;
         }
+        case EffectType.POLYMORPH: {
+            return `Turn ${targetName} into a [${summonType.name}]`;
+        }
         case EffectType.RAMP: {
             return `Increase ${resourceType.toLowerCase()} resources by ${strength}`;
         }

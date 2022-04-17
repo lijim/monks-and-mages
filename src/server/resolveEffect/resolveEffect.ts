@@ -309,6 +309,19 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.POLYMORPH: {
+            const { summonType } = effect;
+            if (!summonType) return clonedBoard;
+
+            unitTargets.forEach(({ unitCard, player }) => {
+                const matchingIndex = player.units.findIndex(
+                    (unit) => unit === unitCard
+                );
+                if (matchingIndex === -1) return;
+                player.units[matchingIndex] = makeCard(summonType);
+            });
+            return clonedBoard;
+        }
         case EffectType.RAMP: {
             const { resourceType } = effect;
             if (!resourceType) return clonedBoard;

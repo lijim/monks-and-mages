@@ -217,6 +217,17 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    it('displays rules for polymorphing', () => {
+        const effect: Effect = {
+            type: EffectType.POLYMORPH,
+            target: TargetTypes.ALL_UNITS,
+            summonType: Tokens.FROG,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Turn all units into a [Frog]`
+        );
+    });
+
     it('displays rules for ramping bamboo', () => {
         const effect: Effect = {
             type: EffectType.RAMP,
