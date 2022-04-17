@@ -16,7 +16,7 @@ describe('get skeleton from decklist', () => {
             },
             {
                 card: makeAdvancedResourceCard(
-                    AdvancedResourceCards.SEASIDE_TOWN
+                    AdvancedResourceCards.SEASIDE_COVE
                 ),
                 quantity: 4,
             },
