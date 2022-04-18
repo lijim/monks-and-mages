@@ -43,6 +43,13 @@ describe('Unit Grid Item', () => {
         ).toBeInTheDocument();
     });
 
+    it('displays "2 attacks per turn', () => {
+        const card = makeCard(UnitCards.SQUIRE);
+        card.numAttacks = 2;
+        render(<UnitGridItem card={card} />);
+        expect(screen.getByText('2 attacks per turn')).toBeInTheDocument();
+    });
+
     it('displays sleepiness', () => {
         render(<UnitGridItem card={UnitCards.LANCER} isOnBoard />);
         expect(screen.getByText('💤')).toBeInTheDocument();
