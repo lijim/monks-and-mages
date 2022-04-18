@@ -67,6 +67,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
             data-testid="UnitGridItem"
             primaryColor={getColorForCard(card)}
             onClick={onClick}
+            tabIndex={0}
             zoomLevel={zoomLevel}
             className="CardFrame"
         >

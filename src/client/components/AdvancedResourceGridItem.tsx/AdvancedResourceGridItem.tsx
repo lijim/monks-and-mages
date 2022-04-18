@@ -92,12 +92,14 @@ export const AdvancedResourceGridItem: React.FC<
                 </CardHeader>
                 <DecisionFrame
                     onClick={handleClickPrimaryResource}
+                    tabIndex={0}
                     data-testid={`ResourceCard-${resourceType}`}
                 >
                     <CastingCostFrame hasNoMargin>{icon}</CastingCostFrame>
                 </DecisionFrame>
                 <DecisionFrame
                     onClick={handleClickSecondaryResource}
+                    tabIndex={0}
                     data-testid={`ResourceCard-${secondaryResourceType}`}
                 >
                     <CastingCostFrame hasNoMargin>
@@ -114,6 +116,7 @@ export const AdvancedResourceGridItem: React.FC<
             secondaryColor={secondaryResource?.primaryColor}
             data-testid="ResourceCard-GridItem"
             onClick={handleClick}
+            tabIndex={0}
             isHighlighted={isHighlighted}
             isRotated={card.isUsed}
             zoomLevel={zoomLevel}

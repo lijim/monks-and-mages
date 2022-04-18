@@ -22,10 +22,21 @@
             button, input {
                 font-family: 'Lato',-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             }
-          </style>
+        </style>
+        <script>
+            const handleEnter = (event) => {
+                if (
+                    event.key === 'Enter' &&
+                    document.activeElement instanceof HTMLElement &&
+                    document.activeElement.tagName.toLowerCase() === 'div'
+                ) {
+                    document.activeElement.click();
+                }
+            };
+        </script>
       
     </head>
-    <body>
+    <body onkeyup="handleEnter(event)">
         <div id="root"></div>
         <!--wavy parchment paper effect: https://codepen.io/AgnusDei/pen/NWPbOxL -->
         <svg style="display: none;">

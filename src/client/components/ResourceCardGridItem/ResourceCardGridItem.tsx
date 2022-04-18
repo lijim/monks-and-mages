@@ -24,6 +24,7 @@ export const ResourceCardGridItem: React.FC<ResourceCardGridItemProps> = ({
             primaryColor={primaryColor}
             data-testid="ResourceCard-GridItem"
             onClick={onClick}
+            tabIndex={0}
             isHighlighted={isHighlighted}
             isRotated={card.isUsed}
             zoomLevel={zoomLevel}

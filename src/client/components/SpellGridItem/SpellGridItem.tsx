@@ -36,6 +36,7 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
             data-testid="SpellGridItem"
             primaryColor={getColorForCard(card)}
             onClick={onClick}
+            tabIndex={0}
             zoomLevel={zoomLevel}
             className="CardFrame"
         >

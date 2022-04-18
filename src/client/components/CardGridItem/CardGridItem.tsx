@@ -94,7 +94,9 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
         setTooltipRef,
         setTriggerRef,
         visible,
-    } = usePopperTooltip();
+    } = usePopperTooltip({
+        trigger: ['focus', 'hover'],
+    });
 
     const cardModifiedForTooltip =
         card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;

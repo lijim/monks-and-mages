@@ -83,6 +83,7 @@ export const CompactDeckList: React.FC<CompactDeckListProps> = ({
                             onClick={() => {
                                 onClickCard(card);
                             }}
+                            tabIndex={0}
                         >
                             {shouldShowQuantity && (
                                 <QuantitySelector
