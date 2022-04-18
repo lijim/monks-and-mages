@@ -35,6 +35,23 @@ const FROG: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const PIRATE_PARROT: UnitCard = makeCard({
+    name: 'Pirate Parrot',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/12/06/20/03/bird-4678162_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 2,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const DEMON: UnitCard = makeCard({
     name: 'Demon',
     imgSrc: 'https://images.unsplash.com/photo-1519235624215-85175d5eb36e',
@@ -146,6 +163,7 @@ export const Tokens = {
     GOLEM_DRAGON,
     MANTA_RAY,
     MANATEE,
+    PIRATE_PARROT,
     SHARK,
 };
 
@@ -475,6 +493,29 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
         },
     ],
     totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+});
+
+const WARRIOR_OF_THE_LAKE: UnitCard = makeCard({
+    name: 'Warrior of the Lake',
+    imgSrc: 'https://images.pexels.com/photos/6848161/pexels-photo-6848161.jpeg',
+    cost: {
+        [Resource.IRON]: 2,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_TEAM_ATTACK,
+            strength: 1,
+        },
+    ],
+    totalHp: 4,
     attack: 2,
     numAttacks: 1,
     isRanged: false,
@@ -1071,6 +1112,50 @@ const BOG_WARLOCK: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+// Pirates
+const ELDER_PIRATE: UnitCard = makeCard({
+    name: 'Elder Pirate',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/03/22/16/09/sailboat-1273168_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.PIRATE_PARROT,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+});
+
+const DARING_CORSAIR: UnitCard = makeCard({
+    name: 'Daring Corsair',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/06/03/20/38/pirate-4249873_1280.jpg',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 3,
+    attack: 2,
+    numAttacks: 2,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+});
+
 export const UnitCards = {
     MAGICIANS_APPRENTICE,
     // FIRE
@@ -1088,6 +1173,7 @@ export const UnitCards = {
     LANCER,
     SQUIRE,
     MARTIAL_TRAINER,
+    WARRIOR_OF_THE_LAKE,
     KNIGHT_TEMPLAR,
     TEMPLE_GUARDIAN,
     // ASSASSINS
@@ -1122,4 +1208,7 @@ export const UnitCards = {
     COVEN_NOVICE,
     POTION_BREWER,
     BOG_WARLOCK,
+    // Pirates
+    ELDER_PIRATE,
+    DARING_CORSAIR,
 };

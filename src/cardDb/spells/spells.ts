@@ -384,6 +384,25 @@ const POLYMORPH_FROG = makeCard({
     ],
 });
 
+// Pirates
+const WRECK_SHIPS = makeCard({
+    name: 'Wreck ships',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/05/01/12/24/ship-2275399_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.IRON]: 1, [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+            strength: 3,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ALL_SELF_UNITS,
+            strength: 1,
+        },
+    ],
+});
+
 export const SpellCards = {
     // Fire
     EMBER_SPEAR,
@@ -422,4 +441,7 @@ export const SpellCards = {
 
     // Witch
     POLYMORPH_FROG,
+
+    // Pirates
+    WRECK_SHIPS,
 };

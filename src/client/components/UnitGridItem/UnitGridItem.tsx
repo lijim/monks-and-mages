@@ -49,6 +49,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         isRanged,
         isSoldier,
         name,
+        numAttacks,
         numAttacksLeft,
         originalCost,
         passiveEffects,
@@ -97,6 +98,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                         {transformEffectToRulesText(effect)}
                     </div>
                 ))}
+                {numAttacks > 1 && <div>{numAttacks} attacks per turn</div>}
             </RulesTextArea>
             <AttackHPFooter>
                 <AttackCell data-testid="attack" buffAmount={attackBuff}>
