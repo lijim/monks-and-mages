@@ -109,7 +109,10 @@ export const CompactDeckList: React.FC<CompactDeckListProps> = ({
                             </div>
                             {card.cardType !== CardType.RESOURCE && (
                                 <CostCell>
-                                    <CastingCost cost={card.cost} />
+                                    <CastingCost
+                                        cost={card.cost}
+                                        originalCost={card.cost}
+                                    />
                                 </CostCell>
                             )}
                         </MiniCardFrame>

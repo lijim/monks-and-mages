@@ -299,6 +299,24 @@ const THROW_SHURIKEN = makeCard({
     ],
 });
 
+const BANDIT_AMBUSH = makeCard({
+    name: 'Bandit Ambush',
+    imgSrc: 'https://images.unsplash.com/photo-1627732922021-e73df99d192e',
+    cost: { [Resource.IRON]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.UNIT,
+            strength: 2,
+        },
+        {
+            type: EffectType.BUFF_HAND_ATTACK,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+    ],
+});
+
 // Bamboo
 const FEED_TEAM = makeCard({
     name: 'Feed Team',
@@ -430,6 +448,7 @@ export const SpellCards = {
 
     // Iron
     THROW_SHURIKEN,
+    BANDIT_AMBUSH,
 
     // Bamboo
     FEED_TEAM,
