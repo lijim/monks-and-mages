@@ -156,6 +156,24 @@ const GOLEM_DRAGON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const OCTOPUS: UnitCard = makeCard({
+    name: 'Octopus',
+    imgSrc: 'https://images.unsplash.com/photo-1616616839508-635cbd138f73',
+    cost: {
+        [Resource.GENERIC]: 6,
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 8,
+    attack: 8,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 export const Tokens = {
     DEMON,
     FALCON,
@@ -163,6 +181,7 @@ export const Tokens = {
     GOLEM_DRAGON,
     MANTA_RAY,
     MANATEE,
+    OCTOPUS,
     PIRATE_PARROT,
     SHARK,
 };
@@ -456,6 +475,41 @@ const LANCER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const INFANTRY_OFFICER: UnitCard = makeCard({
+    name: 'Infantry Officer',
+    imgSrc: 'https://images.unsplash.com/photo-1616497886955-807c100c02ab', // https://images.unsplash.com/photo-1569183602073-580599d8df15?
+    cost: {
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 3,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+});
+
+const SWORDS_MASTER: UnitCard = makeCard({
+    name: 'Swords Master',
+    imgSrc: 'https://images.unsplash.com/photo-1574258170609-456184efd962',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [PassiveEffect.QUICK],
+});
+
 const SQUIRE: UnitCard = makeCard({
     name: 'Squire',
     imgSrc: 'https://images.unsplash.com/photo-1595280102482-65d3cf5c1253',
@@ -499,6 +553,30 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+});
+
+const DRAGON_MIST_WARRIOR: UnitCard = makeCard({
+    name: 'Dragon Mist Warrior',
+    imgSrc: 'https://images.unsplash.com/photo-1615038403612-c0db30ce8f91',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.FIRE]: 1,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+        },
+    ],
+    totalHp: 4,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [PassiveEffect.QUICK],
 });
 
 const WARRIOR_OF_THE_LAKE: UnitCard = makeCard({
@@ -949,6 +1027,31 @@ const DEEP_SEA_EXPLORER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const ICTHYOMANCER: UnitCard = makeCard({
+    name: 'Icthyomancer',
+    imgSrc: 'https://images.unsplash.com/photo-1540461788492-74719fe22ab9',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 6,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            summonType: Tokens.OCTOPUS,
+            strength: 1,
+        },
+    ],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 // Dragons
 const BABY_DRAGON: UnitCard = makeCard({
     name: 'Baby Dragon',
@@ -1082,6 +1185,31 @@ const POTION_BREWER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const FOREST_SPIRIT: UnitCard = makeCard({
+    name: 'Forest Spirit',
+    imgSrc: 'https://images.unsplash.com/photo-1572979129545-64c0741c3f84',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.POLYMORPH,
+            target: TargetTypes.UNIT,
+            summonType: Tokens.SHARK,
+        },
+    ],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const BOG_WARLOCK: UnitCard = makeCard({
     name: 'Bog Warlock',
     imgSrc: 'https://images.pexels.com/photos/11009468/pexels-photo-11009468.jpeg',
@@ -1171,8 +1299,11 @@ export const UnitCards = {
     WIND_MAGE,
     // SOLDIER
     LANCER,
+    INFANTRY_OFFICER,
+    SWORDS_MASTER,
     SQUIRE,
     MARTIAL_TRAINER,
+    DRAGON_MIST_WARRIOR,
     WARRIOR_OF_THE_LAKE,
     KNIGHT_TEMPLAR,
     TEMPLE_GUARDIAN,
@@ -1200,6 +1331,7 @@ export const UnitCards = {
     BRIGHT_SCHOLAR,
     // CORAL
     DEEP_SEA_EXPLORER,
+    ICTHYOMANCER,
     // DRAGONS
     BABY_DRAGON,
     BRONZE_DRAGON,
@@ -1207,6 +1339,7 @@ export const UnitCards = {
     // Witches
     COVEN_NOVICE,
     POTION_BREWER,
+    FOREST_SPIRIT,
     BOG_WARLOCK,
     // Pirates
     ELDER_PIRATE,

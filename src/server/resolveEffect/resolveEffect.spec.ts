@@ -173,6 +173,33 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Buff hand attack', () => {
+        it('buffs attack of non-magic units on your hand', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const cannon = makeCard(UnitCards.CANNON);
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[0].hand = [squire, cannon, apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: { type: EffectType.BUFF_HAND_ATTACK, strength: 2 },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand[0]).toMatchObject({
+                attackBuff: 2,
+            });
+            expect(newBoard.players[0].hand[1]).toMatchObject({
+                attackBuff: 2,
+            });
+            expect(newBoard.players[0].hand[2]).toMatchObject({
+                attackBuff: 0,
+            });
+        });
+    });
+
     describe('Buff units', () => {
         it('buffs attack of non-magic units on your board', () => {
             const squire = makeCard(UnitCards.SQUIRE);

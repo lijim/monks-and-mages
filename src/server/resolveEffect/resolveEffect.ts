@@ -160,6 +160,21 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.BUFF_HAND_ATTACK: {
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (card.cardType !== CardType.UNIT) return;
+                    const unit = card;
+                    if (!unit.isMagical) {
+                        unit.attackBuff += effectStrength;
+                    }
+                    if (unit.attackBuff < -unit.attack) {
+                        unit.attackBuff = -unit.attack;
+                    }
+                });
+            });
+            return clonedBoard;
+        }
         case EffectType.BUFF_TEAM_ATTACK: {
             playerTargets.forEach((player) => {
                 player.units.forEach((unit) => {
