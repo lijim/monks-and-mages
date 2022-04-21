@@ -257,6 +257,29 @@ const FIRE_MAGE: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const FLAME_PRESERVER: UnitCard = makeCard({
+    name: 'Flame Preserver',
+    imgSrc: 'https://images.pexels.com/photos/3052651/pexels-photo-3052651.jpeg',
+    cost: {
+        [Resource.FIRE]: 2,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_TEAM_MAGIC,
+            strength: 2,
+        },
+    ],
+    totalHp: 3,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const BRIGHT_SCHOLAR: UnitCard = makeCard({
     name: 'Bright Scholar',
     imgSrc: 'https://images.pexels.com/photos/8390504/pexels-photo-8390504.jpeg',
@@ -299,7 +322,7 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
     cost: {
         [Resource.CRYSTAL]: 1,
         [Resource.FIRE]: 3,
-        [Resource.GENERIC]: 1,
+        [Resource.GENERIC]: 2,
     },
     description: '',
     enterEffects: [
@@ -607,7 +630,7 @@ const KNIGHT_TEMPLAR: UnitCard = makeCard({
     imgSrc: '/images/units/knight-templar.avif', // https://images.unsplash.com/photo-1562128755-08baa2257ae2
     cost: {
         [Resource.IRON]: 2,
-        [Resource.GENERIC]: 3,
+        [Resource.GENERIC]: 2,
     },
     description: '',
     enterEffects: [],
@@ -821,9 +844,15 @@ const CANNON: UnitCard = makeCard({
         [Resource.GENERIC]: 2,
     },
     description: '',
-    enterEffects: [],
-    totalHp: 4,
-    attack: 4,
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            target: TargetTypes.ANY,
+        },
+    ],
+    totalHp: 5,
+    attack: 3,
     numAttacks: 1,
     isRanged: true,
     isMagical: false,
@@ -925,6 +954,30 @@ const ELITE_WEAPONS_MASTER: UnitCard = makeCard({
         },
     ],
     totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const IRONSMITH: UnitCard = makeCard({
+    name: 'Ironsmith',
+    imgSrc: 'https://images.unsplash.com/photo-1554178286-db408c69256a',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_HAND_ATTACK,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 2,
     attack: 2,
     numAttacks: 1,
     isRanged: false,
@@ -1289,6 +1342,7 @@ export const UnitCards = {
     // FIRE
     FIRE_TECHNICIAN,
     FIRE_MAGE,
+    FLAME_PRESERVER,
     INFERNO_SORCEROR,
     // WATER
     MANTA_RAY_CONJURER,
@@ -1324,6 +1378,7 @@ export const UnitCards = {
     RELAXED_ROWBOATER,
     QUARRY_WORKER,
     ELITE_WEAPONS_MASTER,
+    IRONSMITH,
     // SAHARAN
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,
