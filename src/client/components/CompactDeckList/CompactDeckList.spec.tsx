@@ -9,6 +9,6 @@ describe('DeckList', () => {
         render(<CompactDeckList deck={makeSampleDeck1()} />);
         expect(screen.queryAllByText('Knight Templar')).toHaveLength(1);
         expect(screen.queryAllByText('Bamboo')).toHaveLength(1);
-        expect(screen.queryAllByText('3')).toHaveLength(8);
+        expect(screen.queryAllByText('3')).toHaveLength(7);
     });
 });
