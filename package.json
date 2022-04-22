@@ -8,6 +8,7 @@
         "build": "npx webpack",
         "scrapeImages": "npx esrun src/scripts/scrapeImages.ts",
         "compressImages": "npx esrun src/scripts/compressImages.ts",
+        "images": "yarn scrapeImages && yarn compressImages",
         "ci": "yarn lint && jest --maxWorkers=2",
         "dev": "npx webpack --watch & nodemon .",
         "heroku-cleanup": "yarn install --dev",

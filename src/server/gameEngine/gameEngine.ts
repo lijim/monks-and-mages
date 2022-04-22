@@ -229,6 +229,7 @@ export const applyGameAction = ({
                     cloneDeep(resourceCard.enterEffects).reverse()
                 );
             }
+            if (resourceCard.comesInTapped) resourceCard.isUsed = true;
             return clonedBoard;
         }
         case GameActionTypes.TAP_RESOURCE: {

@@ -48,7 +48,8 @@ const DecisionFrame = styled.div`
 export const AdvancedResourceGridItem: React.FC<
     AdvancedResourceGridItemProps
 > = ({ card, isHighlighted, isOnBoard, onClick, zoomLevel }) => {
-    const { resourceType, secondaryResourceType, enterEffects } = card;
+    const { resourceType, secondaryResourceType, enterEffects, comesInTapped } =
+        card;
     const { icon, primaryColor } = RESOURCE_GLOSSARY[resourceType];
     const secondaryResource = RESOURCE_GLOSSARY[secondaryResourceType];
 
@@ -147,6 +148,7 @@ export const AdvancedResourceGridItem: React.FC<
                 )}
                 to your casting pool
                 <br />
+                {comesInTapped && 'Enters the board tapped'}
                 <br />
                 {enterEffects.length > 0 && <b>Upon entering the board:</b>}
                 {enterEffects?.map((effect, i) => (

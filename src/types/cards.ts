@@ -10,6 +10,7 @@ export enum CardType {
 
 export type ResourceCard = {
     cardType: CardType.RESOURCE;
+    comesInTapped?: boolean;
     enterEffects?: Effect[];
     id?: string;
     imgSrc?: string;

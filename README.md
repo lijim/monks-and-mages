@@ -114,8 +114,7 @@ For all the cards in cardDb, imgSrc is not used in the components, but rather in
 To run these scripts:
 
 ```
-yarn scrapeImages
-yarn compressImages
+yarn images
 ```
 
 To get an image into assets/images:
