@@ -48,6 +48,21 @@ describe('Advanced Resource Card Grid Item', () => {
         );
     });
 
+    it('renders rules text about coming in tapped', () => {
+        const advancedResourceCard = makeAdvancedResourceCard({
+            name: 'Come in tapped iron',
+            resourceType: Resource.IRON,
+            imgSrc: '/images/example.avif',
+            enterEffects: [],
+            comesInTapped: true,
+        });
+
+        render(<AdvancedResourceGridItem card={advancedResourceCard} />);
+        expect(screen.getByTestId('RulesTextArea')).toHaveTextContent(
+            'Enters the board tapped'
+        );
+    });
+
     it('taps the card (single resource card)', () => {
         const advancedResourceCard = makeAdvancedResourceCard({
             name: 'Deal 1 damage Iron',

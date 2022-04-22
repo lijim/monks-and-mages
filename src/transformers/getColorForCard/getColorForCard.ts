@@ -42,10 +42,10 @@ export const getColorForCard = (card: Card): string => {
     return GOLD_COLOR;
 };
 
-export const getSecondaryColorForCard = (card: Card): string => {
+export const getSecondaryColorForCard = (card: Card): string | undefined => {
     // Case: resource card
     if (card.cardType === CardType.RESOURCE && card.isAdvanced) {
-        return RESOURCE_GLOSSARY[card.secondaryResourceType].primaryColor;
+        return RESOURCE_GLOSSARY[card.secondaryResourceType]?.primaryColor;
     }
     return '';
 };

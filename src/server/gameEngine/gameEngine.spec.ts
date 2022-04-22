@@ -285,6 +285,21 @@ describe('Game Action', () => {
             });
             expect(newBoardState.players[0].effectQueue).toHaveLength(1);
         });
+
+        it('comes in tapped', () => {
+            const resourceCard = makeCard(AdvancedResourceCards.COASTAL_CASTLE);
+            board.players[0].hand = [resourceCard];
+            board.players[0].numCardsInHand = 1;
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_RESOURCE,
+                    cardId: resourceCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].resources[0].isUsed).toBe(true);
+        });
     });
 
     describe('Tap Resource', () => {
