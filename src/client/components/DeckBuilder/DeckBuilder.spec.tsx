@@ -1,9 +1,12 @@
 import React from 'react';
 import { push } from 'redux-first-history';
-import { act, fireEvent, render, screen, within } from '@/test-utils';
+import { fireEvent, render, screen, within } from '@/test-utils';
 import { DeckBuilder } from './DeckBuilder';
 
 describe('DeckBuilder', () => {
+    beforeAll(() => {
+        HTMLAnchorElement.prototype.click = jest.fn();
+    });
     it('adds cards from the entire card pool (constructed mode)', () => {
         render(<DeckBuilder />);
         fireEvent.click(screen.getByText('Lancer'));
@@ -62,7 +65,7 @@ describe('DeckBuilder', () => {
         render(<DeckBuilder />);
         fireEvent.click(screen.getByText('Lancer'));
 
-        fireEvent.click(screen.getByText('Copy decklist to clipboard'));
+        fireEvent.click(screen.getByText('Copy to Clipboard'));
 
         expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
             `[{"card":"Lancer","quantity":1}]`
@@ -80,7 +83,7 @@ describe('DeckBuilder', () => {
         render(<DeckBuilder />);
         const myDeck = screen.getByTestId('MyDeck');
 
-        fireEvent.click(screen.getByText('Import decklist from clipboard'));
+        fireEvent.click(screen.getByText('Import from Clipboard'));
 
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
     });
@@ -97,15 +100,35 @@ describe('DeckBuilder', () => {
         const { webSocket, dispatch } = render(<DeckBuilder />);
         const myDeck = screen.getByTestId('MyDeck');
 
-        fireEvent.click(screen.getByText('Import decklist from clipboard'));
+        fireEvent.click(screen.getByText('Import from Clipboard'));
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
 
-        fireEvent.click(screen.getByText('Submit Decklist'));
+        fireEvent.click(screen.getByText('Submit'));
         expect(webSocket.chooseCustomDeck).toHaveBeenCalledWith([
             { card: 'Iron', quantity: 44 },
             { card: 'Lancer', quantity: 4 },
         ]);
         expect(dispatch).toHaveBeenCalledWith(push('/'));
+    });
+
+    it('downloads a deck', async () => {
+        Object.assign(navigator, {
+            clipboard: {
+                readText: () =>
+                    `[{"card":"Iron","quantity":44},{"card":"Lancer","quantity":4}]`,
+            },
+        });
+
+        navigator.clipboard.writeText = jest.fn();
+        render(<DeckBuilder />);
+        const myDeck = screen.getByTestId('MyDeck');
+
+        fireEvent.click(screen.getByText('Import from Clipboard'));
+        expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
+
+        fireEvent.click(screen.getByText('Download as File'));
+        expect(global.URL.createObjectURL).toHaveBeenCalled();
+        expect(global.URL.revokeObjectURL).toHaveBeenCalled();
     });
 
     it('validates a deck', async () => {
@@ -119,10 +142,10 @@ describe('DeckBuilder', () => {
         render(<DeckBuilder />);
         const myDeck = screen.getByTestId('MyDeck');
 
-        fireEvent.click(screen.getByText('Import decklist from clipboard'));
+        fireEvent.click(screen.getByText('Import from Clipboard'));
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
 
-        expect(screen.getByText('Submit Decklist')).toBeDisabled();
+        expect(screen.getByText('Submit')).toBeDisabled();
     });
 
     it('loads a deck if one was already created', () => {

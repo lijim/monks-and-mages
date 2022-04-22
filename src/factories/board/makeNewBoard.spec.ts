@@ -1,4 +1,3 @@
-import { UnitCards } from '@/cardDb/units';
 import { SAMPLE_DECKLIST_2 } from '@/constants/deckLists';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { Skeleton } from '@/types/cards';
