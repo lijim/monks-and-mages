@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+    FormEvent,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';
@@ -63,6 +69,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         (state) => state.deckList.customDeckList
     );
     const dispatch = useDispatch();
+    const fileInputEl = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (skeleton) {
@@ -112,17 +119,50 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         );
     };
 
-    const importFromClipboard = async () => {
-        const clipboardTxt = await navigator.clipboard.readText();
+    const download = () => {
+        // See: https://robkendal.co.uk/blog/2020-04-17-saving-text-to-client-side-file-using-vanilla-js
+        const a = document.createElement('a');
+        const file = new Blob(
+            [JSON.stringify(getSkeletonFromDeckList(myDeck))],
+            { type: 'text/plain' }
+        );
+        a.href = URL.createObjectURL(file);
+        a.download = 'new-deck.txt';
+        a.click();
+        URL.revokeObjectURL(a.href);
+    };
+
+    const importDeckList = (txtBlob: string) => {
         try {
             const { decklist, errors } = getDeckListFromSkeleton(
-                JSON.parse(clipboardTxt)
+                JSON.parse(txtBlob)
             );
             if (!errors?.length) setMyDeck(decklist);
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);
         }
+    };
+
+    const importFromClipboard = async () => {
+        const clipboardTxt = await navigator.clipboard.readText();
+        importDeckList(clipboardTxt);
+    };
+
+    // No good implementations for React.ChangeEvent<HTMLInputElement> for
+    // input type="file" yet
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const upload = async (event: any) => {
+        if (!event.target.files && event.target.files.length === 1) {
+            return;
+        }
+        const file = event.target.files.item(0);
+        const text = await file.text();
+        importDeckList(text);
+    };
+
+    const importFile = () => {
+        fileInputEl.current?.click();
     };
 
     const submitDecklist = () => {
@@ -148,18 +188,33 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                 </DeckListBackDrop>
                 <DeckListBackDrop data-testid="MyDeck">
                     <SecondaryColorButton onClick={copyToClipboard}>
-                        Copy decklist to clipboard
+                        Copy to Clipboard
                     </SecondaryColorButton>
                     &nbsp;&nbsp;
                     <SecondaryColorButton onClick={importFromClipboard}>
-                        Import decklist from clipboard
+                        Import from Clipboard
                     </SecondaryColorButton>
+                    &nbsp;&nbsp;
+                    <SecondaryColorButton onClick={download}>
+                        Download as File
+                    </SecondaryColorButton>
+                    &nbsp;&nbsp;
+                    <input
+                        type="file"
+                        onChange={upload}
+                        accept="text/plain"
+                        style={{ display: 'none' }}
+                        ref={fileInputEl}
+                    />
+                    <SecondaryColorButton onClick={importFile}>
+                        Import File
+                    </SecondaryColorButton>{' '}
                     &nbsp;&nbsp;
                     <SecondaryColorButton
                         onClick={submitDecklist}
                         disabled={!isMyDeckValid}
                     >
-                        Submit Decklist
+                        Submit
                     </SecondaryColorButton>
                     <br />
                     <ValidationMsg>{reasonForDeckInvalid}</ValidationMsg>
