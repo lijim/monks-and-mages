@@ -106,6 +106,23 @@ const BUBBLE_BLAST = makeCard({
     ],
 });
 
+const OASIS_RITUAL = makeCard({
+    name: 'Oasis Ritual',
+    imgSrc: 'https://images.pexels.com/photos/2155775/pexels-photo-2155775.jpeg',
+    cost: { [Resource.WATER]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 2,
+        },
+    ],
+});
+
 const GENEROUS_GEYSER = makeCard({
     name: 'Generous Geyser',
     imgSrc: 'https://images.unsplash.com/photo-1567604130959-7ea7ab2a7807?',
@@ -199,6 +216,18 @@ const A_THOUSAND_WINDS = makeCard({
     ],
 });
 
+const COLLOSAL_TSUNAMI = makeCard({
+    name: 'Collosal Tsunami',
+    imgSrc: 'https://images.unsplash.com/photo-1593359393721-8c301de4bf7b',
+    cost: { [Resource.GENERIC]: 4, [Resource.WATER]: 2, [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.BOUNCE,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+        },
+    ],
+});
+
 const HOLY_REVIVAL = makeCard({
     name: 'Holy Revival',
     imgSrc: 'https://images.unsplash.com/photo-1467139729426-3079e66d5a7a',
@@ -249,6 +278,24 @@ const DISTORT_REALITY = makeCard({
             type: EffectType.DEAL_DAMAGE,
             target: TargetTypes.UNIT,
             strength: 1,
+        },
+    ],
+});
+
+const SCOUR_THE_LIBRARY = makeCard({
+    name: 'Scour The Library',
+    imgSrc: 'https://images.unsplash.com/photo-1549383028-df014fa3a325',
+    cost: { [Resource.CRYSTAL]: 2, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: Number.MAX_SAFE_INTEGER,
+        },
+        {
+            type: EffectType.DRAW,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 7,
         },
     ],
 });
@@ -388,6 +435,51 @@ const SPARK_JOY = makeCard({
     ],
 });
 
+// 4-color
+const CALL_THE_HERD = makeCard({
+    name: 'Call the Herd',
+    imgSrc: 'https://images.pexels.com/photos/3231998/pexels-photo-3231998.jpeg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 1,
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    effects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.FALCON,
+        },
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.MANTA_RAY,
+        },
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.SCORPION,
+        },
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.LION,
+        },
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.PIRATE_PARROT,
+        },
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.SHARK,
+        },
+    ],
+});
+
 // Witches
 const POLYMORPH_FROG = makeCard({
     name: 'Polymorph: Frog',
@@ -431,6 +523,7 @@ export const SpellCards = {
 
     // Water
     BUBBLE_BLAST,
+    OASIS_RITUAL,
     GENEROUS_GEYSER,
     CONSTANT_REFILL,
     RAGING_WHIRLPOOL,
@@ -439,11 +532,13 @@ export const SpellCards = {
     // Wind
     A_GENTLE_GUST,
     A_THOUSAND_WINDS,
+    COLLOSAL_TSUNAMI,
     HOLY_REVIVAL,
 
     // Crystal
     DISTORT_REALITY,
     SPECTRAL_GENESIS,
+    SCOUR_THE_LIBRARY,
     OPEN_NEBULA,
 
     // Iron
@@ -463,4 +558,7 @@ export const SpellCards = {
 
     // Pirates
     WRECK_SHIPS,
+
+    // Multi-color misc.
+    CALL_THE_HERD,
 };

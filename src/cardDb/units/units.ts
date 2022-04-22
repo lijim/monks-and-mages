@@ -120,6 +120,40 @@ const MANATEE: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const LION: UnitCard = makeCard({
+    name: 'Lion',
+    imgSrc: 'https://images.pexels.com/photos/68421/pexels-photo-68421.jpeg',
+    cost: {
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const SCORPION: UnitCard = makeCard({
+    name: 'Scorpion',
+    imgSrc: 'https://images.pexels.com/photos/5927716/pexels-photo-5927716.png',
+    cost: {
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.POISONED],
+});
+
 const SHARK: UnitCard = makeCard({
     name: 'Shark',
     imgSrc: 'https://images.unsplash.com/photo-1564731071754-001b53a902fb',
@@ -179,11 +213,13 @@ export const Tokens = {
     FALCON,
     FROG,
     GOLEM_DRAGON,
+    LION,
     MANTA_RAY,
     MANATEE,
     OCTOPUS,
     PIRATE_PARROT,
     SHARK,
+    SCORPION,
 };
 
 // Mages
@@ -578,6 +614,30 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const VILLAGE_DEFENDER: UnitCard = makeCard({
+    name: 'Village Defender',
+    imgSrc: 'https://images.pexels.com/photos/5197322/pexels-photo-5197322.jpeg',
+    cost: {
+        [Resource.IRON]: 2,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ALL_UNITS,
+            strength: 1,
+        },
+    ],
+    totalHp: 4,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+});
+
 const DRAGON_MIST_WARRIOR: UnitCard = makeCard({
     name: 'Dragon Mist Warrior',
     imgSrc: 'https://images.unsplash.com/photo-1615038403612-c0db30ce8f91',
@@ -876,6 +936,31 @@ const BAMBOO_FARMER: UnitCard = makeCard({
         },
     ],
     totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const PASTURE_EXPLORER: UnitCard = makeCard({
+    name: 'Pasture Explorer',
+    imgSrc: 'https://images.unsplash.com/photo-1549806876-7d7a936f609c',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.EXTRACT_CARD,
+            target: TargetTypes.SELF_PLAYER,
+            cardName: 'Bamboo',
+            strength: 3,
+        },
+    ],
+    totalHp: 2,
     attack: 1,
     numAttacks: 1,
     isRanged: false,
@@ -1358,6 +1443,7 @@ export const UnitCards = {
     SQUIRE,
     MARTIAL_TRAINER,
     DRAGON_MIST_WARRIOR,
+    VILLAGE_DEFENDER,
     WARRIOR_OF_THE_LAKE,
     KNIGHT_TEMPLAR,
     TEMPLE_GUARDIAN,
@@ -1375,6 +1461,7 @@ export const UnitCards = {
     CANNON,
     // MISC
     BAMBOO_FARMER,
+    PASTURE_EXPLORER,
     RELAXED_ROWBOATER,
     QUARRY_WORKER,
     ELITE_WEAPONS_MASTER,
