@@ -291,6 +291,7 @@ const MYSTICAL_FIGURE: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/5551875/pexels-photo-5551875.jpeg',
     cost: {
         [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [
