@@ -61,6 +61,38 @@ const CURSE_HAND = makeCard({
     ],
 });
 
+const BRUSH_FIRE = makeCard({
+    name: 'Brush Fire',
+    imgSrc: 'https://images.pexels.com/photos/51951/forest-fire-fire-smoke-conservation-51951.jpeg',
+    cost: { [Resource.FIRE]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DESTROY_RESOURCE,
+            strength: 1,
+            resourceType: Resource.BAMBOO,
+            target: TargetTypes.ALL_OPPONENTS,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ALL_OPPONENTS,
+        },
+    ],
+});
+
+const CHANNEL_SPARKS = makeCard({
+    name: 'Channel Sparks',
+    imgSrc: 'https://images.pexels.com/photos/6478432/pexels-photo-6478432.jpeg',
+    cost: { [Resource.FIRE]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            target: TargetTypes.ANY,
+        },
+    ],
+});
+
 const SUMMON_DEMONS = makeCard({
     name: 'Summon Demons',
     imgSrc: 'https://images.unsplash.com/photo-1519235624215-85175d5eb36e',
@@ -135,6 +167,23 @@ const GENEROUS_GEYSER = makeCard({
         {
             type: EffectType.HEAL,
             target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+    ],
+});
+
+const REFLECTION_OPPORTUNITY = makeCard({
+    name: 'Reflection Opportunity',
+    imgSrc: 'https://images.pexels.com/photos/9888656/pexels-photo-9888656.jpeg',
+    cost: { [Resource.WATER]: 2, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+        {
+            type: EffectType.BOUNCE,
+            target: TargetTypes.UNIT,
             strength: 1,
         },
     ],
@@ -216,6 +265,27 @@ const A_THOUSAND_WINDS = makeCard({
     ],
 });
 
+const SOLFATARA = makeCard({
+    name: 'Solfatara',
+    imgSrc: 'https://images.pexels.com/photos/3824811/pexels-photo-3824811.jpeg',
+    cost: { [Resource.FIRE]: 1, [Resource.WATER]: 1, [Resource.GENERIC]: 3 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+        },
+        {
+            type: EffectType.BOUNCE,
+            target: TargetTypes.UNIT,
+            strength: 1,
+        },
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+    ],
+});
+
 const COLLOSAL_TSUNAMI = makeCard({
     name: 'Collosal Tsunami',
     imgSrc: 'https://images.unsplash.com/photo-1593359393721-8c301de4bf7b',
@@ -278,6 +348,19 @@ const DISTORT_REALITY = makeCard({
             type: EffectType.DEAL_DAMAGE,
             target: TargetTypes.UNIT,
             strength: 1,
+        },
+    ],
+});
+
+const STARRY_ILLUSION = makeCard({
+    name: 'Starry Illusion',
+    imgSrc: 'https://images.pexels.com/photos/3689634/pexels-photo-3689634.jpeg', // https://images.pexels.com/photos/6492151/pexels-photo-6492151.jpeg
+    cost: { [Resource.CRYSTAL]: 3 },
+    effects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.PLAYER,
+            strength: 3,
         },
     ],
 });
@@ -364,6 +447,19 @@ const BANDIT_AMBUSH = makeCard({
     ],
 });
 
+const MAJOR_EARTHQUAKE = makeCard({
+    name: 'Major Earthquake',
+    imgSrc: 'https://images.pexels.com/photos/11849377/pexels-photo-11849377.jpeg',
+    cost: { [Resource.IRON]: 2, [Resource.GENERIC]: 3 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ALL_UNITS,
+            strength: 5,
+        },
+    ],
+});
+
 // Bamboo
 const FEED_TEAM = makeCard({
     name: 'Feed Team',
@@ -384,6 +480,24 @@ const FEED_TEAM = makeCard({
     ],
 });
 
+const SPRING_IN_BLOOM = makeCard({
+    name: 'Spring in Bloom',
+    imgSrc: 'https://images.pexels.com/photos/11669655/pexels-photo-11669655.jpeg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.RAMP,
+            resourceType: Resource.BAMBOO,
+            strength: 1,
+        },
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Bamboo',
+            strength: 1,
+        },
+    ],
+});
+
 const RAIN_OF_ARROWS = makeCard({
     name: 'Rain of Arrows',
     imgSrc: 'https://images.unsplash.com/photo-1563705883268-eb58ab6f505d',
@@ -400,6 +514,37 @@ const RAIN_OF_ARROWS = makeCard({
             strength: 2,
         },
     ],
+});
+
+const SUMMON_THE_CROWS = makeCard({
+    name: 'Summon the Crows',
+    imgSrc: 'https://images.pexels.com/photos/3213357/pexels-photo-3213357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    cost: { [Resource.BAMBOO]: 3, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 3,
+            summonType: Tokens.FALCON,
+        },
+    ],
+});
+
+// Monks (bamboo + iron)
+const FISH_MARKET_VISIT = makeCard({
+    name: 'Fish Market Visit',
+    imgSrc: 'https://images.pexels.com/photos/11669729/pexels-photo-11669729.jpeg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.IRON]: 1 },
+    effects: [
+        { type: EffectType.BUFF_TEAM_HP, strength: 1 },
+        { type: EffectType.BUFF_HAND_ATTACK, strength: 2 },
+    ],
+});
+
+const CONCENTRATED_FOCUS = makeCard({
+    name: 'Concentrated Focus',
+    imgSrc: 'https://images.pexels.com/photos/11331536/pexels-photo-11331536.jpeg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.IRON]: 1 },
+    effects: [{ type: EffectType.BUFF_HAND_ATTACK, strength: 3 }],
 });
 
 // Cannon
@@ -518,6 +663,8 @@ export const SpellCards = {
     EMBER_SPEAR,
     LIGHTNING_SLICK,
     CURSE_HAND,
+    BRUSH_FIRE,
+    CHANNEL_SPARKS,
     SUMMON_DEMONS,
     VOLCANIC_INFERNO,
 
@@ -528,26 +675,38 @@ export const SpellCards = {
     CONSTANT_REFILL,
     RAGING_WHIRLPOOL,
     SUMMON_SHARKS,
+    REFLECTION_OPPORTUNITY,
 
     // Wind
     A_GENTLE_GUST,
     A_THOUSAND_WINDS,
+    SOLFATARA,
     COLLOSAL_TSUNAMI,
+
+    // Sorceror
     HOLY_REVIVAL,
 
     // Crystal
     DISTORT_REALITY,
     SPECTRAL_GENESIS,
+    STARRY_ILLUSION,
     SCOUR_THE_LIBRARY,
     OPEN_NEBULA,
 
     // Iron
     THROW_SHURIKEN,
     BANDIT_AMBUSH,
+    MAJOR_EARTHQUAKE,
 
     // Bamboo
     FEED_TEAM,
+    SPRING_IN_BLOOM,
     RAIN_OF_ARROWS,
+    SUMMON_THE_CROWS,
+
+    // Monks
+    FISH_MARKET_VISIT,
+    CONCENTRATED_FOCUS,
 
     // Cannon
     IGNITE_SPARKS,

@@ -237,6 +237,24 @@ export const resolveEffect = (
             applyWinState(clonedBoard);
             return clonedBoard;
         }
+        case EffectType.DESTROY_RESOURCE: {
+            const { resourceType } = effect;
+            playerTargets.forEach((player) => {
+                const resourcesToDestroy = sampleSize(
+                    player.resources.filter((resource) => {
+                        if (!resourceType) return true;
+                        return resource.resourceType === resourceType;
+                    }),
+                    effectStrength
+                );
+                player.resources = player.resources.filter(
+                    (resource) =>
+                        !resourcesToDestroy.find((r) => r === resource)
+                );
+            });
+            applyWinState(clonedBoard);
+            return clonedBoard;
+        }
         case EffectType.DISCARD_HAND: {
             playerTargets.forEach((player) => {
                 const { hand } = player;

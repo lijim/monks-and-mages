@@ -95,6 +95,12 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         case EffectType.DEAL_DAMAGE: {
             return `Deal ${strength} damage to ${targetName}`;
         }
+        case EffectType.DESTROY_RESOURCE: {
+            if (resourceType) {
+                return `Destroy ${strength} of ${targetNamePossessive} [${resourceType}] resources`;
+            }
+            return `Destroy ${strength} of ${targetNamePossessive} resources at random`;
+        }
         case EffectType.DISCARD_HAND: {
             if (strength === Number.MAX_SAFE_INTEGER) {
                 return `Make ${targetName} discard all cards`;
@@ -151,7 +157,11 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Revive ${targetName}`;
         }
         case EffectType.SUMMON_UNITS: {
-            return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙`;
+            let forText = '';
+            if (target && target !== TargetTypes.SELF_PLAYER) {
+                forText = ` for ${targetName}`;
+            }
+            return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙${forText}`;
         }
         default: {
             return '';

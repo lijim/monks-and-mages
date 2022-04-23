@@ -310,6 +310,53 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Destroy resources', () => {
+        it('destroys a specific resource', () => {
+            board.players[1].resources = [
+                makeResourceCard(Resource.BAMBOO),
+                makeResourceCard(Resource.FIRE),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DESTROY_RESOURCE,
+                        target: TargetTypes.ALL_OPPONENTS,
+                        strength: 1,
+                        resourceType: Resource.BAMBOO,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[1].resources[0].resourceType).toEqual(
+                Resource.FIRE
+            );
+        });
+
+        it('destroys a resource', () => {
+            board.players[1].resources = [
+                makeResourceCard(Resource.BAMBOO),
+                makeResourceCard(Resource.FIRE),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DESTROY_RESOURCE,
+                        target: TargetTypes.ALL_OPPONENTS,
+                        strength: 1,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[1].resources).toHaveLength(1);
+        });
+    });
+
     describe('Draw Cards', () => {
         it('draws cards for players', () => {
             const deckLength = board.players[0].deck.length;
