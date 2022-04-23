@@ -223,6 +223,23 @@ export const Tokens = {
 };
 
 // Mages
+const THIRD_YEAR_STUDENTS: UnitCard = makeCard({
+    name: 'Third Year Students',
+    imgSrc: 'https://images.pexels.com/photos/8391400/pexels-photo-8391400.jpeg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 4,
+    attack: 0,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const MAGICIANS_APPRENTICE: UnitCard = makeCard({
     name: "Magician's Apprentice",
     imgSrc: '/images/units/magicians-apprentice.avif', // https://images.unsplash.com/photo-1615962122149-ef6987cf19f4'
@@ -262,6 +279,55 @@ const FIRE_TECHNICIAN: UnitCard = makeCard({
     ],
     totalHp: 1,
     attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const MYSTICAL_FIGURE: UnitCard = makeCard({
+    name: 'Mystical Figure',
+    imgSrc: 'https://images.pexels.com/photos/5551875/pexels-photo-5551875.jpeg',
+    cost: {
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.RETURN_FROM_CEMETERY,
+            cardName: 'Ember Spear',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const ZEALOUS_ACOLYTE: UnitCard = makeCard({
+    name: 'Zealous Acolyte',
+    imgSrc: 'https://images.pexels.com/photos/6644224/pexels-photo-6644224.jpeg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DESTROY_RESOURCE,
+            target: TargetTypes.ALL_OPPONENTS,
+            strength: 1,
+            resourceType: Resource.BAMBOO,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
     numAttacks: 1,
     isRanged: true,
     isMagical: true,
@@ -316,6 +382,69 @@ const FLAME_PRESERVER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const INFERNO_SORCEROR: UnitCard = makeCard({
+    name: 'Inferno Sorceror',
+    imgSrc: 'https://images.unsplash.com/photo-1476611550464-4b94f060e1c6',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 3,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            target: TargetTypes.ANY,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+        },
+        {
+            type: EffectType.BUFF_TEAM_MAGIC,
+            strength: 1,
+        },
+    ],
+    totalHp: 5,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+// Sorcerors
+const CURIOUS_RESEARCHER: UnitCard = makeCard({
+    name: 'Curious Researcher',
+    imgSrc: 'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 1,
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+        {
+            type: EffectType.BUFF_TEAM_MAGIC,
+            strength: 1,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const BRIGHT_SCHOLAR: UnitCard = makeCard({
     name: 'Bright Scholar',
     imgSrc: 'https://images.pexels.com/photos/8390504/pexels-photo-8390504.jpeg',
@@ -352,33 +481,24 @@ const BRIGHT_SCHOLAR: UnitCard = makeCard({
     passiveEffects: [],
 });
 
-const INFERNO_SORCEROR: UnitCard = makeCard({
-    name: 'Inferno Sorceror',
-    imgSrc: 'https://images.unsplash.com/photo-1476611550464-4b94f060e1c6',
+// Water Mages
+
+const MEDITATION_EXPERT: UnitCard = makeCard({
+    name: 'Meditation Expert',
+    imgSrc: 'https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg',
     cost: {
-        [Resource.CRYSTAL]: 1,
-        [Resource.FIRE]: 3,
-        [Resource.GENERIC]: 2,
+        [Resource.WATER]: 1,
     },
     description: '',
     enterEffects: [
         {
-            type: EffectType.DEAL_DAMAGE,
-            strength: 3,
+            type: EffectType.HEAL,
+            strength: 2,
             target: TargetTypes.ANY,
         },
-        {
-            type: EffectType.DEAL_DAMAGE,
-            strength: 1,
-            target: TargetTypes.ALL_OPPOSING_UNITS,
-        },
-        {
-            type: EffectType.BUFF_TEAM_MAGIC,
-            strength: 1,
-        },
     ],
-    totalHp: 5,
-    attack: 3,
+    totalHp: 1,
+    attack: 1,
     numAttacks: 1,
     isRanged: true,
     isMagical: true,
@@ -451,6 +571,35 @@ const WATER_MAGE: UnitCard = makeCard({
     ],
     totalHp: 3,
     attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const CURSED_CHIEFTAIN: UnitCard = makeCard({
+    name: 'Cursed Chieftain',
+    imgSrc: 'https://images.pexels.com/photos/2569229/pexels-photo-2569229.jpeg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BOUNCE,
+            strength: 1,
+            target: TargetTypes.OWN_UNIT,
+        },
+        {
+            type: EffectType.BOUNCE,
+            strength: 1,
+            target: TargetTypes.OWN_UNIT,
+        },
+    ],
+    totalHp: 4,
+    attack: 4,
     numAttacks: 1,
     isRanged: true,
     isMagical: true,
@@ -721,7 +870,7 @@ const TEMPLE_GUARDIAN: UnitCard = makeCard({
     passiveEffects: [],
 });
 
-// Ninjas
+// Monks
 const ASSASSIN: UnitCard = makeCard({
     imgSrc: 'https://images.unsplash.com/photo-1531386151447-fd76ad50012f',
     name: 'Assassin',
@@ -757,6 +906,25 @@ const BOUNTY_COLLECTOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED, PassiveEffect.QUICK],
+});
+
+const DISCIPLINED_WARRIOR: UnitCard = makeCard({
+    name: 'Disciplined Warrior',
+    imgSrc: 'https://images.pexels.com/photos/4760048/pexels-photo-4760048.jpeg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 6,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
 });
 
 const SHADOW_STRIKER: UnitCard = makeCard({
@@ -921,6 +1089,40 @@ const CANNON: UnitCard = makeCard({
 });
 
 // Misc
+const ANGRY_HEN: UnitCard = makeCard({
+    name: 'Angry Hen',
+    imgSrc: 'https://images.pexels.com/photos/1405930/pexels-photo-1405930.jpeg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 0,
+    numAttacks: 2,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.QUICK],
+});
+
+const SAMBAR_DEER: UnitCard = makeCard({
+    name: 'Sambar Deer',
+    imgSrc: 'https://images.pexels.com/photos/4403902/pexels-photo-4403902.jpeg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const BAMBOO_FARMER: UnitCard = makeCard({
     name: 'Bamboo Farmer',
     imgSrc: 'https://images.unsplash.com/photo-1512631118612-7bf02594062b',
@@ -992,6 +1194,29 @@ const RELAXED_ROWBOATER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const NOVICE_ASTRONOMER: UnitCard = makeCard({
+    name: 'Novice Astronomer',
+    imgSrc: 'https://images.pexels.com/photos/7139730/pexels-photo-7139730.jpeg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'DISTORT_REALITY',
+            strength: 1,
+        },
+    ],
+    totalHp: 1,
+    attack: 0,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const QUARRY_WORKER: UnitCard = makeCard({
     name: 'Quarry Worker',
     imgSrc: 'https://images.unsplash.com/photo-1623438803816-1f7456b240fa',
@@ -1008,6 +1233,31 @@ const QUARRY_WORKER: UnitCard = makeCard({
         },
     ],
     totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const TEMPLE_DEVOTEE: UnitCard = makeCard({
+    name: 'Temple Devotee',
+    imgSrc: 'https://images.pexels.com/photos/8711201/pexels-photo-8711201.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Temple Guardian',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 2,
     attack: 1,
     numAttacks: 1,
     isRanged: false,
@@ -1348,6 +1598,31 @@ const FOREST_SPIRIT: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const POWERFUL_CRONE: UnitCard = makeCard({
+    name: 'Powerful Crone',
+    imgSrc: 'https://images.pexels.com/photos/10007239/pexels-photo-10007239.jpeg',
+    cost: {
+        [Resource.CRYSTAL]: 2,
+        [Resource.BAMBOO]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.SCORPION,
+            target: TargetTypes.OPPONENT,
+        },
+    ],
+    totalHp: 4,
+    attack: 4,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const BOG_WARLOCK: UnitCard = makeCard({
     name: 'Bog Warlock',
     imgSrc: 'https://images.pexels.com/photos/11009468/pexels-photo-11009468.jpeg',
@@ -1379,6 +1654,24 @@ const BOG_WARLOCK: UnitCard = makeCard({
 });
 
 // Pirates
+const NOBLE_STEED: UnitCard = makeCard({
+    name: 'Noble Steed',
+    imgSrc: 'https://images.pexels.com/photos/210237/pexels-photo-210237.jpeg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 4,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [PassiveEffect.QUICK],
+});
+
 const ELDER_PIRATE: UnitCard = makeCard({
     name: 'Elder Pirate',
     imgSrc: 'https://cdn.pixabay.com/photo/2016/03/22/16/09/sailboat-1273168_1280.jpg',
@@ -1423,16 +1716,21 @@ const DARING_CORSAIR: UnitCard = makeCard({
 });
 
 export const UnitCards = {
+    THIRD_YEAR_STUDENTS,
     MAGICIANS_APPRENTICE,
     // FIRE
     FIRE_TECHNICIAN,
+    MYSTICAL_FIGURE,
+    ZEALOUS_ACOLYTE,
     FIRE_MAGE,
     FLAME_PRESERVER,
     INFERNO_SORCEROR,
     // WATER
+    MEDITATION_EXPERT,
     MANTA_RAY_CONJURER,
     TINY_MERMAID,
     WATER_MAGE,
+    CURSED_CHIEFTAIN,
     WATER_GUARDIAN,
     // WIND
     WIND_MAGE,
@@ -1447,8 +1745,9 @@ export const UnitCards = {
     WARRIOR_OF_THE_LAKE,
     KNIGHT_TEMPLAR,
     TEMPLE_GUARDIAN,
-    // ASSASSINS
+    // Monks
     ASSASSIN,
+    DISCIPLINED_WARRIOR,
     BOUNTY_COLLECTOR,
     SHADOW_STRIKER,
     // RANGED
@@ -1460,16 +1759,21 @@ export const UnitCards = {
     MERRY_RALLIER,
     CANNON,
     // MISC
+    ANGRY_HEN,
+    SAMBAR_DEER,
     BAMBOO_FARMER,
     PASTURE_EXPLORER,
     RELAXED_ROWBOATER,
+    NOVICE_ASTRONOMER,
     QUARRY_WORKER,
+    TEMPLE_DEVOTEE,
     ELITE_WEAPONS_MASTER,
     IRONSMITH,
     // SAHARAN
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,
     // SORCEROR
+    CURIOUS_RESEARCHER,
     BRIGHT_SCHOLAR,
     // CORAL
     DEEP_SEA_EXPLORER,
@@ -1482,8 +1786,10 @@ export const UnitCards = {
     COVEN_NOVICE,
     POTION_BREWER,
     FOREST_SPIRIT,
+    POWERFUL_CRONE,
     BOG_WARLOCK,
     // Pirates
+    NOBLE_STEED,
     ELDER_PIRATE,
     DARING_CORSAIR,
 };

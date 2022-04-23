@@ -1,10 +1,4 @@
-import React, {
-    FormEvent,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';

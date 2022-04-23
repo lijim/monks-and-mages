@@ -35,6 +35,7 @@ export enum EffectType {
     BUFF_TEAM_MAGIC = 'Buff team magic', // increases attack for magic-units
     CURSE_HAND = 'Curse Hand', // adds one generic cost to cards in hand
     DEAL_DAMAGE = 'Deal Damage', // to any target
+    DESTROY_RESOURCE = 'Destroy Resource',
     DISCARD_HAND = 'Discard Hand', // discard X cards at random
     DRAW = 'Draw',
     DRAW_PER_UNIT = 'Draw Per Unit',
@@ -62,6 +63,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.BUFF_TEAM_MAGIC]: TargetTypes.SELF_PLAYER,
         [EffectType.CURSE_HAND]: TargetTypes.OPPONENT,
         [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
+        [EffectType.DESTROY_RESOURCE]: TargetTypes.OPPONENT,
         [EffectType.DISCARD_HAND]: TargetTypes.OPPONENT,
         [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW]: TargetTypes.SELF_PLAYER,

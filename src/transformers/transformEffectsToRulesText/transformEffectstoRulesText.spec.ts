@@ -100,6 +100,28 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    it('displays rules destroying a resource', () => {
+        const effect: Effect = {
+            type: EffectType.DESTROY_RESOURCE,
+            target: TargetTypes.ALL_OPPONENTS,
+            strength: 1,
+            resourceType: Resource.BAMBOO,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Destroy 1 of all opponents' [Bamboo] resources`
+        );
+    });
+
+    it('displays rules destroying a resource (any type)', () => {
+        const effect: Effect = {
+            type: EffectType.DESTROY_RESOURCE,
+            strength: 1,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Destroy 1 of any opponent's resources at random`
+        );
+    });
+
     it('displays rules for dealing damage', () => {
         const effect: Effect = {
             type: EffectType.DEAL_DAMAGE,
@@ -303,7 +325,8 @@ describe('transformEffectstoRulesText', () => {
             `Revive all units in your cemetery`
         );
     });
-    it('displays rules for ramping water', () => {
+
+    it('displays rules for summoning units', () => {
         const effect: Effect = {
             type: EffectType.SUMMON_UNITS,
             strength: 2,
@@ -311,6 +334,18 @@ describe('transformEffectstoRulesText', () => {
         };
         expect(transformEffectToRulesText(effect)).toEqual(
             `Summon 2 Demons - 1 ⚔️ 1 💙`
+        );
+    });
+
+    it('displays rules for summoning units', () => {
+        const effect: Effect = {
+            type: EffectType.SUMMON_UNITS,
+            strength: 2,
+            target: TargetTypes.OPPONENT,
+            summonType: Tokens.DEMON,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Summon 2 Demons - 1 ⚔️ 1 💙 for any opponent`
         );
     });
 });
