@@ -201,6 +201,30 @@ describe('resolve effect', () => {
     });
 
     describe('Buff units', () => {
+        it('buffs magic units on your board', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const cannon = makeCard(UnitCards.CANNON);
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[0].units = [squire, cannon, apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_MAGIC,
+                        strength: 2,
+                    },
+                    unitCardIds: [apprentice.id, cannon.id],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[1].attackBuff).toEqual(0);
+            expect(newBoard.players[0].units[1].hpBuff).toEqual(0);
+            expect(newBoard.players[0].units[2].attackBuff).toEqual(2);
+            expect(newBoard.players[0].units[2].hpBuff).toEqual(2);
+        });
+
         it('buffs attack of non-magic units on your board', () => {
             const squire = makeCard(UnitCards.SQUIRE);
             const cannon = makeCard(UnitCards.CANNON);
