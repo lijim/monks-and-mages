@@ -286,6 +286,29 @@ const FIRE_TECHNICIAN: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const PYROCALLER: UnitCard = makeCard({
+    name: 'Pyrocaller',
+    imgSrc: 'https://images.pexels.com/photos/9553065/pexels-photo-9553065.jpeg',
+    cost: {
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 2,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const MYSTICAL_FIGURE: UnitCard = makeCard({
     name: 'Mystical Figure',
     imgSrc: 'https://images.pexels.com/photos/5551875/pexels-photo-5551875.jpeg',
@@ -1218,6 +1241,28 @@ const NOVICE_ASTRONOMER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const ENERGY_ENHANCER: UnitCard = makeCard({
+    name: 'Energy Enhancer',
+    imgSrc: 'https://images.pexels.com/photos/4646238/pexels-photo-4646238.jpeg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_MAGIC,
+            strength: 2,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const QUARRY_WORKER: UnitCard = makeCard({
     name: 'Quarry Worker',
     imgSrc: 'https://images.unsplash.com/photo-1623438803816-1f7456b240fa',
@@ -1311,6 +1356,30 @@ const IRONSMITH: UnitCard = makeCard({
             type: EffectType.BUFF_HAND_ATTACK,
             strength: 1,
             target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const BANISHER_OF_MAGIC: UnitCard = makeCard({
+    name: 'Banisher of Magic',
+    imgSrc: 'https://images.pexels.com/photos/9589475/pexels-photo-9589475.jpeg',
+    cost: {
+        [Resource.GENERIC]: 2,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_MAGIC,
+            strength: -3,
+            target: TargetTypes.UNIT,
         },
     ],
     totalHp: 2,
@@ -1721,6 +1790,7 @@ export const UnitCards = {
     MAGICIANS_APPRENTICE,
     // FIRE
     FIRE_TECHNICIAN,
+    PYROCALLER,
     MYSTICAL_FIGURE,
     ZEALOUS_ACOLYTE,
     FIRE_MAGE,
@@ -1766,10 +1836,12 @@ export const UnitCards = {
     PASTURE_EXPLORER,
     RELAXED_ROWBOATER,
     NOVICE_ASTRONOMER,
+    ENERGY_ENHANCER,
     QUARRY_WORKER,
     TEMPLE_DEVOTEE,
     ELITE_WEAPONS_MASTER,
     IRONSMITH,
+    BANISHER_OF_MAGIC,
     // SAHARAN
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,

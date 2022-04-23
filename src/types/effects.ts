@@ -30,6 +30,7 @@ export const AutoResolvingTargets = [
 export enum EffectType {
     BOUNCE = 'Bounce', // to any target
     BUFF_HAND_ATTACK = 'Buff hand attack', // buffs all creatures in hand
+    BUFF_MAGIC = 'Buff magic unit',
     BUFF_TEAM_ATTACK = 'Buff team attack', // increases all attack for non-magic units
     BUFF_TEAM_HP = 'Buff team hp', // increases maxHp and hp for whole team
     BUFF_TEAM_MAGIC = 'Buff team magic', // increases attack for magic-units
@@ -58,6 +59,7 @@ export const getDefaultTargetForEffect = (
     return {
         [EffectType.BOUNCE]: TargetTypes.UNIT,
         [EffectType.BUFF_HAND_ATTACK]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_MAGIC]: TargetTypes.UNIT,
         [EffectType.BUFF_TEAM_ATTACK]: TargetTypes.SELF_PLAYER,
         [EffectType.BUFF_TEAM_HP]: TargetTypes.SELF_PLAYER,
         [EffectType.BUFF_TEAM_MAGIC]: TargetTypes.SELF_PLAYER,

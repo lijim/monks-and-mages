@@ -160,6 +160,16 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.BUFF_MAGIC: {
+            unitTargets.forEach(({ unitCard }) => {
+                if (!unitCard.isMagical) return;
+                unitCard.hpBuff += effectStrength;
+                unitCard.attackBuff += effectStrength;
+            });
+            // in case debuffing causes units to go to cemtery
+            processBoardToCemetery(clonedBoard, addSystemChat);
+            return clonedBoard;
+        }
         case EffectType.BUFF_HAND_ATTACK: {
             playerTargets.forEach((player) => {
                 player.hand.forEach((card) => {

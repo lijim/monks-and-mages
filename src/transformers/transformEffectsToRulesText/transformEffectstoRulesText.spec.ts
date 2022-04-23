@@ -35,6 +35,28 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    describe('Buff Magic', () => {
+        it('displays rules for buffing a magic unit', () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_MAGIC,
+                strength: 5,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase attack/HP of any unit by 5 if it is magical`
+            );
+        });
+
+        it('displays rules for debuffing a magic unit', () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_MAGIC,
+                strength: -5,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease attack/HP of any unit by 5 if it is magical`
+            );
+        });
+    });
+
     it('displays rules for buffing your hand (attack)', () => {
         const effect: Effect = {
             type: EffectType.BUFF_HAND_ATTACK,
