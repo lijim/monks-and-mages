@@ -161,5 +161,4 @@ describe('DeckBuilder', () => {
 
         expect(within(myDeck).getByText('Lancer')).toBeInTheDocument();
     });
-    it.todo('errors for not enough cards in a deck');
 });
