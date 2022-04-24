@@ -835,6 +835,30 @@ const DRAGON_MIST_WARRIOR: UnitCard = makeCard({
     passiveEffects: [PassiveEffect.QUICK],
 });
 
+const AMPHIBIOUS_SHINOBI: UnitCard = makeCard({
+    name: 'Amphibious Shinobi',
+    imgSrc: 'https://images.pexels.com/photos/5971353/pexels-photo-5971353.jpeg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.WATER]: 1,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+    ],
+    totalHp: 3,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [PassiveEffect.QUICK],
+});
+
 const WARRIOR_OF_THE_LAKE: UnitCard = makeCard({
     name: 'Warrior of the Lake',
     imgSrc: 'https://images.pexels.com/photos/6848161/pexels-photo-6848161.jpeg',
@@ -1367,6 +1391,30 @@ const IRONSMITH: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const GARGOYLE: UnitCard = makeCard({
+    name: 'Gargoyle',
+    imgSrc: '/images/units/gargoyle.avif',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_MAGIC,
+            strength: -1,
+            target: TargetTypes.UNIT,
+        },
+    ],
+    totalHp: 3,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const BANISHER_OF_MAGIC: UnitCard = makeCard({
     name: 'Banisher of Magic',
     imgSrc: 'https://images.pexels.com/photos/9589475/pexels-photo-9589475.jpeg',
@@ -1384,6 +1432,23 @@ const BANISHER_OF_MAGIC: UnitCard = makeCard({
     ],
     totalHp: 2,
     attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const GENEROUS_BUDDHA: UnitCard = makeCard({
+    name: 'Generous Buddha',
+    imgSrc: 'https://images.pexels.com/photos/2810269/pexels-photo-2810269.jpeg',
+    cost: {
+        [Resource.GENERIC]: 5,
+    },
+    description: 'Attention is the rarest and purest form of generosity',
+    enterEffects: [],
+    totalHp: 5,
+    attack: 5,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
@@ -1811,6 +1876,7 @@ export const UnitCards = {
     SWORDS_MASTER,
     SQUIRE,
     MARTIAL_TRAINER,
+    AMPHIBIOUS_SHINOBI,
     DRAGON_MIST_WARRIOR,
     VILLAGE_DEFENDER,
     WARRIOR_OF_THE_LAKE,
@@ -1841,7 +1907,9 @@ export const UnitCards = {
     TEMPLE_DEVOTEE,
     ELITE_WEAPONS_MASTER,
     IRONSMITH,
+    GARGOYLE,
     BANISHER_OF_MAGIC,
+    GENEROUS_BUDDHA,
     // SAHARAN
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,

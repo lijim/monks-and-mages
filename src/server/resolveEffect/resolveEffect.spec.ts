@@ -727,6 +727,21 @@ describe('resolve effect', () => {
                 Resource.CRYSTAL
             );
         });
+
+        it('comes in tapped', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RAMP,
+                        strength: 1,
+                        resourceType: Resource.CRYSTAL,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].resources[0].isUsed).toBe(true);
+        });
     });
 
     describe('Return from cemetery', () => {
