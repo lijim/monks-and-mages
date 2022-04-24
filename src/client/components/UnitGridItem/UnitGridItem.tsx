@@ -41,6 +41,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         attack,
         attackBuff,
         cost,
+        description = 'ipsem lorum description',
         enterEffects,
         hp,
         hpBuff,
@@ -87,7 +88,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 shouldFade={passiveEffects.length + enterEffects.length === 0}
             >
                 {passiveEffects.length + enterEffects.length === 0 && (
-                    <i>ipsem lorum description</i>
+                    <i>{description}</i>
                 )}
                 {passiveEffects.map((effect) => (
                     <div key={effect}>{effect}</div>
