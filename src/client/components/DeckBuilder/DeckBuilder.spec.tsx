@@ -1,7 +1,17 @@
 import React from 'react';
 import { push } from 'redux-first-history';
-import { fireEvent, render, screen, within } from '@/test-utils';
+import {
+    fireEvent,
+    render,
+    screen,
+    waitForElementToBeRemoved,
+    within,
+} from '@/test-utils';
 import { DeckBuilder } from './DeckBuilder';
+import { UnitCards } from '@/cardDb/units';
+import { SpellCards } from '@/cardDb/spells';
+import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
+import { MatchStrategy } from '@/types/deckBuilder';
 
 describe('DeckBuilder', () => {
     beforeAll(() => {
@@ -160,5 +170,107 @@ describe('DeckBuilder', () => {
         const myDeck = screen.getByTestId('MyDeck');
 
         expect(within(myDeck).getByText('Lancer')).toBeInTheDocument();
+    });
+
+    describe('Search filters', () => {
+        it('searches by free text on card titles', () => {
+            render(<DeckBuilder />, { useRealDispatch: true });
+            const searchBar = screen.getByTestId('Filters-FreeText');
+            fireEvent.change(searchBar, { target: { value: 'star' } });
+            expect(screen.queryByText(UnitCards.LANCER.name)).toBeNull();
+            expect(
+                screen.getByText(SpellCards.STARRY_ILLUSION.name)
+            ).toBeInTheDocument();
+        });
+
+        it.todo('searches by free text on rules text (case insensitive)');
+
+        it('clears the free text search field', () => {
+            render(<DeckBuilder />, { useRealDispatch: true });
+            const searchBar = screen.getByTestId('Filters-FreeText');
+            fireEvent.change(searchBar, { target: { value: 'star' } });
+            fireEvent.click(screen.getByText('Clear'));
+            expect(
+                screen.queryByText(UnitCards.LANCER.name)
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(SpellCards.STARRY_ILLUSION.name)
+            ).toBeInTheDocument();
+        });
+
+        it('searches by colors (exactly)', () => {
+            render(<DeckBuilder />, { useRealDispatch: true });
+
+            fireEvent.change(
+                screen.getByTestId('Filters-ResourcesMatchStrategy'),
+                {
+                    target: {
+                        value: MatchStrategy.EXACT,
+                    },
+                }
+            );
+            fireEvent.click(screen.getByTestId('Filters-Resources-Iron'));
+            fireEvent.click(screen.getByTestId('Filters-Resources-Bamboo'));
+
+            expect(
+                screen.queryByText(UnitCards.LANCER.name)
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(UnitCards.DRAGON_MIST_WARRIOR.name)
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(AdvancedResourceCards.TANGLED_RUINS.name)
+            ).toBeInTheDocument();
+        });
+
+        it('searches by colors (strictly)', () => {
+            render(<DeckBuilder />, { useRealDispatch: true });
+
+            fireEvent.change(
+                screen.getByTestId('Filters-ResourcesMatchStrategy'),
+                {
+                    target: {
+                        value: MatchStrategy.STRICT,
+                    },
+                }
+            );
+            fireEvent.click(screen.getByTestId('Filters-Resources-Iron'));
+            fireEvent.click(screen.getByTestId('Filters-Resources-Bamboo'));
+
+            expect(
+                screen.queryByText(UnitCards.LANCER.name)
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(UnitCards.DRAGON_MIST_WARRIOR.name)
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(AdvancedResourceCards.TANGLED_RUINS.name)
+            ).toBeInTheDocument();
+        });
+
+        it('searches by colors (loosely)', () => {
+            render(<DeckBuilder />, { useRealDispatch: true });
+
+            fireEvent.change(
+                screen.getByTestId('Filters-ResourcesMatchStrategy'),
+                {
+                    target: {
+                        value: MatchStrategy.LOOSE,
+                    },
+                }
+            );
+            fireEvent.click(screen.getByTestId('Filters-Resources-Iron'));
+            fireEvent.click(screen.getByTestId('Filters-Resources-Bamboo'));
+
+            expect(
+                screen.queryByText(UnitCards.LANCER.name)
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(UnitCards.DRAGON_MIST_WARRIOR.name)
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(AdvancedResourceCards.TANGLED_RUINS.name)
+            ).toBeInTheDocument();
+        });
     });
 });
