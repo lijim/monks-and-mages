@@ -7,6 +7,7 @@ import { Resource } from '@/types/resources';
 import { makeCard } from '@/factories/cards';
 import { UnitCards } from '@/cardDb/units';
 import { SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
+import { PlayerConstants } from '@/constants/gameConstants';
 
 describe('Player Brief Info', () => {
     it('renders the player name', () => {
@@ -18,7 +19,9 @@ describe('Player Brief Info', () => {
     it('renders the health bar', () => {
         const player = makeNewPlayer('Grandma Jenkins', SAMPLE_DECKLIST_1);
         render(<PlayerBriefInfo player={player} />);
-        expect(screen.getByText('15')).toBeInTheDocument();
+        expect(
+            screen.getByText(PlayerConstants.STARTING_HEALTH)
+        ).toBeInTheDocument();
     });
 
     it('renders the remaining cards / size of hand', () => {

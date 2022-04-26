@@ -1,4 +1,5 @@
 import { SAMPLE_DECKLIST_2 } from '@/constants/deckLists';
+import { PlayerConstants } from '@/constants/gameConstants';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { Skeleton } from '@/types/cards';
 import { makeDeck } from '../deck';
@@ -8,9 +9,13 @@ describe('Make New Board', () => {
     it('makes a new board with players', () => {
         const board = makeNewBoard({ playerNames: ['Hal', 'Orin'] });
         expect(board.players[0].name).toEqual('Hal');
-        expect(board.players[0].health).toEqual(15);
+        expect(board.players[0].health).toEqual(
+            PlayerConstants.STARTING_HEALTH
+        );
         expect(board.players[1].name).toEqual('Orin');
-        expect(board.players[1].health).toEqual(15);
+        expect(board.players[1].health).toEqual(
+            PlayerConstants.STARTING_HEALTH
+        );
     });
 
     it('makes a new board with preferred starting decks', () => {
