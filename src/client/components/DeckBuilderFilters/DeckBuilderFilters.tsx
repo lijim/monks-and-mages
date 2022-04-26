@@ -62,6 +62,7 @@ export const ResourceFilter: React.FC = () => {
                             }}
                             style={{ cursor: 'pointer' }}
                             data-testid={`Filters-Resources-${r}`}
+                            tabIndex={0}
                         >
                             {RESOURCE_GLOSSARY[r].icon}
                         </CastingCostFrame>

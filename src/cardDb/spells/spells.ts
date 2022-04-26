@@ -25,6 +25,19 @@ const EMBER_SPEAR = makeCard({
     ],
 });
 
+const INCINERATION = makeCard({
+    name: 'Incineration',
+    imgSrc: 'https://images.pexels.com/photos/3912408/pexels-photo-3912408.jpeg',
+    cost: { [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            target: TargetTypes.PLAYER,
+        },
+    ],
+});
+
 const LIGHTNING_SLICK = makeCard({
     name: 'Lightning Slick',
     imgSrc: 'https://images.unsplash.com/photo-1626329473491-59bb128e31e9',
@@ -61,6 +74,37 @@ const CURSE_HAND = makeCard({
     ],
 });
 
+const BEND_AND_SCORCH = makeCard({
+    name: 'Bend and Scorch',
+    imgSrc: 'https://images.pexels.com/photos/10556435/pexels-photo-10556435.jpeg',
+    cost: { [Resource.FIRE]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 4,
+            target: TargetTypes.ALL_PLAYERS,
+        },
+    ],
+});
+
+const FIRE_CEREMONY = makeCard({
+    name: 'Fire Ceremony',
+    imgSrc: 'https://images.pexels.com/photos/3646749/pexels-photo-3646749.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+    cost: { [Resource.FIRE]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.BUFF_MAGIC,
+            strength: 1,
+            target: TargetTypes.UNIT,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+            target: TargetTypes.OPPONENT,
+        },
+    ],
+});
+
 const BRUSH_FIRE = makeCard({
     name: 'Brush Fire',
     imgSrc: 'https://images.pexels.com/photos/51951/forest-fire-fire-smoke-conservation-51951.jpeg',
@@ -89,6 +133,24 @@ const CHANNEL_SPARKS = makeCard({
             type: EffectType.DEAL_DAMAGE,
             strength: 3,
             target: TargetTypes.ANY,
+        },
+    ],
+});
+
+const STRIKE_TWICE = makeCard({
+    name: 'Strike Twice',
+    imgSrc: 'https://images.pexels.com/photos/10826067/pexels-photo-10826067.jpeg',
+    cost: { [Resource.FIRE]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+            target: TargetTypes.ANY,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+            target: TargetTypes.OPPONENT,
         },
     ],
 });
@@ -151,6 +213,19 @@ const OASIS_RITUAL = makeCard({
             type: EffectType.HEAL,
             target: TargetTypes.SELF_PLAYER,
             strength: 2,
+        },
+    ],
+});
+
+const STIR = makeCard({
+    name: 'Stir',
+    imgSrc: 'https://images.pexels.com/photos/358457/pexels-photo-358457.jpeg',
+    cost: { [Resource.WATER]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+            target: TargetTypes.ALL_PLAYERS,
         },
     ],
 });
@@ -228,6 +303,23 @@ const CONSTANT_REFILL = makeCard({
         {
             type: EffectType.DRAW,
             strength: 4,
+        },
+    ],
+});
+
+const PIERCE_THE_HEAVENS = makeCard({
+    name: 'Pierce the Heavens',
+    imgSrc: 'https://images.pexels.com/photos/4666754/pexels-photo-4666754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    cost: { [Resource.WATER]: 4, [Resource.GENERIC]: 3 },
+    effects: [
+        {
+            type: EffectType.BOUNCE,
+            target: TargetTypes.ALL_UNITS,
+        },
+        {
+            type: EffectType.SUMMON_UNITS,
+            summonType: Tokens.SHARK,
+            strength: 2,
         },
     ],
 });
@@ -516,6 +608,17 @@ const RAIN_OF_ARROWS = makeCard({
     ],
 });
 
+const TEAM_GATHERING = makeCard({
+    name: 'Team Gathering',
+    imgSrc: 'https://images.pexels.com/photos/2152958/pexels-photo-2152958.jpeg',
+    cost: { [Resource.BAMBOO]: 2, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.DRAW_PER_UNIT,
+        },
+    ],
+});
+
 const SUMMON_THE_CROWS = makeCard({
     name: 'Summon the Crows',
     imgSrc: 'https://images.pexels.com/photos/3213357/pexels-photo-3213357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
@@ -545,6 +648,25 @@ const CONCENTRATED_FOCUS = makeCard({
     imgSrc: 'https://images.pexels.com/photos/11331536/pexels-photo-11331536.jpeg',
     cost: { [Resource.BAMBOO]: 1, [Resource.IRON]: 1 },
     effects: [{ type: EffectType.BUFF_HAND_ATTACK, strength: 3 }],
+});
+
+// Genies
+const SIGNAL_BEACON = makeCard({
+    name: 'Signal Beacon',
+    imgSrc: 'https://images.unsplash.com/photo-1531804308561-b6438d25a810',
+    cost: { [Resource.IRON]: 1, [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
+            strength: 1,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'DISTORT_REALITY',
+            strength: 1,
+        },
+    ],
 });
 
 // Cannon
@@ -581,6 +703,40 @@ const SPARK_JOY = makeCard({
 });
 
 // 4-color
+const QUESTION_REALITY = makeCard({
+    name: 'Question Reality',
+    imgSrc: 'https://images.pexels.com/photos/5023641/pexels-photo-5023641.jpeg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 1,
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            target: TargetTypes.ALL_UNITS,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            target: TargetTypes.ALL_PLAYERS,
+        },
+        {
+            type: EffectType.DISCARD_HAND,
+            strength: 3,
+            target: TargetTypes.ALL_PLAYERS,
+        },
+        {
+            type: EffectType.HEAL,
+            strength: 3,
+            target: TargetTypes.ALL_UNITS,
+        },
+    ],
+});
+
 const CALL_THE_HERD = makeCard({
     name: 'Call the Herd',
     imgSrc: 'https://images.pexels.com/photos/3231998/pexels-photo-3231998.jpeg',
@@ -640,6 +796,24 @@ const POLYMORPH_FROG = makeCard({
 });
 
 // Pirates
+const RAISE_THE_MASTS = makeCard({
+    name: 'Raise the Masts',
+    imgSrc: 'https://images.pexels.com/photos/237781/pexels-photo-237781.jpeg',
+    cost: { [Resource.WATER]: 1, [Resource.IRON]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+            strength: 1,
+        },
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 3,
+        },
+    ],
+});
+
 const WRECK_SHIPS = makeCard({
     name: 'Wreck ships',
     imgSrc: 'https://cdn.pixabay.com/photo/2017/05/01/12/24/ship-2275399_1280.jpg',
@@ -661,21 +835,27 @@ const WRECK_SHIPS = makeCard({
 export const SpellCards = {
     // Fire
     EMBER_SPEAR,
+    INCINERATION,
     LIGHTNING_SLICK,
     CURSE_HAND,
+    BEND_AND_SCORCH,
+    FIRE_CEREMONY,
     BRUSH_FIRE,
     CHANNEL_SPARKS,
+    STRIKE_TWICE,
     SUMMON_DEMONS,
     VOLCANIC_INFERNO,
 
     // Water
     BUBBLE_BLAST,
     OASIS_RITUAL,
+    STIR,
     GENEROUS_GEYSER,
     CONSTANT_REFILL,
     RAGING_WHIRLPOOL,
     SUMMON_SHARKS,
     REFLECTION_OPPORTUNITY,
+    PIERCE_THE_HEAVENS,
 
     // Wind
     A_GENTLE_GUST,
@@ -702,11 +882,15 @@ export const SpellCards = {
     FEED_TEAM,
     SPRING_IN_BLOOM,
     RAIN_OF_ARROWS,
+    TEAM_GATHERING,
     SUMMON_THE_CROWS,
 
     // Monks
     FISH_MARKET_VISIT,
     CONCENTRATED_FOCUS,
+
+    // Genies
+    SIGNAL_BEACON,
 
     // Cannon
     IGNITE_SPARKS,
@@ -716,8 +900,10 @@ export const SpellCards = {
     POLYMORPH_FROG,
 
     // Pirates
+    RAISE_THE_MASTS,
     WRECK_SHIPS,
 
     // Multi-color misc.
+    QUESTION_REALITY,
     CALL_THE_HERD,
 };

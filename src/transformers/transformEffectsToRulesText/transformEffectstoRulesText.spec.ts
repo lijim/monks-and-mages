@@ -64,7 +64,7 @@ describe('transformEffectstoRulesText', () => {
             strength: 5,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase attack of units in your hand by 5`
+            `Increase attack of non-magical units in your hand by 5`
         );
     });
 
