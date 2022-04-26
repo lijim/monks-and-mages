@@ -22,6 +22,9 @@ import { WebSocketContext } from '../WebSockets';
 import { RootState } from '@/client/redux/store';
 import { isDeckValidForFormat } from '@/transformers/isDeckValidForFomat';
 import { Colors } from '@/constants/colors';
+import { DeckBuilderFilters } from '../DeckBuilderFilters';
+import { filterCards } from '@/transformers/filterCards';
+import { Filters } from '@/types/deckBuilder';
 
 const DeckListContainers = styled.div`
     display: grid;
@@ -64,6 +67,9 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     );
     const dispatch = useDispatch();
     const fileInputEl = useRef<HTMLInputElement>(null);
+    const filters = useSelector<RootState, Filters>(
+        (state) => state.deckBuilderFilters
+    );
 
     useEffect(() => {
         if (skeleton) {
@@ -174,8 +180,9 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
             </TopNavBar>
             <DeckListContainers>
                 <DeckListBackDrop data-testid="CardPool">
+                    <DeckBuilderFilters />
                     <CompactDeckList
-                        deck={cardPool}
+                        deck={filterCards(cardPool, filters)}
                         shouldShowQuantity={false}
                         onClickCard={addCard}
                     />

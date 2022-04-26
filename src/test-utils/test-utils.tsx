@@ -28,7 +28,7 @@ type ReduxRenderOptions = {
     preloadedState?: Partial<RootState>;
     renderOptions?: Omit<RenderOptions, 'wrapper'>;
     store?: EnhancedStore; // for redux-toolkit
-    // store?: Store // for non-toolkit
+    useRealDispatch?: boolean;
 };
 
 interface WebSocketContextMockProviderProps {
@@ -63,7 +63,11 @@ interface RenderValue {
 // incorporate redux state into tests
 export function render(
     ui: ReactElement,
-    { preloadedState = {}, ...renderOptions }: ReduxRenderOptions = {}
+    {
+        preloadedState = {},
+        useRealDispatch = false,
+        ...renderOptions
+    }: ReduxRenderOptions = {}
 ): RenderValue {
     const originalHistory = createBrowserHistory();
 
@@ -87,8 +91,9 @@ export function render(
         routerMiddleware
     );
 
-    store.dispatch = jest.fn();
-
+    if (!useRealDispatch) {
+        store.dispatch = jest.fn();
+    }
     const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
 
     const mockWebSocket = {
@@ -136,5 +141,8 @@ export {
     screen,
     fireEvent,
     waitFor,
+    waitForElementToBeRemoved,
     within,
 } from '@testing-library/react';
+// eslint-disable-next-line import/no-extraneous-dependencies
+export { default as userEvent } from '@testing-library/user-event';

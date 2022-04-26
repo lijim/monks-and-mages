@@ -8,6 +8,7 @@ import { lobbyReducer } from './lobby';
 import { userReducer, userSlice } from './user';
 import { clientSideGameExtrasReducer } from './clientSideGameExtras';
 import { deckListReducer, deckListSlice } from './deckList';
+import { deckBuilderFiltersReducer } from './deckBuilderFilters';
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
     createReduxHistoryContext({
@@ -18,6 +19,7 @@ export const createRootReducer = () =>
     combineReducers({
         board: boardReducer,
         clientSideGameExtras: clientSideGameExtrasReducer,
+        deckBuilderFilters: deckBuilderFiltersReducer,
         deckList: deckListReducer,
         router: routerReducer,
         lobby: lobbyReducer,

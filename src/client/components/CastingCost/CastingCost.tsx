@@ -17,6 +17,7 @@ interface CastingCostProps {
 interface CastingCostFrameProps {
     hasNoMargin?: boolean;
     isGenericIncreased?: boolean;
+    isMuted?: boolean;
     shouldCollapseLeft?: boolean;
 }
 
@@ -26,6 +27,7 @@ export const CastingCostFrame = styled.span<CastingCostFrameProps>`
     border-radius: 100%;
     ${({ isGenericIncreased }) =>
         isGenericIncreased ? `color: ${Colors.DEBUFF_RED};` : ''}
+    ${({ isMuted }) => (isMuted ? `opacity: .7;` : '')}
     width: 20px;
     height: 20px;
     display: inline-grid;
