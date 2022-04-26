@@ -72,7 +72,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             } hand`;
         }
         case EffectType.BUFF_HAND_ATTACK: {
-            return `Increase attack of units in your hand by ${strength}`;
+            return `Increase attack of non-magical units in your hand by ${strength}`;
         }
         case EffectType.BUFF_MAGIC: {
             if (strength < 0)

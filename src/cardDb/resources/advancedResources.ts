@@ -153,6 +153,37 @@ const TANGLED_RUINS = makeAdvancedResourceCard({
     ],
 });
 
+// Duals, heal lands
+const DIVINE_PALACE = makeAdvancedResourceCard({
+    name: 'Divine Palace',
+    resourceType: Resource.CRYSTAL,
+    secondaryResourceType: Resource.IRON,
+    imgSrc: 'https://images.unsplash.com/photo-1531213203257-16afb0eac95e', // https://www.pexels.com/photo/wood-landscape-art-building-7205915/
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
+const HEALING_PLAINS = makeAdvancedResourceCard({
+    name: 'Healing Plains',
+    resourceType: Resource.FIRE,
+    secondaryResourceType: Resource.BAMBOO,
+    imgSrc: 'https://images.pexels.com/photos/158738/tree-black-hope-outdoor-158738.jpeg', // https://www.pexels.com/photo/wood-landscape-art-building-7205915/
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
 // Utility lands
 const COASTAL_CASTLE = makeAdvancedResourceCard({
     name: 'Coastal Castle',
@@ -227,7 +258,21 @@ const HOLY_TEMPLE = makeAdvancedResourceCard({
     comesInTapped: true,
 });
 
+const TREACHEROUS_DESERT = makeAdvancedResourceCard({
+    name: 'Treacherous Desert',
+    resourceType: Resource.GENERIC,
+    imgSrc: 'https://images.pexels.com/photos/273935/pexels-photo-273935.jpeg',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ALL_PLAYERS,
+        },
+    ],
+});
+
 export const AdvancedResourceCards = {
+    // Duals - pain
     STRATOVOLCANO,
     SEASIDE_COVE,
     BLACK_MARSH,
@@ -239,8 +284,13 @@ export const AdvancedResourceCards = {
     HARBOR_TOWN,
     TANGLED_RUINS,
     COASTAL_CASTLE,
+    // Duals - heal
+    DIVINE_PALACE,
+    HEALING_PLAINS,
+    // Utility - mono
     BAMBOO_FOOTBRIDGE,
     STARGAZERS_POINT,
     SLAG_FIELDS,
     HOLY_TEMPLE,
+    TREACHEROUS_DESERT,
 };

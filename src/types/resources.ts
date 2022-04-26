@@ -27,7 +27,7 @@ type GlossaryEntry = {
 
 export const RESOURCE_GLOSSARY: Record<Resource, GlossaryEntry> = {
     [Resource.GENERIC]: {
-        icon: '⚫',
+        icon: '1',
         name: 'Generic',
         primaryColor: '#050426',
     },

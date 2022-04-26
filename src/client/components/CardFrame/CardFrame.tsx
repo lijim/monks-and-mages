@@ -89,7 +89,6 @@ export const CardImageContainer = styled.div`
     margin-bottom: 4px;
     place-content: center;
     height: auto;
-    max-height: 180px;
     overflow: hidden;
 `;
 

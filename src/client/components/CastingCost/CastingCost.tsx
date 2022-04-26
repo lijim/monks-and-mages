@@ -22,6 +22,7 @@ interface CastingCostFrameProps {
 }
 
 export const CastingCostFrame = styled.span<CastingCostFrameProps>`
+    color: white;
     background: rgb(100, 100, 100);
     border: 1px solid rgb(255, 255, 255);
     border-radius: 100%;

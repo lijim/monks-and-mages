@@ -38,6 +38,7 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
             onClick={onClick}
             tabIndex={0}
             zoomLevel={zoomLevel}
+            shouldShowTallImage
             className="CardFrame"
         >
             <CardHeader>

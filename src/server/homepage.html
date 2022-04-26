@@ -28,7 +28,8 @@
                 if (
                     event.key === 'Enter' &&
                     document.activeElement instanceof HTMLElement &&
-                    document.activeElement.tagName.toLowerCase() === 'div'
+                    (document.activeElement.tagName.toLowerCase() === 'div' || 
+                    document.activeElement.tagName.toLowerCase() === 'span')
                 ) {
                     document.activeElement.click();
                 }
