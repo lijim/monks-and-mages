@@ -20,6 +20,16 @@ export const payForCard = (
 
     let costLeftForGeneric = cost[Resource.GENERIC] || 0;
 
+    if (resourcePool.Generic > 0) {
+        const remainingForGeneric = Math.min(
+            costLeftForGeneric,
+            resourcePool.Generic
+        );
+
+        costLeftForGeneric -= remainingForGeneric;
+        resourcePool.Generic -= remainingForGeneric;
+    }
+
     ORDERED_RESOURCES.forEach((resource) => {
         if (resource === Resource.GENERIC) return;
         const resourceCost = cost[resource] || 0;
