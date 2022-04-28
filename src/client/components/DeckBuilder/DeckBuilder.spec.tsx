@@ -272,5 +272,39 @@ describe('DeckBuilder', () => {
                 screen.queryByText(AdvancedResourceCards.TANGLED_RUINS.name)
             ).toBeInTheDocument();
         });
+
+        it('filters by unit type', () => {
+            render(<DeckBuilder />, { useRealDispatch: true });
+
+            fireEvent.click(screen.getByText('⚔️'));
+            fireEvent.click(screen.getByText('🪄'));
+
+            // expect soldiers + magical units
+            expect(
+                screen.queryByText(UnitCards.LANCER.name)
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(UnitCards.DRAGON_MIST_WARRIOR.name)
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(UnitCards.MAGICIANS_APPRENTICE.name)
+            ).toBeInTheDocument();
+
+            // don't expect other unit types
+            expect(
+                screen.queryByText(UnitCards.PASTURE_EXPLORER.name)
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(UnitCards.LONGBOWMAN.name)
+            ).not.toBeInTheDocument();
+
+            // don't expect spells
+            expect(
+                screen.queryByText(AdvancedResourceCards.TANGLED_RUINS.name)
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(SpellCards.EMBER_SPEAR.name)
+            ).not.toBeInTheDocument();
+        });
     });
 });

@@ -1,3 +1,4 @@
+import { UnitType } from './cards';
 import { Resource } from './resources';
 
 // Using filter by resource as an example:
@@ -14,4 +15,5 @@ export type Filters = {
     freeText?: string;
     resourceMatchStrategy?: MatchStrategy;
     resources?: Resource[];
+    unitTypes?: UnitType[];
 };

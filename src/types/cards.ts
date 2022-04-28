@@ -72,6 +72,8 @@ export interface UnitCard extends UnitBase {
     numAttacksLeft: number;
 }
 
+export type UnitType = 'Magical' | 'Soldier' | 'Ranged' | 'None';
+
 export type SpellBase = {
     cost: PartialRecord<Resource, number>;
     effects: Effect[];

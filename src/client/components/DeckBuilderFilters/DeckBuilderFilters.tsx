@@ -4,6 +4,7 @@ import {
     searchFreeTextFilter,
     selectResourceMatchStrategy,
     toggleResourceFilter,
+    toggleUnitTypeFilter,
 } from '@/client/redux/deckBuilderFilters';
 import { AppDispatch, RootState } from '@/client/redux/store';
 import { Filters, MatchStrategy } from '@/types/deckBuilder';
@@ -13,6 +14,7 @@ import {
     RESOURCE_GLOSSARY,
 } from '@/types/resources';
 import { CastingCostFrame } from '../CastingCost';
+import { UnitType } from '@/types/cards';
 
 export const FreeTextFilters: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -56,7 +58,7 @@ export const ResourceFilter: React.FC = () => {
                         <CastingCostFrame
                             key={r}
                             hasNoMargin
-                            isMuted={resources.indexOf(r) === -1}
+                            isMuted={!resources.includes(r)}
                             onClick={() => {
                                 dispatch(toggleResourceFilter(r));
                             }}
@@ -89,6 +91,43 @@ export const ResourceFilter: React.FC = () => {
     );
 };
 
+const ALL_UNIT_TYPES: UnitType[] = ['Soldier', 'Ranged', 'Magical', 'None'];
+const UNIT_TYPE_SYMBOL: Record<UnitType, string> = {
+    Soldier: '⚔️',
+    Ranged: '🏹',
+    Magical: '🪄',
+    None: '🚫',
+};
+
+export const UnitTypeFilter: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const unitTypes = useSelector<RootState, UnitType[]>(
+        (state) => state.deckBuilderFilters.unitTypes
+    );
+
+    return (
+        <div>
+            <span style={{ zoom: 2, fontSize: '72%' }}>
+                {ALL_UNIT_TYPES.map((unitType) => (
+                    <CastingCostFrame
+                        key={unitType}
+                        hasNoMargin
+                        isMuted={!unitTypes.includes(unitType)}
+                        onClick={() => {
+                            dispatch(toggleUnitTypeFilter(unitType));
+                        }}
+                        style={{ cursor: 'pointer' }}
+                        data-testid={`Filters-UnitType-${unitType}`}
+                        tabIndex={0}
+                    >
+                        {UNIT_TYPE_SYMBOL[unitType]}
+                    </CastingCostFrame>
+                ))}
+            </span>
+        </div>
+    );
+};
+
 /**
  * Note: unit tests omitted temporarily in favor of an integration test on DeckBuilder
  * @returns Filters component for DeckBuilder
@@ -98,6 +137,7 @@ export const DeckBuilderFilters: React.FC = () => {
         <>
             <FreeTextFilters />
             <ResourceFilter />
+            <UnitTypeFilter />
         </>
     );
 };
