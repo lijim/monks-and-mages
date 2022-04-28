@@ -1356,7 +1356,7 @@ const SAMBAR_DEER: UnitCard = makeCard({
 
 const ALERT_FELINE: UnitCard = makeCard({
     name: 'Alert Feline',
-    imgSrc: '/images/units/gargoyle.avif',
+    imgSrc: 'https://images.pexels.com/photos/10140329/pexels-photo-10140329.jpeg',
     cost: {
         [Resource.GENERIC]: 1,
     },
