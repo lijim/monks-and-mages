@@ -28,7 +28,9 @@ export const canPlayerPayForCard = (
     });
 
     if (cost[Resource.GENERIC] && canCast) {
-        canCast = cost[Resource.GENERIC] <= remainingForGeneric;
+        canCast =
+            cost[Resource.GENERIC] <=
+            remainingForGeneric + (resourcePool[Resource.GENERIC] || 0);
     }
     return canCast;
 };
