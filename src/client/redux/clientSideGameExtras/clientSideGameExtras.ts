@@ -15,6 +15,9 @@ export const clientSideGameExtrasSlice = createSlice({
         selectAttackingUnit(state, action: PayloadAction<string>) {
             state.attackingUnit = action.payload;
         },
+        cancelAttackingUnit(state) {
+            state.attackingUnit = undefined;
+        },
         passTurn(state) {
             state.attackingUnit = undefined;
         },
@@ -27,5 +30,9 @@ export const clientSideGameExtrasSlice = createSlice({
 export const clientSideGameExtrasReducer: Reducer<ClientSideGameExtras> =
     clientSideGameExtrasSlice.reducer;
 
-export const { selectAttackingUnit, passTurn, performAttack } =
-    clientSideGameExtrasSlice.actions;
+export const {
+    selectAttackingUnit,
+    cancelAttackingUnit,
+    passTurn,
+    performAttack,
+} = clientSideGameExtrasSlice.actions;

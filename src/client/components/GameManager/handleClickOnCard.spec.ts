@@ -7,8 +7,9 @@ import { Resource } from '@/types/resources';
 import { handleClickOnCard } from './handleClickOnCard';
 import { ClientToServerEvents, ServerToClientEvents } from '@/types';
 import { GameActionTypes } from '@/types/gameActions';
-import { UnitCards } from '@/cardDb/units';
+import { UnitCards } from '@/mocks/units';
 import {
+    cancelAttackingUnit,
     performAttack,
     selectAttackingUnit,
 } from '@/client/redux/clientSideGameExtras';
@@ -132,6 +133,41 @@ describe('handle click on card', () => {
         });
 
         expect(socket.emit).toHaveBeenCalledTimes(0);
+    });
+
+    describe('Spells', () => {
+        it('casts a spell', () => {
+            const spellCard = makeCard(SpellCards.EMBER_SPEAR);
+            state.board.players[0].hand.push(spellCard);
+            state.board.players[0].resourcePool = { [Resource.FIRE]: 1 };
+
+            handleClickOnCard({
+                cardId: spellCard.id,
+                dispatch,
+                state,
+                socket,
+            });
+
+            expect(socket.emit).toHaveBeenCalledWith('takeGameAction', {
+                type: GameActionTypes.CAST_SPELL,
+                cardId: spellCard.id,
+            });
+        });
+
+        it('cancels attacks while spellcasting', () => {
+            const spellCard = makeCard(SpellCards.EMBER_SPEAR);
+            state.board.players[0].hand.push(spellCard);
+            state.board.players[0].resourcePool = { [Resource.FIRE]: 1 };
+
+            handleClickOnCard({
+                cardId: spellCard.id,
+                dispatch,
+                state,
+                socket,
+            });
+
+            expect(dispatch).toHaveBeenCalledWith(cancelAttackingUnit());
+        });
     });
 
     describe('Perform attack', () => {
