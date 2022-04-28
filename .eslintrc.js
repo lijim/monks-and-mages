@@ -32,6 +32,7 @@ module.exports = {
         semi: true,
       },
     ],
+    '@typescript-eslint/no-unused-vars': 'error',
     'typescript-sort-keys/interface': 'error',
     'typescript-sort-keys/string-enum': 'error',
     'import/prefer-default-export': 'off',
