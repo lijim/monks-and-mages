@@ -137,8 +137,21 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
             const { decklist, errors } = getDeckListFromSkeleton(
                 JSON.parse(txtBlob)
             );
-            if (!errors?.length) setMyDeck(decklist);
+            if (!errors?.length) {
+                setMyDeck(decklist);
+            } else {
+                // eslint-disable-next-line no-alert
+                window.alert(`Error found in decklist: ${errors[0]}`);
+            }
         } catch (error) {
+            if (error.name === 'SyntaxError') {
+                // eslint-disable-next-line no-alert
+                window.alert(
+                    'Deck list not supported - make sure it follows the latest ' +
+                        "format in files created by 'Download as a File' or " +
+                        'Copy to Clipboard'
+                );
+            }
             // eslint-disable-next-line no-console
             console.error(error);
         }

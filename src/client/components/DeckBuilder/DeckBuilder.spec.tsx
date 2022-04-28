@@ -1,12 +1,6 @@
 import React from 'react';
 import { push } from 'redux-first-history';
-import {
-    fireEvent,
-    render,
-    screen,
-    waitForElementToBeRemoved,
-    within,
-} from '@/test-utils';
+import { fireEvent, render, screen, waitFor, within } from '@/test-utils';
 import { DeckBuilder } from './DeckBuilder';
 import { UnitCards } from '@/cardDb/units';
 import { SpellCards } from '@/cardDb/spells';
@@ -96,6 +90,62 @@ describe('DeckBuilder', () => {
         fireEvent.click(screen.getByText('Import from Clipboard'));
 
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
+    });
+
+    it('alerts about improper import formats', async () => {
+        Object.assign(navigator, {
+            clipboard: {
+                readText: () => `Lancer: 1"`,
+            },
+        });
+
+        // eslint-disable-next-line no-console
+        const consoleError = console.error;
+        // eslint-disable-next-line no-console
+        console.error = jest.fn();
+        const windowAlert = window.alert;
+        window.alert = jest.fn();
+        render(<DeckBuilder />);
+
+        fireEvent.click(screen.getByText('Import from Clipboard'));
+
+        await waitFor(() =>
+            expect(window.alert).toHaveBeenCalledWith(
+                "Deck list not supported - make sure it follows the latest format in files created by 'Download as a File' or Copy to Clipboard"
+            )
+        );
+
+        // eslint-disable-next-line no-console
+        console.error = consoleError;
+        window.alert = windowAlert;
+    });
+
+    it('gives deck-specific import errors', async () => {
+        Object.assign(navigator, {
+            clipboard: {
+                readText: () => `[{"card":"LancerABC","quantity":1}]`,
+            },
+        });
+
+        // eslint-disable-next-line no-console
+        const consoleError = console.error;
+        // eslint-disable-next-line no-console
+        console.error = jest.fn();
+        const windowAlert = window.alert;
+        window.alert = jest.fn();
+        render(<DeckBuilder />);
+
+        fireEvent.click(screen.getByText('Import from Clipboard'));
+
+        await waitFor(() =>
+            expect(window.alert).toHaveBeenCalledWith(
+                'Error found in decklist: Could not read "LancerABC"'
+            )
+        );
+
+        // eslint-disable-next-line no-console
+        console.error = consoleError;
+        window.alert = windowAlert;
     });
 
     it('submits a deck', async () => {
