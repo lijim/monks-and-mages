@@ -3,3 +3,4 @@ import 'core-js';
 
 global.URL.createObjectURL = jest.fn();
 global.URL.revokeObjectURL = jest.fn();
+global.window === global;
