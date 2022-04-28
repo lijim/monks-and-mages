@@ -158,7 +158,7 @@ const DIVINE_PALACE = makeAdvancedResourceCard({
     name: 'Divine Palace',
     resourceType: Resource.CRYSTAL,
     secondaryResourceType: Resource.IRON,
-    imgSrc: 'https://images.unsplash.com/photo-1531213203257-16afb0eac95e', // https://www.pexels.com/photo/wood-landscape-art-building-7205915/
+    imgSrc: 'https://images.unsplash.com/photo-1531213203257-16afb0eac95e',
     enterEffects: [
         {
             type: EffectType.HEAL,
@@ -173,7 +173,22 @@ const HEALING_PLAINS = makeAdvancedResourceCard({
     name: 'Healing Plains',
     resourceType: Resource.FIRE,
     secondaryResourceType: Resource.BAMBOO,
-    imgSrc: 'https://images.pexels.com/photos/158738/tree-black-hope-outdoor-158738.jpeg', // https://www.pexels.com/photo/wood-landscape-art-building-7205915/
+    imgSrc: 'https://images.pexels.com/photos/158738/tree-black-hope-outdoor-158738.jpeg',
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
+const ROYAL_RESIDENCE = makeAdvancedResourceCard({
+    name: 'Royal Residence',
+    resourceType: Resource.WATER,
+    secondaryResourceType: Resource.BAMBOO,
+    imgSrc: 'https://images.pexels.com/photos/415708/pexels-photo-415708.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
     enterEffects: [
         {
             type: EffectType.HEAL,
@@ -287,6 +302,7 @@ export const AdvancedResourceCards = {
     // Duals - heal
     DIVINE_PALACE,
     HEALING_PLAINS,
+    ROYAL_RESIDENCE,
     // Utility - mono
     BAMBOO_FOOTBRIDGE,
     STARGAZERS_POINT,
