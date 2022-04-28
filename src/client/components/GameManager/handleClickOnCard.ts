@@ -13,6 +13,7 @@ import { CardType, UnitCard } from '@/types/cards';
 import { GameActionTypes } from '@/types/gameActions';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import {
+    cancelAttackingUnit,
     performAttack,
     selectAttackingUnit,
 } from '@/client/redux/clientSideGameExtras';
@@ -147,6 +148,7 @@ export const handleClickOnCard = ({
                 type: GameActionTypes.CAST_SPELL,
                 cardId,
             });
+            dispatch(cancelAttackingUnit());
         }
         return;
     }
