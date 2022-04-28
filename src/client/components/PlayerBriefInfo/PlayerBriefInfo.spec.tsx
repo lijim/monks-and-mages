@@ -46,4 +46,11 @@ describe('Player Brief Info', () => {
         expect(screen.getByText('🎋')).toBeInTheDocument();
         expect(screen.queryByText('🔥')).not.toBeInTheDocument();
     });
+
+    it('renders the generic resources', () => {
+        const player = makeNewPlayer('Grandma Jenkins', SAMPLE_DECKLIST_1);
+        player.resourcePool = { [Resource.GENERIC]: 1 };
+        render(<PlayerBriefInfo player={player} />);
+        expect(screen.getAllByText('1')).toHaveLength(1);
+    });
 });

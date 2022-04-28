@@ -108,13 +108,14 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
                             ([resource, quantity]) =>
                                 !!quantity && (
                                     <span key={resource}>
-                                        {quantity}
+                                        {resource !== Resource.GENERIC &&
+                                            quantity}
                                         <CastingCostFrame>
-                                            {
-                                                RESOURCE_GLOSSARY[
-                                                    resource as Resource
-                                                ].icon
-                                            }
+                                            {resource === Resource.GENERIC
+                                                ? quantity
+                                                : RESOURCE_GLOSSARY[
+                                                      resource as Resource
+                                                  ].icon}
                                         </CastingCostFrame>
                                     </span>
                                 )
