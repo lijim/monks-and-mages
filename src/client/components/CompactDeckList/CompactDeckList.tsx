@@ -1,4 +1,6 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
+import { usePopperTooltip } from 'react-popper-tooltip';
 import styled from 'styled-components';
 
 import { Card, CardType } from '@/types/cards';
@@ -10,6 +12,7 @@ import {
     getSecondaryColorForCard,
 } from '@/transformers/getColorForCard';
 import { RESOURCE_GLOSSARY } from '@/types/resources';
+import { CardGridSingleItem } from '../CardGridItem';
 
 interface CompactDeckListProps {
     deck: Card[];
@@ -64,6 +67,93 @@ const CostCell = styled.div`
     color: white;
 `;
 
+type MiniCardProps = {
+    card: Card;
+    onClickCard: (card: Card) => void;
+    quantity: number;
+    shouldShowQuantity: boolean;
+};
+
+const MiniCard: React.FC<MiniCardProps> = ({
+    card,
+    onClickCard,
+    quantity,
+    shouldShowQuantity,
+}) => {
+    const {
+        getArrowProps,
+        getTooltipProps,
+        setTooltipRef,
+        setTriggerRef,
+        visible,
+    } = usePopperTooltip({
+        trigger: ['focus', 'hover'],
+        placement: 'right',
+    });
+
+    const cardModifiedForTooltip =
+        card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;
+
+    return (
+        <>
+            <MiniCardFrame
+                hasOnClick={!!onClickCard}
+                primaryColor={getColorForCard(card)}
+                onClick={() => {
+                    onClickCard(card);
+                }}
+                tabIndex={0}
+                ref={setTriggerRef}
+            >
+                {shouldShowQuantity && (
+                    <QuantitySelector hasNoBorder quantity={quantity} />
+                )}
+                <div>
+                    <NameCell
+                        primaryColor={
+                            card.cardType === CardType.RESOURCE
+                                ? RESOURCE_GLOSSARY[card.resourceType]
+                                      .primaryColor
+                                : undefined
+                        }
+                        secondaryColor={getSecondaryColorForCard(card)}
+                    >
+                        {card.name}
+                    </NameCell>
+                </div>
+                {card.cardType !== CardType.RESOURCE && (
+                    <CostCell>
+                        <CastingCost
+                            cost={card.cost}
+                            originalCost={card.cost}
+                        />
+                    </CostCell>
+                )}
+            </MiniCardFrame>
+            {visible &&
+                createPortal(
+                    <div
+                        ref={setTooltipRef}
+                        {...getTooltipProps({
+                            className: 'tooltip-container',
+                        })}
+                    >
+                        <CardGridSingleItem
+                            isOnBoard={false}
+                            card={cardModifiedForTooltip}
+                        />
+                        <div
+                            {...getArrowProps({
+                                className: 'tooltip-arrow',
+                            })}
+                        />
+                    </div>,
+                    document.body
+                )}
+        </>
+    );
+};
+
 export const CompactDeckList: React.FC<CompactDeckListProps> = ({
     deck,
     onClickCard,
@@ -76,46 +166,13 @@ export const CompactDeckList: React.FC<CompactDeckListProps> = ({
                 <div key={pile.title}>
                     <h3>{pile.title}</h3>
                     {[...pile.cards.entries()].map(([card, quantity]) => (
-                        <MiniCardFrame
-                            hasOnClick={!!onClickCard}
-                            primaryColor={getColorForCard(card)}
+                        <MiniCard
+                            card={card}
+                            quantity={quantity}
+                            shouldShowQuantity={shouldShowQuantity}
+                            onClickCard={onClickCard}
                             key={card.name}
-                            onClick={() => {
-                                onClickCard(card);
-                            }}
-                            tabIndex={0}
-                        >
-                            {shouldShowQuantity && (
-                                <QuantitySelector
-                                    hasNoBorder
-                                    quantity={quantity}
-                                />
-                            )}
-                            <div>
-                                <NameCell
-                                    primaryColor={
-                                        card.cardType === CardType.RESOURCE
-                                            ? RESOURCE_GLOSSARY[
-                                                  card.resourceType
-                                              ].primaryColor
-                                            : undefined
-                                    }
-                                    secondaryColor={getSecondaryColorForCard(
-                                        card
-                                    )}
-                                >
-                                    {card.name}
-                                </NameCell>
-                            </div>
-                            {card.cardType !== CardType.RESOURCE && (
-                                <CostCell>
-                                    <CastingCost
-                                        cost={card.cost}
-                                        originalCost={card.cost}
-                                    />
-                                </CostCell>
-                            )}
-                        </MiniCardFrame>
+                        />
                     ))}
                 </div>
             ))}
