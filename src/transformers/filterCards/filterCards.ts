@@ -1,7 +1,8 @@
 import isEqual from 'lodash.isequal';
-import { Card, CardType } from '@/types/cards';
+import { Card, CardType, UnitType } from '@/types/cards';
 import { Filters, MatchStrategy } from '@/types/deckBuilder';
 import { ORDERED_RESOURCES, Resource } from '@/types/resources';
+import { getTypeForUnitCard } from '../getTypeForUnitCard';
 
 const cardMatchesText = (card: Card, text: string): boolean => {
     return card.name.toLowerCase().includes(text.toLowerCase());
@@ -26,6 +27,7 @@ const cardMatchesResources = (
     resourcesToMatch: Resource[],
     resourceMatchStrategy: MatchStrategy
 ) => {
+    if (resourcesToMatch.length === 0) return true;
     const resources = getResourcesForCard(card);
     switch (resourceMatchStrategy) {
         // all filtered resources match the card's resources exactly, 1 for 1
@@ -57,6 +59,12 @@ const cardMatchesResources = (
     }
 };
 
+const cardMatchesUnitTypes = (card: Card, unitTypes: UnitType[]): boolean => {
+    if (unitTypes.length === 0) return true;
+    if (card.cardType !== CardType.UNIT) return false;
+    return unitTypes.includes(getTypeForUnitCard(card));
+};
+
 /**
  * Note: unit tests omitted temporarily in favor of an integration test on DeckBuilder
  * @param cards - cards to filter
@@ -65,17 +73,18 @@ const cardMatchesResources = (
  */
 export const filterCards = (
     cards: Card[],
-    { freeText, resources, resourceMatchStrategy }: Filters
+    { freeText, resources, resourceMatchStrategy, unitTypes }: Filters
 ): Card[] => {
     const cardsFilteredByFreeText = freeText
-        ? cards.filter((c) => cardMatchesText(c, freeText))
+        ? cards.filter((card) => cardMatchesText(card, freeText))
         : cards;
 
-    const cardsFilteredByResource =
-        resources.length > 0
-            ? cardsFilteredByFreeText.filter((c) =>
-                  cardMatchesResources(c, resources, resourceMatchStrategy)
-              )
-            : cardsFilteredByFreeText;
-    return cardsFilteredByResource;
+    const cardsFilteredByResource = cardsFilteredByFreeText.filter((card) =>
+        cardMatchesResources(card, resources, resourceMatchStrategy)
+    );
+
+    const cardsFilteredByUnitType = cardsFilteredByResource.filter((card) =>
+        cardMatchesUnitTypes(card, unitTypes)
+    );
+    return cardsFilteredByUnitType;
 };

@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
 import { Filters, MatchStrategy } from '@/types/deckBuilder';
 import { Resource } from '@/types/resources';
+import { UnitType } from '@/types/cards';
 
 const initialState: Filters = {
     freeText: '',
     resources: [],
     resourceMatchStrategy: MatchStrategy.EXACT,
+    unitTypes: [],
 };
 
 export const deckBuilderFiltersSlice = createSlice({
@@ -35,6 +37,17 @@ export const deckBuilderFiltersSlice = createSlice({
         ) {
             state.resourceMatchStrategy = action.payload;
         },
+        toggleUnitTypeFilter(state, action: PayloadAction<UnitType>) {
+            if (state.unitTypes.indexOf(action.payload) > -1) {
+                // deselect the unit type
+                state.unitTypes = state.unitTypes.filter(
+                    (r) => r !== action.payload
+                );
+                return;
+            }
+            // select the unit type
+            state.unitTypes.push(action.payload);
+        },
     },
 });
 
@@ -46,4 +59,5 @@ export const {
     clearFreeTextFilter,
     toggleResourceFilter,
     selectResourceMatchStrategy,
+    toggleUnitTypeFilter,
 } = deckBuilderFiltersSlice.actions;
