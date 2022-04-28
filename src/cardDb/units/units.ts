@@ -1459,8 +1459,8 @@ const NOVICE_ASTRONOMER: UnitCard = makeCard({
     totalHp: 1,
     attack: 0,
     numAttacks: 1,
-    isRanged: false,
-    isMagical: false,
+    isRanged: true,
+    isMagical: true,
     isSoldier: false,
     passiveEffects: [],
 });
