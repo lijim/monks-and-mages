@@ -407,6 +407,32 @@ const FIRE_MAGE: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const DEMON_CALLER: UnitCard = makeCard({
+    name: 'Demon Caller',
+    imgSrc: 'https://images.pexels.com/photos/6492603/pexels-photo-6492603.jpeg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 3,
+            summonType: Tokens.DEMON,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const FLAME_PRESERVER: UnitCard = makeCard({
     name: 'Flame Preserver',
     imgSrc: 'https://images.pexels.com/photos/3052651/pexels-photo-3052651.jpeg',
@@ -502,6 +528,10 @@ const CURIOUS_RESEARCHER: UnitCard = makeCard({
     enterEffects: [
         {
             type: EffectType.DRAW,
+            strength: 1,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
             strength: 1,
         },
         {
@@ -619,6 +649,29 @@ const TINY_MERMAID: UnitCard = makeCard({
         },
     ],
     totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const RAIN_CHANNELER: UnitCard = makeCard({
+    name: 'Rain Channeler',
+    imgSrc: 'https://images.pexels.com/photos/1530423/pexels-photo-1530423.jpeg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BOUNCE,
+            target: TargetTypes.OWN_UNIT,
+        },
+    ],
+    totalHp: 2,
     attack: 1,
     numAttacks: 1,
     isRanged: true,
@@ -784,7 +837,7 @@ const HEAVENLY_FERRIER = makeCard({
     cost: {
         [Resource.FIRE]: 1,
         [Resource.WATER]: 1,
-        [Resource.GENERIC]: 2,
+        [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [
@@ -1394,6 +1447,29 @@ const BAMBOO_FARMER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const TEA_FARMER: UnitCard = makeCard({
+    name: 'Tea Farmer',
+    imgSrc: 'https://images.pexels.com/photos/7427928/pexels-photo-7427928.jpeg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'TEA',
+            strength: 2,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const PASTURE_EXPLORER: UnitCard = makeCard({
     name: 'Pasture Explorer',
     imgSrc: 'https://images.unsplash.com/photo-1549806876-7d7a936f609c',
@@ -1632,6 +1708,24 @@ const BANISHER_OF_MAGIC: UnitCard = makeCard({
     ],
     totalHp: 2,
     attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const CONFUCIUS: UnitCard = makeCard({
+    name: 'Confucius',
+    imgSrc: 'https://images.pexels.com/photos/6486229/pexels-photo-6486229.jpeg',
+    cost: {
+        [Resource.GENERIC]: 3,
+    },
+    description:
+        'If you make a mistake and do not correct it, this is called a mistake',
+    enterEffects: [],
+    totalHp: 3,
+    attack: 3,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
@@ -1880,13 +1974,13 @@ const BABY_DRAGON: UnitCard = makeCard({
     description: '',
     enterEffects: [
         {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+        },
+        {
             type: EffectType.HEAL,
             strength: 1,
             target: TargetTypes.ANY,
-        },
-        {
-            type: EffectType.DEAL_DAMAGE,
-            strength: 1,
         },
     ],
     totalHp: 1,
@@ -2154,6 +2248,7 @@ export const UnitCards = {
     ZEALOUS_ACOLYTE,
     IMPRESSIVE_DANCER,
     FIRE_MAGE,
+    DEMON_CALLER,
     MIDNIGHT_HELLSPAWN,
     FLAME_PRESERVER,
     INFERNO_SORCEROR,
@@ -2161,6 +2256,7 @@ export const UnitCards = {
     MEDITATION_EXPERT,
     MANTA_RAY_CONJURER,
     TINY_MERMAID,
+    RAIN_CHANNELER,
     PELAGIC_PREDATOR,
     WATER_MAGE,
     CURSED_CHIEFTAIN,
@@ -2202,6 +2298,7 @@ export const UnitCards = {
     SAMBAR_DEER,
     ALERT_FELINE,
     BAMBOO_FARMER,
+    TEA_FARMER,
     PASTURE_EXPLORER,
     RELAXED_ROWBOATER,
     NOVICE_ASTRONOMER,
@@ -2212,6 +2309,7 @@ export const UnitCards = {
     IRONSMITH,
     GARGOYLE,
     BANISHER_OF_MAGIC,
+    CONFUCIUS,
     KING_TUT,
     GENEROUS_BUDDHA,
     // SAHARAN
@@ -2236,6 +2334,7 @@ export const UnitCards = {
     FOREST_SPIRIT,
     POWERFUL_CRONE,
     BOG_WARLOCK,
+    // IDEA: a witch that turns your tea into poisons [turn all X into Y in your hand]
     // Pirates
     NOBLE_STEED,
     ELDER_PIRATE,

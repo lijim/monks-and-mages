@@ -137,6 +137,24 @@ const CHANNEL_SPARKS = makeCard({
     ],
 });
 
+const CAVE_IMPLOSION = makeCard({
+    name: 'Cave Implosion',
+    imgSrc: 'https://images.pexels.com/photos/4344418/pexels-photo-4344418.jpeg',
+    cost: { [Resource.FIRE]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.OPPONENT,
+        },
+    ],
+});
+
 const STRIKE_TWICE = makeCard({
     name: 'Strike Twice',
     imgSrc: 'https://images.pexels.com/photos/10826067/pexels-photo-10826067.jpeg',
@@ -446,7 +464,7 @@ const DISTORT_REALITY = makeCard({
 
 const STARRY_ILLUSION = makeCard({
     name: 'Starry Illusion',
-    imgSrc: 'https://images.pexels.com/photos/3689634/pexels-photo-3689634.jpeg', // https://images.pexels.com/photos/6492151/pexels-photo-6492151.jpeg
+    imgSrc: 'https://images.pexels.com/photos/3689634/pexels-photo-3689634.jpeg',
     cost: { [Resource.CRYSTAL]: 3 },
     effects: [
         {
@@ -553,6 +571,19 @@ const MAJOR_EARTHQUAKE = makeCard({
 });
 
 // Bamboo
+const TEA = makeCard({
+    name: 'Tea',
+    imgSrc: 'https://images.pexels.com/photos/230477/pexels-photo-230477.jpeg',
+    cost: { [Resource.BAMBOO]: 1 },
+    effects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.ANY,
+        },
+    ],
+});
+
 const FEED_TEAM = makeCard({
     name: 'Feed Team',
     imgSrc: 'https://images.unsplash.com/photo-1536746295297-2539b444b74d',
@@ -702,6 +733,42 @@ const SPARK_JOY = makeCard({
     ],
 });
 
+const FIRE_AWAY = makeCard({
+    name: 'Fire Away',
+    imgSrc: 'https://images.pexels.com/photos/9472579/pexels-photo-9472579.jpeg',
+    cost: { [Resource.IRON]: 1, [Resource.FIRE]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 2,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
+            strength: 4,
+        },
+    ],
+});
+
+const BESIEGE_THE_CASTLE = makeCard({
+    name: 'Besiege the Castle',
+    imgSrc: 'https://images.pexels.com/photos/9738976/pexels-photo-9738976.jpeg',
+    cost: { [Resource.IRON]: 1, [Resource.FIRE]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
+            strength: 3,
+        },
+        {
+            type: EffectType.DESTROY_RESOURCE,
+            target: TargetTypes.OPPONENT,
+            strength: 1,
+        },
+    ],
+});
+
 // 4-color
 const QUESTION_REALITY = makeCard({
     name: 'Question Reality',
@@ -832,6 +899,33 @@ const WRECK_SHIPS = makeCard({
     ],
 });
 
+// Neutral
+const HISTORICAL_RESEARCH = makeCard({
+    name: 'Historical Research',
+    imgSrc: 'https://images.pexels.com/photos/1557251/pexels-photo-1557251.jpeg',
+    cost: { [Resource.GENERIC]: 5 },
+    effects: [
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Confucius',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'King Tut',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Generous Buddha',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+});
+
 export const SpellCards = {
     // Fire
     EMBER_SPEAR,
@@ -842,6 +936,7 @@ export const SpellCards = {
     FIRE_CEREMONY,
     BRUSH_FIRE,
     CHANNEL_SPARKS,
+    CAVE_IMPLOSION,
     STRIKE_TWICE,
     SUMMON_DEMONS,
     VOLCANIC_INFERNO,
@@ -879,6 +974,7 @@ export const SpellCards = {
     MAJOR_EARTHQUAKE,
 
     // Bamboo
+    TEA,
     FEED_TEAM,
     SPRING_IN_BLOOM,
     RAIN_OF_ARROWS,
@@ -895,6 +991,8 @@ export const SpellCards = {
     // Cannon
     IGNITE_SPARKS,
     SPARK_JOY,
+    FIRE_AWAY,
+    BESIEGE_THE_CASTLE,
 
     // Witch
     POLYMORPH_FROG,
@@ -906,4 +1004,7 @@ export const SpellCards = {
     // Multi-color misc.
     QUESTION_REALITY,
     CALL_THE_HERD,
+
+    // Neutral
+    HISTORICAL_RESEARCH,
 };
