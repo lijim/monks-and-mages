@@ -154,11 +154,71 @@ const TANGLED_RUINS = makeAdvancedResourceCard({
 });
 
 // Duals, heal lands
+const LONE_TOWER = makeAdvancedResourceCard({
+    name: 'Lone Tower',
+    resourceType: Resource.CRYSTAL,
+    secondaryResourceType: Resource.FIRE,
+    imgSrc: 'https://images.pexels.com/photos/11838430/pexels-photo-11838430.jpeg',
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
+const MYSTIFYING_LAKE = makeAdvancedResourceCard({
+    name: 'Mystifying Lake',
+    resourceType: Resource.CRYSTAL,
+    secondaryResourceType: Resource.WATER,
+    imgSrc: 'https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg',
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
+const UNPERTURBED_CAMPGROUNDS = makeAdvancedResourceCard({
+    name: 'Unperturbed Campgrounds',
+    resourceType: Resource.CRYSTAL,
+    secondaryResourceType: Resource.BAMBOO,
+    imgSrc: 'https://images.pexels.com/photos/1327786/pexels-photo-1327786.jpeg',
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
 const DIVINE_PALACE = makeAdvancedResourceCard({
     name: 'Divine Palace',
     resourceType: Resource.CRYSTAL,
     secondaryResourceType: Resource.IRON,
     imgSrc: 'https://images.unsplash.com/photo-1531213203257-16afb0eac95e',
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
+const TROUBLED_PARADISE = makeAdvancedResourceCard({
+    name: 'Troubled Paradise',
+    resourceType: Resource.FIRE,
+    secondaryResourceType: Resource.WATER,
+    imgSrc: 'https://images.pexels.com/photos/1118873/pexels-photo-1118873.jpeg',
     enterEffects: [
         {
             type: EffectType.HEAL,
@@ -184,11 +244,56 @@ const HEALING_PLAINS = makeAdvancedResourceCard({
     comesInTapped: true,
 });
 
+const ORNATE_TEMPLE = makeAdvancedResourceCard({
+    name: 'Ornate Temple',
+    resourceType: Resource.FIRE,
+    secondaryResourceType: Resource.IRON,
+    imgSrc: 'https://images.pexels.com/photos/460376/pexels-photo-460376.jpeg',
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
 const ROYAL_RESIDENCE = makeAdvancedResourceCard({
     name: 'Royal Residence',
     resourceType: Resource.WATER,
     secondaryResourceType: Resource.BAMBOO,
     imgSrc: 'https://images.pexels.com/photos/415708/pexels-photo-415708.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
+const CITY_CANALS = makeAdvancedResourceCard({
+    name: 'City Canals',
+    resourceType: Resource.WATER,
+    secondaryResourceType: Resource.IRON,
+    imgSrc: 'https://images.pexels.com/photos/4577642/pexels-photo-4577642.jpeg',
+    enterEffects: [
+        {
+            type: EffectType.HEAL,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    comesInTapped: true,
+});
+
+const PREFECTURE_CAPITAL = makeAdvancedResourceCard({
+    name: 'Prefecture Capital',
+    resourceType: Resource.BAMBOO,
+    secondaryResourceType: Resource.IRON,
+    imgSrc: 'https://images.pexels.com/photos/734102/pexels-photo-734102.jpeg',
     enterEffects: [
         {
             type: EffectType.HEAL,
@@ -300,9 +405,16 @@ export const AdvancedResourceCards = {
     TANGLED_RUINS,
     COASTAL_CASTLE,
     // Duals - heal
+    LONE_TOWER,
+    MYSTIFYING_LAKE,
+    UNPERTURBED_CAMPGROUNDS,
     DIVINE_PALACE,
+    TROUBLED_PARADISE,
     HEALING_PLAINS,
+    ORNATE_TEMPLE,
     ROYAL_RESIDENCE,
+    CITY_CANALS,
+    PREFECTURE_CAPITAL,
     // Utility - mono
     BAMBOO_FOOTBRIDGE,
     STARGAZERS_POINT,
