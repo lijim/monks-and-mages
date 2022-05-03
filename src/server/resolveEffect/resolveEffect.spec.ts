@@ -744,6 +744,43 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Ramp From Hand', () => {
+        it('increases resources deployed', () => {
+            board.players[0].hand = [makeResourceCard(Resource.CRYSTAL)];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RAMP_FROM_HAND,
+                        strength: 2,
+                        resourceType: Resource.CRYSTAL,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].resources).toHaveLength(1);
+            expect(newBoard.players[0].resources[0].name).toBe(
+                Resource.CRYSTAL
+            );
+        });
+
+        it('comes in tapped', () => {
+            board.players[0].hand = [makeResourceCard(Resource.CRYSTAL)];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RAMP_FROM_HAND,
+                        strength: 1,
+                        resourceType: Resource.CRYSTAL,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].resources[0].isUsed).toBe(true);
+        });
+    });
+
     describe('Return from cemetery', () => {
         it('returns from cemetery', () => {
             board.players[0].cemetery.push(makeCard(UnitCards.KNIGHT_TEMPLAR));
