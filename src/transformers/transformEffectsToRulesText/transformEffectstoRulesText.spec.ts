@@ -185,35 +185,58 @@ describe('transformEffectstoRulesText', () => {
         expect(transformEffectToRulesText(effect)).toEqual(`Draw 3 cards`);
     });
 
-    it('displays rules for drawing cards (targeted) - plural', () => {
-        const effect: Effect = {
-            type: EffectType.DRAW,
-            strength: 3,
-            target: TargetTypes.ALL_PLAYERS,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `All players draw 3 cards`
-        );
-    });
+    describe('Draw effects', () => {
+        it('displays rules for drawing cards (targeted) - plural', () => {
+            const effect: Effect = {
+                type: EffectType.DRAW,
+                strength: 3,
+                target: TargetTypes.ALL_PLAYERS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `All players draw 3 cards`
+            );
+        });
 
-    it('displays rules for drawing cards (targeted) - singular', () => {
-        const effect: Effect = {
-            type: EffectType.DRAW,
-            strength: 3,
-            target: TargetTypes.PLAYER,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Any player draws 3 cards`
-        );
-    });
+        it('displays rules for drawing cards (targeted) - singular', () => {
+            const effect: Effect = {
+                type: EffectType.DRAW,
+                strength: 3,
+                target: TargetTypes.PLAYER,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Any player draws 3 cards`
+            );
+        });
 
-    it('displays rules for drawing cards (per unit)', () => {
-        const effect: Effect = {
-            type: EffectType.DRAW_PER_UNIT,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Draw a card for every unit owned on board`
-        );
+        it('displays rules for drawing cards (per unit)', () => {
+            const effect: Effect = {
+                type: EffectType.DRAW_PER_UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Draw a card for every unit owned on board`
+            );
+        });
+
+        it('displays rules for drawing cards (until a limit)', () => {
+            const effect: Effect = {
+                type: EffectType.DRAW_UNTIL,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `If you have less than 3 cards, draw until you have 3`
+            );
+        });
+
+        it('displays rules for drawing cards (until a limit) - all players', () => {
+            const effect: Effect = {
+                type: EffectType.DRAW_UNTIL,
+                target: TargetTypes.ALL_PLAYERS,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `If under 3 cards in hand, all players draw cards until having 3 in hand`
+            );
+        });
     });
 
     it('displays rules for extracting cards from a deck', () => {

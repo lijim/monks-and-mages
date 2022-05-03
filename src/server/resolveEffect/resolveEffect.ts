@@ -305,6 +305,21 @@ export const resolveEffect = (
             applyWinState(clonedBoard);
             return clonedBoard;
         }
+        case EffectType.DRAW_UNTIL: {
+            playerTargets.forEach((player) => {
+                const cardsToDraw = Math.max(
+                    0,
+                    effectStrength - player.hand.length
+                );
+                const { hand, deck } = player;
+                if (cardsToDraw > deck.length) {
+                    player.isAlive = false;
+                }
+                player.hand = hand.concat(deck.splice(-cardsToDraw));
+            });
+            applyWinState(clonedBoard);
+            return clonedBoard;
+        }
         case EffectType.EXTRACT_CARD: {
             playerTargets.forEach((player) => {
                 const cardsToExtractPopulation = player.deck.filter(

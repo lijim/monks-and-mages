@@ -733,6 +733,24 @@ const SPARK_JOY = makeCard({
     ],
 });
 
+const FESTIVE_BAZAAR = makeCard({
+    name: 'Festive Bazaar',
+    imgSrc: 'https://images.pexels.com/photos/3243027/pexels-photo-3243027.jpeg',
+    cost: { [Resource.IRON]: 1, [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 2,
+            resourceType: Resource.IRON,
+        },
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.FIRE,
+        },
+    ],
+});
+
 const FIRE_AWAY = makeCard({
     name: 'Fire Away',
     imgSrc: 'https://images.pexels.com/photos/9472579/pexels-photo-9472579.jpeg',
@@ -1004,6 +1022,7 @@ export const SpellCards = {
     // Cannon
     IGNITE_SPARKS,
     SPARK_JOY,
+    FESTIVE_BAZAAR,
     FIRE_AWAY,
     BESIEGE_THE_CASTLE,
 

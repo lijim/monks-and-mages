@@ -1715,6 +1715,29 @@ const FISHING_GNOME: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const TORCH_BEARER: UnitCard = makeCard({
+    name: 'Torch Bearer',
+    imgSrc: 'https://images.pexels.com/photos/7919635/pexels-photo-7919635.jpeg',
+    cost: {
+        [Resource.GENERIC]: 2,
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW_UNTIL,
+            strength: 3,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const BANISHER_OF_MAGIC: UnitCard = makeCard({
     name: 'Banisher of Magic',
     imgSrc: 'https://images.pexels.com/photos/9589475/pexels-photo-9589475.jpeg',
@@ -2338,6 +2361,7 @@ export const UnitCards = {
     IRONSMITH,
     GARGOYLE,
     FISHING_GNOME,
+    TORCH_BEARER,
     BANISHER_OF_MAGIC,
     CONFUCIUS,
     KING_TUT,
