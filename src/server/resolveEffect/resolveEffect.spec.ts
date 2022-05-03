@@ -468,6 +468,51 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Draw Cards Per Unit', () => {
+        it('draws cards for players', () => {
+            const deckLength = board.players[0].deck.length;
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DRAW_UNTIL,
+                        strength: PlayerConstants.STARTING_HAND_SIZE + 3,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 3
+            );
+            expect(newBoard.players[0].deck).toHaveLength(deckLength - 3);
+        });
+
+        it('makes the player draw out of cards and lose', () => {
+            const deckLength = board.players[0].deck.length;
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DRAW_UNTIL,
+                        strength:
+                            PlayerConstants.STARTING_HAND_SIZE + deckLength + 1,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + deckLength
+            );
+            expect(newBoard.players[0].deck).toEqual([]);
+            expect(newBoard.players[0].isAlive).toEqual(false);
+            expect(newBoard.gameState).toEqual(GameState.WIN);
+        });
+    });
+
     describe('Deal Damage', () => {
         it('deals damage to a unit', () => {
             const squire = makeCard(UnitCards.SQUIRE);

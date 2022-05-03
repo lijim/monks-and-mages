@@ -128,6 +128,14 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 isTargetTypePlural(target) ? '' : 's'
             } a card for every unit owned on board`;
         }
+        case EffectType.DRAW_UNTIL: {
+            if (!target) {
+                return `If you have less than ${strength} cards, draw until you have ${strength}`;
+            }
+            return `If under ${strength} cards in hand, ${targetName} draw${
+                isTargetTypePlural(target) ? '' : 's'
+            } cards until having ${strength} in hand`;
+        }
         case EffectType.EXTRACT_CARD: {
             if (!target) {
                 return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from your deck`;

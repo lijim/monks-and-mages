@@ -40,6 +40,7 @@ export enum EffectType {
     DISCARD_HAND = 'Discard Hand', // discard X cards at random
     DRAW = 'Draw',
     DRAW_PER_UNIT = 'Draw Per Unit',
+    DRAW_UNTIL = 'Draw Until',
     EXTRACT_CARD = 'Extract Card', // extract X of {cardName} card from deck
     HEAL = 'Heal', // to any target
     LEARN = 'Learn', // add spells / units to hand
@@ -69,8 +70,9 @@ export const getDefaultTargetForEffect = (
         [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
         [EffectType.DESTROY_RESOURCE]: TargetTypes.OPPONENT,
         [EffectType.DISCARD_HAND]: TargetTypes.OPPONENT,
-        [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
+        [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
+        [EffectType.DRAW_UNTIL]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_CARD]: TargetTypes.SELF_PLAYER,
         [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.LEARN]: TargetTypes.SELF_PLAYER,
