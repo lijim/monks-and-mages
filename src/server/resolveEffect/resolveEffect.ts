@@ -10,7 +10,7 @@ import {
     getDefaultTargetForEffect,
     TargetTypes,
 } from '@/types/effects';
-import { CardType, SpellCard, UnitCard } from '@/types/cards';
+import { CardType, ResourceCard, SpellCard, UnitCard } from '@/types/cards';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import {
     applyWinState,
@@ -374,6 +374,39 @@ export const resolveEffect = (
                     resourceCard.isUsed = true;
                     player.resources.push(resourceCard);
                 }
+            });
+            return clonedBoard;
+        }
+        case EffectType.RAMP_FROM_HAND: {
+            const { resourceType } = effect;
+            if (!resourceType) return clonedBoard;
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation: ResourceCard[] = [];
+
+                player.hand.forEach((card) => {
+                    if (
+                        card.cardType === CardType.RESOURCE &&
+                        card.resourceType === resourceType
+                    )
+                        cardsToExtractPopulation.push(card);
+                });
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+
+                cardsToExtractSample.forEach((resourceCard: ResourceCard) => {
+                    resourceCard.isUsed = true;
+                });
+
+                player.hand = player.hand.filter((card) => {
+                    return !(
+                        card.cardType === CardType.RESOURCE &&
+                        cardsToExtractSample.includes(card)
+                    );
+                });
+                player.resources =
+                    player.resources.concat(cardsToExtractSample);
             });
             return clonedBoard;
         }

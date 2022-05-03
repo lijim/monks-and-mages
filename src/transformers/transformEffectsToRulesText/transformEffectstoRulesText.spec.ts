@@ -272,59 +272,74 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
-    it('displays rules for ramping bamboo', () => {
-        const effect: Effect = {
-            type: EffectType.RAMP,
-            resourceType: Resource.BAMBOO,
-            strength: 1,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase bamboo resources by 1`
-        );
+    describe('Ramp', () => {
+        it('displays rules for ramping bamboo', () => {
+            const effect: Effect = {
+                type: EffectType.RAMP,
+                resourceType: Resource.BAMBOO,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase bamboo resources by 1`
+            );
+        });
+
+        it('displays rules for ramping crystal', () => {
+            const effect: Effect = {
+                type: EffectType.RAMP,
+                resourceType: Resource.CRYSTAL,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase crystal resources by 1`
+            );
+        });
+
+        it('displays rules for ramping fire', () => {
+            const effect: Effect = {
+                type: EffectType.RAMP,
+                resourceType: Resource.FIRE,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase fire resources by 3`
+            );
+        });
+
+        it('displays rules for ramping iron', () => {
+            const effect: Effect = {
+                type: EffectType.RAMP,
+                resourceType: Resource.IRON,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase iron resources by 3`
+            );
+        });
+
+        it('displays rules for ramping water', () => {
+            const effect: Effect = {
+                type: EffectType.RAMP,
+                resourceType: Resource.WATER,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase water resources by 2`
+            );
+        });
     });
 
-    it('displays rules for ramping crystal', () => {
-        const effect: Effect = {
-            type: EffectType.RAMP,
-            resourceType: Resource.CRYSTAL,
-            strength: 1,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase crystal resources by 1`
-        );
-    });
-
-    it('displays rules for ramping fire', () => {
-        const effect: Effect = {
-            type: EffectType.RAMP,
-            resourceType: Resource.FIRE,
-            strength: 3,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase fire resources by 3`
-        );
-    });
-
-    it('displays rules for ramping iron', () => {
-        const effect: Effect = {
-            type: EffectType.RAMP,
-            resourceType: Resource.IRON,
-            strength: 3,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase iron resources by 3`
-        );
-    });
-
-    it('displays rules for ramping water', () => {
-        const effect: Effect = {
-            type: EffectType.RAMP,
-            resourceType: Resource.WATER,
-            strength: 2,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase water resources by 2`
-        );
+    describe('Ramp from Hand', () => {
+        it('displays rules for ramping bamboo', () => {
+            const effect: Effect = {
+                type: EffectType.RAMP_FROM_HAND,
+                resourceType: Resource.BAMBOO,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Deploy 1 Bamboo card from your hand tapped`
+            );
+        });
     });
 
     it('displays rules for returning from cemetery', () => {
