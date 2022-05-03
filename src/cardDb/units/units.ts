@@ -1691,6 +1691,30 @@ const GARGOYLE: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const FISHING_GNOME: UnitCard = makeCard({
+    name: 'Fishing Gnome',
+    imgSrc: 'https://images.pexels.com/photos/9025387/pexels-photo-9025387.jpeg',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 1,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const BANISHER_OF_MAGIC: UnitCard = makeCard({
     name: 'Banisher of Magic',
     imgSrc: 'https://images.pexels.com/photos/9589475/pexels-photo-9589475.jpeg',
@@ -2223,12 +2247,17 @@ const DARING_CORSAIR: UnitCard = makeCard({
     name: 'Daring Corsair',
     imgSrc: 'https://cdn.pixabay.com/photo/2019/06/03/20/38/pirate-4249873_1280.jpg',
     cost: {
-        [Resource.GENERIC]: 1,
-        [Resource.WATER]: 1,
+        [Resource.WATER]: 2,
         [Resource.IRON]: 1,
     },
     description: '',
-    enterEffects: [],
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 1,
+        },
+    ],
     totalHp: 3,
     attack: 2,
     numAttacks: 2,
@@ -2308,6 +2337,7 @@ export const UnitCards = {
     ELITE_WEAPONS_MASTER,
     IRONSMITH,
     GARGOYLE,
+    FISHING_GNOME,
     BANISHER_OF_MAGIC,
     CONFUCIUS,
     KING_TUT,

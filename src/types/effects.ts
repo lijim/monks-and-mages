@@ -45,6 +45,7 @@ export enum EffectType {
     LEARN = 'Learn', // add spells / units to hand
     POLYMORPH = 'Polymorph', // polymorph a unit into a token type
     RAMP = 'Ramp', // add resources (tapped)
+    RAMP_FOR_TURN = 'Ramp for Turn',
     RAMP_FROM_HAND = 'Ramp from Hand',
     RETURN_FROM_CEMETERY = 'Return from cemetry', // Return X cards from cemetery -> board
     REVIVE = 'Revive', // revive units from the cemetery -> board
@@ -75,6 +76,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.LEARN]: TargetTypes.SELF_PLAYER,
         [EffectType.POLYMORPH]: TargetTypes.UNIT,
         [EffectType.RAMP]: TargetTypes.SELF_PLAYER,
+        [EffectType.RAMP_FOR_TURN]: TargetTypes.SELF_PLAYER,
         [EffectType.RAMP_FROM_HAND]: TargetTypes.SELF_PLAYER,
         [EffectType.REVIVE]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.RETURN_FROM_CEMETERY]: TargetTypes.SELF_PLAYER,
