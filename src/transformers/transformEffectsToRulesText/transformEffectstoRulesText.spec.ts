@@ -329,8 +329,21 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
+    describe('Ramp for Turn', () => {
+        it('displays rules for bamboo to resource pool', () => {
+            const effect: Effect = {
+                type: EffectType.RAMP_FOR_TURN,
+                resourceType: Resource.BAMBOO,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Add 1 Bamboo to your resource pool this turn`
+            );
+        });
+    });
+
     describe('Ramp from Hand', () => {
-        it('displays rules for ramping bamboo', () => {
+        it('displays rules for deploying bamboo from hand', () => {
             const effect: Effect = {
                 type: EffectType.RAMP_FROM_HAND,
                 resourceType: Resource.BAMBOO,

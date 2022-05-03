@@ -377,6 +377,15 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.RAMP_FOR_TURN: {
+            const { resourceType } = effect;
+            if (!resourceType) return clonedBoard;
+            playerTargets.forEach((player) => {
+                player.resourcePool[resourceType] =
+                    (player.resourcePool[resourceType] || 0) + effectStrength;
+            });
+            return clonedBoard;
+        }
         case EffectType.RAMP_FROM_HAND: {
             const { resourceType } = effect;
             if (!resourceType) return clonedBoard;

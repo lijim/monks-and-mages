@@ -744,6 +744,39 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Ramp for Turn', () => {
+        it('increases resources deployed', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RAMP_FOR_TURN,
+                        strength: 2,
+                        resourceType: Resource.CRYSTAL,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].resourcePool.Crystal).toEqual(2);
+        });
+
+        it('adds to an already deployed resource', () => {
+            board.players[0].resourcePool.Crystal = 2;
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RAMP_FOR_TURN,
+                        strength: 1,
+                        resourceType: Resource.CRYSTAL,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].resourcePool.Crystal).toEqual(3);
+        });
+    });
+
     describe('Ramp From Hand', () => {
         it('increases resources deployed', () => {
             board.players[0].hand = [makeResourceCard(Resource.CRYSTAL)];

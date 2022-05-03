@@ -155,6 +155,9 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         case EffectType.RAMP: {
             return `Increase ${resourceType.toLowerCase()} resources by ${strength}`;
         }
+        case EffectType.RAMP_FOR_TURN: {
+            return `Add ${strength} ${resourceType} to your resource pool this turn`;
+        }
         case EffectType.RAMP_FROM_HAND: {
             return `Deploy ${strength} ${resourceType} card${pluralizationEffectStrength} from your hand tapped`;
         }

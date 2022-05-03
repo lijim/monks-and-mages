@@ -926,6 +926,19 @@ const HISTORICAL_RESEARCH = makeCard({
     ],
 });
 
+const RICHES = makeCard({
+    name: 'Riches',
+    imgSrc: 'https://images.unsplash.com/photo-1618017049045-0dc296b7eb10?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
+    cost: {},
+    effects: [
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.GENERIC,
+        },
+    ],
+});
+
 export const SpellCards = {
     // Fire
     EMBER_SPEAR,
@@ -1007,4 +1020,5 @@ export const SpellCards = {
 
     // Neutral
     HISTORICAL_RESEARCH,
+    RICHES,
 };
