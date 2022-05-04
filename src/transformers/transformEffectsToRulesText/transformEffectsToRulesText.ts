@@ -54,8 +54,15 @@ const titleize = (str: string): string => {
 };
 
 export const transformEffectToRulesText = (effect: Effect): string => {
-    const { cardName, strength, target, resourceType, summonType, type } =
-        effect;
+    const {
+        cardName,
+        secondaryCardName,
+        strength,
+        target,
+        resourceType,
+        summonType,
+        type,
+    } = effect;
     const targetName =
         TARGET_TYPES_TO_RULES_TEXT[target || getDefaultTargetForEffect(type)];
     const targetNamePossessive =
@@ -181,6 +188,16 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 forText = ` for ${targetName}`;
             }
             return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙${forText}`;
+        }
+        case EffectType.TRANSMUTE: {
+            let forText = '';
+            if (target && target !== TargetTypes.SELF_PLAYER) {
+                forText = ` for ${targetName}`;
+            }
+
+            return `Turn ${
+                strength || 'all'
+            } [${cardName}] card${pluralizationEffectStrength} in hand into [${secondaryCardName}]${forText}`;
         }
         default: {
             return '';

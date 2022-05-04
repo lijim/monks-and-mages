@@ -27,11 +27,7 @@ export type ResourceCard = {
 export type Effect = {
     cardName?: string;
     resourceType?: Resource;
-    restrictions?: {
-        isMagical?: boolean;
-        isRanged?: boolean;
-        isSoldier?: boolean;
-    };
+    secondaryCardName?: string;
     strength?: number;
     summonType?: UnitCard;
     target?: TargetTypes;

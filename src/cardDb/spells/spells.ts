@@ -13,6 +13,18 @@ export const makeCard = (spellBase: SpellBase): SpellCard => ({
 });
 
 // Fire Magic
+const SMOLDER = makeCard({
+    name: 'SMOLDER',
+    imgSrc: 'https://images.unsplash.com/photo-1577556715463-912a96b45eae',
+    cost: { [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+        },
+    ],
+});
+
 const EMBER_SPEAR = makeCard({
     name: 'Ember Spear',
     imgSrc: 'https://images.unsplash.com/photo-1577556715463-912a96b45eae',
@@ -584,6 +596,19 @@ const TEA = makeCard({
     ],
 });
 
+const POISON_MUSHROOM = makeCard({
+    name: 'Poison Mushroom',
+    imgSrc: 'https://images.pexels.com/photos/5792564/pexels-photo-5792564.jpeg', // https://www.pexels.com/photo/fly-agaric-mushroom-on-the-ground-5792564/
+    cost: { [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.UNIT,
+            strength: 1,
+        },
+    ],
+});
+
 const FEED_TEAM = makeCard({
     name: 'Feed Team',
     imgSrc: 'https://images.unsplash.com/photo-1536746295297-2539b444b74d',
@@ -600,6 +625,37 @@ const FEED_TEAM = makeCard({
             target: TargetTypes.ALL_SELF_UNITS,
         },
         { type: EffectType.BUFF_TEAM_HP, strength: 1 },
+    ],
+});
+
+const FARMERS_MARKET = makeCard({
+    name: "Farmer's Market",
+    imgSrc: 'https://images.pexels.com/photos/4633292/pexels-photo-4633292.jpeg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.RAMP,
+            resourceType: Resource.BAMBOO,
+            strength: 1,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'TEA',
+            strength: 2,
+        },
+    ],
+});
+
+const WILD_ROSE_HARVEST = makeCard({
+    name: 'Wild Rose Harvest',
+    imgSrc: 'https://images.pexels.com/photos/3368288/pexels-photo-3368288.jpeg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'TEA',
+            strength: 3,
+        },
     ],
 });
 
@@ -959,6 +1015,7 @@ const RICHES = makeCard({
 
 export const SpellCards = {
     // Fire
+    SMOLDER,
     EMBER_SPEAR,
     INCINERATION,
     LIGHTNING_SLICK,
@@ -1006,7 +1063,10 @@ export const SpellCards = {
 
     // Bamboo
     TEA,
+    POISON_MUSHROOM,
     FEED_TEAM,
+    FARMERS_MARKET,
+    WILD_ROSE_HARVEST,
     SPRING_IN_BLOOM,
     RAIN_OF_ARROWS,
     TEAM_GATHERING,

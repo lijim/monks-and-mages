@@ -421,4 +421,32 @@ describe('transformEffectstoRulesText', () => {
             `Summon 2 Demons - 1 ⚔️ 1 💙 for any opponent`
         );
     });
+
+    describe('Transmute', () => {
+        it('displays rules for transmuting cards', () => {
+            const effect: Effect = {
+                type: EffectType.TRANSMUTE,
+                strength: 2,
+                cardName: 'Tea',
+                target: TargetTypes.SELF_PLAYER,
+                secondaryCardName: 'Poison Mushroom',
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Turn 2 [Tea] cards in hand into [Poison Mushroom]`
+            );
+        });
+
+        it('displays rules for transmuting cards (all players)', () => {
+            const effect: Effect = {
+                type: EffectType.TRANSMUTE,
+                strength: 3,
+                cardName: 'Tea',
+                target: TargetTypes.ALL_PLAYERS,
+                secondaryCardName: 'Poison Mushroom',
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Turn 3 [Tea] cards in hand into [Poison Mushroom] for all players`
+            );
+        });
+    });
 });
