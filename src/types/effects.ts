@@ -51,6 +51,7 @@ export enum EffectType {
     RETURN_FROM_CEMETERY = 'Return from cemetry', // Return X cards from cemetery -> board
     REVIVE = 'Revive', // revive units from the cemetery -> board
     SUMMON_UNITS = 'Summon Units', //
+    TRANSMUTE = 'Transmute',
 }
 
 /**
@@ -83,6 +84,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.REVIVE]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.RETURN_FROM_CEMETERY]: TargetTypes.SELF_PLAYER,
         [EffectType.SUMMON_UNITS]: TargetTypes.SELF_PLAYER,
+        [EffectType.TRANSMUTE]: TargetTypes.SELF_PLAYER,
     }[effectType];
 };
 

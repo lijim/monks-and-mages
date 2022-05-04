@@ -934,4 +934,22 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].units[0].name).toBe(Tokens.DEMON.name);
         });
     });
+
+    describe('Transmute', () => {
+        it('turns one card into another', () => {
+            board.players[0].hand = [makeCard(UnitCards.SQUIRE)];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.TRANSMUTE,
+                        cardName: 'Squire',
+                        secondaryCardName: 'Assassin',
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand[0].name).toBe('Assassin');
+        });
+    });
 });

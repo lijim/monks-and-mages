@@ -186,6 +186,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     const { isValid: isMyDeckValid, reason: reasonForDeckInvalid } =
         isDeckValidForFormat(myDeck);
 
+    const deck = filterCards(cardPool, filters);
     return (
         <>
             <TopNavBar>
@@ -194,8 +195,9 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
             <DeckListContainers>
                 <DeckListBackDrop data-testid="CardPool">
                     <DeckBuilderFilters />
+                    {deck.length}
                     <CompactDeckList
-                        deck={filterCards(cardPool, filters)}
+                        deck={deck}
                         shouldShowQuantity={false}
                         onClickCard={addCard}
                     />

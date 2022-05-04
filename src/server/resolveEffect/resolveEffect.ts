@@ -29,7 +29,11 @@ export const resolveEffect = (
     addChatMessage?: (message: string) => void
 ): Board | null => {
     const clonedBoard = cloneDeep(board);
-    const { strength: effectStrength = 0, cardName } = effect;
+    const {
+        strength: effectStrength = 0,
+        cardName,
+        secondaryCardName,
+    } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
     const otherPlayers = players.filter((player) => !player.isActivePlayer);
@@ -480,6 +484,38 @@ export const resolveEffect = (
             playerTargets.forEach((player) => {
                 for (let i = 0; i < Math.min(50, effectStrength); i += 1) {
                     player.units.push(makeCard(summonType));
+                }
+            });
+            return clonedBoard;
+        }
+        case EffectType.TRANSMUTE: {
+            let cardToMake: UnitCard | SpellCard;
+            const cardPool = { ...SpellCards, ...UnitCards, ...Tokens };
+
+            Object.values(cardPool).forEach((card) => {
+                if (card.name === secondaryCardName) {
+                    cardToMake = card;
+                }
+            });
+
+            if (!cardToMake) return clonedBoard;
+
+            playerTargets.forEach((player) => {
+                const cardsToSample = player.hand.filter(
+                    (card) => card.name === cardName
+                );
+                const cardsToReplace = sampleSize(
+                    cardsToSample,
+                    effectStrength || cardsToSample.length
+                );
+                for (
+                    let handIndex = 0;
+                    handIndex < player.hand.length;
+                    handIndex += 1
+                ) {
+                    if (cardsToReplace.includes(player.hand[handIndex])) {
+                        player.hand[handIndex] = makeCard(cardToMake);
+                    }
                 }
             });
             return clonedBoard;
