@@ -233,7 +233,7 @@ describe('DeckBuilder', () => {
             ).toBeInTheDocument();
         });
 
-        it('searches by rules text on card titles', () => {
+        it('searches by rules text', () => {
             render(<DeckBuilder />, { useRealDispatch: true });
             const searchBar = screen.getByTestId('Filters-FreeText');
             fireEvent.change(searchBar, { target: { value: 'Poison' } });
