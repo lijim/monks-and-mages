@@ -14,8 +14,8 @@ export const makeCard = (spellBase: SpellBase): SpellCard => ({
 
 // Fire Magic
 const SMOLDER = makeCard({
-    name: 'SMOLDER',
-    imgSrc: 'https://images.unsplash.com/photo-1577556715463-912a96b45eae',
+    name: 'Smolder',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/10/30/09/09/fire-2901807_1280.jpg',
     cost: { [Resource.FIRE]: 1 },
     effects: [
         {
@@ -212,6 +212,20 @@ const VOLCANIC_INFERNO = makeCard({
             type: EffectType.DEAL_DAMAGE,
             strength: 3,
             target: TargetTypes.ALL_UNITS,
+        },
+    ],
+});
+
+const ERUPT = makeCard({
+    name: 'Erupt',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/10/10/11/40/volcano-1728164_1280.jpg',
+    cost: { [Resource.FIRE]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.DESTROY_RESOURCE,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: Number.MAX_SAFE_INTEGER,
+            resourceType: Resource.WATER,
         },
     ],
 });
@@ -609,6 +623,20 @@ const POISON_MUSHROOM = makeCard({
     ],
 });
 
+const ARCHERY_AT_SUNSET = makeCard({
+    name: 'Archery at Sunset',
+    // https://pixabay.com/photos/archer-archery-sunset-arrow-bow-2345211/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/05/26/05/36/archer-2345211_1280.jpg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+            target: TargetTypes.ANY,
+        },
+    ],
+});
+
 const FEED_TEAM = makeCard({
     name: 'Feed Team',
     imgSrc: 'https://images.unsplash.com/photo-1536746295297-2539b444b74d',
@@ -756,6 +784,30 @@ const SIGNAL_BEACON = makeCard({
     ],
 });
 
+const DECAY = makeCard({
+    name: 'Decay',
+    // https://pixabay.com/illustrations/fantasy-people-mysticism-mystical-2964231/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/11/20/02/00/fantasy-2964231_1280.jpg',
+    cost: { [Resource.IRON]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 1,
+        },
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 1,
+        },
+        {
+            type: EffectType.DESTROY_RESOURCE,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 1,
+        },
+    ],
+});
+
 // Cannon
 const IGNITE_SPARKS = makeCard({
     name: 'Ignite Sparks',
@@ -844,6 +896,42 @@ const BESIEGE_THE_CASTLE = makeCard({
 });
 
 // 4-color
+const A_MILLION_RAYS = makeCard({
+    name: 'A Million Rays',
+    imgSrc: 'https://cdn.pixabay.com/photo/2013/03/11/01/16/rainbow-92342_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    effects: [
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.CRYSTAL,
+        },
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.FIRE,
+        },
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.WATER,
+        },
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.BAMBOO,
+        },
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.IRON,
+        },
+    ],
+});
+
 const QUESTION_REALITY = makeCard({
     name: 'Question Reality',
     imgSrc: 'https://images.pexels.com/photos/5023641/pexels-photo-5023641.jpeg',
@@ -852,7 +940,6 @@ const QUESTION_REALITY = makeCard({
         [Resource.CRYSTAL]: 1,
         [Resource.FIRE]: 1,
         [Resource.WATER]: 1,
-        [Resource.GENERIC]: 1,
     },
     effects: [
         {
@@ -928,6 +1015,29 @@ const POLYMORPH_FROG = makeCard({
     imgSrc: 'https://images.pexels.com/photos/73798/frog-marbled-reed-frog-amphibian-animal-73798.jpeg',
     cost: { [Resource.BAMBOO]: 1, [Resource.CRYSTAL]: 1 },
     effects: [
+        {
+            type: EffectType.POLYMORPH,
+            target: TargetTypes.UNIT,
+            summonType: Tokens.FROG,
+        },
+    ],
+});
+
+const DOUBLE_POLYMORPH_FROG = makeCard({
+    name: 'Double Polymorph: Frog',
+    // https://www.pexels.com/photo/pair-of-green-frogs-sitting-on-tree-branch-11575310/
+    imgSrc: 'https://images.pexels.com/photos/11575310/pexels-photo-11575310.jpeg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    effects: [
+        {
+            type: EffectType.POLYMORPH,
+            target: TargetTypes.UNIT,
+            summonType: Tokens.FROG,
+        },
         {
             type: EffectType.POLYMORPH,
             target: TargetTypes.UNIT,
@@ -1013,6 +1123,19 @@ const RICHES = makeCard({
     ],
 });
 
+const LANDMARK = makeCard({
+    name: 'Landmark',
+    // https://pixabay.com/photos/ruin-monastery-graves-fantasy-3414235/
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/05/19/19/58/ruin-3414235_1280.jpg',
+    cost: { [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+    ],
+});
+
 export const SpellCards = {
     // Fire
     SMOLDER,
@@ -1028,6 +1151,7 @@ export const SpellCards = {
     STRIKE_TWICE,
     SUMMON_DEMONS,
     VOLCANIC_INFERNO,
+    ERUPT,
 
     // Water
     BUBBLE_BLAST,
@@ -1064,6 +1188,7 @@ export const SpellCards = {
     // Bamboo
     TEA,
     POISON_MUSHROOM,
+    ARCHERY_AT_SUNSET,
     FEED_TEAM,
     FARMERS_MARKET,
     WILD_ROSE_HARVEST,
@@ -1078,6 +1203,7 @@ export const SpellCards = {
 
     // Genies
     SIGNAL_BEACON,
+    DECAY,
 
     // Cannon
     IGNITE_SPARKS,
@@ -1088,16 +1214,19 @@ export const SpellCards = {
 
     // Witch
     POLYMORPH_FROG,
+    DOUBLE_POLYMORPH_FROG,
 
     // Pirates
     RAISE_THE_MASTS,
     WRECK_SHIPS,
 
     // Multi-color misc.
+    A_MILLION_RAYS,
     QUESTION_REALITY,
     CALL_THE_HERD,
 
     // Neutral
     HISTORICAL_RESEARCH,
     RICHES,
+    LANDMARK,
 };

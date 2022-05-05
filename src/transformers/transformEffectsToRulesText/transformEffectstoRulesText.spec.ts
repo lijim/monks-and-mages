@@ -122,26 +122,38 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
-    it('displays rules destroying a resource', () => {
-        const effect: Effect = {
-            type: EffectType.DESTROY_RESOURCE,
-            target: TargetTypes.ALL_OPPONENTS,
-            strength: 1,
-            resourceType: Resource.BAMBOO,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Destroy 1 of all opponents' [Bamboo] resources`
-        );
-    });
+    describe('destroy resource', () => {
+        it('displays rules destroying a resource', () => {
+            const effect: Effect = {
+                type: EffectType.DESTROY_RESOURCE,
+                target: TargetTypes.ALL_OPPONENTS,
+                strength: 1,
+                resourceType: Resource.BAMBOO,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Destroy 1 of all opponents' [Bamboo] resources`
+            );
+        });
 
-    it('displays rules destroying a resource (any type)', () => {
-        const effect: Effect = {
-            type: EffectType.DESTROY_RESOURCE,
-            strength: 1,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Destroy 1 of any opponent's resources at random`
-        );
+        it('displays rules destroying a resource (any type)', () => {
+            const effect: Effect = {
+                type: EffectType.DESTROY_RESOURCE,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Destroy 1 of any opponent's resources at random`
+            );
+        });
+
+        it('displays rules destroying a resource (all)', () => {
+            const effect: Effect = {
+                type: EffectType.DESTROY_RESOURCE,
+                strength: Number.MAX_SAFE_INTEGER,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Destroy all of any opponent's resources`
+            );
+        });
     });
 
     it('displays rules for dealing damage', () => {
@@ -360,7 +372,7 @@ describe('transformEffectstoRulesText', () => {
                 strength: 1,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Add 1 Bamboo to your resource pool this turn`
+                `Add 1 🎋 this turn`
             );
         });
     });

@@ -4,6 +4,7 @@ const slugifyName = (name: string): string => {
     return name
         .replace(/ /g, '-')
         .replace(/'/g, '')
+        .replace(/,/g, '')
         .replace(/:/g, '')
         .toLowerCase();
 };

@@ -1,4 +1,4 @@
-import { makeCard } from '@/cardDb/units';
+import { makeUnitCard as makeCard } from '@/factories/cards';
 import { UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';

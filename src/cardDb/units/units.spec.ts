@@ -1,7 +1,7 @@
 import { CardType, UnitBase } from '@/types/cards';
 import { EffectType, PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
-import { makeCard } from './units';
+import { makeUnitCard as makeCard } from '@/factories/cards';
 
 describe('Unit Cards', () => {
     it('creates a card based on a base', () => {

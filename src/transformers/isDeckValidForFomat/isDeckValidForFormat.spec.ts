@@ -1,5 +1,6 @@
 import { SpellCards } from '@/cardDb/spells';
 import { ALL_CARDS, SAMPLE_DECKLIST_7 } from '@/constants/deckLists';
+import { PlayerConstants } from '@/constants/gameConstants';
 import { makeResourceCard } from '@/factories/cards';
 import { Format } from '@/types/games';
 import { Resource } from '@/types/resources';
@@ -47,7 +48,11 @@ describe('isDeckValidForFormat', () => {
     });
 
     it('validates for singleton', () => {
-        expect(isDeckValidForFormat(ALL_CARDS)).toEqual({
+        expect(
+            isDeckValidForFormat(
+                ALL_CARDS.slice(0, PlayerConstants.MAX_DECK_SIZE)
+            )
+        ).toEqual({
             isValid: true,
             reason: undefined,
         });

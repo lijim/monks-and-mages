@@ -3,9 +3,30 @@ import { Card, CardType, UnitType } from '@/types/cards';
 import { Filters, MatchStrategy } from '@/types/deckBuilder';
 import { ORDERED_RESOURCES, Resource } from '@/types/resources';
 import { getTypeForUnitCard } from '../getTypeForUnitCard';
+import { transformEffectToRulesText } from '../transformEffectsToRulesText';
 
 const cardMatchesText = (card: Card, text: string): boolean => {
-    return card.name.toLowerCase().includes(text.toLowerCase());
+    const nameIncludes = card.name.toLowerCase().includes(text.toLowerCase());
+    if (nameIncludes) return true;
+    if (card.cardType === CardType.RESOURCE) return false;
+    let rules: string[] = [];
+    if (card.cardType === CardType.SPELL) {
+        rules = [
+            ...card.effects.map((effect) => transformEffectToRulesText(effect)),
+        ];
+    }
+
+    if (card.cardType === CardType.UNIT) {
+        rules = [
+            ...card.enterEffects.map((effect) =>
+                transformEffectToRulesText(effect)
+            ),
+            ...card.passiveEffects,
+        ];
+    }
+    return rules.some((rule) =>
+        rule.toLowerCase().includes(text.toLowerCase())
+    );
 };
 
 const getResourcesForCard = (card: Card): Resource[] => {
