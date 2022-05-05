@@ -98,6 +98,7 @@ export enum PassiveEffect {
         STRONG_VS_SOLDIER, // deal double damage to soldier units
         HEARTY, // cannot be taken down in 1 hit
     */
+    HEARTY = 'Hearty (if this unit would take lethal damage, instead lose hearty permanently and go to 1 hp)',
     POISONED = 'Poisonous (deals lethal damage)', // deals lethal dmg to enemy units
     QUICK = 'Quick (can attack right away)', // no summoning sickness
 }

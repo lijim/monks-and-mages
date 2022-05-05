@@ -51,6 +51,7 @@ export type UnitBase = {
     // how much damage is inflicted per attack
     numAttacks: number;
     originalCost?: PartialRecord<Resource, number>;
+    originalPassiveEffects?: PassiveEffect[];
     // all units except magic must attack soldiers first 🛡️
     passiveEffects: PassiveEffect[];
     totalHp: number;

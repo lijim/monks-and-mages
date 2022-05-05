@@ -8,6 +8,7 @@ import { GameActionTypes } from '@/types/gameActions';
 import { Resource } from '@/types/resources';
 import { applyGameAction } from './gameEngine';
 import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
+import { PassiveEffect } from '@/types/effects';
 
 describe('Game Action', () => {
     let board: Board;
@@ -995,6 +996,33 @@ describe('Game Action', () => {
 
             expect(newBoardState.players[0].effectQueue).toHaveLength(0);
             expect(newBoardState.players[0].cemetery).toHaveLength(0);
+        });
+    });
+
+    describe('Passive Effects', () => {
+        describe('Hearty', () => {
+            it('survives lethal damage', () => {
+                const attacker = makeCard(UnitCards.LANCER);
+                attacker.passiveEffects = [PassiveEffect.HEARTY];
+                attacker.numAttacksLeft = 1;
+                const defender = makeCard(UnitCards.MARTIAL_TRAINER);
+                board.players[0].units = [attacker];
+                board.players[1].units = [defender];
+                const newBoardState = applyGameAction({
+                    board,
+                    gameAction: {
+                        type: GameActionTypes.PERFORM_ATTACK,
+                        cardId: attacker.id,
+                        unitTarget: defender.id,
+                    },
+                    playerName: 'Timmy',
+                });
+                expect(newBoardState.players[0].cemetery).toHaveLength(0);
+                expect(
+                    newBoardState.players[0].units[0].passiveEffects
+                ).toEqual([]);
+                expect(newBoardState.players[0].units[0].hp).toEqual(1);
+            });
         });
     });
 });

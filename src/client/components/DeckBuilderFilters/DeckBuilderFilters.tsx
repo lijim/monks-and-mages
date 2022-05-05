@@ -31,6 +31,7 @@ export const FreeTextFilters: React.FC = () => {
                     dispatch(searchFreeTextFilter(e.target.value));
                 }}
                 data-testid="Filters-FreeText"
+                autoFocus
             ></input>
             <button
                 onClick={() => {

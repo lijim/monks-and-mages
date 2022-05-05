@@ -61,13 +61,14 @@ export const applyWinState = (board: Board): Board => {
 };
 
 export const resetUnitCard = (unitCard: UnitCard) => {
-    const hasQuick = unitCard.passiveEffects.indexOf(PassiveEffect.QUICK) > -1;
+    const hasQuick = unitCard.passiveEffects.includes(PassiveEffect.QUICK);
 
     unitCard.hp = unitCard.totalHp;
     unitCard.hpBuff = 0;
     unitCard.attackBuff = 0;
     unitCard.numAttacksLeft = hasQuick ? unitCard.numAttacks : 0;
     unitCard.cost = cloneDeep(unitCard.originalCost);
+    unitCard.passiveEffects = cloneDeep(unitCard.originalPassiveEffects);
 };
 
 /**
@@ -92,16 +93,31 @@ export const processBoardToCemetery = (
             (unit) => unit.hp + unit.hpBuff > 0
         );
 
-        player.units = unitsLeft;
-        if (unitsHeadedToCemetery.length > 0) {
+        const unitsSurvivingViaHearty = unitsHeadedToCemetery.filter((unit) =>
+            unit.passiveEffects.includes(PassiveEffect.HEARTY)
+        );
+        const unitsNotSurvivingViaHearty = unitsHeadedToCemetery.filter(
+            (unit) => !unit.passiveEffects.includes(PassiveEffect.HEARTY)
+        );
+
+        // remove hearty and go to 1 hp instead of passing to cemetery
+        unitsSurvivingViaHearty.forEach((unit) => {
+            unit.passiveEffects = unit.passiveEffects.filter(
+                (effect) => effect !== PassiveEffect.HEARTY
+            );
+            unit.hp = 1;
+        });
+
+        player.units = [...unitsLeft, ...unitsSurvivingViaHearty];
+        if (unitsNotSurvivingViaHearty.length > 0) {
             addSystemChat(
-                `${unitsHeadedToCemetery
+                `${unitsNotSurvivingViaHearty
                     .map((unit) => `[[${unit.name}]]`)
                     .join(', ')} (${player.name}) went to the cemetery`
             );
         }
-        player.cemetery = player.cemetery.concat(unitsHeadedToCemetery);
-        unitsHeadedToCemetery.forEach(resetUnitCard);
+        player.cemetery = player.cemetery.concat(unitsNotSurvivingViaHearty);
+        unitsNotSurvivingViaHearty.forEach(resetUnitCard);
     });
 };
 

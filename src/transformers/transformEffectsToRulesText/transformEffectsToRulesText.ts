@@ -6,6 +6,7 @@ import {
     getDefaultTargetForEffect,
     TargetTypes,
 } from '@/types/effects';
+import { RESOURCE_GLOSSARY } from '@/types/resources';
 
 const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.ALL_OPPONENTS]: 'all opponents',
@@ -108,10 +109,14 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Deal ${strength} damage to ${targetName}`;
         }
         case EffectType.DESTROY_RESOURCE: {
+            const numToDestroy =
+                strength === Number.MAX_SAFE_INTEGER ? 'all' : strength;
             if (resourceType) {
-                return `Destroy ${strength} of ${targetNamePossessive} [${resourceType}] resources`;
+                return `Destroy ${numToDestroy} of ${targetNamePossessive} [${resourceType}] resources`;
             }
-            return `Destroy ${strength} of ${targetNamePossessive} resources at random`;
+            return `Destroy ${numToDestroy} of ${targetNamePossessive} resources${
+                numToDestroy === 'all' ? '' : ' at random'
+            }`;
         }
         case EffectType.DISCARD_HAND: {
             if (strength === Number.MAX_SAFE_INTEGER) {
@@ -171,7 +176,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Increase ${resourceType.toLowerCase()} resources by ${strength}`;
         }
         case EffectType.RAMP_FOR_TURN: {
-            return `Add ${strength} ${resourceType} to your resource pool this turn`;
+            return `Add ${strength} ${RESOURCE_GLOSSARY[resourceType].icon} this turn`;
         }
         case EffectType.RAMP_FROM_HAND: {
             return `Deploy ${strength} ${resourceType} card${pluralizationEffectStrength} from your hand tapped`;

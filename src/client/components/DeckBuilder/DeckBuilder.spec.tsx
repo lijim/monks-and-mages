@@ -233,6 +233,18 @@ describe('DeckBuilder', () => {
             ).toBeInTheDocument();
         });
 
+        it('searches by rules text on card titles', () => {
+            render(<DeckBuilder />, { useRealDispatch: true });
+            const searchBar = screen.getByTestId('Filters-FreeText');
+            fireEvent.change(searchBar, { target: { value: 'Poison' } });
+            expect(
+                screen.queryByText(UnitCards.ASSASSIN.name)
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(SpellCards.STARRY_ILLUSION.name)
+            ).toBeNull();
+        });
+
         it.todo('searches by free text on rules text (case insensitive)');
 
         it('clears the free text search field', () => {

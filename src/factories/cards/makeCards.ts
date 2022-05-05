@@ -30,6 +30,7 @@ export const makeUnitCard = (unitBase: UnitBase): UnitCard => {
         hpBuff: 0,
         attackBuff: 0,
         originalCost: cloneDeep(unitBase.cost),
+        originalPassiveEffects: cloneDeep(unitBase.passiveEffects),
     };
 };
 
