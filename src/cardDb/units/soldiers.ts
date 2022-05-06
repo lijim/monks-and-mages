@@ -111,6 +111,24 @@ const UNHOLY_VETERAN: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const SPIRIT_GUARDIAN: UnitCard = makeCard({
+    name: 'Spirit Guardian',
+    // https://pixabay.com/photos/magician-forest-wolf-fantasy-mood-3047235/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/12/29/10/44/magician-3047235_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [PassiveEffect.HEARTY],
+});
+
 /* 2 total cost */
 const SWORDS_MASTER: UnitCard = makeCard({
     name: 'Swords Master',
@@ -560,6 +578,7 @@ export const SOLDIERS = {
     PIKEMAN,
     QUESTING_DUO,
     UNHOLY_VETERAN,
+    SPIRIT_GUARDIAN,
     // 2
     SWORDS_MASTER,
     ARDENT_SPIRITUALIST,
