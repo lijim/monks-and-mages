@@ -71,6 +71,12 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             target || getDefaultTargetForEffect(type)
         ];
     const pluralizationEffectStrength = strength > 1 ? 's' : '';
+
+    let forText = '';
+    if (target && target !== TargetTypes.SELF_PLAYER) {
+        forText = ` for ${targetName}`;
+    }
+
     switch (effect.type) {
         case EffectType.BOUNCE: {
             return `Return ${targetName} back to ${
@@ -173,7 +179,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Turn ${targetName} into a [${summonType.name}]`;
         }
         case EffectType.RAMP: {
-            return `Increase ${resourceType.toLowerCase()} resources by ${strength}`;
+            return `Increase ${resourceType.toLowerCase()} resources by ${strength}${forText}`;
         }
         case EffectType.RAMP_FOR_TURN: {
             return `Add ${strength} ${RESOURCE_GLOSSARY[resourceType].icon} this turn`;
@@ -188,18 +194,9 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Revive ${targetName}`;
         }
         case EffectType.SUMMON_UNITS: {
-            let forText = '';
-            if (target && target !== TargetTypes.SELF_PLAYER) {
-                forText = ` for ${targetName}`;
-            }
             return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙${forText}`;
         }
         case EffectType.TRANSMUTE: {
-            let forText = '';
-            if (target && target !== TargetTypes.SELF_PLAYER) {
-                forText = ` for ${targetName}`;
-            }
-
             return `Turn ${
                 strength || 'all'
             } [${cardName}] card${pluralizationEffectStrength} in hand into [${secondaryCardName}]${forText}`;

@@ -108,7 +108,11 @@ export const processBoardToCemetery = (
             unit.hp = 1;
         });
 
-        player.units = [...unitsLeft, ...unitsSurvivingViaHearty];
+        player.units = player.units.filter(
+            (unit) =>
+                unitsLeft.includes(unit) ||
+                unitsSurvivingViaHearty.includes(unit)
+        );
         if (unitsNotSurvivingViaHearty.length > 0) {
             addSystemChat(
                 `${unitsNotSurvivingViaHearty
