@@ -1002,11 +1002,13 @@ describe('Game Action', () => {
     describe('Passive Effects', () => {
         describe('Hearty', () => {
             it('survives lethal damage', () => {
-                const attacker = makeCard(UnitCards.LANCER);
-                attacker.passiveEffects = [PassiveEffect.HEARTY];
-                attacker.numAttacksLeft = 1;
-                const defender = makeCard(UnitCards.MARTIAL_TRAINER);
-                board.players[0].units = [attacker];
+                const attacker = makeCard(UnitCards.BOUNTY_COLLECTOR);
+                attacker.passiveEffects.push(PassiveEffect.HEARTY);
+                const defender = makeCard(UnitCards.BOUNTY_COLLECTOR);
+                board.players[0].units = [
+                    attacker,
+                    makeCard(UnitCards.BOUNTY_COLLECTOR),
+                ];
                 board.players[1].units = [defender];
                 const newBoardState = applyGameAction({
                     board,
@@ -1018,9 +1020,10 @@ describe('Game Action', () => {
                     playerName: 'Timmy',
                 });
                 expect(newBoardState.players[0].cemetery).toHaveLength(0);
+                console.log(newBoardState.players[0].units);
                 expect(
                     newBoardState.players[0].units[0].passiveEffects
-                ).toEqual([]);
+                ).toEqual([PassiveEffect.POISONED, PassiveEffect.QUICK]);
                 expect(newBoardState.players[0].units[0].hp).toEqual(1);
             });
         });

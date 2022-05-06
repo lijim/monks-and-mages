@@ -319,47 +319,15 @@ describe('transformEffectstoRulesText', () => {
             );
         });
 
-        it('displays rules for ramping crystal', () => {
+        it('displays rules for ramping crystal for opponents', () => {
             const effect: Effect = {
                 type: EffectType.RAMP,
                 resourceType: Resource.CRYSTAL,
+                target: TargetTypes.ALL_OPPONENTS,
                 strength: 1,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Increase crystal resources by 1`
-            );
-        });
-
-        it('displays rules for ramping fire', () => {
-            const effect: Effect = {
-                type: EffectType.RAMP,
-                resourceType: Resource.FIRE,
-                strength: 3,
-            };
-            expect(transformEffectToRulesText(effect)).toEqual(
-                `Increase fire resources by 3`
-            );
-        });
-
-        it('displays rules for ramping iron', () => {
-            const effect: Effect = {
-                type: EffectType.RAMP,
-                resourceType: Resource.IRON,
-                strength: 3,
-            };
-            expect(transformEffectToRulesText(effect)).toEqual(
-                `Increase iron resources by 3`
-            );
-        });
-
-        it('displays rules for ramping water', () => {
-            const effect: Effect = {
-                type: EffectType.RAMP,
-                resourceType: Resource.WATER,
-                strength: 2,
-            };
-            expect(transformEffectToRulesText(effect)).toEqual(
-                `Increase water resources by 2`
+                `Increase crystal resources by 1 for all opponents`
             );
         });
     });
