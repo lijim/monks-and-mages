@@ -1023,8 +1023,8 @@ const POLYMORPH_FROG = makeCard({
     ],
 });
 
-const DOUBLE_POLYMORPH_FROG = makeCard({
-    name: 'Double Polymorph: Frog',
+const DOUBLE_MORPH_FROG = makeCard({
+    name: 'Double Morph: Frog',
     // https://www.pexels.com/photo/pair-of-green-frogs-sitting-on-tree-branch-11575310/
     imgSrc: 'https://images.pexels.com/photos/11575310/pexels-photo-11575310.jpeg',
     cost: {
@@ -1214,7 +1214,7 @@ export const SpellCards = {
 
     // Witch
     POLYMORPH_FROG,
-    DOUBLE_POLYMORPH_FROG,
+    DOUBLE_MORPH_FROG,
 
     // Pirates
     RAISE_THE_MASTS,
