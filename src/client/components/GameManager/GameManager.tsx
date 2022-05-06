@@ -23,6 +23,7 @@ import {
     AutoResolvingTargets,
     getDefaultTargetForEffect,
 } from '@/types/effects';
+import { AUTO_RESOLVE_LINGER_DURATION } from '@/constants/gameConstants';
 
 interface GameManagerContextValue {
     handleClickCard: (
@@ -57,14 +58,14 @@ export const GameManager: React.FC = ({ children }) => {
                 socket.emit('resolveEffect', {
                     effect: lastEffect,
                 });
-            }, 2000);
+            }, AUTO_RESOLVE_LINGER_DURATION);
         }
         if (willLastEffectFizzle) {
             setTimeout(() => {
                 socket.emit('resolveEffect', {
                     effect: lastEffect,
                 });
-            }, 2000);
+            }, AUTO_RESOLVE_LINGER_DURATION);
         }
     }, [lastEffect]);
 

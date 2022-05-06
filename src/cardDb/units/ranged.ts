@@ -75,6 +75,24 @@ const LONGBOWMAN: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const SLY_HUNTER: UnitCard = makeCard({
+    name: 'Sly Hunter',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/10/12/18/29/fairytale-1735399_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.HEARTY],
+});
+
 const SILENT_MARKSWOMAN: UnitCard = makeCard({
     name: 'Silent Markswoman',
     // https://pixabay.com/photos/archer-night-forest-nature-moon-7157557/
@@ -164,6 +182,32 @@ const WINGED_SAVIOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.HEARTY],
+});
+
+const THE_MONKEY_KING: UnitCard = makeCard({
+    name: 'The Monkey King',
+    // https://pixabay.com/photos/painting-gods-buddhist-pattern-201447/
+    imgSrc: 'https://cdn.pixabay.com/photo/2013/10/27/14/32/painting-201447_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'BUBBLE_BLAST',
+            strength: 2,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.QUICK],
 });
 
 const FALCON_RIDER: UnitCard = makeCard({
@@ -335,9 +379,11 @@ export const RANGED_UNITS = {
     DRYAD,
     CANYON_ELITE,
     LONGBOWMAN,
+    SLY_HUNTER,
     SILENT_MARKSWOMAN,
     CAVALRY_ARCHER,
     WINGED_SAVIOR,
+    THE_MONKEY_KING,
     FALCON_RIDER,
     EXCELLENT_EQUESTRIAN,
     MERRY_RALLIER,

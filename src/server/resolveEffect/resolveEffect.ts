@@ -297,6 +297,17 @@ export const resolveEffect = (
             applyWinState(clonedBoard);
             return clonedBoard;
         }
+        case EffectType.DRAW_MILL_WIN: {
+            const { hand, deck } = activePlayer;
+            if (effectStrength >= deck.length) {
+                otherPlayers.forEach((player) => {
+                    player.isAlive = false;
+                });
+            }
+            activePlayer.hand = hand.concat(deck.splice(-effectStrength));
+            applyWinState(clonedBoard);
+            return clonedBoard;
+        }
         case EffectType.DRAW_PER_UNIT: {
             playerTargets.forEach((player) => {
                 const cardsToDraw = player.units.length;

@@ -43,6 +43,30 @@ const MAGICIANS_APPRENTICE: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const THE_ORACLE: UnitCard = makeCard({
+    name: 'The Oracle',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/03/10/23/13/oracle-girl-2133976_1280.jpg', // https://images.unsplash.com/photo-1615962122149-ef6987cf19f4'
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW_MILL_WIN,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 0,
+        },
+    ],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const FAE_DRAGON: UnitCard = makeCard({
     name: 'Fae Dragon',
     imgSrc: 'https://cdn.pixabay.com/photo/2017/09/13/21/29/fantasy-2747066_1280.jpg', // https://images.unsplash.com/photo-1615962122149-ef6987cf19f4'
@@ -69,6 +93,7 @@ const FAE_DRAGON: UnitCard = makeCard({
 
 export const CRYSTAL_MAGES = {
     THIRD_YEAR_STUDENTS,
+    THE_ORACLE,
     MAGICIANS_APPRENTICE,
     FAE_DRAGON,
 };

@@ -138,6 +138,12 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 isTargetTypePlural(target) ? '' : 's'
             } ${strength} cards`;
         }
+        case EffectType.DRAW_MILL_WIN: {
+            if (strength) {
+                return `Draw ${strength} cards - if your deck is empty, win the game`;
+            }
+            return 'If your deck is empty, win the game';
+        }
         case EffectType.DRAW_PER_UNIT: {
             if (!target) {
                 return `Draw a card for every unit owned on board`;

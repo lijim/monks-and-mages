@@ -3,6 +3,24 @@ import { UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
+const FERRY_OPERATOR = makeCard({
+    name: 'Ferry Operator',
+    imgSrc: 'https://cdn.pixabay.com/photo/2013/07/18/20/25/boat-164977_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const FROSTBURN_MAGE = makeCard({
     name: 'Frostburn Mage',
     imgSrc: 'https://images.pexels.com/photos/1879877/pexels-photo-1879877.jpeg',
@@ -108,6 +126,7 @@ const WIND_MAGE: UnitCard = makeCard({
 });
 
 export const WIND_MAGES = {
+    FERRY_OPERATOR,
     FROSTBURN_MAGE,
     HEAVENLY_FERRIER,
     ARCHANGEL,

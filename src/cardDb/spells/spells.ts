@@ -291,6 +291,19 @@ const GENEROUS_GEYSER = makeCard({
     ],
 });
 
+const MIDNIGHT_ROW = makeCard({
+    name: 'Midnight Row',
+    // https://pixabay.com/illustrations/gondolier-boat-moon-water-night-2018052/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/01/29/14/00/gondolier-2018052_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DRAW_MILL_WIN,
+            strength: 2,
+        },
+    ],
+});
+
 const REFLECTION_OPPORTUNITY = makeCard({
     name: 'Reflection Opportunity',
     imgSrc: 'https://images.pexels.com/photos/9888656/pexels-photo-9888656.jpeg',
@@ -808,6 +821,25 @@ const DECAY = makeCard({
     ],
 });
 
+const DESERT_TRIALS = makeCard({
+    name: 'Desert Trials',
+    // https://pixabay.com/photos/camels-desert-man-oman-salalah-4432346/
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/08/26/17/21/camels-4432346_1280.jpg',
+    cost: { [Resource.IRON]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.RAMP,
+            resourceType: Resource.WATER,
+            strength: 1,
+        },
+        {
+            type: EffectType.RAMP,
+            resourceType: Resource.BAMBOO,
+            strength: 1,
+        },
+    ],
+});
+
 // Cannon
 const IGNITE_SPARKS = makeCard({
     name: 'Ignite Sparks',
@@ -895,7 +927,65 @@ const BESIEGE_THE_CASTLE = makeCard({
     ],
 });
 
+// 3-color
+const UNDERWORLD_MESSAGE = makeCard({
+    name: 'Underworld Message',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/04/07/12/17/photo-manipulation-5013193_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+    },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+        {
+            type: EffectType.BUFF_MAGIC,
+            strength: 1,
+            target: TargetTypes.OWN_UNIT,
+        },
+        {
+            type: EffectType.BUFF_HAND_ATTACK,
+            strength: 1,
+        },
+    ],
+});
+
 // 4-color
+const A_DARK_FOREST = makeCard({
+    name: 'A Dark Forest',
+    // https://pixabay.com/photos/mystery-road-fantasy-magical-fog-4532583/
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/10/07/13/18/mystery-4532583_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 4,
+    },
+    effects: [
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.CRYSTAL,
+        },
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.FIRE,
+        },
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.WATER,
+        },
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.IRON,
+        },
+    ],
+});
+
 const A_MILLION_RAYS = makeCard({
     name: 'A Million Rays',
     imgSrc: 'https://cdn.pixabay.com/photo/2013/03/11/01/16/rainbow-92342_1280.jpg',
@@ -1158,6 +1248,7 @@ export const SpellCards = {
     OASIS_RITUAL,
     STIR,
     GENEROUS_GEYSER,
+    MIDNIGHT_ROW,
     CONSTANT_REFILL,
     RAGING_WHIRLPOOL,
     SUMMON_SHARKS,
@@ -1204,6 +1295,7 @@ export const SpellCards = {
     // Genies
     SIGNAL_BEACON,
     DECAY,
+    DESERT_TRIALS,
 
     // Cannon
     IGNITE_SPARKS,
@@ -1221,6 +1313,8 @@ export const SpellCards = {
     WRECK_SHIPS,
 
     // Multi-color misc.
+    UNDERWORLD_MESSAGE,
+    A_DARK_FOREST,
     A_MILLION_RAYS,
     QUESTION_REALITY,
     CALL_THE_HERD,
