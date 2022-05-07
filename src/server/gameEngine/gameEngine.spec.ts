@@ -1020,7 +1020,6 @@ describe('Game Action', () => {
                     playerName: 'Timmy',
                 });
                 expect(newBoardState.players[0].cemetery).toHaveLength(0);
-                console.log(newBoardState.players[0].units);
                 expect(
                     newBoardState.players[0].units[0].passiveEffects
                 ).toEqual([PassiveEffect.POISONED, PassiveEffect.QUICK]);

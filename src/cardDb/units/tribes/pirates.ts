@@ -70,8 +70,61 @@ const DARING_CORSAIR: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const SHIP_COXSWAIN: UnitCard = makeCard({
+    name: 'Ship Coxswain',
+    imgSrc: 'https://cdn.pixabay.com/photo/2014/09/07/03/41/fishermen-437420_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'LANDMARK',
+            strength: 2,
+        },
+    ],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const CUTLASS_CRUSADER: UnitCard = makeCard({
+    name: 'Cutlass Crusader',
+    // https://pixabay.com/photos/pirate-corsair-piracy-privateers-2752397/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/09/15/14/59/pirate-2752397_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 2,
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 export const PIRATES = {
     NOBLE_STEED,
     ELDER_PIRATE,
     DARING_CORSAIR,
+    SHIP_COXSWAIN,
+    CUTLASS_CRUSADER,
 };

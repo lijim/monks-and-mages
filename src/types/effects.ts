@@ -39,6 +39,7 @@ export enum EffectType {
     DESTROY_RESOURCE = 'Destroy Resource',
     DISCARD_HAND = 'Discard Hand', // discard X cards at random
     DRAW = 'Draw',
+    DRAW_MILL_WIN = 'Draw Mill Win',
     DRAW_PER_UNIT = 'Draw Per Unit',
     DRAW_UNTIL = 'Draw Until',
     EXTRACT_CARD = 'Extract Card', // extract X of {cardName} card from deck
@@ -72,6 +73,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.DESTROY_RESOURCE]: TargetTypes.OPPONENT,
         [EffectType.DISCARD_HAND]: TargetTypes.OPPONENT,
         [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
+        [EffectType.DRAW_MILL_WIN]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW_UNTIL]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_CARD]: TargetTypes.SELF_PLAYER,

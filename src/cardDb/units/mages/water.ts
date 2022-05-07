@@ -146,6 +146,31 @@ const PELAGIC_PREDATOR = makeCard({
     passiveEffects: [],
 });
 
+const PEACE_BRINGER = makeCard({
+    name: 'Peace Bringer',
+    // https://pixabay.com/photos/fantasy-girl-sea-spray-gull-water-5369086/
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/07/04/10/36/fantasy-5369086_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+            target: TargetTypes.ALL_PLAYERS,
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const CURSED_CHIEFTAIN: UnitCard = makeCard({
     name: 'Cursed Chieftain',
     imgSrc: 'https://images.pexels.com/photos/2569229/pexels-photo-2569229.jpeg',
@@ -257,6 +282,7 @@ export const WATER_MAGES = {
     RAIN_CHANNELER,
     PELAGIC_PREDATOR,
     WATER_MAGE,
+    PEACE_BRINGER,
     CURSED_CHIEFTAIN,
     AQUARIAN_ADEPT,
     CHAD_THE_AQUAPHILE,

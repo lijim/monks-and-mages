@@ -423,6 +423,30 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Draw - mill to win', () => {
+        it('makes the player draw out of cards and win', () => {
+            const deckLength = board.players[0].deck.length;
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DRAW_MILL_WIN,
+                        strength: deckLength,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + deckLength
+            );
+            expect(newBoard.players[0].deck).toEqual([]);
+            expect(newBoard.players[1].isAlive).toEqual(false);
+            expect(newBoard.gameState).toEqual(GameState.WIN);
+        });
+    });
+
     describe('Draw Cards Per Unit', () => {
         it('draws cards for players', () => {
             const deckLength = board.players[0].deck.length;
