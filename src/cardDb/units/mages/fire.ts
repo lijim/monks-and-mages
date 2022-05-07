@@ -135,7 +135,7 @@ const FIRE_MAGE: UnitCard = makeCard({
     enterEffects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            target: TargetTypes.ANY,
+            target: TargetTypes.OPPOSING_UNIT,
             strength: 2,
         },
     ],

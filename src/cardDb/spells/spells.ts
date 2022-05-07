@@ -572,7 +572,7 @@ const THROW_SHURIKEN = makeCard({
     effects: [
         {
             type: EffectType.DEAL_DAMAGE,
-            target: TargetTypes.UNIT,
+            target: TargetTypes.OPPOSING_UNIT,
             strength: 2,
         },
     ],
