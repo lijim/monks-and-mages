@@ -85,7 +85,7 @@ const BAMBOO_FARMER: UnitCard = makeCard({
     cost: {
         [Resource.BAMBOO]: 1,
     },
-    description: '',
+    description: 'Bamboo?  Not for you!',
     enterEffects: [
         {
             type: EffectType.RAMP_FROM_HAND,
@@ -222,6 +222,7 @@ const QUARRY_WORKER: UnitCard = makeCard({
     name: 'Quarry Worker',
     imgSrc: 'https://images.unsplash.com/photo-1623438803816-1f7456b240fa',
     cost: {
+        [Resource.GENERIC]: 1,
         [Resource.IRON]: 1,
     },
     description: '',
@@ -234,7 +235,7 @@ const QUARRY_WORKER: UnitCard = makeCard({
         },
     ],
     totalHp: 1,
-    attack: 0,
+    attack: 1,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
