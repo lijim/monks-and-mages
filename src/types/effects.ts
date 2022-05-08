@@ -28,6 +28,7 @@ export const AutoResolvingTargets = [
  * Effects that a card can have (both spells and units)
  */
 export enum EffectType {
+    BLOOM = 'Bloom', // "Summer Bloom" - you may play X additional resources this turn
     BOUNCE = 'Bounce', // to any target
     BUFF_ATTACK = 'Buff attack', // increase/decrease attack of a single unit
     BUFF_HAND_ATTACK = 'Buff hand attack', // buffs all creatures in hand
@@ -64,6 +65,7 @@ export const getDefaultTargetForEffect = (
     effectType: EffectType
 ): TargetTypes => {
     return {
+        [EffectType.BLOOM]: TargetTypes.SELF_PLAYER,
         [EffectType.BOUNCE]: TargetTypes.UNIT,
         [EffectType.BUFF_ATTACK]: TargetTypes.UNIT,
         [EffectType.BUFF_HAND_ATTACK]: TargetTypes.SELF_PLAYER,
