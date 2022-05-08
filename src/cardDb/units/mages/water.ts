@@ -4,6 +4,24 @@ import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
+const GIANT_JELLY: UnitCard = makeCard({
+    name: 'Giant Jelly',
+    // https://pixabay.com/photos/fantasy-beach-children-jellyfish-3281842/
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/04/01/19/15/fantasy-3281842_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const MEDITATION_EXPERT: UnitCard = makeCard({
     name: 'Meditation Expert',
     imgSrc: 'https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg',
@@ -276,6 +294,7 @@ const WATER_GUARDIAN: UnitCard = makeCard({
 });
 
 export const WATER_MAGES = {
+    GIANT_JELLY,
     MEDITATION_EXPERT,
     MANTA_RAY_CONJURER,
     TINY_MERMAID,
