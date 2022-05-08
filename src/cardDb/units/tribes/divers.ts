@@ -1,6 +1,6 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
 import { UnitCard } from '@/types/cards';
-import { EffectType } from '@/types/effects';
+import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
@@ -45,6 +45,32 @@ const SEASONAL_CROPHAND: UnitCard = makeCard({
     ],
     totalHp: 1,
     attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const ENTERPRISING_VENDOR: UnitCard = makeCard({
+    name: 'Enterprising Vendor',
+    // https://pixabay.com/photos/thailand-plantains-market-floating-502480/
+    imgSrc: 'https://cdn.pixabay.com/photo/2014/10/25/12/18/thailand-502480_1280.jpg',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.WATER]: 1,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SHUFFLE_FROM_HAND,
+            cardName: 'Tea',
+            target: TargetTypes.OPPONENT,
+        },
+    ],
+    totalHp: 3,
+    attack: 2,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
@@ -143,6 +169,7 @@ const ICTHYOMANCER: UnitCard = makeCard({
 export const DIVERS = {
     TRAINEE_DIVER,
     SEASONAL_CROPHAND,
+    ENTERPRISING_VENDOR,
     CALM_SUMMONER,
     DEEP_SEA_EXPLORER,
     ICTHYOMANCER,

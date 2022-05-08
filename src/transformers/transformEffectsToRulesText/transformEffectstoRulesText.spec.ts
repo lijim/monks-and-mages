@@ -403,27 +403,43 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
-    it('displays rules for summoning units', () => {
-        const effect: Effect = {
-            type: EffectType.SUMMON_UNITS,
-            strength: 2,
-            summonType: Tokens.DEMON,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Summon 2 Demons - 1 ⚔️ 1 💙`
-        );
+    describe('Shuffle from hand', () => {
+        it("displays rules for shuffling into a player's deck", () => {
+            const effect: Effect = {
+                type: EffectType.SHUFFLE_FROM_HAND,
+                strength: 2,
+                cardName: 'Tea',
+                target: TargetTypes.OPPONENT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Shuffle 2 [Tea] cards in hand into any opponent's decks`
+            );
+        });
     });
 
-    it('displays rules for summoning units', () => {
-        const effect: Effect = {
-            type: EffectType.SUMMON_UNITS,
-            strength: 2,
-            target: TargetTypes.OPPONENT,
-            summonType: Tokens.DEMON,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Summon 2 Demons - 1 ⚔️ 1 💙 for any opponent`
-        );
+    describe('Summon units', () => {
+        it('displays rules for summoning units', () => {
+            const effect: Effect = {
+                type: EffectType.SUMMON_UNITS,
+                strength: 2,
+                summonType: Tokens.DEMON,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Summon 2 Demons - 1 ⚔️ 1 💙`
+            );
+        });
+
+        it('displays rules for summoning units (opponents)', () => {
+            const effect: Effect = {
+                type: EffectType.SUMMON_UNITS,
+                strength: 2,
+                target: TargetTypes.OPPONENT,
+                summonType: Tokens.DEMON,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Summon 2 Demons - 1 ⚔️ 1 💙 for any opponent`
+            );
+        });
     });
 
     describe('Transmute', () => {

@@ -980,6 +980,35 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].effectQueue).toHaveLength(3);
         });
     });
+
+    describe('Shuffle from hand', () => {
+        it('shuffles X cards from hand into a players deck', () => {
+            board.players[0].hand = [
+                makeCard(UnitCards.CANNON),
+                makeCard(UnitCards.CANNON),
+                makeCard(UnitCards.CANNON),
+            ];
+            const deckLength = board.players[1].deck.length;
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.SHUFFLE_FROM_HAND,
+                        strength: 2,
+                        cardName: 'Cannon',
+                        target: TargetTypes.OPPONENT,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand).toHaveLength(1);
+            expect(newBoard.players[1].deck).toHaveLength(deckLength + 2);
+        });
+    });
+
     describe('Summon Unit', () => {
         it('summons 2 demons', () => {
             const newBoard = resolveEffect(
