@@ -981,6 +981,25 @@ const UNDERWORLD_MESSAGE = makeCard({
     ],
 });
 
+const MAGNIMUTATION = makeCard({
+    name: 'Magnimutation',
+    // https://pixabay.com/photos/elephant-butterfly-6087632/
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/03/11/16/38/elephant-6087632_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    effects: [
+        {
+            type: EffectType.BUFF_MAGIC,
+            strength: 2,
+            target: TargetTypes.ALL_SELF_UNITS,
+        },
+    ],
+});
+
 // 4-color
 const A_DARK_FOREST = makeCard({
     name: 'A Dark Forest',
@@ -1343,6 +1362,7 @@ export const SpellCards = {
 
     // Multi-color misc.
     UNDERWORLD_MESSAGE,
+    MAGNIMUTATION,
     A_DARK_FOREST,
     A_MILLION_RAYS,
     QUESTION_REALITY,

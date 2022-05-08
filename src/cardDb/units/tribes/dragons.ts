@@ -56,6 +56,30 @@ const BABY_DRAGON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const HEARTY_STAG: UnitCard = makeCard({
+    name: 'Hearty Stag',
+    // https://pixabay.com/photos/fantasy-deer-mammal-forest-nature-3232570/
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/03/16/21/24/fantasy-3232570_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_MAGIC,
+            strength: 1,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const BRONZE_DRAGON: UnitCard = makeCard({
     name: 'Bronze Dragon',
     imgSrc: 'https://images.pexels.com/photos/9891049/pexels-photo-9891049.jpeg',
@@ -133,6 +157,7 @@ const BOLD_DRAGON: UnitCard = makeCard({
 export const DRAGONS = {
     DRAGON_RIDER,
     BABY_DRAGON,
+    HEARTY_STAG,
     BRONZE_DRAGON,
     YELLOW_DRAGON,
     BOLD_DRAGON,

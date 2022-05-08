@@ -98,8 +98,12 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         }
         case EffectType.BUFF_MAGIC: {
             if (strength < 0)
-                return `Decrease attack/HP of ${targetName} by ${-strength} if it is magical`;
-            return `Increase attack/HP of ${targetName} by ${strength} if it is magical`;
+                return `Decrease attack/HP of ${targetName} by ${-strength} if ${
+                    isTargetTypePlural(target) ? 'they are' : 'it is'
+                } magical`;
+            return `Increase attack/HP of ${targetName} by ${strength} if ${
+                isTargetTypePlural(target) ? 'they are' : 'it is'
+            } magical`;
         }
         case EffectType.BUFF_TEAM_ATTACK: {
             if (strength < 0)

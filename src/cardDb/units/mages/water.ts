@@ -22,6 +22,30 @@ const GIANT_JELLY: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const FROST_WYRM: UnitCard = makeCard({
+    name: 'Frost Wyrm',
+    // https://pixabay.com/photos/fantasy-dragon-rock-mountains-3756975/
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/10/18/17/30/fantasy-3756975_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.CURSE_HAND,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+    ],
+    totalHp: 3,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const MEDITATION_EXPERT: UnitCard = makeCard({
     name: 'Meditation Expert',
     imgSrc: 'https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg',
@@ -295,6 +319,7 @@ const WATER_GUARDIAN: UnitCard = makeCard({
 
 export const WATER_MAGES = {
     GIANT_JELLY,
+    FROST_WYRM,
     MEDITATION_EXPERT,
     MANTA_RAY_CONJURER,
     TINY_MERMAID,

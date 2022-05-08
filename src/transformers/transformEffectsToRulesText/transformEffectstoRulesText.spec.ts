@@ -82,6 +82,17 @@ describe('transformEffectstoRulesText', () => {
             );
         });
 
+        it('displays rules for buffing a magic unit (multiple)', () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_MAGIC,
+                strength: 5,
+                target: TargetTypes.ALL_SELF_UNITS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase attack/HP of all your units by 5 if they are magical`
+            );
+        });
+
         it('displays rules for debuffing a magic unit', () => {
             const effect: Effect = {
                 type: EffectType.BUFF_MAGIC,
@@ -89,6 +100,17 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Decrease attack/HP of any unit by 5 if it is magical`
+            );
+        });
+
+        it('displays rules for debuffing a magic unit (multiple)', () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_MAGIC,
+                strength: -5,
+                target: TargetTypes.ALL_SELF_UNITS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease attack/HP of all your units by 5 if they are magical`
             );
         });
     });

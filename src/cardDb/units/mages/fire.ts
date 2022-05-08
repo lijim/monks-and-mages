@@ -45,6 +45,31 @@ const FIRE_TECHNICIAN: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const AUTUMN_SHAMAN: UnitCard = makeCard({
+    name: 'Autumn Shaman',
+    // https://pixabay.com/photos/fire-autumn-shaman-young-woman-2837830/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/10/10/16/31/fire-2837830_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Smolder',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const PYROCALLER: UnitCard = makeCard({
     name: 'Pyrocaller',
     imgSrc: 'https://images.pexels.com/photos/9553065/pexels-photo-9553065.jpeg',
@@ -86,6 +111,31 @@ const MYSTICAL_FIGURE: UnitCard = makeCard({
     ],
     totalHp: 1,
     attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const LA_CATRINA: UnitCard = makeCard({
+    name: 'La Catrina',
+    // https://pixabay.com/photos/catrina-skull-day-of-the-dead-5060422/
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/04/18/18/20/catrina-5060422_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+            target: TargetTypes.OPPONENT,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
     numAttacks: 1,
     isRanged: true,
     isMagical: true,
@@ -302,9 +352,11 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
 
 export const FIRE_MAGES = {
     DRAGON_TAMER,
+    AUTUMN_SHAMAN,
     FIRE_TECHNICIAN,
     PYROCALLER,
     MYSTICAL_FIGURE,
+    LA_CATRINA,
     ZEALOUS_ACOLYTE,
     IMPRESSIVE_DANCER,
     FIRE_MAGE,
