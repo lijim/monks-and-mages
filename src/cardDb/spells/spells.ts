@@ -167,6 +167,19 @@ const CAVE_IMPLOSION = makeCard({
     ],
 });
 
+const INCREDIBLE_DISCOVERY = makeCard({
+    name: 'Incredible Discovery',
+    // https://pixabay.com/illustrations/rock-man-fantasy-silhouette-person-1412287/
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/05/24/12/24/rock-1412287_1280.jpg',
+    cost: { [Resource.FIRE]: 1, [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.BLOOM,
+            strength: 2,
+        },
+    ],
+});
+
 const STRIKE_TWICE = makeCard({
     name: 'Strike Twice',
     imgSrc: 'https://images.pexels.com/photos/10826067/pexels-photo-10826067.jpeg',
@@ -1252,6 +1265,7 @@ export const SpellCards = {
     BRUSH_FIRE,
     CHANNEL_SPARKS,
     CAVE_IMPLOSION,
+    INCREDIBLE_DISCOVERY,
     STRIKE_TWICE,
     SUMMON_DEMONS,
     VOLCANIC_INFERNO,

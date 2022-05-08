@@ -5,34 +5,46 @@ import { Resource } from '@/types/resources';
 import { transformEffectToRulesText } from './transformEffectsToRulesText';
 
 describe('transformEffectstoRulesText', () => {
-    it('displays rules for bouncing units (any unit, plural)', () => {
+    describe('bloom effect', () => {
         const effect: Effect = {
-            type: EffectType.BOUNCE,
-            target: TargetTypes.UNIT,
+            type: EffectType.BLOOM,
+            strength: 3,
         };
         expect(transformEffectToRulesText(effect)).toEqual(
-            `Return any unit back to its owner's hand`
+            `You may play 3 additional resources this turn`
         );
     });
 
-    it('displays rules for bouncing units (opposing unit, singular)', () => {
-        const effect: Effect = {
-            type: EffectType.BOUNCE,
-            target: TargetTypes.OPPOSING_UNIT,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Return any unit controlled by an opponent back to its owner's hand`
-        );
-    });
+    describe('bounce', () => {
+        it('displays rules for bouncing units (any unit, plural)', () => {
+            const effect: Effect = {
+                type: EffectType.BOUNCE,
+                target: TargetTypes.UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return any unit back to its owner's hand`
+            );
+        });
 
-    it('displays rules for bouncing units (opposing unit, plural)', () => {
-        const effect: Effect = {
-            type: EffectType.BOUNCE,
-            target: TargetTypes.ALL_OPPOSING_UNITS,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Return all opposing units back to their owners' hand`
-        );
+        it('displays rules for bouncing units (opposing unit, singular)', () => {
+            const effect: Effect = {
+                type: EffectType.BOUNCE,
+                target: TargetTypes.OPPOSING_UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return any unit controlled by an opponent back to its owner's hand`
+            );
+        });
+
+        it('displays rules for bouncing units (opposing unit, plural)', () => {
+            const effect: Effect = {
+                type: EffectType.BOUNCE,
+                target: TargetTypes.ALL_OPPOSING_UNITS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return all opposing units back to their owners' hand`
+            );
+        });
     });
 
     describe('Buff attack / nerf attack', () => {

@@ -78,6 +78,9 @@ export const transformEffectToRulesText = (effect: Effect): string => {
     }
 
     switch (effect.type) {
+        case EffectType.BLOOM: {
+            return `You may play ${strength} additional resource${pluralizationEffectStrength} this turn`;
+        }
         case EffectType.BOUNCE: {
             return `Return ${targetName} back to ${
                 PLURAL_TARGET_TYPES.indexOf(target) > -1
