@@ -16,8 +16,8 @@ import {
     Skeleton,
 } from '@/types/cards';
 import { SecondaryColorButton } from '../Button';
-import { getSkeletonFromDeckList } from '@/transformers/getSkeletonFromDeckList/getSkeletonFromDeckList';
-import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/getDeckListFromSkeleton';
+import { getSkeletonFromDeckList } from '@/transformers/getSkeletonFromDeckList';
+import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton';
 import { WebSocketContext } from '../WebSockets';
 import { RootState } from '@/client/redux/store';
 import { isDeckValidForFormat } from '@/transformers/isDeckValidForFomat';

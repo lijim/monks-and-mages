@@ -466,7 +466,7 @@ describe('resolve effect', () => {
         });
     });
 
-    describe('Draw Cards Per Unit', () => {
+    describe('Draw cards per unit', () => {
         it('draws cards for players', () => {
             const deckLength = board.players[0].deck.length;
 
@@ -511,7 +511,27 @@ describe('resolve effect', () => {
         });
     });
 
-    describe('Draw Cards Per Unit', () => {
+    describe('Draw cards until X cards', () => {
+        it('draws nothing if already at X cards', () => {
+            const deckLength = board.players[0].deck.length;
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DRAW_UNTIL,
+                        strength: PlayerConstants.STARTING_HAND_SIZE,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE
+            );
+            expect(newBoard.players[0].deck).toHaveLength(deckLength);
+        });
+
         it('draws cards for players', () => {
             const deckLength = board.players[0].deck.length;
 

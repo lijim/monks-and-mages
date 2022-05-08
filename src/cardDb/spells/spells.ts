@@ -300,7 +300,7 @@ const GENEROUS_GEYSER = makeCard({
         {
             type: EffectType.HEAL,
             target: TargetTypes.SELF_PLAYER,
-            strength: 1,
+            strength: 2,
         },
     ],
 });
