@@ -129,7 +129,7 @@ const CANYON_ELITE: UnitCard = makeCard({
     enterEffects: [
         {
             strength: 1,
-            type: EffectType.BUFF_TEAM_HP,
+            type: EffectType.BUFF_ATTACK,
         },
         {
             strength: 2,
@@ -138,7 +138,7 @@ const CANYON_ELITE: UnitCard = makeCard({
         },
     ],
     totalHp: 1,
-    attack: 2,
+    attack: 1,
     numAttacks: 1,
     isRanged: true,
     isMagical: false,

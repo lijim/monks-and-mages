@@ -437,7 +437,7 @@ const KNIGHT_TEMPLAR: UnitCard = makeCard({
     },
     description: '',
     enterEffects: [],
-    totalHp: 5,
+    totalHp: 4,
     attack: 3,
     numAttacks: 1,
     isRanged: false,
