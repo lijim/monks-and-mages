@@ -401,6 +401,11 @@ export const applyGameAction = ({
                     `[[${attacker.name}]] (${activePlayer.name}) ${attackEmoji}${attackEmoji} ${defendingPlayer.name}`
                 );
                 defendingPlayer.health -= attackTotal;
+                if (attackTotal && attacker.damagePlayerEffects?.length > 0) {
+                    activePlayer.effectQueue = activePlayer.effectQueue.concat(
+                        cloneDeep(attacker.damagePlayerEffects).reverse()
+                    );
+                }
                 if (defendingPlayer.health <= 0) {
                     defendingPlayer.isAlive = false;
                     applyWinState(clonedBoard);

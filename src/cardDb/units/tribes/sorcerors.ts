@@ -1,7 +1,32 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
 import { UnitCard } from '@/types/cards';
-import { EffectType } from '@/types/effects';
+import { EffectType, PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
+
+const ALADDIN: UnitCard = makeCard({
+    name: 'Aladdin',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/12/29/17/48/prince-5871149_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 1,
+        [Resource.WATER]: 1,
+    },
+    damagePlayerEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+    ],
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.QUICK],
+});
 
 const CURIOUS_RESEARCHER: UnitCard = makeCard({
     name: 'Curious Researcher',
@@ -72,6 +97,7 @@ const BRIGHT_SCHOLAR: UnitCard = makeCard({
 });
 
 export const SORCERORS = {
+    ALADDIN,
     CURIOUS_RESEARCHER,
     BRIGHT_SCHOLAR,
 };

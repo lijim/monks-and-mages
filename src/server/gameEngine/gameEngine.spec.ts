@@ -8,7 +8,7 @@ import { GameActionTypes } from '@/types/gameActions';
 import { Resource } from '@/types/resources';
 import { applyGameAction } from './gameEngine';
 import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
-import { PassiveEffect } from '@/types/effects';
+import { EffectType, PassiveEffect } from '@/types/effects';
 
 describe('Game Action', () => {
     let board: Board;
@@ -810,6 +810,27 @@ describe('Game Action', () => {
                 PlayerConstants.STARTING_HEALTH - attacker.attack
             );
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
+        });
+
+        it('attacks the opposing player', () => {
+            const attacker = makeCard(UnitCards.WATER_GUARDIAN);
+            attacker.damagePlayerEffects = [
+                { type: EffectType.BLOOM, resourceType: Resource.WATER },
+            ];
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].effectQueue).toEqual([
+                { type: EffectType.BLOOM, resourceType: Resource.WATER },
+            ]);
         });
 
         it('deals zero damage if buffed below 0 attack', () => {

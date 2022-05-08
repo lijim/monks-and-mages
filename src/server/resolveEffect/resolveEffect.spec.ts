@@ -72,7 +72,7 @@ describe('resolve effect', () => {
         resolveEffect(board, { effect }, 'Timmy', false, mockAddSystemChat);
 
         expect(mockAddSystemChat).toHaveBeenCalledWith(
-            'Timmy resolved "draw 1 cards"'
+            'Timmy resolved "draw 1 card"'
         );
     });
 

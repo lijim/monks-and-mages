@@ -140,15 +140,15 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             if (strength === Number.MAX_SAFE_INTEGER) {
                 return `Make ${targetName} discard all cards`;
             }
-            return `Make ${targetName} discard ${strength} cards at random`;
+            return `Make ${targetName} discard ${strength} card${pluralizationEffectStrength} at random`;
         }
         case EffectType.DRAW: {
             if (!target || target === TargetTypes.SELF_PLAYER) {
-                return `Draw ${strength} cards`;
+                return `Draw ${strength} card${pluralizationEffectStrength}`;
             }
             return `${titleize(targetName)} draw${
                 isTargetTypePlural(target) ? '' : 's'
-            } ${strength} cards`;
+            } ${strength} card${pluralizationEffectStrength}`;
         }
         case EffectType.DRAW_MILL_WIN: {
             if (strength) {
