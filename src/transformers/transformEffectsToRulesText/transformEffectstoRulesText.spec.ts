@@ -35,6 +35,30 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    describe('Buff attack / nerf attack', () => {
+        it('displays rules for buffing a unit', () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_ATTACK,
+                strength: 5,
+                target: TargetTypes.UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase attack of any unit by 5`
+            );
+        });
+
+        it("displays rules for nerfing a unit's attack", () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_ATTACK,
+                strength: -5,
+                target: TargetTypes.UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease attack of any unit by 5`
+            );
+        });
+    });
+
     describe('Buff Magic', () => {
         it('displays rules for buffing a magic unit', () => {
             const effect: Effect = {

@@ -535,6 +535,29 @@ describe('Game Action', () => {
             expect(newBoardState.players[1].units[0].hp).toEqual(-1);
         });
 
+        it('performs a melee attack (no damage because of attack nerfs)', () => {
+            const attacker = makeCard(UnitCards.SQUIRE);
+            attacker.attackBuff = -3;
+            attacker.numAttacksLeft = 1;
+            const defender = makeCard(UnitCards.SQUIRE);
+            defender.attackBuff = -4;
+            board.players[0].units = [attacker];
+            board.players[1].units = [defender];
+
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: defender.id,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.players[0].units[0].hp).toEqual(attacker.hp);
+            expect(newBoardState.players[1].units[0].hp).toEqual(defender.hp);
+        });
+
         it('performs a melee attack (lethal for both)', () => {
             const attacker = makeCard(UnitCards.LANCER);
             attacker.numAttacksLeft = 1;
@@ -785,6 +808,26 @@ describe('Game Action', () => {
             });
             expect(newBoardState.players[1].health).toEqual(
                 PlayerConstants.STARTING_HEALTH - attacker.attack
+            );
+            expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
+        });
+
+        it('deals zero damage if buffed below 0 attack', () => {
+            const attacker = makeCard(UnitCards.WATER_GUARDIAN);
+            attacker.attackBuff = -7;
+            attacker.numAttacksLeft = 1;
+            board.players[0].units = [attacker];
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    playerTarget: 'Tommy',
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH
             );
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });
