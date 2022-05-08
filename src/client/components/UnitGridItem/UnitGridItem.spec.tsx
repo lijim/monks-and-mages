@@ -6,6 +6,7 @@ import { UnitCards } from '@/mocks/units';
 import { UnitGridItem } from './UnitGridItem';
 import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
 import { makeCard } from '@/factories/cards';
+import { EffectType } from '@/types/effects';
 
 describe('Unit Grid Item', () => {
     it('renders unit name + casting cost', () => {
@@ -34,6 +35,22 @@ describe('Unit Grid Item', () => {
         ).toBeInTheDocument();
         expect(
             screen.getByText('Upon entering the board:')
+        ).toBeInTheDocument();
+    });
+    it('displays rules text (ETBs)', () => {
+        const card = UnitCards.WATER_MAGE;
+        card.damagePlayerEffects = [
+            {
+                type: EffectType.DEAL_DAMAGE,
+                strength: 1,
+            },
+        ];
+        render(<UnitGridItem card={card} />);
+        expect(
+            screen.getByText(`Upon damaging an opposing player in combat:`)
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText('Deal 1 damage to any target')
         ).toBeInTheDocument();
     });
     it('displays rules text (Passives)', () => {

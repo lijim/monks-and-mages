@@ -41,6 +41,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         attack,
         attackBuff,
         cost,
+        damagePlayerEffects = [],
         description = 'ipsem lorum description',
         enterEffects,
         hp,
@@ -61,6 +62,12 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
     if (isMagical) unitType = 'Magical';
     if (isSoldier) unitType = 'Soldier';
     const { primaryColor, secondaryColor } = getColorsForCard(card);
+
+    const numEffectsToDisplay =
+        damagePlayerEffects.length +
+        passiveEffects.length +
+        enterEffects.length +
+        (numAttacks !== 1 ? 1 : 0);
 
     return (
         <CardFrame
@@ -86,22 +93,30 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
             </CardImageContainer>
             <div>Unit{unitType ? ` - ${unitType}` : ''}</div>
             <RulesTextArea
-                shouldCenter={passiveEffects.length + enterEffects.length === 1}
-                shouldFade={passiveEffects.length + enterEffects.length === 0}
+                shouldCenter={numEffectsToDisplay === 1}
+                shouldFade={numEffectsToDisplay === 0}
             >
-                {passiveEffects.length + enterEffects.length === 0 && (
-                    <i>{description}</i>
-                )}
+                {numEffectsToDisplay === 0 && <i>{description}</i>}
                 {passiveEffects.map((effect) => (
                     <div key={effect}>{effect}</div>
-                ))}
+                ))}{' '}
+                {numAttacks > 1 && <div>{numAttacks} attacks per turn</div>}
                 {enterEffects.length > 0 && <b>Upon entering the board:</b>}
                 {enterEffects.map((effect) => (
                     <div key={transformEffectToRulesText(effect)}>
                         {transformEffectToRulesText(effect)}
                     </div>
                 ))}
-                {numAttacks > 1 && <div>{numAttacks} attacks per turn</div>}
+                {damagePlayerEffects.length > 0 && (
+                    <div>
+                        <b>Upon damaging an opposing player in combat:</b>
+                        {damagePlayerEffects.map((effect) => (
+                            <div key={transformEffectToRulesText(effect)}>
+                                {transformEffectToRulesText(effect)}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </RulesTextArea>
             <AttackHPFooter>
                 <AttackCell data-testid="attack" buffAmount={attackBuff}>

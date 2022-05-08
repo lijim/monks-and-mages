@@ -21,6 +21,31 @@ const FERRY_OPERATOR = makeCard({
     passiveEffects: [],
 });
 
+const FLUX_FIGHTER = makeCard({
+    name: 'Flux Fighter',
+    // https://pixabay.com/illustrations/wizard-3d-art-scifi-magic-fantasy-5091194/
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/04/25/15/05/wizard-5091194_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.WATER]: 1,
+    },
+    damagePlayerEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+    ],
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const FROSTBURN_MAGE = makeCard({
     name: 'Frostburn Mage',
     imgSrc: 'https://images.pexels.com/photos/1879877/pexels-photo-1879877.jpeg',
@@ -127,6 +152,7 @@ const WIND_MAGE: UnitCard = makeCard({
 
 export const WIND_MAGES = {
     FERRY_OPERATOR,
+    FLUX_FIGHTER,
     FROSTBURN_MAGE,
     HEAVENLY_FERRIER,
     ARCHANGEL,

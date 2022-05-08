@@ -5,6 +5,30 @@ import { Resource } from '@/types/resources';
 
 // Soldiers
 /* 1 total cost */
+const FLAME_FORGED_HOPLITE: UnitCard = makeCard({
+    name: 'Flame Forged Hoplite',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/02/23/17/37/spartan-4016133_1280.jpg', // https://images.unsplash.com/photo-1569183602073-580599d8df15?
+    cost: {
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    damagePlayerEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ALL_OPPONENTS,
+            strength: 2,
+        },
+    ],
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+});
+
 const LANCER: UnitCard = makeCard({
     name: 'Lancer',
     imgSrc: '/images/units/lancer.avif', // https://images.unsplash.com/photo-1569183602073-580599d8df15?
@@ -573,6 +597,7 @@ const JOAN_OF_ARC_FOLK_HERO: UnitCard = makeCard({
 
 export const SOLDIERS = {
     // 1
+    FLAME_FORGED_HOPLITE,
     LANCER,
     INFANTRY_OFFICER,
     PIKEMAN,

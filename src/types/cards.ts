@@ -38,6 +38,7 @@ export type UnitBase = {
     // max hp
     attack: number;
     cost: PartialRecord<Resource, number>;
+    damagePlayerEffects?: Effect[];
     description: string;
     enterEffects: Effect[];
     imgSrc?: string;
