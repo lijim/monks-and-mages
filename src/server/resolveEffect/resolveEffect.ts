@@ -164,6 +164,12 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.BUFF_ATTACK: {
+            unitTargets.forEach(({ unitCard }) => {
+                unitCard.attackBuff += effectStrength;
+            });
+            return clonedBoard;
+        }
         case EffectType.BUFF_MAGIC: {
             unitTargets.forEach(({ unitCard }) => {
                 if (!unitCard.isMagical) return;

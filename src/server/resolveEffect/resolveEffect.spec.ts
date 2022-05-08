@@ -201,6 +201,25 @@ describe('resolve effect', () => {
     });
 
     describe('Buff units', () => {
+        it('buffs attack', () => {
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[0].units = [apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_ATTACK,
+                        strength: 2,
+                    },
+                    unitCardIds: [apprentice.id],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(2);
+        });
+
         it('buffs magic units on your board', () => {
             const squire = makeCard(UnitCards.SQUIRE);
             const cannon = makeCard(UnitCards.CANNON);

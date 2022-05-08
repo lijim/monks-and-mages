@@ -244,6 +244,20 @@ const BUBBLE_BLAST = makeCard({
     ],
 });
 
+const COLD_ISOLATION = makeCard({
+    name: 'Cold Isolation',
+    // https://www.pexels.com/photo/aurora-borealis-624015/
+    imgSrc: 'https://images.pexels.com/photos/624015/pexels-photo-624015.jpeg',
+    cost: { [Resource.WATER]: 1 },
+    effects: [
+        {
+            type: EffectType.BUFF_ATTACK,
+            target: TargetTypes.UNIT,
+            strength: -3,
+        },
+    ],
+});
+
 const OASIS_RITUAL = makeCard({
     name: 'Oasis Ritual',
     imgSrc: 'https://images.pexels.com/photos/2155775/pexels-photo-2155775.jpeg',
@@ -1245,6 +1259,7 @@ export const SpellCards = {
 
     // Water
     BUBBLE_BLAST,
+    COLD_ISOLATION,
     OASIS_RITUAL,
     STIR,
     GENEROUS_GEYSER,

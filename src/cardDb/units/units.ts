@@ -10,12 +10,7 @@ import { DRAGONS } from './tribes/dragons';
 import { WITCHES } from './tribes/witches';
 import { PIRATES } from './tribes/pirates';
 
-// Tokens
 export { Tokens } from './tokens';
-
-// Witches
-
-// Pirates
 
 export const UnitCards = {
     ...MAGES,
@@ -26,7 +21,6 @@ export const UnitCards = {
     ...SAHARANS,
     ...SORCERORS,
     ...DIVERS,
-    // DRAGONS
     ...DRAGONS,
     ...WITCHES,
     ...PIRATES,

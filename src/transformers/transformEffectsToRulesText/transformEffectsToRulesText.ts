@@ -85,6 +85,11 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                     : "its owner's"
             } hand`;
         }
+        case EffectType.BUFF_ATTACK: {
+            if (strength < 0)
+                return `Decrease attack of ${targetName} by ${-strength}`;
+            return `Increase attack of ${targetName} by ${strength}`;
+        }
         case EffectType.BUFF_HAND_ATTACK: {
             return `Increase attack of non-magical units in your hand by ${strength}`;
         }

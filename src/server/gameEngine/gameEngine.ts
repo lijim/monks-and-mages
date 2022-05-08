@@ -305,6 +305,10 @@ export const applyGameAction = ({
             if (!attacker?.numAttacksLeft) {
                 return clonedBoard;
             }
+            const attackTotal = Math.max(
+                0,
+                attacker.attack + attacker.attackBuff
+            );
 
             let attackEmoji = '';
             if (attacker.isMagical) attackEmoji = '🪄';
@@ -351,23 +355,27 @@ export const applyGameAction = ({
                 // Resolve Combat
                 attacker.numAttacksLeft -= 1;
 
-                const { attack, attackBuff, hp } = attacker;
+                const { hp } = attacker;
                 const {
                     attack: defenderAttack,
                     attackBuff: defenderAttackBuff,
                     hp: defenderHp,
                 } = defender;
+                const defenderAttackTotal = Math.max(
+                    defenderAttack + defenderAttackBuff,
+                    0
+                );
                 if (
                     (attacker.isRanged && defender.isRanged) ||
                     !attacker.isRanged
                 ) {
                     attacker.hp = defenderHasPoisonous
                         ? -Number.MAX_SAFE_INTEGER
-                        : hp - defenderAttack - defenderAttackBuff;
+                        : hp - defenderAttackTotal;
                 }
                 defender.hp = attackerHasPoisonous
                     ? -Number.MAX_SAFE_INTEGER
-                    : defenderHp - attack - attackBuff;
+                    : defenderHp - attackTotal;
 
                 // Resolve units going to the cemetery
                 addSystemChat(
@@ -392,7 +400,7 @@ export const applyGameAction = ({
                 addSystemChat(
                     `[[${attacker.name}]] (${activePlayer.name}) ${attackEmoji}${attackEmoji} ${defendingPlayer.name}`
                 );
-                defendingPlayer.health -= attacker.attack + attacker.attackBuff;
+                defendingPlayer.health -= attackTotal;
                 if (defendingPlayer.health <= 0) {
                     defendingPlayer.isAlive = false;
                     applyWinState(clonedBoard);
