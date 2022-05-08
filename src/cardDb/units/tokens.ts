@@ -7,7 +7,7 @@ const FROG: UnitCard = makeCard({
     name: 'Frog',
     imgSrc: 'https://images.pexels.com/photos/67290/frog-golden-eyes-macro-royalty-free-67290.jpeg',
     cost: {
-        [Resource.GENERIC]: 1,
+        [Resource.BAMBOO]: 1,
     },
     description: '',
     enterEffects: [],
@@ -41,7 +41,7 @@ const DEMON: UnitCard = makeCard({
     name: 'Demon',
     imgSrc: 'https://images.unsplash.com/photo-1519235624215-85175d5eb36e',
     cost: {
-        [Resource.GENERIC]: 1,
+        [Resource.FIRE]: 1,
     },
     description: '',
     enterEffects: [],

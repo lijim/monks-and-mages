@@ -4,6 +4,24 @@ import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
+const DRAGON_TAMER: UnitCard = makeCard({
+    name: 'Dragon Tamer',
+    // https://pixabay.com/illustrations/fairy-tale-vintage-old-antique-1653150/
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/09/08/02/06/fairy-tale-1653150_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const FIRE_TECHNICIAN: UnitCard = makeCard({
     name: 'Fire Technician',
     imgSrc: 'https://images.unsplash.com/photo-1494389945381-0fe114b8ea4b',
@@ -283,6 +301,7 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
 });
 
 export const FIRE_MAGES = {
+    DRAGON_TAMER,
     FIRE_TECHNICIAN,
     PYROCALLER,
     MYSTICAL_FIGURE,
