@@ -12,7 +12,7 @@ import {
     RulesTextArea,
 } from '../CardFrame';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
-import { getColorForCard } from '@/transformers/getColorForCard';
+import { getColorsForCard } from '@/transformers/getColorsForCard';
 import { getImgSrcForCard } from '@/transformers/getImgSrcForCard';
 
 interface SpellGridItemProps {
@@ -29,12 +29,14 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
     zoomLevel,
 }) => {
     const { cost, name, effects, originalCost } = card;
+    const { primaryColor, secondaryColor } = getColorsForCard(card);
 
     return (
         <CardFrame
             isHighlighted={isHighlighted}
             data-testid="SpellGridItem"
-            primaryColor={getColorForCard(card)}
+            primaryColor={primaryColor}
+            secondaryColor={secondaryColor}
             onClick={onClick}
             tabIndex={0}
             zoomLevel={zoomLevel}

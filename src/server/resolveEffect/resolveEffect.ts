@@ -3,6 +3,7 @@ import isEqual from 'lodash.isequal';
 import difference from 'lodash.difference';
 import sampleSize from 'lodash.samplesize';
 
+import shuffle from 'lodash.shuffle';
 import { ResolveEffectParams } from '@/types';
 import { Board, Player } from '@/types/board';
 import {
@@ -20,7 +21,6 @@ import {
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
-import shuffle from 'lodash.shuffle';
 
 export const resolveEffect = (
     board: Board,

@@ -56,7 +56,7 @@ export const CardFrame = styled.div<CardFrameProps>`
     ${({ isRotated }) => (isRotated ? 'transform: rotate(90deg)' : '')};
     ${({ primaryColor, secondaryColor }) => {
         if (!primaryColor) {
-            return `background-color: #5c4d50;`;
+            return `background-color: ${Colors.NO_COLOR_BROWN};`;
         }
         if (!secondaryColor) {
             return `background-color: ${primaryColor};`;
