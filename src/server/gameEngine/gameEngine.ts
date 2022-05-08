@@ -61,6 +61,7 @@ export const applyWinState = (board: Board): Board => {
 };
 
 export const resetUnitCard = (unitCard: UnitCard) => {
+    unitCard.passiveEffects = cloneDeep(unitCard.originalPassiveEffects);
     const hasQuick = unitCard.passiveEffects.includes(PassiveEffect.QUICK);
 
     unitCard.hp = unitCard.totalHp;
@@ -68,7 +69,6 @@ export const resetUnitCard = (unitCard: UnitCard) => {
     unitCard.attackBuff = 0;
     unitCard.numAttacksLeft = hasQuick ? unitCard.numAttacks : 0;
     unitCard.cost = cloneDeep(unitCard.originalCost);
-    unitCard.passiveEffects = cloneDeep(unitCard.originalPassiveEffects);
 };
 
 /**
