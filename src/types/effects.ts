@@ -52,8 +52,9 @@ export enum EffectType {
     RAMP_FROM_HAND = 'Ramp from Hand',
     RETURN_FROM_CEMETERY = 'Return from cemetry', // Return X cards from cemetery -> board
     REVIVE = 'Revive', // revive units from the cemetery -> board
-    SUMMON_UNITS = 'Summon Units', //
-    TRANSMUTE = 'Transmute',
+    SHUFFLE_FROM_HAND = 'Shuffle from hand', // shuffle [all / N of] [X] card from hand into deck
+    SUMMON_UNITS = 'Summon Units', // summon units from cemeteries
+    TRANSMUTE = 'Transmute', // turn [all/N of] [X] from hand into [Y]
 }
 
 /**
@@ -87,6 +88,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.RAMP_FROM_HAND]: TargetTypes.SELF_PLAYER,
         [EffectType.REVIVE]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.RETURN_FROM_CEMETERY]: TargetTypes.SELF_PLAYER,
+        [EffectType.SHUFFLE_FROM_HAND]: TargetTypes.PLAYER,
         [EffectType.SUMMON_UNITS]: TargetTypes.SELF_PLAYER,
         [EffectType.TRANSMUTE]: TargetTypes.SELF_PLAYER,
     }[effectType];

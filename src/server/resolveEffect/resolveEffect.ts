@@ -20,6 +20,7 @@ import {
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
+import shuffle from 'lodash.shuffle';
 
 export const resolveEffect = (
     board: Board,
@@ -494,6 +495,25 @@ export const resolveEffect = (
             );
             activePlayer.effectQueue =
                 activePlayer.effectQueue.concat(effectsToAdd);
+            return clonedBoard;
+        }
+        case EffectType.SHUFFLE_FROM_HAND: {
+            if (!playerTargets?.length) return clonedBoard;
+            const cardsToSample = activePlayer.hand.filter(
+                (card) => card.name === cardName
+            );
+            const cardsToShuffle = sampleSize(
+                cardsToSample,
+                effectStrength || cardsToSample.length
+            );
+
+            activePlayer.hand = activePlayer.hand.filter(
+                (card) => !cardsToShuffle.includes(card)
+            );
+            // add and shuffle cards
+            playerTargets[0].deck = shuffle(
+                playerTargets[0].deck.concat(cardsToShuffle)
+            );
             return clonedBoard;
         }
         case EffectType.SUMMON_UNITS: {

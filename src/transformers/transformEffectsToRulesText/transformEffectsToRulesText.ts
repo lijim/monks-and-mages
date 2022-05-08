@@ -204,6 +204,13 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         case EffectType.REVIVE: {
             return `Revive ${targetName}`;
         }
+        case EffectType.SHUFFLE_FROM_HAND: {
+            return `Shuffle ${
+                strength || 'all'
+            } [${cardName}] card${pluralizationEffectStrength} in hand into ${targetNamePossessive} deck${
+                isTargetTypePlural(target) ? '' : 's'
+            }`;
+        }
         case EffectType.SUMMON_UNITS: {
             return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙${forText}`;
         }
