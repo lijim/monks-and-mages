@@ -245,7 +245,16 @@ describe('DeckBuilder', () => {
             ).toBeNull();
         });
 
-        it.todo('searches by free text on rules text (case insensitive)');
+        it('searches by resource cost', () => {
+            render(<DeckBuilder />, { useRealDispatch: true });
+
+            fireEvent.click(screen.getByTestId('Filters-ResourceCost-2'));
+
+            expect(
+                screen.queryByText(UnitCards.ASSASSIN.name)
+            ).toBeInTheDocument();
+            expect(screen.queryByText(SpellCards.EMBER_SPEAR.name)).toBeNull();
+        });
 
         it('clears the free text search field', () => {
             render(<DeckBuilder />, { useRealDispatch: true });

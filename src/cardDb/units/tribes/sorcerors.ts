@@ -26,7 +26,7 @@ const CURIOUS_RESEARCHER: UnitCard = makeCard({
             strength: 1,
         },
     ],
-    totalHp: 1,
+    totalHp: 2,
     attack: 1,
     numAttacks: 1,
     isRanged: true,
