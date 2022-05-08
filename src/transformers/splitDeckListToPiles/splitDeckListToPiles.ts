@@ -2,8 +2,62 @@ import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 import { SpellCards } from '@/cardDb/spells';
 import { UnitCards } from '@/cardDb/units';
 import { makeCard, makeResourceCard } from '@/factories/cards';
-import { Card, CardType, PileOfCards } from '@/types/cards';
-import { ORDERED_RESOURCES } from '@/types/resources';
+import {
+    Card,
+    CardType,
+    PileOfCards,
+    SpellCard,
+    UnitCard,
+} from '@/types/cards';
+import { ORDERED_RESOURCES, Resource } from '@/types/resources';
+
+// Helps with sorting cards by color
+const getColorRanking = (card: UnitCard | SpellCard): number => {
+    const { cost } = card;
+    const resources = Object.keys(cost) as Resource[];
+    if (resources.length === 0) return 0;
+    const colors = resources
+        .filter((resource) => resource !== Resource.GENERIC)
+        .sort((resource1, resource2) => {
+            return (
+                ORDERED_RESOURCES.indexOf(resource1) -
+                ORDERED_RESOURCES.indexOf(resource2)
+            );
+        });
+    let totalRank = 0;
+    colors.forEach((color) => {
+        const index = ORDERED_RESOURCES.indexOf(color);
+        totalRank += totalRank * 10 + index;
+    });
+    return totalRank;
+};
+
+const compareCards = (
+    card1: UnitCard | SpellCard,
+    card2: UnitCard | SpellCard
+) => {
+    // First compare by mana cost
+    const totalCost1 = Object.values(card1.cost).reduce(
+        (prev, curr) => prev + curr,
+        0
+    );
+    const totalCost2 = Object.values(card2.cost).reduce(
+        (prev, curr) => prev + curr,
+        0
+    );
+    if (totalCost1 - totalCost2 !== 0) {
+        return totalCost1 - totalCost2;
+    }
+
+    const totalColorRanking1 = getColorRanking(card1);
+    const totalColorRanking2 = getColorRanking(card2);
+
+    if (totalColorRanking1 - totalColorRanking2 !== 0)
+        return totalColorRanking1 - totalColorRanking2;
+
+    // last compare by name
+    return card1.name.toLowerCase().localeCompare(card2.name.toLowerCase());
+};
 
 /**
  * @param deck - deck to split apart for display purposes
@@ -66,17 +120,7 @@ export const splitDeckListToPiles = (deck: Card[]): PileOfCards[] => {
         cards: new Map(),
     };
     const unitCards = Object.values(UnitCards);
-    unitCards.sort((a, b) => {
-        const totalCostA = Object.values(a.cost).reduce(
-            (prev, curr) => prev + curr,
-            0
-        );
-        const totalCostB = Object.values(b.cost).reduce(
-            (prev, curr) => prev + curr,
-            0
-        );
-        return totalCostA - totalCostB;
-    });
+    unitCards.sort(compareCards);
     unitCards.forEach((unitCard) => {
         const matchingCards = deck.filter(
             (card) =>
@@ -94,17 +138,7 @@ export const splitDeckListToPiles = (deck: Card[]): PileOfCards[] => {
     };
 
     const spellCards = Object.values(SpellCards);
-    spellCards.sort((a, b) => {
-        const totalCostA = Object.values(a.cost).reduce(
-            (prev, curr) => prev + curr,
-            0
-        );
-        const totalCostB = Object.values(b.cost).reduce(
-            (prev, curr) => prev + curr,
-            0
-        );
-        return totalCostA - totalCostB;
-    });
+    spellCards.sort(compareCards);
     spellCards.forEach((spellCard) => {
         const matchingCards = deck.filter(
             (card) =>
