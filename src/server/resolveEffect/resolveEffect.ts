@@ -336,7 +336,8 @@ export const resolveEffect = (
                 if (cardsToDraw > deck.length) {
                     player.isAlive = false;
                 }
-                player.hand = hand.concat(deck.splice(-cardsToDraw));
+                if (cardsToDraw)
+                    player.hand = hand.concat(deck.splice(-cardsToDraw));
             });
             applyWinState(clonedBoard);
             return clonedBoard;
