@@ -1,6 +1,6 @@
 import isEqual from 'lodash.isequal';
 import { Card, CardType, UnitType } from '@/types/cards';
-import { Filters, MatchStrategy } from '@/types/deckBuilder';
+import { Filters, MatchStrategy, ResourceCost } from '@/types/deckBuilder';
 import { ORDERED_RESOURCES, Resource } from '@/types/resources';
 import { getTypeForUnitCard } from '../getTypeForUnitCard';
 import { transformEffectToRulesText } from '../transformEffectsToRulesText';
@@ -80,6 +80,19 @@ const cardMatchesResources = (
     }
 };
 
+const cardMatchesResourceCosts = (
+    card: Card,
+    resourceCosts: ResourceCost[]
+): boolean => {
+    if (!resourceCosts.length) return true;
+    let resourceCost = 0;
+    if (card.cardType !== CardType.RESOURCE) {
+        resourceCost = Object.values(card.cost).reduce((a, b) => a + b, 0);
+    }
+    if (resourceCost < 7) return resourceCosts.includes(resourceCost);
+    return resourceCosts.includes('7+');
+};
+
 const cardMatchesUnitTypes = (card: Card, unitTypes: UnitType[]): boolean => {
     if (unitTypes.length === 0) return true;
     if (card.cardType !== CardType.UNIT) return false;
@@ -94,7 +107,13 @@ const cardMatchesUnitTypes = (card: Card, unitTypes: UnitType[]): boolean => {
  */
 export const filterCards = (
     cards: Card[],
-    { freeText, resources, resourceMatchStrategy, unitTypes }: Filters
+    {
+        freeText,
+        resourceCosts,
+        resources,
+        resourceMatchStrategy,
+        unitTypes,
+    }: Filters
 ): Card[] => {
     const cardsFilteredByFreeText = freeText
         ? cards.filter((card) => cardMatchesText(card, freeText))
@@ -107,5 +126,8 @@ export const filterCards = (
     const cardsFilteredByUnitType = cardsFilteredByResource.filter((card) =>
         cardMatchesUnitTypes(card, unitTypes)
     );
-    return cardsFilteredByUnitType;
+    const cardsFilteredByResourceCosts = cardsFilteredByUnitType.filter(
+        (card) => cardMatchesResourceCosts(card, resourceCosts)
+    );
+    return cardsFilteredByResourceCosts;
 };

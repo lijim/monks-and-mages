@@ -1,13 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+    clearFreeTextFilter,
     searchFreeTextFilter,
     selectResourceMatchStrategy,
+    toggleResourceCardFilter,
     toggleResourceFilter,
     toggleUnitTypeFilter,
 } from '@/client/redux/deckBuilderFilters';
 import { AppDispatch, RootState } from '@/client/redux/store';
-import { Filters, MatchStrategy } from '@/types/deckBuilder';
+import { Filters, MatchStrategy, ResourceCost } from '@/types/deckBuilder';
 import {
     ORDERED_RESOURCES,
     Resource,
@@ -35,7 +37,7 @@ export const FreeTextFilters: React.FC = () => {
             ></input>
             <button
                 onClick={() => {
-                    dispatch(searchFreeTextFilter(''));
+                    dispatch(clearFreeTextFilter());
                 }}
             >
                 Clear
@@ -92,6 +94,37 @@ export const ResourceFilter: React.FC = () => {
     );
 };
 
+const RESOURCE_COST_FILTERS: ResourceCost[] = [1, 2, 3, 4, 5, 6, '7+'];
+
+export const ResourceCostFilter: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { resourceCosts } = useSelector<RootState, Filters>(
+        (state) => state.deckBuilderFilters
+    );
+
+    return (
+        <div>
+            <span style={{ zoom: 2, fontSize: '72%' }}>
+                {RESOURCE_COST_FILTERS.map((resourceCost) => (
+                    <CastingCostFrame
+                        key={resourceCost}
+                        hasNoMargin
+                        isMuted={!resourceCosts.includes(resourceCost)}
+                        onClick={() => {
+                            dispatch(toggleResourceCardFilter(resourceCost));
+                        }}
+                        style={{ cursor: 'pointer' }}
+                        data-testid={`Filters-ResourceCost-${resourceCost}`}
+                        tabIndex={0}
+                    >
+                        {resourceCost}
+                    </CastingCostFrame>
+                ))}
+            </span>
+        </div>
+    );
+};
+
 const ALL_UNIT_TYPES: UnitType[] = ['Soldier', 'Ranged', 'Magical', 'None'];
 const UNIT_TYPE_SYMBOL: Record<UnitType, string> = {
     Soldier: '⚔️',
@@ -138,6 +171,7 @@ export const DeckBuilderFilters: React.FC = () => {
         <>
             <FreeTextFilters />
             <ResourceFilter />
+            <ResourceCostFilter />
             <UnitTypeFilter />
         </>
     );

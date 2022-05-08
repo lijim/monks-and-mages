@@ -11,8 +11,11 @@ export enum MatchStrategy {
     STRICT = 'Strict',
 }
 
+export type ResourceCost = '7+' | number;
+
 export type Filters = {
     freeText?: string;
+    resourceCosts?: ResourceCost[];
     resourceMatchStrategy?: MatchStrategy;
     resources?: Resource[];
     unitTypes?: UnitType[];
