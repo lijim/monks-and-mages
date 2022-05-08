@@ -19,6 +19,15 @@ export const makeResourceCard = (resource: Resource): ResourceCard => ({
     id: uuidv4(),
 });
 
+export const makeAdvancedResourceCard = (
+    params: Omit<ResourceCard, 'cardType' | 'isUsed' | 'isAdvanced'>
+): ResourceCard => ({
+    cardType: CardType.RESOURCE,
+    isAdvanced: true,
+    isUsed: false,
+    ...params,
+});
+
 export const makeUnitCard = (unitBase: UnitBase): UnitCard => {
     const hasQuick = unitBase.passiveEffects.indexOf(PassiveEffect.QUICK) > -1;
     return {
