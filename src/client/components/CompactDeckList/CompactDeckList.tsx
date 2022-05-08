@@ -8,11 +8,12 @@ import { splitDeckListToPiles } from '@/transformers/splitDeckListToPiles';
 import { QuantitySelector } from '../QuantitySelector';
 import { CastingCost } from '../CastingCost';
 import {
-    getColorForCard,
+    getColorsForCard,
     getSecondaryColorForCard,
-} from '@/transformers/getColorForCard';
+} from '@/transformers/getColorsForCard';
 import { RESOURCE_GLOSSARY } from '@/types/resources';
 import { CardGridSingleItem } from '../CardGridItem';
+import { Colors } from '@/constants/colors';
 
 interface CompactDeckListProps {
     deck: Card[];
@@ -23,6 +24,7 @@ interface CompactDeckListProps {
 type MiniCardFrameProps = {
     hasOnClick: boolean;
     primaryColor: string;
+    secondaryColor: string;
 };
 
 const MiniCardFrame = styled.div<MiniCardFrameProps>`
@@ -36,7 +38,15 @@ const MiniCardFrame = styled.div<MiniCardFrameProps>`
     grid-gap: 6px;
     align-items: center;
     color: white;
-    background: ${({ primaryColor }) => primaryColor};
+    ${({ primaryColor, secondaryColor }) => {
+        if (!primaryColor) {
+            return `background-color: ${Colors.NO_COLOR_BROWN};`;
+        }
+        if (!secondaryColor) {
+            return `background-color: ${primaryColor};`;
+        }
+        return `background-image: linear-gradient(to right, ${primaryColor}, ${secondaryColor});`;
+    }};
     cursor: ${({ hasOnClick }) => (hasOnClick ? 'pointer' : 'inherit')};
 `;
 
@@ -94,11 +104,14 @@ const MiniCard: React.FC<MiniCardProps> = ({
     const cardModifiedForTooltip =
         card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;
 
+    const { primaryColor, secondaryColor } = getColorsForCard(card);
+
     return (
         <>
             <MiniCardFrame
                 hasOnClick={!!onClickCard}
-                primaryColor={getColorForCard(card)}
+                primaryColor={primaryColor}
+                secondaryColor={secondaryColor}
                 onClick={() => {
                     onClickCard(card);
                 }}

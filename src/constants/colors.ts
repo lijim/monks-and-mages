@@ -11,6 +11,7 @@ export enum Colors {
     FOCUS_BLUE = '#0071bc', // for outlines, accessiblity, showing active player
     IRON_GREY = '#484441',
     MAROON = '#800000',
+    NO_COLOR_BROWN = '#5c4d50',
     SECONDARY_GREEN = '#08A946',
     SECONDARY_GREEN_EMPHASIZED = '#057932',
     VANTA_BLACK = '#101010', // for text against white

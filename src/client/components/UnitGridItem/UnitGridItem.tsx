@@ -16,7 +16,7 @@ import {
     RulesTextArea,
     SleepyCell,
 } from '../CardFrame';
-import { getColorForCard } from '@/transformers/getColorForCard';
+import { getColorsForCard } from '@/transformers/getColorsForCard';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { getAttackingUnit } from '@/client/redux/selectors';
 import { getImgSrcForCard } from '@/transformers/getImgSrcForCard';
@@ -60,6 +60,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
     if (isRanged) unitType = 'Ranged';
     if (isMagical) unitType = 'Magical';
     if (isSoldier) unitType = 'Soldier';
+    const { primaryColor, secondaryColor } = getColorsForCard(card);
 
     return (
         <CardFrame
@@ -67,7 +68,8 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
             isRaised={attackUnitId === id}
             shouldShowTallImage
             data-testid="UnitGridItem"
-            primaryColor={getColorForCard(card)}
+            primaryColor={primaryColor}
+            secondaryColor={secondaryColor}
             onClick={onClick}
             tabIndex={0}
             zoomLevel={zoomLevel}
