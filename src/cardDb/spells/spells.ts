@@ -598,7 +598,7 @@ const ZEN_STANCE = makeCard({
     effects: [
         {
             type: EffectType.FLICKER,
-            target: TargetTypes.ANY,
+            target: TargetTypes.OWN_UNIT,
         },
     ],
 });
