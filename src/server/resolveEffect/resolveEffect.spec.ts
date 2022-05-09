@@ -103,6 +103,32 @@ describe('resolve effect', () => {
         );
     });
 
+    it('displays chat (implicit target)', () => {
+        const mockAddSystemChat = jest.fn();
+        const effect = {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+        };
+        board.players[0].effectQueue = [effect];
+        const squire = makeCard(UnitCards.SQUIRE);
+        board.players[0].units = [squire];
+
+        resolveEffect(
+            board,
+            {
+                effect,
+                unitCardIds: [squire.id],
+            },
+            'Timmy',
+            false,
+            mockAddSystemChat
+        );
+
+        expect(mockAddSystemChat).toHaveBeenCalledWith(
+            'Timmy resolved "deal 1 damage to any target" ➡️ [[Squire]]'
+        );
+    });
+
     describe('Bounce units', () => {
         it('bounces a unit back to hand', () => {
             const squire = makeCard(UnitCards.SQUIRE);

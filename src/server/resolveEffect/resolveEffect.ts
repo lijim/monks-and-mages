@@ -152,7 +152,9 @@ export const resolveEffect = (
     const addSystemChat = (message: string) => addChatMessage?.(message);
     addSystemChat(
         `${activePlayer.name} resolved "${rulesText}"${
-            targetText && originalTarget ? ` ➡️ ${targetText}` : ''
+            targetText && target !== TargetTypes.SELF_PLAYER
+                ? ` ➡️ ${targetText}`
+                : ''
         }`
     );
 
