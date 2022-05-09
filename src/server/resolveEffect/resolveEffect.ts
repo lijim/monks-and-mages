@@ -58,7 +58,6 @@ export const resolveEffect = (
     // Determine targets to apply effects to
     let playerTargets: Player[];
     let unitTargets: { player: Player; unitCard: UnitCard }[] = [];
-    const originalTarget = effect.target;
     const target = effect.target || getDefaultTargetForEffect(effect.type);
     let targetText;
 
