@@ -360,6 +360,18 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.FLICKER: {
+            unitTargets.forEach(({ unitCard }) => {
+                resetUnitCard(unitCard);
+
+                if (unitCard.enterEffects) {
+                    activePlayer.effectQueue = activePlayer.effectQueue.concat(
+                        cloneDeep(unitCard.enterEffects).reverse()
+                    );
+                }
+            });
+            return clonedBoard;
+        }
         case EffectType.HEAL: {
             playerTargets.forEach((player) => {
                 player.health += effectStrength;

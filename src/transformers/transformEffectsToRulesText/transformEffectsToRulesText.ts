@@ -83,9 +83,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         }
         case EffectType.BOUNCE: {
             return `Return ${targetName} back to ${
-                PLURAL_TARGET_TYPES.indexOf(target) > -1
-                    ? "their owners'"
-                    : "its owner's"
+                isTargetTypePlural(target) ? "their owners'" : "its owner's"
             } hand`;
         }
         case EffectType.BUFF_ATTACK: {
@@ -177,6 +175,11 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from your deck`;
             }
             return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
+        }
+        case EffectType.FLICKER: {
+            return `Remove ${targetName} from the game, then return ${
+                isTargetTypePlural(target) ? 'them' : 'it'
+            } to the board`;
         }
         case EffectType.HEAL: {
             return `Restore ${strength} HP to ${targetName}`;

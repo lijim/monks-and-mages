@@ -739,6 +739,46 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Flicker', () => {
+        it('resets health and buffs', () => {
+            const unitCard = makeCard(UnitCards.CANNON);
+            unitCard.attackBuff = 3;
+            unitCard.hp = 1;
+            board.players[0].units = [unitCard];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.FLICKER,
+                    },
+                    unitCardIds: [unitCard.id],
+                },
+                'Timmy'
+            );
+            const cannon = newBoard.players[0].units[0];
+            expect(cannon.hp).toBe(UnitCards.CANNON.totalHp);
+            expect(cannon.attackBuff).toBe(0);
+        });
+
+        it('retriggers "Enter the Board" effects', () => {
+            const unitCard = makeCard(UnitCards.FIRE_MAGE);
+            board.players[0].units = [unitCard];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.FLICKER,
+                    },
+                    unitCardIds: [unitCard.id],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].effectQueue).toEqual(
+                unitCard.enterEffects.reverse()
+            );
+        });
+    });
+
     describe('Heal', () => {
         it('heals players', () => {
             const newBoard = resolveEffect(

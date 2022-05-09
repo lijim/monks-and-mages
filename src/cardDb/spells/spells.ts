@@ -590,6 +590,19 @@ const DISTORT_REALITY = makeCard({
     ],
 });
 
+const ZEN_STANCE = makeCard({
+    name: 'Zen Stance',
+    // https://pixabay.com/illustrations/meditation-spiritual-yoga-1384758/
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/05/10/21/50/meditation-1384758_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.FLICKER,
+            target: TargetTypes.ANY,
+        },
+    ],
+});
+
 const BEAM_ME_UP = makeCard({
     name: 'Beam Me Up',
     // https://pixabay.com/photos/night-shot-starry-sky-night-sky-2553103/
@@ -1419,6 +1432,7 @@ export const SpellCards = {
     DISTORT_REALITY,
     SPECTRAL_GENESIS,
     SURREAL_DREAM,
+    ZEN_STANCE,
     BEAM_ME_UP,
     PRAY_TO_ORION,
     STARRY_ILLUSION,
