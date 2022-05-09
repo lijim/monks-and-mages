@@ -1,6 +1,6 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
 import { UnitCard } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
@@ -26,6 +26,36 @@ const COVEN_NOVICE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+});
+
+const FAIRY_QUEEN: UnitCard = makeCard({
+    name: 'Fairy Queen',
+    // https://pixabay.com/photos/woman-dress-fairy-model-fantasy-7179165/
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/05/06/22/09/woman-7179165_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+        {
+            type: EffectType.DRAW,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.QUICK],
 });
 
 const INGREDIENT_HUNTER: UnitCard = makeCard({
@@ -194,6 +224,7 @@ const BOG_WARLOCK: UnitCard = makeCard({
 
 export const WITCHES = {
     COVEN_NOVICE,
+    FAIRY_QUEEN,
     INGREDIENT_HUNTER,
     MASTER_ENCHANTER,
     POTION_BREWER,

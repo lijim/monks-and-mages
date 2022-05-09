@@ -37,6 +37,19 @@ const EMBER_SPEAR = makeCard({
     ],
 });
 
+const WARPATH = makeCard({
+    name: 'Warpath',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/10/03/16/42/fantasy-3721894_1280.jpg',
+    cost: { [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+});
+
 const INCINERATION = makeCard({
     name: 'Incineration',
     imgSrc: 'https://images.pexels.com/photos/3912408/pexels-photo-3912408.jpeg',
@@ -82,6 +95,19 @@ const CURSE_HAND = makeCard({
             type: EffectType.DEAL_DAMAGE,
             strength: 1,
             target: TargetTypes.ALL_OPPONENTS,
+        },
+    ],
+});
+
+const SUPERNOVA = makeCard({
+    name: 'Supernova',
+    imgSrc: 'https://cdn.pixabay.com/photo/2014/03/10/16/11/explosion-284562_1280.jpg',
+    cost: { [Resource.FIRE]: 1, [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+            target: TargetTypes.ALL_UNITS,
         },
     ],
 });
@@ -474,6 +500,28 @@ const COLLOSAL_TSUNAMI = makeCard({
     ],
 });
 
+const MAGIC_RIFT = makeCard({
+    name: 'Magic Rift',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/07/17/23/51/wormhole-2514312_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.WATER]: 1,
+        [Resource.CRYSTAL]: 1,
+    },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ALL_UNITS,
+            strength: 3,
+        },
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 3,
+        },
+    ],
+});
+
 const HOLY_REVIVAL = makeCard({
     name: 'Holy Revival',
     imgSrc: 'https://images.unsplash.com/photo-1467139729426-3079e66d5a7a',
@@ -510,6 +558,20 @@ const SPECTRAL_GENESIS = makeCard({
     ],
 });
 
+const SURREAL_DREAM = makeCard({
+    name: 'Surreal Dream',
+    // https://pixabay.com/photos/fantasy-clock-time-light-magic-3517206/
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/07/04/22/55/fantasy-3517206_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'LANDMARK',
+            strength: 2,
+        },
+    ],
+});
+
 const DISTORT_REALITY = makeCard({
     name: 'Distort Reality',
     imgSrc: '/images/spells/distort-reality.avif', // https://images.pexels.com/photos/6492151/pexels-photo-6492151.jpeg
@@ -524,6 +586,44 @@ const DISTORT_REALITY = makeCard({
             type: EffectType.DEAL_DAMAGE,
             target: TargetTypes.UNIT,
             strength: 1,
+        },
+    ],
+});
+
+const BEAM_ME_UP = makeCard({
+    name: 'Beam Me Up',
+    // https://pixabay.com/photos/night-shot-starry-sky-night-sky-2553103/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/07/30/00/03/night-photograph-2553103_1280.jpg',
+    cost: { [Resource.GENERIC]: 1, [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
+            strength: 2,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ANY,
+            strength: 1,
+        },
+    ],
+});
+
+const PRAY_TO_ORION = makeCard({
+    name: 'Pray to Orion',
+    // https://pixabay.com/photos/orion-nebula-emission-nebula-11107/
+    imgSrc: 'https://cdn.pixabay.com/photo/2011/12/14/12/21/orion-nebula-11107_1280.jpg', // https://images.unsplash.com/photo-1535027155668-be985a82f93c
+    cost: { [Resource.GENERIC]: 1, [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 4,
+        },
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 4,
         },
     ],
 });
@@ -1276,9 +1376,11 @@ export const SpellCards = {
     // Fire
     SMOLDER,
     EMBER_SPEAR,
+    WARPATH,
     INCINERATION,
     LIGHTNING_SLICK,
     CURSE_HAND,
+    SUPERNOVA,
     BEND_AND_SCORCH,
     FIRE_CEREMONY,
     BRUSH_FIRE,
@@ -1310,11 +1412,15 @@ export const SpellCards = {
     COLLOSAL_TSUNAMI,
 
     // Sorceror
+    MAGIC_RIFT,
     HOLY_REVIVAL,
 
     // Crystal
     DISTORT_REALITY,
     SPECTRAL_GENESIS,
+    SURREAL_DREAM,
+    BEAM_ME_UP,
+    PRAY_TO_ORION,
     STARRY_ILLUSION,
     SCOUR_THE_LIBRARY,
     OPEN_NEBULA,

@@ -32,7 +32,7 @@ describe('transformEffectstoRulesText', () => {
                 target: TargetTypes.OPPOSING_UNIT,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Return any unit controlled by an opponent back to its owner's hand`
+                `Return any opposing unit back to its owner's hand`
             );
         });
 

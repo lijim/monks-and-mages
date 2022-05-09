@@ -78,9 +78,30 @@ const SHADOW_STRIKER: UnitCard = makeCard({
     passiveEffects: [PassiveEffect.POISONED, PassiveEffect.QUICK],
 });
 
+const TIGER_GENERAL: UnitCard = makeCard({
+    name: 'Tiger General',
+    // https://pixabay.com/photos/fantasy-warrior-fight-epic-heroine-6090734/
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/03/12/23/41/fantasy-6090734_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 3,
+    attack: 2,
+    numAttacks: 2,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.QUICK],
+});
+
 export const MONKS = {
     ASSASSIN,
     DISCIPLINED_WARRIOR,
     BOUNTY_COLLECTOR,
     SHADOW_STRIKER,
+    TIGER_GENERAL,
 };

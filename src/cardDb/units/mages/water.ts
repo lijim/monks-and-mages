@@ -140,6 +140,62 @@ const RAIN_CHANNELER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const WAVING_FISHERMAN: UnitCard = makeCard({
+    name: 'Waving Fisherman',
+    // https://pixabay.com/photos/fisherman-fishing-boat-boat-fishing-2739115/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/09/11/14/11/fisherman-2739115_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.TRANSMUTE,
+            strength: 1,
+            cardName: 'Water',
+            secondaryCardName: 'Waving Fisherman',
+        },
+    ],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const MISBEGOTTEN_MISTWALKER = makeCard({
+    name: 'Misbegotten Mistwalker',
+    // https://pixabay.com/photos/fantasy-spirit-nightmare-dream-2847724/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/10/13/14/15/fantasy-2847724_1280.jpg',
+    cost: {
+        [Resource.WATER]: 2,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BOUNCE,
+            strength: 1,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+        {
+            type: EffectType.BOUNCE,
+            strength: 1,
+            target: TargetTypes.OWN_UNIT,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const WATER_MAGE: UnitCard = makeCard({
     name: 'Water Mage',
     imgSrc: 'https://images.unsplash.com/photo-1617073397927-12ff53956f42',
@@ -261,6 +317,61 @@ const AQUARIAN_ADEPT: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const THUNDER_SCHEDULER: UnitCard = makeCard({
+    name: 'Thunder Scheduler',
+    // https://pixabay.com/photos/fantasy-waterfall-landscape-2762571/
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/09/18/17/34/fantasy-2762571_1280.jpg',
+    cost: {
+        [Resource.WATER]: 2,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_ATTACK,
+            target: TargetTypes.OPPOSING_UNIT,
+            strength: -2,
+        },
+        {
+            type: EffectType.BUFF_ATTACK,
+            target: TargetTypes.OPPOSING_UNIT,
+            strength: -1,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const MAELSTROM_SEEKER: UnitCard = makeCard({
+    name: 'Maelstrom Seeker',
+    // https://pixabay.com/photos/man-swirl-wormhole-mountain-top-5724867/
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/11/08/20/06/man-5724867_1280.jpg',
+    cost: {
+        [Resource.WATER]: 2,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SHUFFLE_FROM_HAND,
+            cardName: 'Water',
+            target: TargetTypes.OPPONENT,
+        },
+    ],
+    totalHp: 4,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const CHAD_THE_AQUAPHILE: UnitCard = makeCard({
     name: 'Chad the Aquaphile',
     imgSrc: 'https://images.pexels.com/photos/1635919/pexels-photo-1635919.jpeg',
@@ -324,9 +435,13 @@ export const WATER_MAGES = {
     MANTA_RAY_CONJURER,
     TINY_MERMAID,
     RAIN_CHANNELER,
+    WAVING_FISHERMAN,
+    MISBEGOTTEN_MISTWALKER,
     PELAGIC_PREDATOR,
     WATER_MAGE,
     PEACE_BRINGER,
+    THUNDER_SCHEDULER,
+    MAELSTROM_SEEKER,
     CURSED_CHIEFTAIN,
     AQUARIAN_ADEPT,
     CHAD_THE_AQUAPHILE,

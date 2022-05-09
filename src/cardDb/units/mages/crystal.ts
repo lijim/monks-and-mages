@@ -20,6 +20,63 @@ const THIRD_YEAR_STUDENTS: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const IGNUS_FATUUS: UnitCard = makeCard({
+    name: 'Ignus Fatuus',
+    // https://pixabay.com/photos/mystical-mysterious-composing-3209035/
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/03/08/16/23/mystical-3209035_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+    },
+    damagePlayerEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 2,
+        },
+        {
+            type: EffectType.DRAW,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 2,
+        },
+    ],
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
+const SPIRIT_TENDER: UnitCard = makeCard({
+    name: 'Spirit Tender',
+    // https://pixabay.com/photos/fantasy-woman-forest-girl-young-6193818/
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/04/20/12/48/fantasy-6193818_1280.jpg',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.CRYSTAL]: 1,
+    },
+    damagePlayerEffects: [
+        {
+            type: EffectType.RETURN_FROM_CEMETERY,
+            target: TargetTypes.SELF_PLAYER,
+            cardName: 'Spectral Genesis',
+            strength: 2,
+        },
+    ],
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const MAGICIANS_APPRENTICE: UnitCard = makeCard({
     name: "Magician's Apprentice",
     imgSrc: '/images/units/magicians-apprentice.avif', // https://images.unsplash.com/photo-1615962122149-ef6987cf19f4'
@@ -91,9 +148,37 @@ const FAE_DRAGON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const CYRUS_PURPLE_DRAGON: UnitCard = makeCard({
+    name: 'Cyrus, Purple Dragon',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/08/13/00/10/fantasy-2635797_1280.jpg', // https://images.unsplash.com/photo-1615962122149-ef6987cf19f4'
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    damagePlayerEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 3,
+        },
+    ],
+    description: '',
+    enterEffects: [],
+    totalHp: 4,
+    attack: 4,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 export const CRYSTAL_MAGES = {
     THIRD_YEAR_STUDENTS,
+    IGNUS_FATUUS,
+    SPIRIT_TENDER,
     THE_ORACLE,
     MAGICIANS_APPRENTICE,
     FAE_DRAGON,
+    CYRUS_PURPLE_DRAGON,
 };
