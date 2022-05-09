@@ -32,7 +32,7 @@ describe('transformEffectstoRulesText', () => {
                 target: TargetTypes.OPPOSING_UNIT,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Return any unit controlled by an opponent back to its owner's hand`
+                `Return any opposing unit back to its owner's hand`
             );
         });
 
@@ -319,6 +319,26 @@ describe('transformEffectstoRulesText', () => {
         expect(transformEffectToRulesText(effect)).toEqual(
             `Extract 2 Iron cards from any opponent's deck`
         );
+    });
+
+    describe('flicker', () => {
+        it('displays rules for flickering a single unit', () => {
+            const effect: Effect = {
+                type: EffectType.FLICKER,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Remove any unit controlled by you from the game, then return it to the board`
+            );
+        });
+        it('displays rules for flickering a single unit', () => {
+            const effect: Effect = {
+                type: EffectType.FLICKER,
+                target: TargetTypes.ALL_SELF_UNITS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Remove all your units from the game, then return them to the board`
+            );
+        });
     });
 
     it('displays rules for healing', () => {

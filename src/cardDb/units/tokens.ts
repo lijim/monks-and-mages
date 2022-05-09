@@ -20,6 +20,24 @@ const FROG: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const FRIAR: UnitCard = makeCard({
+    name: 'Friar',
+    // https://pixabay.com/photos/forest-trees-mystical-fog-magic-4209326/
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/05/17/10/00/forest-4209326_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const PIRATE_PARROT: UnitCard = makeCard({
     name: 'Pirate Parrot',
     imgSrc: 'https://cdn.pixabay.com/photo/2019/12/06/20/03/bird-4678162_1280.jpg',
@@ -197,6 +215,7 @@ export const Tokens = {
     DEMON,
     FALCON,
     FROG,
+    FRIAR,
     GOLEM_DRAGON,
     LION,
     MANTA_RAY,

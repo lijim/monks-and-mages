@@ -17,7 +17,7 @@ const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.ALL_UNITS]: 'all units',
     [TargetTypes.ANY]: 'any target',
     [TargetTypes.OPPONENT]: 'any opponent',
-    [TargetTypes.OPPOSING_UNIT]: 'any unit controlled by an opponent',
+    [TargetTypes.OPPOSING_UNIT]: 'any opposing unit',
     [TargetTypes.OWN_UNIT]: 'any unit controlled by you',
     [TargetTypes.PLAYER]: 'any player',
     [TargetTypes.SELF_PLAYER]: 'yourself',
@@ -33,7 +33,7 @@ const TARGET_TYPES_TO_RULES_TEXT_POSSESIVE = {
     [TargetTypes.ALL_UNITS]: "all units'",
     [TargetTypes.ANY]: "any target's",
     [TargetTypes.OPPONENT]: "any opponent's",
-    [TargetTypes.OPPOSING_UNIT]: "any unit controlled by an opponent's",
+    [TargetTypes.OPPOSING_UNIT]: "any opposing unit's",
     [TargetTypes.OWN_UNIT]: "any of your unit's",
     [TargetTypes.PLAYER]: "any player's",
     [TargetTypes.SELF_PLAYER]: 'your',
@@ -83,9 +83,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         }
         case EffectType.BOUNCE: {
             return `Return ${targetName} back to ${
-                PLURAL_TARGET_TYPES.indexOf(target) > -1
-                    ? "their owners'"
-                    : "its owner's"
+                isTargetTypePlural(target) ? "their owners'" : "its owner's"
             } hand`;
         }
         case EffectType.BUFF_ATTACK: {
@@ -177,6 +175,11 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from your deck`;
             }
             return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
+        }
+        case EffectType.FLICKER: {
+            return `Remove ${targetName} from the game, then return ${
+                isTargetTypePlural(target) ? 'them' : 'it'
+            } to the board`;
         }
         case EffectType.HEAL: {
             return `Restore ${strength} HP to ${targetName}`;

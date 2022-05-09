@@ -45,6 +45,12 @@ export enum EffectType {
     DRAW_PER_UNIT = 'Draw Per Unit',
     DRAW_UNTIL = 'Draw Until',
     EXTRACT_CARD = 'Extract Card', // extract X of {cardName} card from deck
+    /**
+     * Flicker own card (needs to be own - don't want to do opposing units yet
+     * b/c it would involve too much new code - we'd have to control for opposing active player
+     * effect resolutions)
+     */
+    FLICKER = 'Flicker',
     HEAL = 'Heal', // to any target
     LEARN = 'Learn', // add spells / units to hand
     POLYMORPH = 'Polymorph', // polymorph a unit into a token type
@@ -82,6 +88,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW_UNTIL]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_CARD]: TargetTypes.SELF_PLAYER,
+        [EffectType.FLICKER]: TargetTypes.OWN_UNIT,
         [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.LEARN]: TargetTypes.SELF_PLAYER,
         [EffectType.POLYMORPH]: TargetTypes.UNIT,

@@ -125,6 +125,31 @@ const TEA_FARMER: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const LAKE_ZOMBIE: UnitCard = makeCard({
+    name: 'Lake Zombie',
+    // https://pixabay.com/photos/zombie-warrior-lake-monster-water-5934063/
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/01/20/12/15/zombie-5934063_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+    },
+    damagePlayerEffects: [
+        {
+            type: EffectType.BOUNCE,
+            target: TargetTypes.OWN_UNIT,
+            strength: 1,
+        },
+    ],
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const PASTURE_EXPLORER: UnitCard = makeCard({
     name: 'Pasture Explorer',
     imgSrc: 'https://images.unsplash.com/photo-1549806876-7d7a936f609c',
@@ -553,6 +578,7 @@ export const MISC_UNITS = {
     MARKET_MAKER,
     BAMBOO_FARMER,
     TEA_FARMER,
+    LAKE_ZOMBIE,
     PASTURE_EXPLORER,
     RELAXED_ROWBOATER,
     NOVICE_ASTRONOMER,

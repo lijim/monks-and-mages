@@ -56,6 +56,31 @@ const BABY_DRAGON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const DRAGON_SUMMONER: UnitCard = makeCard({
+    name: 'Dragon Summoner',
+    // https://pixabay.com/illustrations/fantasy-dragon-fairytale-mythology-4277066/
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/06/16/07/06/fantasy-4277066_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            strength: 1,
+            summonType: Tokens.FRIAR,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const HEARTY_STAG: UnitCard = makeCard({
     name: 'Hearty Stag',
     // https://pixabay.com/photos/fantasy-deer-mammal-forest-nature-3232570/
@@ -157,6 +182,7 @@ const BOLD_DRAGON: UnitCard = makeCard({
 export const DRAGONS = {
     DRAGON_RIDER,
     BABY_DRAGON,
+    DRAGON_SUMMONER,
     HEARTY_STAG,
     BRONZE_DRAGON,
     YELLOW_DRAGON,

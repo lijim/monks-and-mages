@@ -22,6 +22,32 @@ const NOBLE_STEED: UnitCard = makeCard({
     passiveEffects: [PassiveEffect.QUICK],
 });
 
+const SCHEMING_EXPLORER: UnitCard = makeCard({
+    name: 'Scheming Explorer',
+    // https://pixabay.com/photos/fantasy-temple-mysterious-landscape-4257828/
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/06/07/09/37/fantasy-4257828_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+    },
+    damagePlayerEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 1,
+        },
+    ],
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+});
+
 const ELDER_PIRATE: UnitCard = makeCard({
     name: 'Elder Pirate',
     imgSrc: 'https://cdn.pixabay.com/photo/2016/03/22/16/09/sailboat-1273168_1280.jpg',
@@ -123,6 +149,7 @@ const CUTLASS_CRUSADER: UnitCard = makeCard({
 
 export const PIRATES = {
     NOBLE_STEED,
+    SCHEMING_EXPLORER,
     ELDER_PIRATE,
     DARING_CORSAIR,
     SHIP_COXSWAIN,
