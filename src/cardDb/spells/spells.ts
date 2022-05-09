@@ -1080,16 +1080,14 @@ const UNDERWORLD_MESSAGE = makeCard({
         {
             type: EffectType.DEAL_DAMAGE,
             strength: 2,
-            target: TargetTypes.OPPOSING_UNIT,
         },
         {
-            type: EffectType.BUFF_MAGIC,
-            strength: 1,
-            target: TargetTypes.OWN_UNIT,
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
         },
         {
-            type: EffectType.BUFF_HAND_ATTACK,
-            strength: 1,
+            type: EffectType.BUFF_ATTACK,
+            strength: 2,
         },
     ],
 });
