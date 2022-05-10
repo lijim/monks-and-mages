@@ -12,7 +12,7 @@ const STONE_SLINGER: UnitCard = makeCard({
     },
     description: '',
     enterEffects: [],
-    totalHp: 2,
+    totalHp: 1,
     attack: 1,
     numAttacks: 1,
     isRanged: true,
@@ -109,7 +109,7 @@ const SILENT_MARKSWOMAN: UnitCard = makeCard({
         },
     ],
     totalHp: 1,
-    attack: 1,
+    attack: 2,
     numAttacks: 1,
     isRanged: true,
     isMagical: false,
@@ -257,7 +257,7 @@ const MERRY_RALLIER: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/9935713/pexels-photo-9935713.jpeg',
     cost: {
         [Resource.BAMBOO]: 2,
-        [Resource.GENERIC]: 3,
+        [Resource.GENERIC]: 4,
     },
     description: '',
     enterEffects: [

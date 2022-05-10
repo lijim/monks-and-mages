@@ -226,6 +226,7 @@ const ENERGY_ENHANCER: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/4646238/pexels-photo-4646238.jpeg',
     cost: {
         [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [

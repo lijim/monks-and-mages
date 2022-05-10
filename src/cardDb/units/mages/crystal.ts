@@ -36,7 +36,7 @@ const IGNUS_FATUUS: UnitCard = makeCard({
         {
             type: EffectType.DRAW,
             target: TargetTypes.SELF_PLAYER,
-            strength: 2,
+            strength: 1,
         },
     ],
     description: '',
@@ -55,7 +55,7 @@ const SPIRIT_TENDER: UnitCard = makeCard({
     // https://pixabay.com/photos/fantasy-woman-forest-girl-young-6193818/
     imgSrc: 'https://cdn.pixabay.com/photo/2021/04/20/12/48/fantasy-6193818_1280.jpg',
     cost: {
-        [Resource.GENERIC]: 1,
+        [Resource.GENERIC]: 2,
         [Resource.CRYSTAL]: 1,
     },
     damagePlayerEffects: [
@@ -63,7 +63,7 @@ const SPIRIT_TENDER: UnitCard = makeCard({
             type: EffectType.RETURN_FROM_CEMETERY,
             target: TargetTypes.SELF_PLAYER,
             cardName: 'Spectral Genesis',
-            strength: 2,
+            strength: 1,
         },
     ],
     description: '',
