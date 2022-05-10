@@ -446,7 +446,8 @@ export const resolveEffect = (
                 player.hand.forEach((card) => {
                     if (
                         card.cardType === CardType.RESOURCE &&
-                        card.resourceType === resourceType
+                        card.resourceType === resourceType &&
+                        !card.isAdvanced
                     )
                         cardsToExtractPopulation.push(card);
                 });
