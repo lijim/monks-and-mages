@@ -861,7 +861,7 @@ const SPRING_IN_BLOOM = makeCard({
 const RAIN_OF_ARROWS = makeCard({
     name: 'Rain of Arrows',
     imgSrc: 'https://images.unsplash.com/photo-1563705883268-eb58ab6f505d',
-    cost: { [Resource.BAMBOO]: 2, [Resource.GENERIC]: 2 },
+    cost: { [Resource.BAMBOO]: 2, [Resource.GENERIC]: 3 },
     effects: [
         {
             type: EffectType.DEAL_DAMAGE,
@@ -879,7 +879,7 @@ const RAIN_OF_ARROWS = makeCard({
 const TEAM_GATHERING = makeCard({
     name: 'Team Gathering',
     imgSrc: 'https://images.pexels.com/photos/2152958/pexels-photo-2152958.jpeg',
-    cost: { [Resource.BAMBOO]: 2, [Resource.GENERIC]: 2 },
+    cost: { [Resource.BAMBOO]: 2, [Resource.GENERIC]: 3 },
     effects: [
         {
             type: EffectType.DRAW_PER_UNIT,

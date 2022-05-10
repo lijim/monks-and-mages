@@ -84,7 +84,7 @@ const MANTA_RAY_CONJURER: UnitCard = makeCard({
             summonType: Tokens.MANTA_RAY,
         },
     ],
-    totalHp: 2,
+    totalHp: 1,
     attack: 1,
     numAttacks: 1,
     isRanged: true,
