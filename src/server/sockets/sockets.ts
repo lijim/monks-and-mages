@@ -21,7 +21,7 @@ import { resolveEffect } from '../resolveEffect';
 import { makePlayerChatMessage, makeSystemChatMessage } from '@/factories/chat';
 import { GameResult } from '@/types/games';
 import { calculateGameResult } from '@/factories/games';
-import { Skeleton } from '@/types/cards';
+import { Card, Skeleton } from '@/types/cards';
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -126,6 +126,15 @@ export const configureIo = (server: HttpServer) => {
                 `publicSpectate-${firstRoomName.slice('public-'.length)}`
             ).emit('gameChatMessage', systemMessage);
         };
+
+    const displayLastPlayedCardForRoom = (socket: Socket) => (card: Card) => {
+        const firstRoomName = getRoomForSocket(socket);
+        io.sockets.in(firstRoomName).emit('displayLastPlayedCard', card);
+        io.to(`publicSpectate-${firstRoomName.slice('public-'.length)}`).emit(
+            'displayLastPlayedCard',
+            card
+        );
+    };
 
     // TODO: use adapters instead to get rooms => games
     // implement one that just retrieves shallowly all the rooms
@@ -343,6 +352,7 @@ export const configureIo = (server: HttpServer) => {
                     gameAction,
                     playerName,
                     addChatMessage: sendChatMessageForRoom(socket),
+                    displayLastCard: displayLastPlayedCardForRoom(socket),
                 }); // calculate new state after actions is taken
                 const gameResult = calculateGameResult(
                     prevGameState,
