@@ -7,6 +7,8 @@ import { RootState } from '@/client/redux/store';
 import { makeNewBoard } from '@/factories/board';
 import { EffectType } from '@/types/effects';
 import { makeSystemChatMessage } from '@/factories/chat';
+import { makeCard } from '@/factories/cards';
+import { SpellCards } from '@/mocks/spells';
 
 describe('GameDisplay', () => {
     it('renders player names', () => {
@@ -47,6 +49,25 @@ describe('GameDisplay', () => {
         expect(screen.queryByText('Timmy')).toBeInTheDocument();
         expect(screen.queryByText('Rover')).toBeInTheDocument();
         expect(screen.queryByText('Celeste')).toBeInTheDocument();
+    });
+
+    it('displays the last card played', () => {
+        const board = makeNewBoard({
+            playerNames: ['Tommy', 'Timmy'],
+        });
+
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Tommy',
+            },
+            board,
+            clientSideGameExtras: {
+                lastPlayedCards: [makeCard(SpellCards.SUMMON_DEMONS)],
+            },
+        };
+        render(<GameDisplay />, { preloadedState });
+
+        expect(screen.queryByText('Summon Demons')).toBeInTheDocument();
     });
 
     it('displays chat messages', () => {

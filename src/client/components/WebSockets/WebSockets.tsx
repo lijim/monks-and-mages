@@ -26,7 +26,11 @@ import {
 } from '@/client/redux/deckList';
 import { playAudio } from '@/audioHelpers/playAudio';
 import { Sounds } from '@/constants/sounds';
-import { Skeleton } from '@/types/cards';
+import { Card, Skeleton } from '@/types/cards';
+import {
+    receiveLastPlayedCard,
+    startGame as startGameAction,
+} from '@/client/redux/clientSideGameExtras';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
@@ -79,6 +83,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             dispatch(initializeUser({ id: newSocket.id }));
         });
 
+        newSocket.on('displayLastPlayedCard', (card: Card) => {
+            dispatch(receiveLastPlayedCard(card));
+        });
+
         newSocket.on('gameChatMessage', (chatMessage) => {
             dispatch(addChatLog(chatMessage));
         });
@@ -94,6 +102,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         newSocket.on('startGame', () => {
             dispatch(clearChat());
             dispatch(push('/ingame'));
+            dispatch(startGameAction());
             playAudio(Sounds.START_GAME);
         });
 

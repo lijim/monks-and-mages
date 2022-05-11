@@ -1021,6 +1021,48 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].cemetery).toEqual([spellCard]);
         });
 
+        it('handles nonsensical cardIds', () => {
+            const spellCard = makeCard(SpellCards.A_THOUSAND_WINDS);
+            board.players[0].hand.push(spellCard);
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.WATER]: 1,
+            };
+
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.CAST_SPELL,
+                    cardId: 'not a match for anything',
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState).toEqual(board);
+        });
+
+        it('displays the last spell as the "last played card"', () => {
+            const mockDisplayLastCard = jest.fn();
+            const spellCard = makeCard(SpellCards.A_THOUSAND_WINDS);
+            board.players[0].hand.push(spellCard);
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.WATER]: 1,
+            };
+
+            applyGameAction({
+                board,
+                displayLastCard: mockDisplayLastCard,
+                gameAction: {
+                    type: GameActionTypes.CAST_SPELL,
+                    cardId: spellCard.id,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(mockDisplayLastCard).toHaveBeenCalledWith(spellCard);
+        });
+
         it('broadcasts the spell to chat', () => {
             const mockAddChatMessage = jest.fn();
             const spellCard = makeCard(SpellCards.A_THOUSAND_WINDS);

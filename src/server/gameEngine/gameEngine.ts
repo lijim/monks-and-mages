@@ -3,7 +3,7 @@ import shuffle from 'lodash.shuffle';
 
 import { Board, GameState, Player } from '@/types/board';
 import { GameAction, GameActionTypes } from '@/types/gameActions';
-import { CardType, ResourceCard, UnitCard } from '@/types/cards';
+import { Card, CardType, ResourceCard, UnitCard } from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
@@ -128,12 +128,14 @@ export const processBoardToCemetery = (
 type ApplyGameActionParams = {
     addChatMessage?: (chatMessage: string) => void;
     board: Board;
+    displayLastCard?: (card: Card) => void;
     gameAction: GameAction;
     playerName: string; // player name taking the action
 };
 export const applyGameAction = ({
     addChatMessage,
     board,
+    displayLastCard,
     gameAction,
     playerName,
 }: ApplyGameActionParams): Board => {
@@ -424,12 +426,15 @@ export const applyGameAction = ({
                 (card) => card.id === cardId
             );
 
-            if (matchingCard.cardType !== CardType.SPELL) {
+            if (matchingCard?.cardType !== CardType.SPELL) {
                 return clonedBoard;
             }
             if (!canPlayerPayForCard(activePlayer, matchingCard)) {
                 return clonedBoard;
             }
+
+            // emit card out to boards as last card played
+            displayLastCard?.(matchingCard);
 
             activePlayer.resourcePool = payForCard(
                 activePlayer,

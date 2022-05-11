@@ -17,6 +17,7 @@ import { Effect } from '@/types/cards';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { CenterPromptBox } from '../CenterPromptBox';
 import { GameChatMessages } from '../GameChatMessages';
+import { LastPlayedCard } from '../LastPlayedCard';
 
 const GameGrid = styled.div`
     width: 100%;
@@ -76,7 +77,8 @@ const MultiPlayerBoard = styled.div`
 const RightColumn = styled.div`
     margin: 4px;
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-gap: 8px;
+    grid-template-rows: auto auto 1fr;
     overflow-y: hidden;
 `;
 
@@ -318,6 +320,7 @@ export const GameDisplay: React.FC = () => {
                 <HandOfCards />
             </CenterColumn>
             <RightColumn>
+                <LastPlayedCard />
                 <div>
                     {lastEffect && (
                         <EmphText>
