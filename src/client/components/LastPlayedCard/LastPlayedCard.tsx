@@ -9,7 +9,7 @@ import { RootState } from '@/client/redux/store';
 const OuterContainer = styled.div`
     display: grid;
     place-items: center;
-    span {
+    > span {
         color: white;
         background: cornflowerblue;
         padding: 4px 8px;
@@ -35,7 +35,7 @@ export const LastPlayedCard: React.FC = () => {
     return (
         <OuterContainer>
             <span>Last Spell</span>
-            <CardGridItem card={lastPlayedCard} hasTooltip zoomLevel={0.6} />
+            <CardGridItem card={lastPlayedCard} hasTooltip zoomLevel={0.8} />
         </OuterContainer>
     );
 };
