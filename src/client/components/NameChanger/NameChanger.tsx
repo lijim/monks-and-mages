@@ -64,7 +64,7 @@ export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
     };
     return (
         <>
-            <ParchmentBackground></ParchmentBackground>
+            <ParchmentBackground />
             <NameChangerForm onSubmit={onSubmit}>
                 <h1>Monks and Mages</h1>
                 <div>
