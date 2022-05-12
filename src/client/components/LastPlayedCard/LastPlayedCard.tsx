@@ -35,7 +35,7 @@ export const LastPlayedCard: React.FC = () => {
     return (
         <OuterContainer>
             <span>Last Spell</span>
-            <CardGridItem card={lastPlayedCard} hasTooltip zoomLevel={0.6} />
+            <CardGridItem card={lastPlayedCard} hasTooltip zoomLevel={0.8} />
         </OuterContainer>
     );
 };
