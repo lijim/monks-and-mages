@@ -9,7 +9,7 @@ import { RootState } from '@/client/redux/store';
 const OuterContainer = styled.div`
     display: grid;
     place-items: center;
-    span {
+    > span {
         color: white;
         background: cornflowerblue;
         padding: 4px 8px;
