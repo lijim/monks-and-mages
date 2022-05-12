@@ -9,6 +9,8 @@ export enum CardType {
 }
 
 export type ResourceCard = {
+    artistName?: string;
+    artistUrl?: string;
     cardType: CardType.RESOURCE;
     comesInTapped?: boolean;
     enterEffects?: Effect[];
@@ -17,6 +19,7 @@ export type ResourceCard = {
     isAdvanced?: boolean;
     isUsed: boolean; // if true, player has currently used up this resource for turn
     name: string;
+    originalImagePage?: string;
     resourceType: Resource;
     secondaryResourceType?: Resource;
 };
@@ -25,6 +28,8 @@ export type ResourceCard = {
  * Needs to be here due to circular dependencies
  */
 export type Effect = {
+    artistName?: string;
+    artistUrl?: string;
     cardName?: string;
     resourceType?: Resource;
     secondaryCardName?: string;
@@ -34,8 +39,12 @@ export type Effect = {
     type: EffectType;
 };
 
+/**
+ * Unit Base is the construct needed to construct a unit card.
+ */
 export type UnitBase = {
-    // max hp
+    artistName?: string;
+    artistUrl?: string;
     attack: number;
     cost: PartialRecord<Resource, number>;
     damagePlayerEffects?: Effect[];
@@ -52,12 +61,19 @@ export type UnitBase = {
     // how much damage is inflicted per attack
     numAttacks: number;
     originalCost?: PartialRecord<Resource, number>;
+    originalImagePage?: string;
     originalPassiveEffects?: PassiveEffect[];
     // all units except magic must attack soldiers first 🛡️
     passiveEffects: PassiveEffect[];
-    totalHp: number;
+    totalHp: number; // max HP
 };
 
+/**
+ * Represents the full Unit Card that has been made from a unit base.
+ *
+ * For instance, the unit base object lacks id's because
+ * id's are generated with the makeCard factory.
+ */
 export interface UnitCard extends UnitBase {
     attackBuff: number;
     cardType: CardType.UNIT;
@@ -73,11 +89,14 @@ export interface UnitCard extends UnitBase {
 export type UnitType = 'Magical' | 'Soldier' | 'Ranged' | 'None';
 
 export type SpellBase = {
+    artistName?: string;
+    artistUrl?: string;
     cost: PartialRecord<Resource, number>;
     effects: Effect[];
     imgSrc?: string;
     name: string;
     originalCost?: PartialRecord<Resource, number>;
+    originalImagePage?: string;
 };
 
 export interface SpellCard extends SpellBase {
@@ -90,9 +109,13 @@ export type Card = ResourceCard | UnitCard | SpellCard;
 
 export type DeckList = { card: Card; quantity: number }[];
 
-// type of decklist where the cards are
-// used for sending client -> server deck decisions +
-// in the copy/paste decklist feature
+/**
+ * Used to store decklists as 'skeleton states' for imports + downloads.
+ * (i.e.. they don't have the full card object, just the name)
+ *
+ * Can be easily stringified b/c this construct is so minimalistic:
+ * just a card string and a number
+ */
 export type Skeleton = { card: string; quantity: number }[];
 
 export type PileOfCards = {

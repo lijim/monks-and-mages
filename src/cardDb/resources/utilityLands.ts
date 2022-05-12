@@ -5,6 +5,10 @@ import { Tokens } from '../units';
 
 // Set 1
 const COASTAL_CASTLE = makeAdvancedResourceCard({
+    artistName: 'Riccardo Bertolo',
+    artistUrl: 'https://www.pexels.com/@riccardo-bertolo-2587816/',
+    originalImagePage:
+        'https://www.pexels.com/photo/blue-sea-under-blue-sky-4245826/',
     name: 'Coastal Castle',
     resourceType: Resource.WATER,
     imgSrc: 'https://images.pexels.com/photos/4245826/pexels-photo-4245826.jpeg',
@@ -19,6 +23,10 @@ const COASTAL_CASTLE = makeAdvancedResourceCard({
 });
 
 const BAMBOO_FOOTBRIDGE = makeAdvancedResourceCard({
+    artistName: 'Tomáš Malík',
+    artistUrl: 'https://www.pexels.com/@tomas-malik-793526/',
+    originalImagePage:
+        'https://www.pexels.com/photo/bamboo-path-in-agricultural-field-on-overcast-day-4090092/',
     name: 'Bamboo Footbridge',
     resourceType: Resource.BAMBOO,
     imgSrc: 'https://images.pexels.com/photos/4090092/pexels-photo-4090092.jpeg',
@@ -33,6 +41,9 @@ const BAMBOO_FOOTBRIDGE = makeAdvancedResourceCard({
 });
 
 const SLAG_FIELDS = makeAdvancedResourceCard({
+    artistName: 'Torsten Kellermann',
+    artistUrl: 'https://www.pexels.com/@torsten-kellermann-349167/',
+    originalImagePage: 'https://www.pexels.com/photo/white-clouds-955662/',
     name: 'Slag Fields',
     resourceType: Resource.IRON,
     imgSrc: 'https://images.pexels.com/photos/955662/pexels-photo-955662.jpeg',
@@ -46,6 +57,10 @@ const SLAG_FIELDS = makeAdvancedResourceCard({
 });
 
 const STARGAZERS_POINT = makeAdvancedResourceCard({
+    artistName: 'Luck Galindo',
+    artistUrl: 'https://www.pexels.com/@luck47/',
+    originalImagePage:
+        'https://www.pexels.com/photo/view-of-countryside-under-evening-purple-sky-544268/',
     name: "Stargazer's Point",
     resourceType: Resource.CRYSTAL,
     imgSrc: 'https://images.pexels.com/photos/544268/pexels-photo-544268.jpeg',
@@ -64,6 +79,10 @@ const STARGAZERS_POINT = makeAdvancedResourceCard({
 });
 
 const HOLY_TEMPLE = makeAdvancedResourceCard({
+    artistName: 'Quang Nguyen Vinh',
+    artistUrl: 'https://www.pexels.com/@quang-nguyen-vinh-222549/',
+    originalImagePage:
+        'https://www.pexels.com/photo/asian-woman-with-candle-praying-near-temple-6710712/',
     name: 'Holy Temple',
     resourceType: Resource.FIRE,
     imgSrc: 'https://images.pexels.com/photos/6710712/pexels-photo-6710712.jpeg',
@@ -79,6 +98,10 @@ const HOLY_TEMPLE = makeAdvancedResourceCard({
 
 // Set 2
 const CHILLY_BERG = makeAdvancedResourceCard({
+    artistName: 'Unknown',
+    artistUrl: 'https://pixabay.com/users/12019-12019/',
+    originalImagePage:
+        'https://pixabay.com/photos/iceland-ice-iceberg-sea-ocean-2287537/',
     name: 'Chilly Berg',
     resourceType: Resource.WATER,
     // https://pixabay.com/photos/iceland-ice-iceberg-sea-ocean-2287537/
@@ -94,9 +117,12 @@ const CHILLY_BERG = makeAdvancedResourceCard({
 });
 
 const FERTILE_FIELDS = makeAdvancedResourceCard({
+    artistName: 'ThuyHaBich',
+    artistUrl: 'https://pixabay.com/users/thuyhabich-6663646/',
+    originalImagePage:
+        'https://pixabay.com/photos/view-landscape-nature-vietnam-2843338/',
     name: 'Fertile Fields',
     resourceType: Resource.BAMBOO,
-    // https://pixabay.com/photos/view-landscape-nature-vietnam-2843338/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/10/12/03/03/view-2843338_1280.jpg',
     enterEffects: [
         {
@@ -109,6 +135,10 @@ const FERTILE_FIELDS = makeAdvancedResourceCard({
 });
 
 const OLD_FARMHOUSE = makeAdvancedResourceCard({
+    artistName: 'Walkerssk',
+    artistUrl: 'https://pixabay.com/users/walkerssk-1409366/',
+    originalImagePage:
+        'https://pixabay.com/photos/netherlands-dutch-windmill-windmill-1945177/',
     name: 'Old Farmhouse',
     resourceType: Resource.IRON,
     imgSrc: 'https://cdn.pixabay.com/photo/2017/01/01/18/24/netherlands-1945177_1280.jpg',
@@ -122,6 +152,10 @@ const OLD_FARMHOUSE = makeAdvancedResourceCard({
 });
 
 const FOG_POINT = makeAdvancedResourceCard({
+    artistName: 'StockSnap',
+    artistUrl: 'https://pixabay.com/users/stocksnap-894430/',
+    originalImagePage:
+        'https://pixabay.com/photos/lightning-purple-sky-lilac-sky-2625010/',
     name: 'Fog Point',
     resourceType: Resource.CRYSTAL,
     imgSrc: 'https://cdn.pixabay.com/photo/2017/08/10/17/08/lightning-2625010_1280.jpg',
@@ -136,9 +170,13 @@ const FOG_POINT = makeAdvancedResourceCard({
 });
 
 const LAVA_RIVER = makeAdvancedResourceCard({
+    artistName: 'Alex Prado',
+    artistUrl: 'https://pixabay.com/users/alex-prado-16797723/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/lava-river-nature-s-wrath-6836437/',
     name: 'Lava River',
     resourceType: Resource.FIRE,
-    // https://pixabay.com/illustrations/lava-river-nature-s-wrath-6836437/
+    //
     imgSrc: 'https://cdn.pixabay.com/photo/2021/11/30/23/48/lava-river-6836437_1280.jpg',
     enterEffects: [
         {
@@ -151,6 +189,9 @@ const LAVA_RIVER = makeAdvancedResourceCard({
 });
 
 const TREACHEROUS_DESERT = makeAdvancedResourceCard({
+    artistName: 'Pixabay',
+    artistUrl: 'https://www.pexels.com/@pixabay',
+    originalImagePage: 'https://www.pexels.com/photo/brown-dessert-273935/',
     name: 'Treacherous Desert',
     resourceType: Resource.GENERIC,
     imgSrc: 'https://images.pexels.com/photos/273935/pexels-photo-273935.jpeg',
