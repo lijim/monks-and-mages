@@ -560,10 +560,10 @@ const RULER_OF_THE_JUNGLE: UnitCard = makeCard({
         {
             type: EffectType.SUMMON_UNITS,
             summonType: Tokens.LION,
-            strength: 3,
+            strength: 2,
         },
     ],
-    totalHp: 7,
+    totalHp: 5,
     attack: 5,
     numAttacks: 1,
     isRanged: false,
