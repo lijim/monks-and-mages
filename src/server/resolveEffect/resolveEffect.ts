@@ -312,7 +312,8 @@ export const resolveEffect = (
                     player.isAlive = false;
                 });
             }
-            activePlayer.hand = hand.concat(deck.splice(-effectStrength));
+            if (effectStrength > 0)
+                activePlayer.hand = hand.concat(deck.splice(-effectStrength));
             applyWinState(clonedBoard);
             return clonedBoard;
         }

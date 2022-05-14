@@ -490,6 +490,26 @@ describe('resolve effect', () => {
             expect(newBoard.players[1].isAlive).toEqual(false);
             expect(newBoard.gameState).toEqual(GameState.WIN);
         });
+
+        it('draw no cards if strength is 0', () => {
+            const deckLength = board.players[0].deck.length;
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DRAW_MILL_WIN,
+                        strength: 0,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE
+            );
+            expect(newBoard.players[0].deck).toHaveLength(deckLength);
+        });
     });
 
     describe('Draw cards per unit', () => {
