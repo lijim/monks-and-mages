@@ -6,6 +6,8 @@ import { push } from 'redux-first-history';
 import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
 import { SecondaryColorButton } from '../Button';
+import { useAuth0 } from '@auth0/auth0-react';
+import { LogoutButton } from '../LogoutButton';
 
 // TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
 
@@ -26,7 +28,10 @@ const NameDisplayer = styled.div`
  * Top nav bar on the rooms page
  */
 export const TopNavBar: React.FC = ({ children }) => {
-    const name = useSelector<RootState, string>((state) => state.user.name);
+    const guestName = useSelector<RootState, string>(
+        (state) => state.user.name
+    );
+    const { user } = useAuth0();
     const webSocket = useContext(WebSocketContext);
     const dispatch = useDispatch();
 
@@ -34,16 +39,28 @@ export const TopNavBar: React.FC = ({ children }) => {
         webSocket.chooseName('');
         dispatch(push('/'));
     };
-    return (
-        <NameDisplayer>
-            <div>
-                👤 <b>{name}</b>{' '}
-                <SecondaryColorButton onClick={logOut}>
-                    Logout
-                </SecondaryColorButton>
-            </div>
-            <div className="topNavBar-center">{children}</div>
-            <div></div>
-        </NameDisplayer>
-    );
+    if (guestName)
+        return (
+            <NameDisplayer>
+                <div>
+                    👤 <b>{guestName}</b>{' '}
+                    <SecondaryColorButton onClick={logOut}>
+                        Return Home
+                    </SecondaryColorButton>
+                </div>
+                <div className="topNavBar-center">{children}</div>
+                <div></div>
+            </NameDisplayer>
+        );
+    if (user)
+        return (
+            <NameDisplayer>
+                <div>
+                    👤 <b>{user.nickname}</b> <LogoutButton />
+                </div>
+                <div className="topNavBar-center">{children}</div>
+                <div></div>
+            </NameDisplayer>
+        );
+    return null;
 };

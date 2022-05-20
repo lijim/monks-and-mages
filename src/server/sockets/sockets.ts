@@ -24,7 +24,7 @@ import { calculateGameResult } from '@/factories/games';
 import { Card, Skeleton } from '@/types/cards';
 import { authorize, ExtendedSocket } from '../authorize';
 
-const SIGNING_SECRET = process.env.SIGNING_KEY;
+const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -247,9 +247,11 @@ export const configureIo = (server: HttpServer) => {
                     accessToken,
                     secret: SIGNING_SECRET,
                     onAuthentication: (decodedToken) => {
+                        console.log(decodedToken);
                         return decodedToken.sub;
                     },
                 })(socket, console.log);
+                clearName(socket.id);
             });
 
             socket.on('chooseCustomDeck', (skeleton: Skeleton) => {

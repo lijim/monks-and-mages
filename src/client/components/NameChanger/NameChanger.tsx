@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import { MAX_PLAYER_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { PrimaryColorButton } from '../Button';
 import { startBackgroundMusic } from '@/audioHelpers/playAudio';
-import { LoginButton } from '@/client/components/LoginButton';
-import { LogoutButton } from '@/client/components/LogoutButton';
-import { WebSocketContext } from '../WebSockets';
+import { LoginButton } from '../LoginButton';
 
 interface NameChangerProps {
     handleSubmit: (name: string) => void;
@@ -98,14 +96,6 @@ export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
                     </PrimaryColorButton>
                 </div>
                 <LoginButton />
-                <LogoutButton />
-                {isAuthenticated && (
-                    <div>
-                        <img src={user.picture} alt={user.name} />
-                        <h2>{user.name}</h2>
-                        <p>{user.email}</p>
-                    </div>
-                )}
             </NameChangerForm>
         </>
     );

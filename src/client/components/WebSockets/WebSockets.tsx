@@ -64,8 +64,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             if (!user) return;
             const accessToken = await getAccessTokenWithPopup({
                 audience: `https://monks-and-mages.us.auth0.com/api/v2/`,
-                scope: 'read:current_user',
+                scope: 'read:users_app_metadata',
             });
+            console.log(user);
+            console.log(accessToken);
             socket.emit('login', `Bearer ${accessToken}`);
         };
         authToken();
