@@ -1,8 +1,12 @@
-import React, { FormEvent, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import React, { FormEvent, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MAX_PLAYER_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { PrimaryColorButton } from '../Button';
 import { startBackgroundMusic } from '@/audioHelpers/playAudio';
+import { LoginButton } from '@/client/components/LoginButton';
+import { LogoutButton } from '@/client/components/LogoutButton';
+import { WebSocketContext } from '../WebSockets';
 
 interface NameChangerProps {
     handleSubmit: (name: string) => void;
@@ -13,7 +17,7 @@ const NameChangerForm = styled.form`
     grid-gap: 12px;
     padding: 12px;
 
-    height: 400px;
+    height: 600px;
     grid-template-rows: 1fr auto 1fr;
     width: 450px;
     z-index: 2;
@@ -39,7 +43,7 @@ const NameChangerForm = styled.form`
 
 const ParchmentBackground = styled.div`
     position: absolute;
-    height: 400px;
+    height: 600px;
     width: 550px;
     z-index: 1;
     box-shadow: 2px 3px 20px black, 0 0 125px #8f5922 inset;
@@ -54,6 +58,8 @@ const ParchmentBackground = styled.div`
  * @returns {JSX.Element} Intro screen component
  */
 export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
+    const { user, isAuthenticated } = useAuth0();
+
     const [name, setName] = useState('');
 
     const onSubmit = (event: FormEvent) => {
@@ -91,6 +97,15 @@ export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
                         Start
                     </PrimaryColorButton>
                 </div>
+                <LoginButton />
+                <LogoutButton />
+                {isAuthenticated && (
+                    <div>
+                        <img src={user.picture} alt={user.name} />
+                        <h2>{user.name}</h2>
+                        <p>{user.email}</p>
+                    </div>
+                )}
             </NameChangerForm>
         </>
     );

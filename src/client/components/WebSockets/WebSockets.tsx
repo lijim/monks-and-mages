@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
@@ -31,6 +31,7 @@ import {
     receiveLastPlayedCard,
     startGame as startGameAction,
 } from '@/client/redux/clientSideGameExtras';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
@@ -55,13 +56,28 @@ export const WebSocketProvider: React.FC = ({ children }) => {
     const [socket, setSocket] =
         useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
     const [ws, setWs] = useState<WebSocketValue>(null);
+    const [authToken, setAuthToken] = useState<string>(null);
+
+    const { user, getAccessTokenWithPopup } = useAuth0();
+
+    useEffect(() => {
+        const authToken = async () => {
+            if (!user) return;
+            const accessToken = await getAccessTokenWithPopup({
+                audience: `https://monks-and-mages.us.auth0.com/api/v2/`,
+                scope: 'read:current_user',
+            });
+            setAuthToken(accessToken);
+        };
+        authToken();
+    }, [user]);
 
     // WebSocketProvider needs to go 1 layer beneath the Redux layer
     const dispatch = useDispatch<AppDispatch>();
 
-    if (!socket) {
+    if (!socket && authToken) {
         const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> =
-            io();
+            io({ auth: { token: `Bearer ${authToken}` } });
 
         // Server-to-client events
         newSocket.on('confirmCustomDeck', (skeleton: Skeleton) => {
@@ -111,6 +127,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         });
 
         // Client-to-server events
+        const authorizeToken = (token: string) => {
+            newSocket.emit('authorizeToken', token);
+        };
+
         const joinRoom = (roomName: string) => {
             newSocket.emit('joinRoom', roomName);
         };
@@ -154,6 +174,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         setSocket(newSocket);
         setWs({
             socket: newSocket,
+            authorizeToken,
             chooseCustomDeck,
             chooseDeck,
             chooseName,

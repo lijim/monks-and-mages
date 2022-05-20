@@ -24,6 +24,7 @@ export interface ResolveEffectParams {
 }
 
 export interface ClientToServerEvents {
+    authorizeToken: (token: string) => void;
     chooseCustomDeck: (skeleton: Skeleton) => void;
     chooseDeck: (deckListSelection: DeckListSelections) => void;
     chooseName: (name: string) => void;

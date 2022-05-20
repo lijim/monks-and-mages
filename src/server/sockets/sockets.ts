@@ -22,6 +22,9 @@ import { makePlayerChatMessage, makeSystemChatMessage } from '@/factories/chat';
 import { GameResult } from '@/types/games';
 import { calculateGameResult } from '@/factories/games';
 import { Card, Skeleton } from '@/types/cards';
+import { authorize, ExtendedSocket } from '../authorize';
+
+const secret = process.env.SIGNING_KEY;
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -30,6 +33,15 @@ export const configureIo = (server: HttpServer) => {
             credentials: true,
         },
     });
+
+    io.use(
+        authorize<ClientToServerEvents, ServerToClientEvents>({
+            secret,
+            onAuthentication: (decodedToken) => {
+                return decodedToken.sub;
+            },
+        })
+    );
 
     instrument(io, {
         auth: false,
@@ -232,7 +244,10 @@ export const configureIo = (server: HttpServer) => {
 
     io.on(
         'connection',
-        (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
+        (
+            socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
+        ) => {
+            console.log(socket.sub);
             socket.emit('listRooms', getDetailedRooms());
             socket.emit('listLatestGameResults', latestResults);
 

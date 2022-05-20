@@ -4,6 +4,7 @@ import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import 'react-popper-tooltip/dist/styles.css';
+import { Auth0Provider } from '@auth0/auth0-react';
 
 import { isUserInitialized } from '@/client/redux/selectors';
 import { history, RootState, store } from '@/client/redux/store';
@@ -111,8 +112,14 @@ const Main: React.FC = () => {
 
 export const App: React.FC = () => {
     return (
-        <Provider store={store}>
-            <Main />
-        </Provider>
+        <Auth0Provider
+            domain="monks-and-mages.us.auth0.com"
+            clientId="LSubVfTts36idFBDEpQ7L9BE16s1oziS"
+            redirectUri={window.location.origin}
+        >
+            <Provider store={store}>
+                <Main />
+            </Provider>
+        </Auth0Provider>
     );
 };
