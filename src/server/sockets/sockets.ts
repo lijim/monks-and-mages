@@ -24,7 +24,7 @@ import { calculateGameResult } from '@/factories/games';
 import { Card, Skeleton } from '@/types/cards';
 import { authorize, ExtendedSocket } from '../authorize';
 
-const secret = process.env.SIGNING_KEY;
+const SIGNING_SECRET = process.env.SIGNING_KEY;
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -33,15 +33,6 @@ export const configureIo = (server: HttpServer) => {
             credentials: true,
         },
     });
-
-    io.use(
-        authorize<ClientToServerEvents, ServerToClientEvents>({
-            secret,
-            onAuthentication: (decodedToken) => {
-                return decodedToken.sub;
-            },
-        })
-    );
 
     instrument(io, {
         auth: false,
@@ -251,6 +242,16 @@ export const configureIo = (server: HttpServer) => {
             socket.emit('listRooms', getDetailedRooms());
             socket.emit('listLatestGameResults', latestResults);
 
+            socket.on('login', (accessToken) => {
+                authorize<ClientToServerEvents, ServerToClientEvents>({
+                    accessToken,
+                    secret: SIGNING_SECRET,
+                    onAuthentication: (decodedToken) => {
+                        return decodedToken.sub;
+                    },
+                })(socket, console.log);
+            });
+
             socket.on('chooseCustomDeck', (skeleton: Skeleton) => {
                 const name = idsToNames.get(socket.id);
                 if (!name) return;
@@ -269,6 +270,7 @@ export const configureIo = (server: HttpServer) => {
             });
 
             socket.on('chooseName', (name: string) => {
+                console.log(socket.sub);
                 // log out
                 if (!name) {
                     disconnectFromGame(socket);

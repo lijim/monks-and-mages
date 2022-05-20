@@ -56,7 +56,6 @@ export const WebSocketProvider: React.FC = ({ children }) => {
     const [socket, setSocket] =
         useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
     const [ws, setWs] = useState<WebSocketValue>(null);
-    const [authToken, setAuthToken] = useState<string>(null);
 
     const { user, getAccessTokenWithPopup } = useAuth0();
 
@@ -67,7 +66,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
                 audience: `https://monks-and-mages.us.auth0.com/api/v2/`,
                 scope: 'read:current_user',
             });
-            setAuthToken(accessToken);
+            socket.emit('login', `Bearer ${accessToken}`);
         };
         authToken();
     }, [user]);
@@ -75,9 +74,9 @@ export const WebSocketProvider: React.FC = ({ children }) => {
     // WebSocketProvider needs to go 1 layer beneath the Redux layer
     const dispatch = useDispatch<AppDispatch>();
 
-    if (!socket && authToken) {
+    if (!socket) {
         const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> =
-            io({ auth: { token: `Bearer ${authToken}` } });
+            io();
 
         // Server-to-client events
         newSocket.on('confirmCustomDeck', (skeleton: Skeleton) => {

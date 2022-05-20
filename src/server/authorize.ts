@@ -41,7 +41,7 @@ export interface ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
     extends Socket<ClientToServerEvents, ServerToClientEvents> {
     decodedToken?: any;
     encodedToken?: string;
-    sub?: any;
+    sub?: string;
 }
 
 type SocketIOMiddleware = (
@@ -62,21 +62,28 @@ type SecretCallback = (
 ) => Promise<string> | string;
 
 export interface AuthorizeOptions {
+    accessToken: string;
     algorithms?: Algorithm[];
-    onAuthentication?: (decodedToken: any) => Promise<any> | any;
+    onAuthentication?: (
+        decodedToken: Record<string, string>
+    ) => Promise<string> | string;
     secret: string | SecretCallback;
 }
 
 export const authorize = <ClientToServerEvents, ServerToClientEvents>(
     options: AuthorizeOptions
 ): SocketIOMiddleware => {
-    const { secret, algorithms = ['RS256'], onAuthentication } = options;
+    const {
+        secret,
+        algorithms = ['RS256'],
+        onAuthentication,
+        accessToken: token,
+    } = options;
     return async (
         socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>,
         next
     ) => {
         let encodedToken: string | null = null;
-        const { token } = socket.handshake.auth;
         if (token != null) {
             const tokenSplitted = token.split(' ');
             if (tokenSplitted.length !== 2 || tokenSplitted[0] !== 'Bearer') {
