@@ -118,8 +118,8 @@ const Main: React.FC = () => {
 export const App: React.FC = () => {
     return (
         <Auth0Provider
-            domain="monks-and-mages.us.auth0.com"
-            clientId="LSubVfTts36idFBDEpQ7L9BE16s1oziS"
+            domain={process.env.AUTH0_DOMAIN}
+            clientId={process.env.AUTH0_CLIENT_ID}
             redirectUri={window.location.origin}
         >
             <Provider store={store}>

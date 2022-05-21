@@ -5,6 +5,7 @@ const { addDisplayNameTransformer } = require('ts-react-display-name')
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const nodeExternals = require('webpack-node-externals');
+const Dotenv = require('dotenv-webpack');
 
 const styledComponentsTransformer = createStyledComponentsTransformer({
     getDisplayName: (_,bindingName) => `[${bindingName}]`,
@@ -54,11 +55,8 @@ const clientConfig = {
     optimization: {
         minimize: true
     },
-    /* plugins: [
-        new BundleAnalyzerPlugin()
-    ], */
     target: 'web',
-    mode: 'production',
+    mode: 'development',
     devtool: 'source-map',
     module: {
         rules: [
@@ -90,7 +88,8 @@ const clientConfig = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/server/homepage.html'
-        })
+        }),
+        new Dotenv()
     ],
     output: {
         filename: '[name].[contenthash].bundle.js',
