@@ -57,16 +57,25 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
     const [ws, setWs] = useState<WebSocketValue>(null);
 
-    const { user, getAccessTokenWithPopup } = useAuth0();
+    const { user, getAccessTokenWithPopup, getAccessTokenSilently } =
+        useAuth0();
 
     useEffect(() => {
         const authToken = async () => {
             if (!user) return;
-            const accessToken = await getAccessTokenWithPopup({
-                audience: `https://monks-and-mages.us.auth0.com/api/v2/`,
-                scope: 'read:users_app_metadata',
-            });
-            socket.emit('login', `Bearer ${accessToken}`);
+            if (process.env.ENVIRONMENT !== 'production') {
+                const accessToken = await getAccessTokenWithPopup({
+                    audience: `${process.env.AUTH0_DOMAIN}/api/v2/`,
+                    scope: 'read:users_app_metadata',
+                });
+                socket.emit('login', `Bearer ${accessToken}`);
+            } else {
+                const accessToken = await getAccessTokenSilently({
+                    audience: `${process.env.AUTH0_DOMAIN}/api/v2/`,
+                    scope: 'read:users_app_metadata',
+                });
+                socket.emit('login', `Bearer ${accessToken}`);
+            }
         };
         authToken();
     }, [user]);
