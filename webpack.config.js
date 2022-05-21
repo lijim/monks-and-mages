@@ -56,7 +56,7 @@ const clientConfig = {
         minimize: true
     },
     target: 'web',
-    mode: 'development',
+    mode: 'production',
     devtool: 'source-map',
     module: {
         rules: [
