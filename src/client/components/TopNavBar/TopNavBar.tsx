@@ -8,6 +8,7 @@ import { WebSocketContext } from '../WebSockets';
 import { SecondaryColorButton } from '../Button';
 import { useAuth0 } from '@auth0/auth0-react';
 import { LogoutButton } from '../LogoutButton';
+import { getCleanName } from '@/client/redux/selectors';
 
 // TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
 
@@ -28,9 +29,7 @@ const NameDisplayer = styled.div`
  * Top nav bar on the rooms page
  */
 export const TopNavBar: React.FC = ({ children }) => {
-    const guestName = useSelector<RootState, string>(
-        (state) => state.user.name
-    );
+    const guestName = useSelector<RootState, string>(getCleanName);
     const { user } = useAuth0();
     const webSocket = useContext(WebSocketContext);
     const dispatch = useDispatch();
@@ -39,6 +38,16 @@ export const TopNavBar: React.FC = ({ children }) => {
         webSocket.chooseName('');
         dispatch(push('/'));
     };
+    if (user)
+        return (
+            <NameDisplayer>
+                <div>
+                    👤 <b>{guestName || 'Loading...'}</b> <LogoutButton />
+                </div>
+                <div className="topNavBar-center">{children}</div>
+                <div></div>
+            </NameDisplayer>
+        );
     if (guestName)
         return (
             <NameDisplayer>
@@ -52,15 +61,6 @@ export const TopNavBar: React.FC = ({ children }) => {
                 <div></div>
             </NameDisplayer>
         );
-    if (user)
-        return (
-            <NameDisplayer>
-                <div>
-                    👤 <b>{user.nickname}</b> <LogoutButton />
-                </div>
-                <div className="topNavBar-center">{children}</div>
-                <div></div>
-            </NameDisplayer>
-        );
+
     return null;
 };

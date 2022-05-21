@@ -8,6 +8,7 @@ import { obscureBoardInfo } from '../obscureBoardInfo';
 import {
     DeckListSelections,
     DEFAULT_ROOM_NAMES,
+    GUEST_NAME_PREFIX,
     PREMADE_DECKLIST_DEFAULT,
 } from '@/constants/lobbyConstants';
 import {
@@ -23,6 +24,7 @@ import { GameResult } from '@/types/games';
 import { calculateGameResult } from '@/factories/games';
 import { Card, Skeleton } from '@/types/cards';
 import { authorize, ExtendedSocket } from '../authorize';
+import { auth0 } from '../auth0';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
 
@@ -238,7 +240,6 @@ export const configureIo = (server: HttpServer) => {
         (
             socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
         ) => {
-            console.log(socket.sub);
             socket.emit('listRooms', getDetailedRooms());
             socket.emit('listLatestGameResults', latestResults);
 
@@ -246,8 +247,27 @@ export const configureIo = (server: HttpServer) => {
                 authorize<ClientToServerEvents, ServerToClientEvents>({
                     accessToken,
                     secret: SIGNING_SECRET,
-                    onAuthentication: (decodedToken) => {
-                        console.log(decodedToken);
+                    onAuthentication: async (decodedToken) => {
+                        try {
+                            const user = await auth0.getUser({
+                                id: decodedToken.sub,
+                            });
+                            const { username: name } = user;
+                            clearName(socket.id);
+                            namesToIds.set(name, socket.id);
+                            idsToNames.set(socket.id, name);
+                            nameToDeckListSelection.set(
+                                name,
+                                PREMADE_DECKLIST_DEFAULT
+                            );
+                            socket.emit(
+                                'confirmPremadeDeckList',
+                                PREMADE_DECKLIST_DEFAULT
+                            );
+                            socket.emit('confirmName', name);
+                        } catch (e) {
+                            console.error(e);
+                        }
                         return decodedToken.sub;
                     },
                 })(socket, console.log);
@@ -271,8 +291,8 @@ export const configureIo = (server: HttpServer) => {
                 socket.emit('confirmCustomDeck', null);
             });
 
-            socket.on('chooseName', (name: string) => {
-                console.log(socket.sub);
+            socket.on('chooseName', (newName: string) => {
+                const name = newName ? `${GUEST_NAME_PREFIX}${newName}` : '';
                 // log out
                 if (!name) {
                     disconnectFromGame(socket);

@@ -5,7 +5,8 @@ import { PrimaryColorButton } from '../Button';
 export const LoginButton = () => {
     const { user, loginWithRedirect } = useAuth0();
 
-    if (user) return <>Logged in as {user.nickname} ... redirecting</>;
+    if (user)
+        return <>Logged in as {user.preferred_username} ... redirecting</>;
     return (
         <PrimaryColorButton onClick={() => loginWithRedirect()}>
             Log In / Sign Up

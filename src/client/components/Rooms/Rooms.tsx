@@ -13,6 +13,7 @@ import { MAX_ROOM_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { Colors } from '@/constants/colors';
 import { DeckListSelector } from '../DeckListSelector';
 import { LatestWinners } from '../LatestWinners';
+import { getCleanName } from '@/client/redux/selectors';
 
 const RoomsContainer = styled.div`
     display: grid;
@@ -90,7 +91,7 @@ const normalizeRoomName = (roomName: string): string => {
  */
 export const Rooms: React.FC = () => {
     const dispatch = useDispatch();
-    const name = useSelector<RootState, string>((state) => state.user.name);
+    const name = useSelector<RootState, string>(getCleanName);
     const rooms = useSelector<RootState, DetailedRoom[]>(
         (state) => state.lobby.rooms || []
     );

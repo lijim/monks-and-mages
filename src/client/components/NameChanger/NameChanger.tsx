@@ -72,7 +72,9 @@ export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
             <NameChangerForm onSubmit={onSubmit}>
                 <h1>Monks and Mages</h1>
                 <div>
-                    <label htmlFor="name-selector">Choose a Name</label>
+                    <label htmlFor="name-selector">
+                        Choose a Name (Guest Mode)
+                    </label>
                     <input
                         id="name-selector"
                         role="textbox"

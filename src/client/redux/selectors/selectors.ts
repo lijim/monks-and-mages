@@ -6,6 +6,9 @@ import { RootState } from '../store';
 export const isUserInitialized = (state: Partial<RootState>): boolean =>
     !!state.user.name;
 
+export const getCleanName = (state: Partial<RootState>): string =>
+    state.user.name || '';
+
 // get the Player
 export const getSelfPlayer = (state: Partial<RootState>): Player | null => {
     if (!state.board?.players) return null;
