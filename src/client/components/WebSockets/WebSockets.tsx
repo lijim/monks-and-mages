@@ -65,13 +65,13 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             if (!user) return;
             if (process.env.ENVIRONMENT !== 'production') {
                 const accessToken = await getAccessTokenWithPopup({
-                    audience: `${process.env.AUTH0_DOMAIN}/api/v2/`,
+                    audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
                     scope: 'read:users_app_metadata',
                 });
                 socket.emit('login', `Bearer ${accessToken}`);
             } else {
                 const accessToken = await getAccessTokenSilently({
-                    audience: `${process.env.AUTH0_DOMAIN}/api/v2/`,
+                    audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
                     scope: 'read:users_app_metadata',
                 });
                 socket.emit('login', `Bearer ${accessToken}`);
