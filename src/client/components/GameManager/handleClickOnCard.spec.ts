@@ -19,7 +19,7 @@ import { playAudio } from '@/audioHelpers/playAudio';
 import { Sounds } from '@/constants/sounds';
 
 jest.mock('@/audioHelpers/playAudio', () => ({
-    __esModule: true, // this property makes it work
+    __esModule: true,
     default: 'mockedDefaultExport',
     playAudio: jest.fn(),
 }));

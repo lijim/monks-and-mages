@@ -4,7 +4,7 @@ import { NameChanger } from './NameChanger';
 import { startBackgroundMusic } from '@/audioHelpers/playAudio';
 
 jest.mock('@/audioHelpers/playAudio', () => ({
-    __esModule: true, // this property makes it work
+    __esModule: true,
     default: 'mockedDefaultExport',
     startBackgroundMusic: jest.fn(),
 }));

@@ -16,7 +16,7 @@ import {
 import { DEFAULT_ROOM_NAMES } from '@/constants/lobbyConstants';
 
 jest.mock('../auth0/', () => ({
-    __esModule: true, // this property makes it work
+    __esModule: true,
     auth0: jest.fn(),
 }));
 

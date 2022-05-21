@@ -5,7 +5,7 @@ import { render } from '@/test-utils';
 import { IntroScreen } from './IntroScreen';
 
 jest.mock('@/audioHelpers/playAudio', () => ({
-    __esModule: true, // this property makes it work
+    __esModule: true,
     default: 'mockedDefaultExport',
     startBackgroundMusic: jest.fn(),
 }));
