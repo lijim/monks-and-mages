@@ -54,6 +54,17 @@ export interface AuthorizeOptions {
     secret: string;
 }
 
+/**
+ * A utility to help with authorizing users when they login via auth0.
+ *
+ * Process looks like this:
+ * 1. User navigates via React app's LoginButton to auth0 site (uses the useAuth0 hook)
+ * 2. User gets back a bearer token
+ * 3. User sends the bearer token to the webserver's socket.io instance
+ * 4. socket.io code calls this function to authorize
+ * 5. we have a callback that is called "onAuthentication" that is finally performed
+ * at the end.
+ */
 export const authorize = <ClientToServerEvents, ServerToClientEvents>(
     options: AuthorizeOptions
 ): SocketIOMiddleware => {

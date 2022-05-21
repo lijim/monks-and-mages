@@ -17,7 +17,7 @@ describe('Name Changer', () => {
         fireEvent.change(screen.getByRole('textbox'), {
             target: { value: 'Trogdor the Burninator' },
         });
-        fireEvent.click(screen.getByRole('button'));
+        fireEvent.click(screen.getByText('Start'));
 
         expect(mockOnSubmit).toHaveBeenCalledWith('Trogdor the Burninator');
     });
@@ -29,7 +29,7 @@ describe('Name Changer', () => {
         fireEvent.change(screen.getByRole('textbox'), {
             target: { value: 'Trogdor the Burninator' },
         });
-        fireEvent.click(screen.getByRole('button'));
+        fireEvent.click(screen.getByText('Start'));
 
         expect(startBackgroundMusic).toHaveBeenCalled();
     });
@@ -38,7 +38,7 @@ describe('Name Changer', () => {
         const mockOnSubmit = jest.fn();
         render(<NameChanger handleSubmit={mockOnSubmit} />);
 
-        fireEvent.click(screen.getByRole('button'));
+        fireEvent.click(screen.getByText('Start'));
 
         expect(mockOnSubmit).toHaveBeenCalledTimes(0);
     });

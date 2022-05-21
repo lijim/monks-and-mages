@@ -18,7 +18,7 @@ describe('Intro Screen', () => {
         fireEvent.change(screen.getByRole('textbox'), {
             target: { value: 'Trogzor' },
         });
-        fireEvent.click(screen.getByRole('button'));
+        fireEvent.click(screen.getByText('Start'));
 
         expect(chooseName).toHaveBeenCalledWith('Trogzor');
     });

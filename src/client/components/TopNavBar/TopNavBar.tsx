@@ -48,19 +48,16 @@ export const TopNavBar: React.FC = ({ children }) => {
                 <div></div>
             </NameDisplayer>
         );
-    if (guestName)
-        return (
-            <NameDisplayer>
-                <div>
-                    👤 <b>{guestName}</b>{' '}
-                    <SecondaryColorButton onClick={logOut}>
-                        Return Home
-                    </SecondaryColorButton>
-                </div>
-                <div className="topNavBar-center">{children}</div>
-                <div></div>
-            </NameDisplayer>
-        );
-
-    return null;
+    return (
+        <NameDisplayer>
+            <div>
+                👤 <b>{guestName}</b>{' '}
+                <SecondaryColorButton onClick={logOut}>
+                    Return Home
+                </SecondaryColorButton>
+            </div>
+            <div className="topNavBar-center">{children}</div>
+            <div></div>
+        </NameDisplayer>
+    );
 };

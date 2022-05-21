@@ -248,6 +248,7 @@ export const configureIo = (server: HttpServer) => {
                     accessToken,
                     secret: SIGNING_SECRET,
                     onAuthentication: async (decodedToken) => {
+                        if (typeof decodedToken === 'string') return '';
                         try {
                             const user = await auth0.getUser({
                                 id: decodedToken.sub,
