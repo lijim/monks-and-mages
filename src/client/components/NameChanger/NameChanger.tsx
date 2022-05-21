@@ -1,5 +1,4 @@
-import { useAuth0 } from '@auth0/auth0-react';
-import React, { FormEvent, useContext, useEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import { MAX_PLAYER_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { PrimaryColorButton } from '../Button';
@@ -56,8 +55,6 @@ const ParchmentBackground = styled.div`
  * @returns {JSX.Element} Intro screen component
  */
 export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
-    const { user, isAuthenticated } = useAuth0();
-
     const [name, setName] = useState('');
 
     const onSubmit = (event: FormEvent) => {

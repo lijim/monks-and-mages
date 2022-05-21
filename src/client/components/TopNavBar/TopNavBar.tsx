@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { push } from 'redux-first-history';
+import { useAuth0 } from '@auth0/auth0-react';
 import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
 import { SecondaryColorButton } from '../Button';
-import { useAuth0 } from '@auth0/auth0-react';
 import { LogoutButton } from '../LogoutButton';
 import { getCleanName } from '@/client/redux/selectors';
 

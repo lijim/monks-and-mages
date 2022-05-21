@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { SecondaryColorButton } from '../Button';
 import { useDispatch } from 'react-redux';
-import { WebSocketContext } from '../WebSockets';
 import { push } from 'redux-first-history';
+import { SecondaryColorButton } from '../Button';
+import { WebSocketContext } from '../WebSockets';
 
 export const LogoutButton = () => {
     const { logout } = useAuth0();

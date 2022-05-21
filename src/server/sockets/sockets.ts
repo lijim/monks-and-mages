@@ -266,10 +266,12 @@ export const configureIo = (server: HttpServer) => {
                             );
                             socket.emit('confirmName', name);
                         } catch (e) {
+                            // eslint-disable-next-line no-console
                             console.error(e);
                         }
                         return decodedToken.sub;
                     },
+                    // eslint-disable-next-line no-console
                 })(socket, console.log);
                 clearName(socket.id);
             });

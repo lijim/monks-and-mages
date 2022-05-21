@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
 import { push } from 'redux-first-history';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
     chooseName as chooseNameReducer,
     initializeUser,
@@ -31,7 +32,6 @@ import {
     receiveLastPlayedCard,
     startGame as startGameAction,
 } from '@/client/redux/clientSideGameExtras';
-import { useAuth0 } from '@auth0/auth0-react';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 

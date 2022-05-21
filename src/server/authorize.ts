@@ -12,10 +12,10 @@
  * as it's really only just 90 lines of very well maintained code
  */
 
-import jwt, { Algorithm } from 'jsonwebtoken';
+import jwt, { Algorithm, JwtPayload } from 'jsonwebtoken';
 import { Socket } from 'socket.io';
 
-export class UnauthorizedError extends Error {
+class UnauthorizedError extends Error {
     public inner: { message: string };
 
     public data: { code: string; message: string; type: 'UnauthorizedError' };
@@ -33,13 +33,9 @@ export class UnauthorizedError extends Error {
     }
 }
 
-export const isUnauthorizedError = (error: any): error is UnauthorizedError => {
-    return error.data.type === 'UnauthorizedError';
-};
-
 export interface ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
     extends Socket<ClientToServerEvents, ServerToClientEvents> {
-    decodedToken?: any;
+    decodedToken?: string | JwtPayload;
     encodedToken?: string;
     sub?: string;
 }
@@ -49,25 +45,13 @@ type SocketIOMiddleware = (
     next: (error?: UnauthorizedError) => void
 ) => void;
 
-interface CompleteDecodedToken {
-    header: {
-        [key: string]: any;
-        alg: Algorithm;
-    };
-    payload: any;
-}
-
-type SecretCallback = (
-    decodedToken: CompleteDecodedToken
-) => Promise<string> | string;
-
 export interface AuthorizeOptions {
     accessToken: string;
     algorithms?: Algorithm[];
     onAuthentication?: (
-        decodedToken: Record<string, string>
+        decodedToken: string | JwtPayload
     ) => Promise<string> | string;
-    secret: string | SecretCallback;
+    secret: string;
 }
 
 export const authorize = <ClientToServerEvents, ServerToClientEvents>(
@@ -87,6 +71,7 @@ export const authorize = <ClientToServerEvents, ServerToClientEvents>(
         if (token != null) {
             const tokenSplitted = token.split(' ');
             if (tokenSplitted.length !== 2 || tokenSplitted[0] !== 'Bearer') {
+                // eslint-disable-next-line no-console
                 console.log('Format is Authorization: Bearer [token]');
                 return next(
                     new UnauthorizedError('credentials_bad_format', {
@@ -94,9 +79,10 @@ export const authorize = <ClientToServerEvents, ServerToClientEvents>(
                     })
                 );
             }
-            encodedToken = tokenSplitted[1];
+            [, encodedToken] = tokenSplitted;
         }
         if (encodedToken == null) {
+            // eslint-disable-next-line no-console
             console.log('no token provided');
             return next(
                 new UnauthorizedError('credentials_required', {
@@ -105,21 +91,12 @@ export const authorize = <ClientToServerEvents, ServerToClientEvents>(
             );
         }
         socket.encodedToken = encodedToken;
-        let keySecret: string | null = null;
-        let decodedToken: any;
-        if (typeof secret === 'string') {
-            keySecret = secret;
-        } else {
-            const completeDecodedToken = jwt.decode(encodedToken, {
-                complete: true,
-            });
-            keySecret = await secret(
-                completeDecodedToken as CompleteDecodedToken
-            );
-        }
+        const keySecret: string = secret;
+        let decodedToken: string | JwtPayload;
         try {
             decodedToken = jwt.verify(encodedToken, keySecret, { algorithms });
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.log(error);
 
             return next(
@@ -132,12 +109,12 @@ export const authorize = <ClientToServerEvents, ServerToClientEvents>(
         if (onAuthentication != null) {
             try {
                 socket.sub = await onAuthentication(decodedToken);
-            } catch (error: any) {
+            } catch (error) {
+                // eslint-disable-next-line no-console
                 console.log(error);
                 return next(error);
             }
         }
-        console.log('logged in successfully');
         return next();
     };
 };
