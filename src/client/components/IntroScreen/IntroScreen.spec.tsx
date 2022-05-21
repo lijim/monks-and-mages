@@ -5,7 +5,7 @@ import { render } from '@/test-utils';
 import { IntroScreen } from './IntroScreen';
 
 jest.mock('@/audioHelpers/playAudio', () => ({
-    __esModule: true, // this property makes it work
+    __esModule: true,
     default: 'mockedDefaultExport',
     startBackgroundMusic: jest.fn(),
 }));
@@ -18,7 +18,7 @@ describe('Intro Screen', () => {
         fireEvent.change(screen.getByRole('textbox'), {
             target: { value: 'Trogzor' },
         });
-        fireEvent.click(screen.getByRole('button'));
+        fireEvent.click(screen.getByText('Start'));
 
         expect(chooseName).toHaveBeenCalledWith('Trogzor');
     });

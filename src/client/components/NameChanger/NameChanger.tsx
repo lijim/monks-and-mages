@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { MAX_PLAYER_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { PrimaryColorButton } from '../Button';
 import { startBackgroundMusic } from '@/audioHelpers/playAudio';
+import { LoginButton } from '../LoginButton';
 
 interface NameChangerProps {
     handleSubmit: (name: string) => void;
@@ -13,7 +14,7 @@ const NameChangerForm = styled.form`
     grid-gap: 12px;
     padding: 12px;
 
-    height: 400px;
+    height: 600px;
     grid-template-rows: 1fr auto 1fr;
     width: 450px;
     z-index: 2;
@@ -39,7 +40,7 @@ const NameChangerForm = styled.form`
 
 const ParchmentBackground = styled.div`
     position: absolute;
-    height: 400px;
+    height: 600px;
     width: 550px;
     z-index: 1;
     box-shadow: 2px 3px 20px black, 0 0 125px #8f5922 inset;
@@ -68,7 +69,9 @@ export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
             <NameChangerForm onSubmit={onSubmit}>
                 <h1>Monks and Mages</h1>
                 <div>
-                    <label htmlFor="name-selector">Choose a Name</label>
+                    <label htmlFor="name-selector">
+                        Choose a Name (Guest Mode)
+                    </label>
                     <input
                         id="name-selector"
                         role="textbox"
@@ -91,6 +94,7 @@ export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
                         Start
                     </PrimaryColorButton>
                 </div>
+                <LoginButton />
             </NameChangerForm>
         </>
     );

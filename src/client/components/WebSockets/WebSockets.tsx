@@ -1,8 +1,9 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
 import { push } from 'redux-first-history';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
     chooseName as chooseNameReducer,
     initializeUser,
@@ -55,6 +56,20 @@ export const WebSocketProvider: React.FC = ({ children }) => {
     const [socket, setSocket] =
         useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
     const [ws, setWs] = useState<WebSocketValue>(null);
+
+    const { user, getAccessTokenWithPopup } = useAuth0();
+
+    useEffect(() => {
+        const authToken = async () => {
+            if (!user) return;
+            const accessToken = await getAccessTokenWithPopup({
+                audience: `https://monks-and-mages.us.auth0.com/api/v2/`,
+                scope: 'read:users_app_metadata',
+            });
+            socket.emit('login', `Bearer ${accessToken}`);
+        };
+        authToken();
+    }, [user]);
 
     // WebSocketProvider needs to go 1 layer beneath the Redux layer
     const dispatch = useDispatch<AppDispatch>();
@@ -111,6 +126,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         });
 
         // Client-to-server events
+        const authorizeToken = (token: string) => {
+            newSocket.emit('authorizeToken', token);
+        };
+
         const joinRoom = (roomName: string) => {
             newSocket.emit('joinRoom', roomName);
         };
@@ -154,6 +173,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         setSocket(newSocket);
         setWs({
             socket: newSocket,
+            authorizeToken,
             chooseCustomDeck,
             chooseDeck,
             chooseName,

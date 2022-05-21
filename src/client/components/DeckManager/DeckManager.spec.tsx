@@ -17,13 +17,13 @@ describe('Deck Manager', () => {
         expect(screen.getByText('Fortune Predictor')).toBeInTheDocument();
     });
 
-    it('renders a logout button', () => {
+    it('renders a return home button', () => {
         const preloadedState: Partial<RootState> = {
             deckList: {
                 premadeDecklist: DeckListSelections.GENIES,
             },
         };
         render(<DeckManager />, { preloadedState });
-        expect(screen.getByText('Logout')).toBeInTheDocument();
+        expect(screen.getByText('Return Home')).toBeInTheDocument();
     });
 });

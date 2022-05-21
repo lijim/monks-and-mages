@@ -12,7 +12,7 @@ describe('TopNavBar', () => {
         };
         const { webSocket } = render(<TopNavBar />, { preloadedState });
 
-        fireEvent.click(screen.getByText('Logout'));
+        fireEvent.click(screen.getByText('Return Home'));
 
         expect(webSocket.chooseName).toHaveBeenCalledWith('');
     });

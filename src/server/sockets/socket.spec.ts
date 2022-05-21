@@ -15,6 +15,11 @@ import {
 } from '@/types';
 import { DEFAULT_ROOM_NAMES } from '@/constants/lobbyConstants';
 
+jest.mock('../auth0/', () => ({
+    __esModule: true,
+    auth0: jest.fn(),
+}));
+
 /**
  * TODO:
  * There aren't many tests on this file b/c I kept running into this issue:
@@ -61,7 +66,7 @@ describe('sockets', () => {
         it('chooses a name', (done) => {
             clientSocket.emit('chooseName', 'Dora Wini');
             clientSocket.on('confirmName', (name) => {
-                expect(name).toEqual('Dora Wini');
+                expect(name).toEqual('Guest - Dora Wini');
                 done();
             });
         });
@@ -83,7 +88,7 @@ describe('sockets', () => {
                 expect(roomsAndIds).toEqual([
                     {
                         roomName: 'public-treehouse-1',
-                        players: ['Dora Wini'],
+                        players: ['Guest - Dora Wini'],
                         spectators: [],
                         hasStartedGame: false,
                     },

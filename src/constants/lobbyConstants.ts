@@ -49,3 +49,6 @@ export const deckListMappings: Record<DeckListSelections, DeckList> = {
 export const MAX_PLAYER_NAME_LENGTH = 25;
 
 export const MAX_ROOM_NAME_LENGTH = 50;
+
+// needs to be greater than 20 so no user can ever choose this with auth0
+export const GUEST_NAME_PREFIX = 'Guest - ';

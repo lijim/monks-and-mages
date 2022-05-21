@@ -4,6 +4,7 @@ import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import 'react-popper-tooltip/dist/styles.css';
+import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 
 import { isUserInitialized } from '@/client/redux/selectors';
 import { history, RootState, store } from '@/client/redux/store';
@@ -54,7 +55,8 @@ const Centered = styled.div`
 `;
 
 export const RouterRoutes: React.FC = () => {
-    const isUserPastIntroScreen = useSelector<RootState>(isUserInitialized);
+    const isUserGuestLoggedIn = useSelector<RootState>(isUserInitialized);
+    const { user: authenticatedUser } = useAuth0();
 
     return (
         <Routes>
@@ -62,7 +64,11 @@ export const RouterRoutes: React.FC = () => {
                 path="/"
                 element={
                     <LobbyBackground>
-                        {isUserPastIntroScreen ? <Rooms /> : <IntroScreen />}
+                        {isUserGuestLoggedIn || authenticatedUser ? (
+                            <Rooms />
+                        ) : (
+                            <IntroScreen />
+                        )}
                     </LobbyBackground>
                 }
             />
@@ -111,8 +117,14 @@ const Main: React.FC = () => {
 
 export const App: React.FC = () => {
     return (
-        <Provider store={store}>
-            <Main />
-        </Provider>
+        <Auth0Provider
+            domain={process.env.AUTH0_DOMAIN}
+            clientId={process.env.AUTH0_CLIENT_ID}
+            redirectUri={window.location.origin}
+        >
+            <Provider store={store}>
+                <Main />
+            </Provider>
+        </Auth0Provider>
     );
 };

@@ -24,12 +24,14 @@ export interface ResolveEffectParams {
 }
 
 export interface ClientToServerEvents {
+    authorizeToken: (token: string) => void;
     chooseCustomDeck: (skeleton: Skeleton) => void;
     chooseDeck: (deckListSelection: DeckListSelections) => void;
     chooseName: (name: string) => void;
     getRooms: () => void;
     joinRoom: (roomName: string) => void;
-    leaveRoom: () => void; // leave the current room
+    leaveRoom: () => void;
+    login: (accessToken: string) => void; // leave the current room
     resolveEffect: ({
         effect,
         playerNames,
