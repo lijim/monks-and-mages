@@ -9,6 +9,7 @@ import { WebSocketContext } from '../WebSockets';
 import { SecondaryColorButton } from '../Button';
 import { LogoutButton } from '../LogoutButton';
 import { getCleanName } from '@/client/redux/selectors';
+import { Link } from 'react-router-dom';
 
 // TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
 
@@ -43,6 +44,10 @@ export const TopNavBar: React.FC = ({ children }) => {
             <NameDisplayer>
                 <div>
                     👤 <b>{guestName || 'Loading...'}</b> <LogoutButton />
+                    &nbsp;
+                    <Link to="/instructions">
+                        <SecondaryColorButton>Help</SecondaryColorButton>
+                    </Link>
                 </div>
                 <div className="topNavBar-center">{children}</div>
                 <div></div>
@@ -55,6 +60,10 @@ export const TopNavBar: React.FC = ({ children }) => {
                 <SecondaryColorButton onClick={logOut}>
                     Return Home
                 </SecondaryColorButton>
+                &nbsp;
+                <Link to="/instructions">
+                    <SecondaryColorButton>Help</SecondaryColorButton>
+                </Link>
             </div>
             <div className="topNavBar-center">{children}</div>
             <div></div>

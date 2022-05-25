@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@/test-utils';
 import React from 'react';
 import { NameChanger } from './NameChanger';
 import { startBackgroundMusic } from '@/audioHelpers/playAudio';

@@ -1,9 +1,10 @@
 import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import { MAX_PLAYER_NAME_LENGTH } from '@/constants/lobbyConstants';
-import { PrimaryColorButton } from '../Button';
+import { PrimaryColorButton, SecondaryColorButton } from '../Button';
 import { startBackgroundMusic } from '@/audioHelpers/playAudio';
 import { LoginButton } from '../LoginButton';
+import { Link } from 'react-router-dom';
 
 interface NameChangerProps {
     handleSubmit: (name: string) => void;
@@ -94,7 +95,14 @@ export const NameChanger: React.FC<NameChangerProps> = ({ handleSubmit }) => {
                         Start
                     </PrimaryColorButton>
                 </div>
-                <LoginButton />
+                <div>
+                    <Link to="/instructions">
+                        <SecondaryColorButton>How to Play</SecondaryColorButton>
+                    </Link>
+                    <br />
+                    <br />
+                    <LoginButton />
+                </div>
             </NameChangerForm>
         </>
     );

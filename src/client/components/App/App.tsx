@@ -40,6 +40,12 @@ const GameManager = React.lazy(() =>
 const GameDisplay = React.lazy(() =>
     import('../GameDisplay').then((module) => ({ default: module.GameDisplay }))
 );
+const InstructionsPage = React.lazy(() =>
+    import('../InstructionsPage').then((module) => ({
+        default: module.InstructionsPage,
+    }))
+);
+
 const LobbyBackground = styled.div`
     height: 100vh;
     display: grid;
@@ -74,6 +80,14 @@ export const RouterRoutes: React.FC = () => {
                 }
             />
             <Route path="/ingame" element={<GameDisplay />} />
+            <Route
+                path="/instructions"
+                element={
+                    <LobbyBackground>
+                        <InstructionsPage />
+                    </LobbyBackground>
+                }
+            />
             <Route
                 path="/decklist"
                 element={
