@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import { Colors } from '@/constants/colors';
 
@@ -92,11 +93,22 @@ export const CardImageContainer = styled.div`
     overflow: hidden;
 `;
 
-export const CardImage = styled.img`
+const StretchedImage = styled.img`
     width: 100%;
     height: 100%;
     object-fit: cover;
 `;
+
+export const CardImage = ({ src }: { src: string }): JSX.Element => {
+    const webPSource = src.replace('avif', 'webp');
+    return (
+        <picture>
+            <source srcSet={src} type="image/avif"></source>
+            <source srcSet={webPSource} type="image/avif"></source>
+            <StretchedImage src={webPSource} />
+        </picture>
+    );
+};
 
 interface RulesTextAreaProps {
     shouldCenter?: boolean;

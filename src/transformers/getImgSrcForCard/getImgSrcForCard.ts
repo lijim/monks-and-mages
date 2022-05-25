@@ -9,16 +9,16 @@ const slugifyName = (name: string): string => {
         .toLowerCase();
 };
 
-export const getImgSrcForCard = (card: Card): string => {
+export const getImgSrcForCard = (card: Card, format = 'avif'): string => {
     const newName = slugifyName(card.name);
     if (card.cardType === CardType.RESOURCE) {
-        return `images/resources/${newName}.avif`;
+        return `images/resources/${newName}.${format}`;
     }
     if (card.cardType === CardType.SPELL) {
-        return `images/spells/${newName}.avif`;
+        return `images/spells/${newName}.${format}`;
     }
     if (card.cardType === CardType.UNIT) {
-        return `images/units/${newName}.avif`;
+        return `images/units/${newName}.${format}`;
     }
     return '';
 };
