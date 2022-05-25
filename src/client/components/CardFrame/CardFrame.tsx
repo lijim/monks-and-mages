@@ -99,7 +99,11 @@ const StretchedImage = styled.img`
     object-fit: cover;
 `;
 
-export const CardImage = ({ src }: { src: string }): JSX.Element => {
+type CardImageProps = {
+    src: string;
+};
+
+export const CardImage: React.FC<CardImageProps> = ({ src }) => {
     const webPSource = src.replace('avif', 'webp');
     return (
         <picture>
