@@ -44,7 +44,8 @@ const LobbyBackground = styled.div`
     height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr;
-    background-image: url(/images/lobby-background.avif);
+    background-image: url(/images/lobby-background.avif),
+        url(/images/lobby-background.webp);
     background-size: cover;
 `;
 
