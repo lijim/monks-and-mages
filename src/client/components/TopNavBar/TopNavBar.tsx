@@ -44,6 +44,10 @@ export const TopNavBar: React.FC = ({ children }) => {
             <NameDisplayer>
                 <div>
                     👤 <b>{guestName || 'Loading...'}</b> <LogoutButton />
+                    &nbsp;
+                    <Link to="/instructions">
+                        <SecondaryColorButton>Help</SecondaryColorButton>
+                    </Link>
                 </div>
                 <div className="topNavBar-center">{children}</div>
                 <div></div>
