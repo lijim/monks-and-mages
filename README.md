@@ -43,6 +43,8 @@ To run tests once through:
 yarn ci
 ```
 
+Note: with the new auth0 and DB service integrations, you may need to contact me as a project owner for additional setup help
+
 # Core technologies
 
 This project runs on a few core technologies:
