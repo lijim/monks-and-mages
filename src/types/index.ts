@@ -6,6 +6,7 @@ import { GameAction } from './gameActions';
 import { GameResult } from './games';
 
 export interface ServerToClientEvents {
+    confirmAuth0Id: (auth0Id: string) => void;
     confirmCustomDeck: (skeleton: Skeleton) => void;
     confirmName: (name: string) => void;
     confirmPremadeDeckList: (deckListSelection?: DeckListSelections) => void;

@@ -253,7 +253,7 @@ export const configureIo = (server: HttpServer) => {
                             const user = await auth0.getUser({
                                 id: decodedToken.sub,
                             });
-                            const { username: name } = user;
+                            const { username: name, user_id: userId } = user;
                             clearName(socket.id);
                             namesToIds.set(name, socket.id);
                             idsToNames.set(socket.id, name);
@@ -266,6 +266,7 @@ export const configureIo = (server: HttpServer) => {
                                 PREMADE_DECKLIST_DEFAULT
                             );
                             socket.emit('confirmName', name);
+                            socket.emit('confirmAuth0Id', userId);
                         } catch (e) {
                             // eslint-disable-next-line no-console
                             console.error(e);
