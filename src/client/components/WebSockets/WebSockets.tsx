@@ -6,6 +6,7 @@ import { push } from 'redux-first-history';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
     chooseName as chooseNameReducer,
+    confirmAuth0Id,
     initializeUser,
 } from '@/client/redux/user';
 import {
@@ -94,6 +95,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
 
         newSocket.on('confirmName', (name: string) => {
             dispatch(chooseNameReducer({ name }));
+        });
+
+        newSocket.on('confirmAuth0Id', (auth0Id: string) => {
+            dispatch(confirmAuth0Id({ auth0Id }));
         });
 
         newSocket.on(
