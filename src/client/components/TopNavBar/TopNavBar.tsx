@@ -4,12 +4,12 @@ import styled from 'styled-components';
 
 import { push } from 'redux-first-history';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Link } from 'react-router-dom';
 import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
 import { SecondaryColorButton } from '../Button';
 import { LogoutButton } from '../LogoutButton';
 import { getCleanName } from '@/client/redux/selectors';
-import { Link } from 'react-router-dom';
 
 // TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
 
