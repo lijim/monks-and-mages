@@ -1,3 +1,5 @@
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import React from 'react';
 import { push } from 'redux-first-history';
 import { fireEvent, render, screen, waitFor, within } from '@/test-utils';
@@ -6,6 +8,28 @@ import { UnitCards } from '@/cardDb/units';
 import { SpellCards } from '@/cardDb/spells';
 import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 import { MatchStrategy } from '@/types/deckBuilder';
+import { mockSavedDeck } from '@/mocks/savedDecks';
+
+const server = setupServer(
+    // Describe the requests to mock.
+    rest.get('/api/saved_decks/dungeonmaster1234', (_, res, ctx) => {
+        return res(ctx.json([mockSavedDeck]));
+    }),
+
+    rest.get('/socket.io/', (_, res, ctx) => {
+        return res(ctx.json({}));
+    })
+);
+
+beforeAll(() => {
+    // Establish requests interception layer before all tests.
+    server.listen();
+});
+afterAll(() => {
+    // Clean up after all tests are done, preventing this
+    // interception layer from affecting irrelevant tests.
+    server.close();
+});
 
 describe('DeckBuilder', () => {
     beforeAll(() => {
@@ -15,7 +39,7 @@ describe('DeckBuilder', () => {
         render(<DeckBuilder />);
         fireEvent.click(screen.getByText('Lancer'));
         expect(
-            within(screen.getByTestId('MyDeck')).getByText('Lancer')
+            within(screen.getByTestId('CurrentDeck')).getByText('Lancer')
         ).toBeInTheDocument();
     });
     // it.todo('adds cards from a filtered card pool');
@@ -23,7 +47,7 @@ describe('DeckBuilder', () => {
     it('does not add cards past a limit of 4 (constructed)', () => {
         render(<DeckBuilder />);
         const cardPool = screen.getByTestId('CardPool');
-        const myDeck = screen.getByTestId('MyDeck');
+        const myDeck = screen.getByTestId('CurrentDeck');
 
         for (let i = 0; i < 5; i += 1) {
             fireEvent.click(within(cardPool).getByText('Lancer'));
@@ -35,7 +59,7 @@ describe('DeckBuilder', () => {
     it('allows more than 4 basic resources (constructed)', () => {
         render(<DeckBuilder />);
         const cardPool = screen.getByTestId('CardPool');
-        const myDeck = screen.getByTestId('MyDeck');
+        const myDeck = screen.getByTestId('CurrentDeck');
 
         for (let i = 0; i < 5; i += 1) {
             fireEvent.click(within(cardPool).getByText('Crystal'));
@@ -47,7 +71,7 @@ describe('DeckBuilder', () => {
     it('removes cards', () => {
         render(<DeckBuilder />);
         const cardPool = screen.getByTestId('CardPool');
-        const myDeck = screen.getByTestId('MyDeck');
+        const myDeck = screen.getByTestId('CurrentDeck');
 
         for (let i = 0; i < 5; i += 1) {
             fireEvent.click(within(cardPool).getByText('Crystal'));
@@ -85,7 +109,7 @@ describe('DeckBuilder', () => {
 
         navigator.clipboard.writeText = jest.fn();
         render(<DeckBuilder />);
-        const myDeck = screen.getByTestId('MyDeck');
+        const myDeck = screen.getByTestId('CurrentDeck');
 
         fireEvent.click(screen.getByText('Import from Clipboard'));
 
@@ -158,7 +182,7 @@ describe('DeckBuilder', () => {
 
         navigator.clipboard.writeText = jest.fn();
         const { webSocket, dispatch } = render(<DeckBuilder />);
-        const myDeck = screen.getByTestId('MyDeck');
+        const myDeck = screen.getByTestId('CurrentDeck');
 
         fireEvent.click(screen.getByText('Import from Clipboard'));
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
@@ -181,7 +205,7 @@ describe('DeckBuilder', () => {
 
         navigator.clipboard.writeText = jest.fn();
         render(<DeckBuilder />);
-        const myDeck = screen.getByTestId('MyDeck');
+        const myDeck = screen.getByTestId('CurrentDeck');
 
         fireEvent.click(screen.getByText('Import from Clipboard'));
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
@@ -200,7 +224,7 @@ describe('DeckBuilder', () => {
 
         navigator.clipboard.writeText = jest.fn();
         render(<DeckBuilder />);
-        const myDeck = screen.getByTestId('MyDeck');
+        const myDeck = screen.getByTestId('CurrentDeck');
 
         fireEvent.click(screen.getByText('Import from Clipboard'));
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
@@ -217,7 +241,7 @@ describe('DeckBuilder', () => {
                 },
             },
         });
-        const myDeck = screen.getByTestId('MyDeck');
+        const myDeck = screen.getByTestId('CurrentDeck');
 
         expect(within(myDeck).getByText('Lancer')).toBeInTheDocument();
     });
@@ -376,6 +400,24 @@ describe('DeckBuilder', () => {
             expect(
                 screen.queryByText(SpellCards.EMBER_SPEAR.name)
             ).not.toBeInTheDocument();
+        });
+    });
+
+    describe('Saved Decks', () => {
+        it('renders saved decks', () => {
+            render(<DeckBuilder />, {
+                preloadedState: {
+                    user: {
+                        auth0Id: 'auth0Id|a01fde2',
+                        name: 'dungeonmaster1234',
+                    },
+                },
+            });
+            waitFor(() =>
+                expect(
+                    screen.getByText('Number of decks: 0')
+                ).toBeInTheDocument()
+            );
         });
     });
 });
