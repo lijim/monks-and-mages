@@ -25,10 +25,12 @@ import { Colors } from '@/constants/colors';
 import { DeckBuilderFilters } from '../DeckBuilderFilters';
 import { filterCards } from '@/transformers/filterCards';
 import { Filters } from '@/types/deckBuilder';
+import { SavedDeckManager } from '../SavedDeckManager';
+import { getAuth0Id } from '@/client/redux/selectors';
 
 const DeckListContainers = styled.div`
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     gap: 16px;
     height: 86vh;
     place-self: center;
@@ -60,7 +62,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     cardPool = makeDeck(ALL_CARDS),
     isConstructed = true,
 }) => {
-    const [myDeck, setMyDeck] = useState<DeckListType>([]);
+    const [currentDeck, setCurrentDeck] = useState<DeckListType>([]);
     const webSocket = useContext(WebSocketContext);
     const skeleton = useSelector<RootState, Skeleton>(
         (state) => state.deckList.customDeckList
@@ -70,10 +72,11 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     const filters = useSelector<RootState, Filters>(
         (state) => state.deckBuilderFilters
     );
+    const auth0Id = useSelector<RootState, string | undefined>(getAuth0Id);
 
     useEffect(() => {
         if (skeleton) {
-            setMyDeck(getDeckListFromSkeleton(skeleton).decklist);
+            setCurrentDeck(getDeckListFromSkeleton(skeleton).decklist);
         }
     }, []);
 
@@ -82,7 +85,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
             card.cardType === CardType.RESOURCE && !card.isAdvanced
         );
 
-        const matchingCardSlot = myDeck.find(
+        const matchingCardSlot = currentDeck.find(
             (cardSlot) => cardSlot.card.name === card.name
         );
 
@@ -98,24 +101,26 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         if (matchingCardSlot) {
             matchingCardSlot.quantity += 1;
         } else {
-            myDeck.push({ card, quantity: 1 });
+            currentDeck.push({ card, quantity: 1 });
         }
-        setMyDeck([...myDeck]);
+        setCurrentDeck([...currentDeck]);
     };
     const removeCard = (card: Card) => {
-        const matchingCardSlot = myDeck.find(
+        const matchingCardSlot = currentDeck.find(
             (cardSlot) => cardSlot.card.name === card.name
         );
 
         if (matchingCardSlot) {
             matchingCardSlot.quantity -= 1;
         }
-        setMyDeck([...myDeck.filter((cardSlot) => cardSlot.quantity > 0)]);
+        setCurrentDeck([
+            ...currentDeck.filter((cardSlot) => cardSlot.quantity > 0),
+        ]);
     };
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(
-            JSON.stringify(getSkeletonFromDeckList(myDeck))
+            JSON.stringify(getSkeletonFromDeckList(currentDeck))
         );
     };
 
@@ -123,7 +128,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         // See: https://robkendal.co.uk/blog/2020-04-17-saving-text-to-client-side-file-using-vanilla-js
         const a = document.createElement('a');
         const file = new Blob(
-            [JSON.stringify(getSkeletonFromDeckList(myDeck))],
+            [JSON.stringify(getSkeletonFromDeckList(currentDeck))],
             { type: 'text/plain' }
         );
         a.href = URL.createObjectURL(file);
@@ -138,7 +143,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                 JSON.parse(txtBlob)
             );
             if (!errors?.length) {
-                setMyDeck(decklist);
+                setCurrentDeck(decklist);
             } else {
                 // eslint-disable-next-line no-alert
                 window.alert(`Error found in decklist: ${errors[0]}`);
@@ -179,12 +184,12 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     };
 
     const submitDecklist = () => {
-        webSocket.chooseCustomDeck(getSkeletonFromDeckList(myDeck));
+        webSocket.chooseCustomDeck(getSkeletonFromDeckList(currentDeck));
         dispatch(push('/'));
     };
 
-    const { isValid: isMyDeckValid, reason: reasonForDeckInvalid } =
-        isDeckValidForFormat(myDeck);
+    const { isValid: isCurrentDeckValid, reason: reasonForDeckInvalid } =
+        isDeckValidForFormat(currentDeck);
 
     const deck = filterCards(cardPool, filters);
     return (
@@ -202,7 +207,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                         onClickCard={addCard}
                     />
                 </DeckListBackDrop>
-                <DeckListBackDrop data-testid="MyDeck">
+                <DeckListBackDrop data-testid="CurrentDeck">
                     <SecondaryColorButton onClick={copyToClipboard}>
                         Copy to Clipboard
                     </SecondaryColorButton>
@@ -228,7 +233,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                     &nbsp;&nbsp;
                     <SecondaryColorButton
                         onClick={submitDecklist}
-                        disabled={!isMyDeckValid}
+                        disabled={!isCurrentDeckValid}
                     >
                         Submit
                     </SecondaryColorButton>
@@ -236,11 +241,12 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                     <ValidationMsg>{reasonForDeckInvalid}</ValidationMsg>
                     <br />
                     <DeckList
-                        deck={makeDeck(myDeck)}
+                        deck={makeDeck(currentDeck)}
                         addCard={addCard}
                         removeCard={removeCard}
                     />
                 </DeckListBackDrop>
+                {auth0Id && <SavedDeckManager />}
             </DeckListContainers>
         </>
     );

@@ -18,6 +18,8 @@ export const getSelfPlayer = (state: Partial<RootState>): Player | null => {
     );
 };
 
+export const getAuth0Id = (state: RootState) => state.user.auth0Id;
+
 // get other players, by turn order
 export const getOtherPlayers = (state: Partial<RootState>): Player[] => {
     if (!state.board?.players) return [];

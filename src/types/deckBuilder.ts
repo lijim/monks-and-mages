@@ -20,3 +20,12 @@ export type Filters = {
     resources?: Resource[];
     unitTypes?: UnitType[];
 };
+
+export type SavedDeck = {
+    createdAt: number;
+    id: string;
+    name: string;
+    skeleton: string;
+    updateAt: number;
+    userUid: string;
+};
