@@ -1,10 +1,10 @@
 import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { MAX_PLAYER_NAME_LENGTH } from '@/constants/lobbyConstants';
 import { PrimaryColorButton, SecondaryColorButton } from '../Button';
 import { startBackgroundMusic } from '@/audioHelpers/playAudio';
 import { LoginButton } from '../LoginButton';
-import { Link } from 'react-router-dom';
 
 interface NameChangerProps {
     handleSubmit: (name: string) => void;

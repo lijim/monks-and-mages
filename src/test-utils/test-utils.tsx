@@ -144,5 +144,3 @@ export {
     waitForElementToBeRemoved,
     within,
 } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
-export { default as userEvent } from '@testing-library/user-event';
