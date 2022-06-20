@@ -404,7 +404,7 @@ describe('DeckBuilder', () => {
     });
 
     describe('Saved Decks', () => {
-        it('renders saved decks', () => {
+        it('loads saved decks', async () => {
             render(<DeckBuilder />, {
                 preloadedState: {
                     user: {
@@ -413,11 +413,15 @@ describe('DeckBuilder', () => {
                     },
                 },
             });
-            waitFor(() =>
-                expect(
-                    screen.getByText('Number of decks: 0')
-                ).toBeInTheDocument()
+            await waitFor(() =>
+                expect(screen.getByText('my first deck')).toBeInTheDocument()
             );
+            fireEvent.click(screen.getByText('my first deck'));
+            const myDeck = screen.getByTestId('CurrentDeck');
+
+            expect(
+                within(myDeck).getByText('Smelting Forge')
+            ).toBeInTheDocument();
         });
     });
 });
