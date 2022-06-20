@@ -51,6 +51,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
                     )
                     .map((savedDeck) => (
                         <SavedDeckSquare
+                            key={savedDeck.id}
                             savedDeck={savedDeck}
                             setSkeleton={setSkeleton}
                         />
