@@ -5,7 +5,7 @@ export const mockSavedDeck: SavedDeck = {
     createdAt: 12345,
     id: uuidv4(),
     name: 'my first deck',
-    skeleton: '[]',
+    skeleton: [],
     updateAt: 12345,
     userUid: 'auth0Id|a01fde2',
 };

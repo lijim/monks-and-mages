@@ -404,7 +404,7 @@ describe('DeckBuilder', () => {
     });
 
     describe('Saved Decks', () => {
-        it('renders saved decks', () => {
+        it('renders saved decks', async () => {
             render(<DeckBuilder />, {
                 preloadedState: {
                     user: {
@@ -413,10 +413,8 @@ describe('DeckBuilder', () => {
                     },
                 },
             });
-            waitFor(() =>
-                expect(
-                    screen.getByText('Number of decks: 0')
-                ).toBeInTheDocument()
+            await waitFor(() =>
+                expect(screen.getByText('my first deck')).toBeInTheDocument()
             );
         });
     });

@@ -1,4 +1,4 @@
-import { UnitType } from './cards';
+import { Skeleton, UnitType } from './cards';
 import { Resource } from './resources';
 
 // Using filter by resource as an example:
@@ -25,7 +25,7 @@ export type SavedDeck = {
     createdAt: number;
     id: string;
     name: string;
-    skeleton: string;
+    skeleton: Skeleton;
     updateAt: number;
     userUid: string;
 };

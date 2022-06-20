@@ -80,6 +80,10 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         }
     }, []);
 
+    const setSkeleton = (newSkeleton: Skeleton) => {
+        setCurrentDeck(getDeckListFromSkeleton(newSkeleton).decklist);
+    };
+
     const addCard = (card: Card) => {
         const isCardNotBasicResource = !(
             card.cardType === CardType.RESOURCE && !card.isAdvanced
@@ -246,7 +250,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                         removeCard={removeCard}
                     />
                 </DeckListBackDrop>
-                {auth0Id && <SavedDeckManager />}
+                {auth0Id && <SavedDeckManager setSkeleton={setSkeleton} />}
             </DeckListContainers>
         </>
     );
