@@ -7,6 +7,7 @@ interface ButtonProps {
     borderColor?: string;
     emoji?: string;
     hoverBackgroundColor: string;
+    zoom?: number;
 }
 
 export const Button = styled.button.attrs(
@@ -15,11 +16,13 @@ export const Button = styled.button.attrs(
         borderColor = Colors.DARK_BROWN,
         emoji = '',
         hoverBackgroundColor,
+        zoom = 1,
     }: ButtonProps) => ({
         backgroundColor,
         borderColor,
         emoji,
         hoverBackgroundColor,
+        zoom,
     })
 )`
     ::before {
@@ -48,6 +51,7 @@ export const Button = styled.button.attrs(
     border-radius: 4px;
     background: ${({ backgroundColor }) => backgroundColor};
     height: 40px;
+    zoom: ${({ zoom }) => zoom};
 `;
 
 export const PrimaryColorButton = styled(Button).attrs({

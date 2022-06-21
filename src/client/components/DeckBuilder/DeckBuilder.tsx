@@ -212,15 +212,18 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                     />
                 </DeckListBackDrop>
                 <DeckListBackDrop data-testid="CurrentDeck">
-                    <SecondaryColorButton onClick={copyToClipboard}>
+                    <SecondaryColorButton onClick={copyToClipboard} zoom={0.8}>
                         Copy to Clipboard
                     </SecondaryColorButton>
                     &nbsp;&nbsp;
-                    <SecondaryColorButton onClick={importFromClipboard}>
+                    <SecondaryColorButton
+                        onClick={importFromClipboard}
+                        zoom={0.8}
+                    >
                         Import from Clipboard
                     </SecondaryColorButton>
                     &nbsp;&nbsp;
-                    <SecondaryColorButton onClick={download}>
+                    <SecondaryColorButton onClick={download} zoom={0.8}>
                         Download as File
                     </SecondaryColorButton>
                     &nbsp;&nbsp;
@@ -231,13 +234,14 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                         style={{ display: 'none' }}
                         ref={fileInputEl}
                     />
-                    <SecondaryColorButton onClick={importFile}>
+                    <SecondaryColorButton onClick={importFile} zoom={0.8}>
                         Import File
                     </SecondaryColorButton>{' '}
                     &nbsp;&nbsp;
                     <SecondaryColorButton
                         onClick={submitDecklist}
                         disabled={!isCurrentDeckValid}
+                        zoom={0.8}
                     >
                         Submit
                     </SecondaryColorButton>
@@ -250,7 +254,12 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                         removeCard={removeCard}
                     />
                 </DeckListBackDrop>
-                {auth0Id && <SavedDeckManager setSkeleton={setSkeleton} />}
+                {auth0Id && (
+                    <SavedDeckManager
+                        decklist={currentDeck}
+                        setSkeleton={setSkeleton}
+                    />
+                )}
             </DeckListContainers>
         </>
     );
