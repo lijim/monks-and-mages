@@ -1,8 +1,14 @@
+import axios from 'axios';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useSWRConfig } from 'swr';
+
 import { SavedDeck } from '@/types/deckBuilder';
 import { Colors } from '@/constants/colors';
 import { Skeleton } from '@/types/cards';
+import { getCleanName } from '@/client/redux/selectors';
+import { RootState } from '@/client/redux/store';
 
 type SavedDeckSquareProps = {
     savedDeck: SavedDeck;
@@ -23,10 +29,28 @@ const HStack = styled.div`
     grid-template-columns: 1fr auto;
 `;
 
+const deleteDeckFn = async (username: string, deckId: string) =>
+    axios.delete('/api/saved_decks', { data: { username, deckId } });
+
 export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
-    savedDeck: { name, skeleton },
+    savedDeck: { name, skeleton, id },
     setSkeleton,
 }) => {
+    const username = useSelector<RootState, string | undefined>(getCleanName);
+
+    const { mutate } = useSWRConfig();
+
+    const deleteDeck = async () => {
+        try {
+            await deleteDeckFn(username, id);
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        } finally {
+            mutate(`/api/saved_decks/${username}`);
+        }
+    };
+
     return (
         <HStack>
             <SavedDeckOutline
@@ -37,7 +61,9 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
             >
                 <b>{name}</b>
             </SavedDeckOutline>
-            <SavedDeckOutline tabIndex={0}>🗑</SavedDeckOutline>
+            <SavedDeckOutline tabIndex={0} onClick={deleteDeck}>
+                🗑
+            </SavedDeckOutline>
         </HStack>
     );
 };
