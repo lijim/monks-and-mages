@@ -166,6 +166,12 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.BLOOM: {
+            playerTargets.forEach((player) => {
+                player.resourcesLeftToDeploy += effectStrength;
+            });
+            return clonedBoard;
+        }
         case EffectType.BUFF_ATTACK: {
             unitTargets.forEach(({ unitCard }) => {
                 unitCard.attackBuff += effectStrength;
