@@ -272,7 +272,7 @@ export const PIRATES_DECKLIST: DeckList = [
     { card: AdvancedResourceCards.HARBOR_TOWN, quantity: 4 },
     { card: AdvancedResourceCards.CITY_CANALS, quantity: 4 },
     { card: AdvancedResourceCards.SLAG_FIELDS, quantity: 4 },
-    { card: AdvancedResourceCards.OLD_FARMHOUSE, quantity: 20 },
+    { card: AdvancedResourceCards.OLD_FARMHOUSE, quantity: 2 },
 ];
 
 // For debugging / gamebuilding purposes
