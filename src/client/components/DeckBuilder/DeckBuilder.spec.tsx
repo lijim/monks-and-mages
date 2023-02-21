@@ -176,7 +176,7 @@ describe('DeckBuilder', () => {
         Object.assign(navigator, {
             clipboard: {
                 readText: () =>
-                    `[{"card":"Iron","quantity":44},{"card":"Lancer","quantity":4}]`,
+                    `[{"card":"Iron","quantity":56},{"card":"Lancer","quantity":4}]`,
             },
         });
 
@@ -189,7 +189,7 @@ describe('DeckBuilder', () => {
 
         fireEvent.click(screen.getByText('Submit'));
         expect(webSocket.chooseCustomDeck).toHaveBeenCalledWith([
-            { card: 'Iron', quantity: 44 },
+            { card: 'Iron', quantity: 56 },
             { card: 'Lancer', quantity: 4 },
         ]);
         expect(dispatch).toHaveBeenCalledWith(push('/'));

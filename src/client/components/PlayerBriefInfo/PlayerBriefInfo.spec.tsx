@@ -27,7 +27,7 @@ describe('Player Brief Info', () => {
     it('renders the remaining cards / size of hand', () => {
         const player = makeNewPlayer('Grandma Jenkins', SAMPLE_DECKLIST_1);
         render(<PlayerBriefInfo player={player} />);
-        expect(screen.getByText('41')).toBeInTheDocument();
+        expect(screen.getByText('53')).toBeInTheDocument();
         expect(screen.getByText('7')).toBeInTheDocument();
     });
 

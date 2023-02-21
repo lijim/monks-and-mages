@@ -1,14 +1,15 @@
 import {
-    SAMPLE_DECKLIST_0,
+    MONKS_DECKLIST,
     SAMPLE_DECKLIST_1,
-    SAMPLE_DECKLIST_2,
-    SAMPLE_DECKLIST_3,
-    SAMPLE_DECKLIST_4,
-    SAMPLE_DECKLIST_5,
-    SAMPLE_DECKLIST_6,
-    SAMPLE_DECKLIST_7,
-    SAMPLE_DECKLIST_8,
-    SAMPLE_DECKLIST_9,
+    FIRE_MAGES_DECKLIST,
+    WATER_MAGES_DECKLIST,
+    WIND_MAGES_DECKLIST,
+    FARMERS_DECKLIST,
+    GENIES_DECKLIST,
+    SORCERORS_DECKLIST,
+    DIVERS_DECKLIST,
+    CANNONEERS_DECKLIST,
+    PIRATES_DECKLIST,
 } from '@/constants/deckLists';
 import { DeckList } from '@/types/cards';
 
@@ -23,9 +24,10 @@ export enum DeckListSelections {
     DIVERS = 'Divers 🤿',
     FARMERS = 'Farmers 👩‍🌾',
     GENIES = 'Genies 🧞‍♀️',
-    MAGES_FIRE = 'Mages 🔥',
-    MAGES_WATER = 'Mages 🌊',
-    MAGES_WIND = 'Mages 💨',
+    MAGES_FIRE = 'Fire Mages 🔥',
+    MAGES_WATER = 'Water Mages 🌊',
+    MAGES_WIND = 'Wind Mages 💨',
+    PIRATES = 'Pirates 🏴‍☠️',
     MONKS = 'Monks 🤺',
     RANDOM = 'Random ⁉️',
     SORCERORS = 'Sorcerors 🧙🏾‍♀️',
@@ -34,16 +36,17 @@ export enum DeckListSelections {
 export const PREMADE_DECKLIST_DEFAULT = DeckListSelections.MONKS;
 
 export const deckListMappings: Record<DeckListSelections, DeckList> = {
-    [DeckListSelections.CANNONEER]: SAMPLE_DECKLIST_9,
-    [DeckListSelections.DIVERS]: SAMPLE_DECKLIST_8,
-    [DeckListSelections.GENIES]: SAMPLE_DECKLIST_6,
-    [DeckListSelections.MONKS]: SAMPLE_DECKLIST_0,
-    [DeckListSelections.MAGES_FIRE]: SAMPLE_DECKLIST_2,
-    [DeckListSelections.MAGES_WATER]: SAMPLE_DECKLIST_3,
-    [DeckListSelections.MAGES_WIND]: SAMPLE_DECKLIST_4,
-    [DeckListSelections.FARMERS]: SAMPLE_DECKLIST_5,
+    [DeckListSelections.CANNONEER]: CANNONEERS_DECKLIST,
+    [DeckListSelections.DIVERS]: DIVERS_DECKLIST,
+    [DeckListSelections.GENIES]: GENIES_DECKLIST,
+    [DeckListSelections.MONKS]: MONKS_DECKLIST,
+    [DeckListSelections.MAGES_FIRE]: FIRE_MAGES_DECKLIST,
+    [DeckListSelections.MAGES_WATER]: WATER_MAGES_DECKLIST,
+    [DeckListSelections.MAGES_WIND]: WIND_MAGES_DECKLIST,
+    [DeckListSelections.FARMERS]: FARMERS_DECKLIST,
     [DeckListSelections.RANDOM]: SAMPLE_DECKLIST_1,
-    [DeckListSelections.SORCERORS]: SAMPLE_DECKLIST_7,
+    [DeckListSelections.SORCERORS]: SORCERORS_DECKLIST,
+    [DeckListSelections.PIRATES]: PIRATES_DECKLIST,
 };
 
 export const MAX_PLAYER_NAME_LENGTH = 25;

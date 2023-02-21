@@ -65,7 +65,7 @@ export const InstructionsPage: React.FC = () => {
                     Magic the Gathering, with a blend of unique mechanics.
                     <br />
                     <br />
-                    Players construct 48-card decks, start at 20 life, and work
+                    Players construct 60-card decks, start at 20 life, and work
                     to win by being the last player standing. This game supports
                     2-4 players at once.
                     <br />
