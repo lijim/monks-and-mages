@@ -42,7 +42,6 @@ describe('Game Manager', () => {
         });
         const effect = {
             type: EffectType.BOUNCE,
-            target: TargetTypes.OWN_UNIT,
         };
         board.players[0].effectQueue = [effect];
 

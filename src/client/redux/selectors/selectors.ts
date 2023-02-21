@@ -1,6 +1,6 @@
 import { GameState, Player } from '@/types/board';
 import { Effect } from '@/types/cards';
-import { TargetTypes } from '@/types/effects';
+import { TargetTypes, getDefaultTargetForEffect } from '@/types/effects';
 import { RootState } from '../store';
 
 export const isUserInitialized = (state: Partial<RootState>): boolean =>
@@ -74,7 +74,7 @@ export const shouldLastEffectFizzle = (state: Partial<RootState>): boolean => {
     const selfPlayer = getSelfPlayer(state);
     const players = [...otherPlayers, selfPlayer];
 
-    switch (lastEffect.target) {
+    switch (lastEffect.target || getDefaultTargetForEffect(lastEffect.type)) {
         case TargetTypes.OPPOSING_UNIT: {
             return otherPlayers.every((player) => player.units.length === 0);
         }
