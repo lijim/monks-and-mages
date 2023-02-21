@@ -1,5 +1,5 @@
 import sampleSize from 'lodash.samplesize';
-import { SAMPLE_DECKLIST_0, SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
+import { MONKS_DECKLIST, SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 import {
     deckListMappings,
     DeckListSelections,
@@ -35,7 +35,7 @@ export const makeNewBoard = ({
 
         const selection = playerDeckListSelections?.[i];
         let deckList =
-            (selection && deckListMappings[selection]) || SAMPLE_DECKLIST_0;
+            (selection && deckListMappings[selection]) || MONKS_DECKLIST;
         if (selection === DeckListSelections.RANDOM) {
             [deckList] = sampleSize(
                 Object.values(deckListMappings).filter(

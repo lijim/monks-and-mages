@@ -1,5 +1,5 @@
 import { SpellCards } from '@/cardDb/spells';
-import { ALL_CARDS, SAMPLE_DECKLIST_7 } from '@/constants/deckLists';
+import { ALL_CARDS, SORCERORS_DECKLIST } from '@/constants/deckLists';
 import { PlayerConstants } from '@/constants/gameConstants';
 import { makeResourceCard } from '@/factories/cards';
 import { Format } from '@/types/games';
@@ -8,7 +8,7 @@ import { isDeckValidForFormat } from './isDeckValidForFormat';
 
 describe('isDeckValidForFormat', () => {
     it('validates for standard', () => {
-        expect(isDeckValidForFormat(SAMPLE_DECKLIST_7)).toEqual({
+        expect(isDeckValidForFormat(SORCERORS_DECKLIST)).toEqual({
             isValid: true,
             reason: undefined,
         });
@@ -16,7 +16,7 @@ describe('isDeckValidForFormat', () => {
 
     it('returns false when there are too many of a single card', () => {
         expect(
-            isDeckValidForFormat(SAMPLE_DECKLIST_7, Format.SINGLETON)
+            isDeckValidForFormat(SORCERORS_DECKLIST, Format.SINGLETON)
         ).toEqual({
             isValid: false,
             reason: 'May have no more than 1 of [Spectral Genesis]',
@@ -31,7 +31,7 @@ describe('isDeckValidForFormat', () => {
             )
         ).toEqual({
             isValid: false,
-            reason: 'Must have at least 48 cards in deck',
+            reason: 'Must have at least 60 cards in deck',
         });
     });
 

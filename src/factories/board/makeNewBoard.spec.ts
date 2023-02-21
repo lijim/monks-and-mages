@@ -1,4 +1,4 @@
-import { SAMPLE_DECKLIST_2 } from '@/constants/deckLists';
+import { FIRE_MAGES_DECKLIST } from '@/constants/deckLists';
 import { PlayerConstants } from '@/constants/gameConstants';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { Skeleton } from '@/types/cards';
@@ -28,7 +28,7 @@ describe('Make New Board', () => {
                 .map((card) => card.name)
                 .sort()
         ).toEqual(
-            makeDeck(SAMPLE_DECKLIST_2)
+            makeDeck(FIRE_MAGES_DECKLIST)
                 .map((card) => card.name)
                 .sort()
         );
