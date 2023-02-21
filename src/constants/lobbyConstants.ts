@@ -27,8 +27,8 @@ export enum DeckListSelections {
     MAGES_FIRE = 'Fire Mages 🔥',
     MAGES_WATER = 'Water Mages 🌊',
     MAGES_WIND = 'Wind Mages 💨',
-    PIRATES = 'Pirates 🏴‍☠️',
     MONKS = 'Monks 🤺',
+    PIRATES = 'Pirates 🏴‍☠️',
     RANDOM = 'Random ⁉️',
     SORCERORS = 'Sorcerors 🧙🏾‍♀️',
 }
