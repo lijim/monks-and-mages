@@ -226,6 +226,23 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Bloom effect', () => {
+        it('increases the number of resources playable', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BLOOM,
+                        strength: 2,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].resourcesLeftToDeploy).toEqual(3);
+        });
+    });
+
     describe('Buff units', () => {
         it('buffs attack', () => {
             const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
