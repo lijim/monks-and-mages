@@ -4,6 +4,7 @@ import { io, Socket } from 'socket.io-client';
 
 import { push } from 'redux-first-history';
 import { useAuth0 } from '@auth0/auth0-react';
+import cookie from 'cookiejs';
 import {
     chooseName as chooseNameReducer,
     confirmAuth0Id,
@@ -69,12 +70,14 @@ export const WebSocketProvider: React.FC = ({ children }) => {
                     audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
                     scope: 'read:users_app_metadata',
                 });
+                cookie.set('accessToken', accessToken);
                 socket.emit('login', `Bearer ${accessToken}`);
             } else {
                 const accessToken = await getAccessTokenSilently({
                     audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
                     scope: 'read:users_app_metadata',
                 });
+                cookie.set('accessToken', accessToken);
                 socket.emit('login', `Bearer ${accessToken}`);
             }
         };

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useSWR, { useSWRConfig } from 'swr';
 
+import cookie from 'cookiejs';
 import { RootState } from '@/client/redux/store';
 import { getCleanName } from '@/client/redux/selectors';
 import { SavedDeck } from '@/types/deckBuilder';
@@ -49,11 +50,19 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
 
     const createDeck = async () => {
         try {
-            await axios.post('/api/saved_decks', {
-                username,
-                deckName,
-                skeleton: getSkeletonFromDeckList(decklist),
-            });
+            await axios.post(
+                '/api/saved_decks',
+                {
+                    username,
+                    deckName,
+                    skeleton: getSkeletonFromDeckList(decklist),
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${cookie.get('accessToken')}`,
+                    },
+                }
+            );
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);

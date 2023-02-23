@@ -9,6 +9,7 @@ import { Colors } from '@/constants/colors';
 import { Skeleton } from '@/types/cards';
 import { getCleanName } from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
+import cookie from 'cookiejs';
 
 type SavedDeckSquareProps = {
     savedDeck: SavedDeck;
@@ -30,7 +31,12 @@ const HStack = styled.div`
 `;
 
 const deleteDeckFn = async (username: string, deckId: string) =>
-    axios.delete('/api/saved_decks', { data: { username, deckId } });
+    axios.delete('/api/saved_decks', {
+        data: { username, deckId },
+        headers: {
+            Authorization: `Bearer ${cookie.get('accessToken')}`,
+        },
+    });
 
 export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
     savedDeck: { name, skeleton, id },
