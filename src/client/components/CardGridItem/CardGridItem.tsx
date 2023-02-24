@@ -79,6 +79,44 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
     return undefined;
 };
 
+interface HelperTextProps {
+    card: Card;
+}
+
+export const HelperText = ({ card }: HelperTextProps): JSX.Element => {
+    if (card.cardType === CardType.UNIT) {
+        if (card.isSoldier) {
+            return (
+                <div style={{ width: 185, fontSize: 12, textAlign: 'center' }}>
+                    Soldiers must be attacked by non-magical units first
+                </div>
+            );
+        }
+
+        if (card.isMagical) {
+            return (
+                <div style={{ width: 185, fontSize: 12, textAlign: 'center' }}>
+                    Magical units act like ranged units (not taking damage on
+                    your turn from attacking non-ranged units).
+                    <br />
+                    <br />
+                    They are also not forced to attack soldiers first
+                </div>
+            );
+        }
+
+        if (card.isRanged) {
+            return (
+                <div style={{ width: 185, fontSize: 12, textAlign: 'center' }}>
+                    Ranged units do not take damage from attacking units on your
+                    turn (except other ranged + magical units)
+                </div>
+            );
+        }
+    }
+    return null;
+};
+
 export const CardGridItem: React.FC<CardGridItemProps> = ({
     card,
     hasTooltip,
@@ -129,6 +167,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                         isOnBoard={isOnBoard}
                         card={cardModifiedForTooltip}
                     />
+                    {isOnBoard && <HelperText card={card} />}
                     <div
                         {...getArrowProps({
                             className: 'tooltip-arrow',
