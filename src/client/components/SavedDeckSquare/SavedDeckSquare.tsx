@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useSWRConfig } from 'swr';
 
+import cookie from 'cookiejs';
 import { SavedDeck } from '@/types/deckBuilder';
 import { Colors } from '@/constants/colors';
 import { Skeleton } from '@/types/cards';
 import { getCleanName } from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
-import cookie from 'cookiejs';
 
 type SavedDeckSquareProps = {
     savedDeck: SavedDeck;

@@ -80,6 +80,19 @@ describe('DeckBuilder', () => {
 
         expect(within(myDeck).getByText('4')).toBeInTheDocument();
     });
+
+    it('clears the whole deck', () => {
+        render(<DeckBuilder />);
+        const cardPool = screen.getByTestId('CardPool');
+        const myDeck = screen.getByTestId('CurrentDeck');
+
+        for (let i = 0; i < 5; i += 1) {
+            fireEvent.click(within(cardPool).getByText('Crystal'));
+        }
+        fireEvent.click(within(myDeck).getByText('Clear'));
+
+        expect(within(myDeck).queryAllByText('Crystal')).toHaveLength(0);
+    });
     it.todo('removes cards via a quantity selector');
 
     it('exports the decklist', () => {
@@ -282,9 +295,10 @@ describe('DeckBuilder', () => {
 
         it('clears the free text search field', () => {
             render(<DeckBuilder />, { useRealDispatch: true });
+            const cardPool = screen.getByTestId('CardPool');
             const searchBar = screen.getByTestId('Filters-FreeText');
             fireEvent.change(searchBar, { target: { value: 'star' } });
-            fireEvent.click(screen.getByText('Clear'));
+            fireEvent.click(within(cardPool).getByText('Clear'));
             expect(
                 screen.queryByText(UnitCards.LANCER.name)
             ).toBeInTheDocument();
