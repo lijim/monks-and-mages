@@ -192,6 +192,10 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         dispatch(push('/'));
     };
 
+    const clearDeck = () => {
+        setCurrentDeck([]);
+    };
+
     const { isValid: isCurrentDeckValid, reason: reasonForDeckInvalid } =
         isDeckValidForFormat(currentDeck);
 
@@ -236,6 +240,10 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                     />
                     <SecondaryColorButton onClick={importFile} zoom={0.8}>
                         Import File
+                    </SecondaryColorButton>{' '}
+                    &nbsp;&nbsp;
+                    <SecondaryColorButton onClick={clearDeck} zoom={0.8}>
+                        Clear
                     </SecondaryColorButton>{' '}
                     &nbsp;&nbsp;
                     <SecondaryColorButton
