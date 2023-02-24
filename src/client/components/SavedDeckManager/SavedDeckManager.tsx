@@ -88,7 +88,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
             </PrimaryColorButton>
             <hr />
             <DeckListGrid>
-                {savedDecks
+                {(savedDecks || ([] as SavedDeck[]))
                     ?.sort((deckA, deckB) =>
                         deckA.name
                             .toLowerCase()
