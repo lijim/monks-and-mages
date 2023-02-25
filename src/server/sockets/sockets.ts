@@ -160,10 +160,9 @@ export const configureIo = (server: HttpServer) => {
 
             const players = getNamesFromIds([...socketIds]);
             const avatarsForPlayers = {} as DetailedRoom['avatarsForPlayers'];
-            players.forEach(
-                (player) =>
-                    (avatarsForPlayers[player] = namesToAvatars.get(player))
-            );
+            players.forEach((player) => {
+                avatarsForPlayers[player] = namesToAvatars.get(player);
+            });
             const room: DetailedRoom = {
                 roomName,
                 players,
@@ -377,10 +376,9 @@ export const configureIo = (server: HttpServer) => {
 
                 const avatarsForPlayers =
                     {} as DetailedRoom['avatarsForPlayers'];
-                playerNames.forEach(
-                    (player) =>
-                        (avatarsForPlayers[player] = namesToAvatars.get(player))
-                );
+                playerNames.forEach((player) => {
+                    avatarsForPlayers[player] = namesToAvatars.get(player);
+                });
                 const playerDeckListSelections =
                     getDeckListSelectionsFromNames(playerNames);
                 const board = makeNewBoard({
