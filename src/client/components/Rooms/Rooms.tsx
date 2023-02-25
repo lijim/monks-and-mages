@@ -14,6 +14,7 @@ import { Colors } from '@/constants/colors';
 import { DeckListSelector } from '../DeckListSelector';
 import { LatestWinners } from '../LatestWinners';
 import { getCleanName } from '@/client/redux/selectors';
+import { useLoggedInPlayerInfo } from '@/client/hooks';
 
 const RoomsContainer = styled.div`
     display: grid;
@@ -105,11 +106,15 @@ export const Rooms: React.FC = () => {
         roomA.roomName.toLowerCase().localeCompare(roomB.roomName.toLowerCase())
     );
     const [newRoomName, setNewRoomName] = useState('Room 1 🥑');
+    const loggedInPlayerInfo = useLoggedInPlayerInfo();
     const webSocket = useContext(WebSocketContext);
 
     const joinRoom = (roomName: string) => {
         const normalizedRoomName = normalizeRoomName(roomName);
-        webSocket.joinRoom({ roomName: normalizedRoomName, avatarUrl: '' });
+        webSocket.joinRoom({
+            roomName: normalizedRoomName,
+            avatarUrl: loggedInPlayerInfo?.avatarUrl || '',
+        });
     };
 
     const spectateRoom = (roomName: string) => {

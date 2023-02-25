@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import useSWR from 'swr';
 import { Link } from 'react-router-dom';
 import { CardImage } from '../CardFrame';
-import { Level, UserPlayer } from '@/types/players';
-import { fetcher } from '@/apiHelpers';
 import { PrimaryColorButton } from '../Button';
 import { Colors } from '@/constants/colors';
+import { useLoggedInPlayerInfo } from '@/client/hooks';
 
 const CenterColumn = styled.div`
     background: rgba(255, 255, 255, 0.95);
@@ -17,30 +15,8 @@ const CenterColumn = styled.div`
     overflow: auto;
 `;
 
-const getLevels = (player: UserPlayer | null, levels: Level[] | null) => {
-    if (!player || !levels) return null;
-    const levelsAttained = levels.filter(
-        (level) => level.xpRequired <= player.exp
-    );
-    const levelsNotAttained = levels.filter(
-        (level) => level.xpRequired > player.exp
-    );
-
-    return {
-        currentLevel: levelsAttained[levelsAttained.length - 1],
-        nextLevel: levelsNotAttained[0],
-    };
-};
-
 export const SelfProfilePage = (): JSX.Element => {
-    const { data: levelsData } = useSWR<Level[]>('/api/levels', fetcher);
-    const { data: selfData } = useSWR<UserPlayer>('/api/users/self', fetcher);
-
-    if (!selfData || !levelsData) {
-        return null;
-    }
-
-    const { currentLevel, nextLevel } = getLevels(selfData, levelsData);
+    const { currentLevel, nextLevel, data: selfData } = useLoggedInPlayerInfo();
 
     return (
         <CenterColumn>
