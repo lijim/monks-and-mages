@@ -18,6 +18,17 @@ describe('Make New Board', () => {
         );
     });
 
+    it('makes a new board with avatars', () => {
+        const board = makeNewBoard({
+            playerNames: ['Hal', 'Orin'],
+            avatarsForPlayers: {
+                Hal: 'example.com/halgif1',
+            },
+        });
+        expect(board.players[0].avatar).toEqual('example.com/halgif1');
+        expect(board.players[1].avatar).toEqual('');
+    });
+
     it('makes a new board with preferred starting decks', () => {
         const board = makeNewBoard({
             playerNames: ['Hal', 'Orin'],

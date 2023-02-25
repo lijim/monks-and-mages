@@ -58,7 +58,7 @@ const MiddleSection = styled.div<MiddleSectionProps>`
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.1);
         z-index: -1;
     }
     ::after {
@@ -67,7 +67,8 @@ const MiddleSection = styled.div<MiddleSectionProps>`
         inset: 0;
         background-image: url('${({ avatarUrl }) =>
             avatarUrl || DEFAULT_AVATAR}');
-        background-size: contain;
+        background-size: cover;
+        background-position: center;
         z-index: -2;
     }
 `;

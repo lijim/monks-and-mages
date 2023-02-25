@@ -25,8 +25,7 @@ export const makeNewBoard = ({
     startingPlayerIndex = Math.floor(Math.random() * playerNames.length),
     avatarsForPlayers = {},
 }: MakeNewBoardParams): Board => {
-    let i = 0;
-    const players = playerNames.map((playerName) => {
+    const players = playerNames.map((playerName, playerIndex) => {
         const skeleton = nameToCustomDeckSkeleton?.get(playerName);
         if (skeleton) {
             const { decklist } = getDeckListFromSkeleton(skeleton);
@@ -35,7 +34,7 @@ export const makeNewBoard = ({
             }
         }
 
-        const selection = playerDeckListSelections?.[i];
+        const selection = playerDeckListSelections?.[playerIndex];
         let decklist =
             (selection && deckListMappings[selection]) || MONKS_DECKLIST;
         if (selection === DeckListSelections.RANDOM) {
@@ -46,8 +45,8 @@ export const makeNewBoard = ({
                 1
             );
         }
-        i += 1;
-        return makeNewPlayer({ name: playerName, decklist });
+        const avatarUrl = avatarsForPlayers[playerName];
+        return makeNewPlayer({ name: playerName, decklist, avatarUrl });
     });
 
     players[startingPlayerIndex].isActivePlayer = true;
