@@ -159,7 +159,7 @@ export const configureIo = (server: HttpServer) => {
             if (!roomName.startsWith('public-')) return; // process public rooms
 
             const players = getNamesFromIds([...socketIds]);
-            let avatarsForPlayers = {} as DetailedRoom['avatarsForPlayers'];
+            const avatarsForPlayers = {} as DetailedRoom['avatarsForPlayers'];
             players.forEach(
                 (player) =>
                     (avatarsForPlayers[player] = namesToAvatars.get(player))
@@ -374,12 +374,20 @@ export const configureIo = (server: HttpServer) => {
 
                 const socketIds = io.sockets.adapter.rooms.get(roomName);
                 const playerNames = getNamesFromIds([...socketIds]);
+
+                const avatarsForPlayers =
+                    {} as DetailedRoom['avatarsForPlayers'];
+                playerNames.forEach(
+                    (player) =>
+                        (avatarsForPlayers[player] = namesToAvatars.get(player))
+                );
                 const playerDeckListSelections =
                     getDeckListSelectionsFromNames(playerNames);
                 const board = makeNewBoard({
                     playerDeckListSelections,
                     playerNames,
                     nameToCustomDeckSkeleton,
+                    avatarsForPlayers,
                 });
                 board.gameState = GameState.MULLIGANING;
                 startedBoards.set(roomName, board);

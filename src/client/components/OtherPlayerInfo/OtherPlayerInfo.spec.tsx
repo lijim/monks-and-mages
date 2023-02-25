@@ -6,7 +6,10 @@ import { SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 
 describe('Other Player Info', () => {
     it("renders the other player's name", () => {
-        const player = makeNewPlayer('Phyllis', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Phyllis',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         render(<OtherPlayerInfo player={player} />);
         expect(screen.getByText('Phyllis')).toBeInTheDocument();
     });

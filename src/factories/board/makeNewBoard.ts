@@ -15,6 +15,7 @@ export type MakeNewBoardParams = {
     playerDeckListSelections?: DeckListSelections[];
     playerNames: string[];
     startingPlayerIndex?: number;
+    avatarsForPlayers?: Record<string, string>; // player name to avatar mapping
 };
 
 export const makeNewBoard = ({
@@ -22,6 +23,7 @@ export const makeNewBoard = ({
     playerDeckListSelections,
     playerNames,
     startingPlayerIndex = Math.floor(Math.random() * playerNames.length),
+    avatarsForPlayers = {},
 }: MakeNewBoardParams): Board => {
     let i = 0;
     const players = playerNames.map((playerName) => {
@@ -29,15 +31,15 @@ export const makeNewBoard = ({
         if (skeleton) {
             const { decklist } = getDeckListFromSkeleton(skeleton);
             if (isDeckValidForFormat(decklist)) {
-                return makeNewPlayer(playerName, decklist);
+                return makeNewPlayer({ name: playerName, decklist });
             }
         }
 
         const selection = playerDeckListSelections?.[i];
-        let deckList =
+        let decklist =
             (selection && deckListMappings[selection]) || MONKS_DECKLIST;
         if (selection === DeckListSelections.RANDOM) {
-            [deckList] = sampleSize(
+            [decklist] = sampleSize(
                 Object.values(deckListMappings).filter(
                     (deck) => deck !== SAMPLE_DECKLIST_1
                 ),
@@ -45,7 +47,7 @@ export const makeNewBoard = ({
             );
         }
         i += 1;
-        return makeNewPlayer(playerName, deckList);
+        return makeNewPlayer({ name: playerName, decklist });
     });
 
     players[startingPlayerIndex].isActivePlayer = true;

@@ -7,7 +7,10 @@ import { makeCard } from '@/factories/cards';
 
 describe('pay for card', () => {
     it('pays for the card if the player has enough resources (including for the generic cost)', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.FIRE]: 3,
             [Resource.IRON]: 2,
@@ -20,7 +23,10 @@ describe('pay for card', () => {
     });
 
     it('pays for the card if the player has exactly enough resources', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.IRON]: 1,
             [Resource.BAMBOO]: 1,
@@ -33,7 +39,10 @@ describe('pay for card', () => {
     });
 
     it('does not pay if the player lacks the resources', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.FIRE]: 4,
             [Resource.IRON]: 1,
@@ -46,7 +55,10 @@ describe('pay for card', () => {
     });
 
     it('does not pay if the player lacks the resources (2)', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.FIRE]: 2,
             [Resource.IRON]: 2,
@@ -59,7 +71,10 @@ describe('pay for card', () => {
     });
 
     it('pays with generic resources', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.FIRE]: 1,
             [Resource.IRON]: 2,
@@ -74,7 +89,10 @@ describe('pay for card', () => {
     });
 
     it('pays with generic resources first', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.FIRE]: 2,
             [Resource.IRON]: 3,

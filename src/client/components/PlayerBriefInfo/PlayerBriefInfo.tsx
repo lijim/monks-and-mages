@@ -34,7 +34,14 @@ const UpperSection = styled.div`
     display: grid;
 `;
 
-const MiddleSection = styled.div`
+interface MiddleSectionProps {
+    avatarUrl: string;
+}
+
+const DEFAULT_AVATAR =
+    'https://images.unsplash.com/photo-1509587961360-de7aff9a662a';
+
+const MiddleSection = styled.div<MiddleSectionProps>`
     position: relative;
     height: 100px;
     margin: 5px;
@@ -58,7 +65,8 @@ const MiddleSection = styled.div`
         content: '';
         position: absolute;
         inset: 0;
-        background-image: url('https://images.unsplash.com/photo-1509587961360-de7aff9a662a');
+        background-image: url('${({ avatarUrl }) =>
+            avatarUrl || DEFAULT_AVATAR}');
         background-size: contain;
         z-index: -2;
     }
@@ -77,6 +85,7 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
         health,
         name,
         isActivePlayer,
+        avatar,
     } = player;
 
     const { handleClickPlayer } = useContext(GameManagerContext) || {};
@@ -123,7 +132,7 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
                     </div>
                 )}
             </UpperSection>
-            <MiddleSection>{`${health}`}</MiddleSection>
+            <MiddleSection avatarUrl={avatar}>{`${health}`}</MiddleSection>
             <LowerSection>{name}</LowerSection>
         </PlayerBriefContainer>
     );

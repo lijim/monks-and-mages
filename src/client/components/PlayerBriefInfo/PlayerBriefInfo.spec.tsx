@@ -11,13 +11,19 @@ import { PlayerConstants } from '@/constants/gameConstants';
 
 describe('Player Brief Info', () => {
     it('renders the player name', () => {
-        const player = makeNewPlayer('Grandma Jenkins', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Grandma Jenkins',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         render(<PlayerBriefInfo player={player} />);
         expect(screen.getByText('Grandma Jenkins')).toBeInTheDocument();
     });
 
     it('renders the health bar', () => {
-        const player = makeNewPlayer('Grandma Jenkins', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Grandma Jenkins',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         render(<PlayerBriefInfo player={player} />);
         expect(
             screen.getByText(PlayerConstants.STARTING_HEALTH)
@@ -25,21 +31,30 @@ describe('Player Brief Info', () => {
     });
 
     it('renders the remaining cards / size of hand', () => {
-        const player = makeNewPlayer('Grandma Jenkins', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Grandma Jenkins',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         render(<PlayerBriefInfo player={player} />);
         expect(screen.getByText('53')).toBeInTheDocument();
         expect(screen.getByText('7')).toBeInTheDocument();
     });
 
     it('renders the cemetery', () => {
-        const player = makeNewPlayer('Grandma Jenkins', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Grandma Jenkins',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.cemetery = [makeCard(UnitCards.ASSASSIN)];
         render(<PlayerBriefInfo player={player} />);
         expect(screen.getByText('1')).toBeInTheDocument();
     });
 
     it('renders the players resource pool', () => {
-        const player = makeNewPlayer('Grandma Jenkins', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Grandma Jenkins',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = { [Resource.BAMBOO]: 3, [Resource.FIRE]: 0 };
         render(<PlayerBriefInfo player={player} />);
         expect(screen.getByText('3')).toBeInTheDocument();
@@ -48,7 +63,10 @@ describe('Player Brief Info', () => {
     });
 
     it('renders the generic resources', () => {
-        const player = makeNewPlayer('Grandma Jenkins', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Grandma Jenkins',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = { [Resource.GENERIC]: 1 };
         render(<PlayerBriefInfo player={player} />);
         expect(screen.getAllByText('1')).toHaveLength(1);
