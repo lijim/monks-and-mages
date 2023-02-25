@@ -39,7 +39,7 @@ interface MiddleSectionProps {
 }
 
 const DEFAULT_AVATAR =
-    'https://images.unsplash.com/photo-1509587961360-de7aff9a662a';
+    'https://monksandmages.com/images/units/alert-feline.webp';
 
 const MiddleSection = styled.div<MiddleSectionProps>`
     position: relative;
