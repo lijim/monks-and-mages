@@ -14,11 +14,13 @@ describe('Rooms', () => {
                         roomName: 'Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     },
                 ],
                 latestGameResults: [],
@@ -28,7 +30,10 @@ describe('Rooms', () => {
 
         fireEvent.click(screen.getByText('Create'));
 
-        expect(webSocket.joinRoom).toHaveBeenCalledWith('Room 1 🥑');
+        expect(webSocket.joinRoom).toHaveBeenCalledWith({
+            roomName: 'Room 1 🥑',
+            avatarUrl: '',
+        });
     });
 
     it('renders multiple rooms', () => {
@@ -39,11 +44,13 @@ describe('Rooms', () => {
                         roomName: 'Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     },
                 ],
                 latestGameResults: [],
@@ -63,11 +70,13 @@ describe('Rooms', () => {
                         roomName: 'Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     },
                 ],
                 latestGameResults: [],

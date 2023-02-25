@@ -45,6 +45,7 @@ export const configureIo = (server: HttpServer) => {
 
     const idsToNames = new Map<string, string>(); // mapping of socket ids to user-chosen names
     const namesToIds = new Map<string, string>(); // reverse map of idsToNames
+    const namesToAvatars = new Map<string, string>(); // usernames to avatars chosen
     const nameToDeckListSelection = new Map<string, DeckListSelections>();
     const nameToCustomDeckSkeleton = new Map<string, Skeleton>();
     const startedBoards = new Map<string, Board>();
@@ -157,11 +158,18 @@ export const configureIo = (server: HttpServer) => {
         [...roomsAndIds.entries()].forEach(([roomName, socketIds]) => {
             if (!roomName.startsWith('public-')) return; // process public rooms
 
+            const players = getNamesFromIds([...socketIds]);
+            let avatarsForPlayers = {} as DetailedRoom['avatarsForPlayers'];
+            players.forEach(
+                (player) =>
+                    (avatarsForPlayers[player] = namesToAvatars.get(player))
+            );
             const room: DetailedRoom = {
                 roomName,
-                players: getNamesFromIds([...socketIds]),
+                players,
                 hasStartedGame: startedBoards.has(roomName),
                 spectators: [] as string[],
+                avatarsForPlayers,
             };
             detailedRooms.push(room);
         });
@@ -173,6 +181,7 @@ export const configureIo = (server: HttpServer) => {
                 players: [] as string[],
                 hasStartedGame: false,
                 spectators: [],
+                avatarsForPlayers: {},
             };
             detailedRooms.push(room);
         });
@@ -193,6 +202,7 @@ export const configureIo = (server: HttpServer) => {
                     players: [],
                     hasStartedGame: false,
                     spectators: [],
+                    avatarsForPlayers: {},
                 };
                 detailedRooms.push(room);
             }
@@ -325,8 +335,9 @@ export const configureIo = (server: HttpServer) => {
                 socket.emit('listRooms', getDetailedRooms());
             });
 
-            socket.on('joinRoom', (roomName) => {
+            socket.on('joinRoom', ({ roomName, avatarUrl }) => {
                 if (!roomName) return; // blank-string room name not allowed
+                namesToAvatars.set(idsToNames.get(socket.id), avatarUrl);
                 const prevRoom = getRoomForSocket(socket);
                 if (prevRoom) {
                     disconnectFromGame(socket, false);

@@ -72,7 +72,11 @@ describe('sockets', () => {
         });
 
         it('joins a room', (done) => {
-            clientSocket.emit('joinRoom', 'treehouse-1');
+            clientSocket.emit('joinRoom', {
+                roomName: 'treehouse-1',
+                avatarUrl:
+                    'https://monksandmages.com/images/units/manta-ray.webp',
+            });
 
             const defaultRooms = DEFAULT_ROOM_NAMES.map(
                 (roomName): DetailedRoom => {
@@ -81,6 +85,7 @@ describe('sockets', () => {
                         players: [],
                         spectators: [],
                         hasStartedGame: false,
+                        avatarsForPlayers: {},
                     };
                 }
             );
@@ -91,52 +96,15 @@ describe('sockets', () => {
                         players: ['Guest - Dora Wini'],
                         spectators: [],
                         hasStartedGame: false,
+                        avatarsForPlayers: {
+                            'Guest - Dora Wini':
+                                'https://monksandmages.com/images/units/manta-ray.webp',
+                        },
                     },
                     ...defaultRooms,
                 ]);
                 done();
             });
-        });
-    });
-
-    describe('2 users', () => {
-        beforeEach((done) => {
-            clientSocket2 = clientIo(`http://localhost:${port}`, {
-                multiplex: false,
-                reconnection: false,
-            });
-            clientSocket2.on('connect', done);
-        });
-
-        afterEach(async () => {
-            if (clientSocket2?.connected) {
-                await clientSocket2.close();
-            }
-        });
-
-        // This was a lot of maintenance to avoid concurrency issues
-        it.skip('join a room', async () => {
-            clientSocket.emit('chooseName', 'Dora Wini');
-            await clientSocket.emit('joinRoom', 'treehouse-1');
-            clientSocket2.emit('chooseName', 'Francine');
-            await clientSocket2.emit('joinRoom', 'treehouse-1');
-            let numCalls = 0;
-
-            await clientSocket2.on(
-                'listRooms',
-                (roomsAndIds: DetailedRoom[]) => {
-                    numCalls += 1;
-                    if (numCalls === 2) {
-                        expect(roomsAndIds).toEqual([
-                            {
-                                roomName: 'public-treehouse-1',
-                                players: ['Dora Wini', 'Francine'],
-                                hasStartedGame: false,
-                            },
-                        ]);
-                    }
-                }
-            );
         });
     });
 });

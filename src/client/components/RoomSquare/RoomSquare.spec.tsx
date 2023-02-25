@@ -11,6 +11,7 @@ describe('Room Square', () => {
                     roomName: 'Room 6',
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
                     spectators: [],
+                    avatarsForPlayers: {},
                 }}
             />
         );
@@ -27,6 +28,7 @@ describe('Room Square', () => {
                     roomName: 'public-Room 6',
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
                     spectators: [],
+                    avatarsForPlayers: {},
                 }}
             />
         );
@@ -43,6 +45,7 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     }}
                     rejoinRoom={mockRejoinGame}
                     hasJoined
@@ -61,6 +64,7 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     }}
                     rejoinRoom={mockRejoinGame}
                 />
@@ -76,6 +80,7 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     }}
                     rejoinRoom={mockRejoinGame}
                     hasJoined
@@ -94,6 +99,7 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     }}
                     spectateRoom={mockSpectateRoom}
                 />
@@ -109,6 +115,7 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     }}
                     isSpectacting
                 />
@@ -124,6 +131,7 @@ describe('Room Square', () => {
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
                         hasStartedGame: true,
+                        avatarsForPlayers: {},
                     }}
                 />
             );
@@ -140,6 +148,7 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     }}
                     joinRoom={mockJoinRoom}
                 />
@@ -156,6 +165,7 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     }}
                     hasJoined
                     joinRoom={mockJoinRoom}
@@ -172,6 +182,7 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy', 'Player 4'],
                         spectators: [],
+                        avatarsForPlayers: {},
                     }}
                     joinRoom={mockJoinRoom}
                 />
@@ -188,6 +199,7 @@ describe('Room Square', () => {
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
                     spectators: [],
                     hasStartedGame: true,
+                    avatarsForPlayers: {},
                 }}
             />
         );
@@ -203,6 +215,7 @@ describe('Room Square', () => {
                     players: ['Kimmy'],
                     spectators: [],
                     hasStartedGame: false,
+                    avatarsForPlayers: {},
                 }}
                 hasJoined
                 onStartGameClicked={mockStartGame}
@@ -221,6 +234,7 @@ describe('Room Square', () => {
                     players: ['Kimmy', 'Jimmy'],
                     spectators: [],
                     hasStartedGame: true,
+                    avatarsForPlayers: {},
                 }}
                 hasJoined
                 onStartGameClicked={mockStartGame}
@@ -239,6 +253,7 @@ describe('Room Square', () => {
                     players: ['Kimmy', 'Jimmy', 'Timmy'],
                     spectators: [],
                     hasStartedGame: false,
+                    avatarsForPlayers: {},
                 }}
                 hasJoined
                 onStartGameClicked={mockStartGame}

@@ -30,7 +30,7 @@ export interface ClientToServerEvents {
     chooseDeck: (deckListSelection: DeckListSelections) => void;
     chooseName: (name: string) => void;
     getRooms: () => void;
-    joinRoom: (roomName: string) => void;
+    joinRoom: (params: JoinRoomParams) => void;
     leaveRoom: () => void;
     login: (accessToken: string) => void; // leave the current room
     resolveEffect: ({
@@ -49,4 +49,10 @@ export type DetailedRoom = {
     players: string[];
     roomName: string;
     spectators: string[];
+    avatarsForPlayers: Record<string, string>;
+};
+
+export type JoinRoomParams = {
+    roomName: string;
+    avatarUrl: string;
 };

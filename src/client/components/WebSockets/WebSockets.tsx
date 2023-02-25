@@ -18,6 +18,7 @@ import { AppDispatch } from '@/client/redux/store';
 import { addChatLog, clearChat, updateBoardState } from '@/client/redux/board';
 import {
     ClientToServerEvents,
+    JoinRoomParams,
     ResolveEffectParams,
     ServerToClientEvents,
 } from '@/types';
@@ -147,8 +148,8 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('authorizeToken', token);
         };
 
-        const joinRoom = (roomName: string) => {
-            newSocket.emit('joinRoom', roomName);
+        const joinRoom = (params: JoinRoomParams) => {
+            newSocket.emit('joinRoom', params);
         };
 
         const leaveRoom = () => {

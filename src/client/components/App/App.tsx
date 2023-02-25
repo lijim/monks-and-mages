@@ -8,6 +8,7 @@ import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 
 import { isUserInitialized } from '@/client/redux/selectors';
 import { history, RootState, store } from '@/client/redux/store';
+import { SelfProfilePage } from '../SelfProfilePage';
 
 const IntroScreen = React.lazy(() =>
     import('../IntroScreen').then((module) => ({
@@ -101,6 +102,14 @@ export const RouterRoutes: React.FC = () => {
                 element={
                     <LobbyBackground>
                         <DeckBuilder />
+                    </LobbyBackground>
+                }
+            />
+            <Route
+                path="/me"
+                element={
+                    <LobbyBackground>
+                        <SelfProfilePage />
                     </LobbyBackground>
                 }
             />

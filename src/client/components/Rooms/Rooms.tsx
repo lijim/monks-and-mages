@@ -109,7 +109,7 @@ export const Rooms: React.FC = () => {
 
     const joinRoom = (roomName: string) => {
         const normalizedRoomName = normalizeRoomName(roomName);
-        webSocket.joinRoom(normalizedRoomName);
+        webSocket.joinRoom({ roomName: normalizedRoomName, avatarUrl: '' });
     };
 
     const spectateRoom = (roomName: string) => {
