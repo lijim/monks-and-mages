@@ -11,7 +11,10 @@ import { SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 
 describe('Player Board Section', () => {
     it('renders unit cards', () => {
-        const player = makeNewPlayer('April', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'April',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.units = [
             makeCard(UnitCards.FIRE_MAGE),
             makeCard(UnitCards.WATER_MAGE),
@@ -21,7 +24,10 @@ describe('Player Board Section', () => {
     });
 
     it('renders resource cards', () => {
-        const player = makeNewPlayer('April', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'April',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resources = [
             makeResourceCard(Resource.BAMBOO),
             makeResourceCard(Resource.FIRE),

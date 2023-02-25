@@ -43,7 +43,17 @@ export const TopNavBar: React.FC = ({ children }) => {
         return (
             <NameDisplayer>
                 <div>
-                    👤 <b>{guestName || 'Loading...'}</b> <LogoutButton />
+                    {guestName ? (
+                        <>
+                            👤{' '}
+                            <Link to="/me">
+                                <b>{guestName}</b>
+                            </Link>
+                        </>
+                    ) : (
+                        'Loading...'
+                    )}{' '}
+                    <LogoutButton />
                     &nbsp;
                     <Link to="/instructions">
                         <SecondaryColorButton>Help</SecondaryColorButton>

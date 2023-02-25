@@ -4,6 +4,7 @@ import { PartialRecord } from './generics';
 import { Resource } from './resources';
 
 export type Player = {
+    avatar?: string;
     cemetery: Card[];
     deck: Card[];
     effectQueue: Effect[];
