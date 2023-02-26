@@ -1,7 +1,7 @@
-import { fetcher } from '@/apiHelpers';
-import { Level, UserPlayer } from '@/types/players';
 import { useAuth0 } from '@auth0/auth0-react';
 import useSWR from 'swr';
+import { fetcher } from '@/apiHelpers';
+import { DEFAULT_AVATAR, Level, UserPlayer } from '@/types/players';
 
 const getLevels = (player: UserPlayer | null, levels: Level[] | null) => {
     if (!player || !levels) return null;
@@ -15,6 +15,7 @@ const getLevels = (player: UserPlayer | null, levels: Level[] | null) => {
     return {
         currentLevel: levelsAttained[levelsAttained.length - 1],
         nextLevel: levelsNotAttained[0],
+        levelsAttained,
     };
 };
 
@@ -25,7 +26,7 @@ export const useLoggedInPlayerInfo = () => {
         user ? '/api/levels' : null,
         fetcher
     );
-    const { data } = useSWR<UserPlayer>(
+    const { data, mutate } = useSWR<UserPlayer>(
         user ? '/api/users/self' : null,
         fetcher
     );
@@ -34,11 +35,19 @@ export const useLoggedInPlayerInfo = () => {
         return null;
     }
 
-    const { currentLevel, nextLevel } = getLevels(data, levelsData);
+    const { currentLevel, nextLevel, levelsAttained } = getLevels(
+        data,
+        levelsData
+    );
+    const availableAvatars = [
+        DEFAULT_AVATAR,
+        ...levelsAttained.map((level) => level.image),
+    ];
     return {
         currentLevel,
         nextLevel,
-        avatarUrl: currentLevel.image,
         data,
+        mutate,
+        availableAvatars,
     };
 };

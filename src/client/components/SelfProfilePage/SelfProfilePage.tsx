@@ -1,10 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import useSWRMutation from 'swr/mutation';
 import { CardImage } from '../CardFrame';
 import { PrimaryColorButton } from '../Button';
 import { Colors } from '@/constants/colors';
 import { useLoggedInPlayerInfo } from '@/client/hooks';
+import { swrPatch } from '@/apiHelpers';
+import { ChooseAvatarParams } from '@/types/api';
+import { DEFAULT_AVATAR } from '@/types/players';
 
 const CenterColumn = styled.div`
     background: rgba(255, 255, 255, 0.95);
@@ -15,33 +19,103 @@ const CenterColumn = styled.div`
     overflow: auto;
 `;
 
+const Avatars = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 260px);
+    grid-gap: 20px;
+`;
+
+const ProfileStats = styled.div`
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 40px;
+    grid-row-gap: 20px;
+    border: 1px solid ${Colors.LIGHT_GREY};
+    padding: 20px;
+    width: 500px;
+`;
+
+const StackedProfileStat = styled.div`
+    display: grid;
+    place-content: center;
+    text-align: center;
+    gap: 4px;
+`;
+
 export const SelfProfilePage = (): JSX.Element => {
-    const { currentLevel, nextLevel, data: selfData } = useLoggedInPlayerInfo();
+    const {
+        currentLevel,
+        nextLevel,
+        data: selfData,
+        availableAvatars,
+        mutate,
+    } = useLoggedInPlayerInfo();
+
+    const { trigger } = useSWRMutation<
+        unknown,
+        unknown,
+        unknown,
+        ChooseAvatarParams
+    >(`/users/self/choose_avatar`, swrPatch);
+
+    const onClickAvatar = (avatar: string) => async () => {
+        await trigger({
+            avatarUrl: avatar,
+        });
+        mutate();
+    };
+
+    const currentAvatar = selfData?.avatarUrl || DEFAULT_AVATAR;
 
     return (
         <CenterColumn>
             <h1>{selfData.username}</h1>
-            <div>
-                Player since:{' '}
-                {new Date(selfData.createdAt).toLocaleDateString()}
-            </div>
-            <div>Games won: {selfData.numberOfGamesWon}</div>
-            <div>
-                Level {currentLevel?.level} {currentLevel?.name}
-            </div>
-            <div
-                style={{
-                    width: 260,
-                    height: 220,
-                    border: `5px solid ${Colors.LIGHT_GREY}`,
-                }}
-            >
-                <CardImage src={currentLevel.image} />
-            </div>
-            <div>
-                XP: {selfData.exp}{' '}
-                {nextLevel ? <>/ {nextLevel.xpRequired}</> : null}
-            </div>
+            <ProfileStats>
+                <StackedProfileStat>
+                    <span>
+                        {new Date(selfData.createdAt).toLocaleDateString()}
+                    </span>
+                    <h3 style={{ margin: 0 }}>Joined</h3>
+                </StackedProfileStat>
+                <StackedProfileStat>
+                    <span>{selfData.numberOfGamesWon}</span>
+                    <h3 style={{ margin: 0 }}>Games won</h3>
+                </StackedProfileStat>
+                <StackedProfileStat>
+                    <span>Level {currentLevel?.level}</span>
+                    <h3 style={{ margin: 0 }}>{currentLevel?.name}</h3>
+                </StackedProfileStat>
+                <StackedProfileStat>
+                    <span>
+                        {selfData.exp}{' '}
+                        {nextLevel ? <>/ {nextLevel.xpRequired}</> : null}
+                    </span>
+                    <h3 style={{ margin: 0 }}>XP</h3>
+                </StackedProfileStat>
+            </ProfileStats>
+
+            <h3>Avatars Unlocked</h3>
+            <Avatars>
+                {availableAvatars.map((avatar) => (
+                    <div
+                        key={avatar}
+                        style={{
+                            width: 260,
+                            height: 220,
+                            border: `5px solid ${
+                                avatar === currentAvatar
+                                    ? Colors.FIRE_ORANGE_EMPHASIZED
+                                    : Colors.LIGHT_GREY
+                            }`,
+                            cursor: 'pointer',
+                        }}
+                        onClick={onClickAvatar(avatar)}
+                    >
+                        <CardImage src={avatar} />
+                    </div>
+                ))}
+            </Avatars>
+
             <br />
             <Link to="/">
                 <PrimaryColorButton>Back</PrimaryColorButton>

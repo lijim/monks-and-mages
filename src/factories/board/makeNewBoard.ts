@@ -11,11 +11,11 @@ import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/
 import { isDeckValidForFormat } from '@/transformers/isDeckValidForFomat';
 
 export type MakeNewBoardParams = {
+    avatarsForPlayers?: Record<string, string>;
     nameToCustomDeckSkeleton?: Map<string, Skeleton>;
     playerDeckListSelections?: DeckListSelections[];
     playerNames: string[];
-    startingPlayerIndex?: number;
-    avatarsForPlayers?: Record<string, string>; // player name to avatar mapping
+    startingPlayerIndex?: number; // player name to avatar mapping
 };
 
 export const makeNewBoard = ({

@@ -1,6 +1,7 @@
 import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
+import axios from 'axios';
 import { Board, GameState } from '@/types/board';
 import { makeNewBoard } from '@/factories/board';
 import { obscureBoardInfo } from '../obscureBoardInfo';
@@ -25,8 +26,10 @@ import { calculateGameResult } from '@/factories/games';
 import { Card, Skeleton } from '@/types/cards';
 import { authorize, ExtendedSocket } from '../authorize';
 import { auth0 } from '../auth0';
-import axios from 'axios';
-import { CreateGameResultsBody } from '@/types/api';
+import {
+    CreateGameResultsBody,
+    DEFAULT_AVATAR_SOURCE_DOMAIN,
+} from '@/types/api';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
 
@@ -59,6 +62,7 @@ export const configureIo = (server: HttpServer) => {
         );
         if (!matchingName) return;
         namesToIds.delete(matchingName[0]);
+        namesToAvatars.delete(matchingName[0]);
         nameToDeckListSelection.delete(matchingName[0]);
         nameToCustomDeckSkeleton.delete(matchingName[0]);
         idsToNames.delete(idToMatch);
@@ -332,6 +336,15 @@ export const configureIo = (server: HttpServer) => {
                 socket.emit('confirmCustomDeck', skeleton);
             });
 
+            socket.on('chooseAvatar', (avatarUrl: string) => {
+                const name = idsToNames.get(socket.id);
+                if (!name) return;
+                if (!avatarUrl.startsWith(DEFAULT_AVATAR_SOURCE_DOMAIN)) {
+                    return;
+                }
+                namesToAvatars.set(name, avatarUrl);
+            });
+
             socket.on('chooseDeck', (deckListSelection: DeckListSelections) => {
                 const name = idsToNames.get(socket.id);
                 if (!name) return;
@@ -372,9 +385,8 @@ export const configureIo = (server: HttpServer) => {
                 socket.emit('listRooms', getDetailedRooms());
             });
 
-            socket.on('joinRoom', ({ roomName, avatarUrl }) => {
+            socket.on('joinRoom', ({ roomName }) => {
                 if (!roomName) return; // blank-string room name not allowed
-                namesToAvatars.set(idsToNames.get(socket.id), avatarUrl);
                 const prevRoom = getRoomForSocket(socket);
                 if (prevRoom) {
                     disconnectFromGame(socket, false);

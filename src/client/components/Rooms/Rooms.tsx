@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';
 import styled from 'styled-components';
@@ -113,9 +113,14 @@ export const Rooms: React.FC = () => {
         const normalizedRoomName = normalizeRoomName(roomName);
         webSocket.joinRoom({
             roomName: normalizedRoomName,
-            avatarUrl: loggedInPlayerInfo?.avatarUrl || '',
         });
     };
+
+    useEffect(() => {
+        if (loggedInPlayerInfo?.data?.avatarUrl) {
+            webSocket.chooseAvatar(loggedInPlayerInfo?.data?.avatarUrl);
+        }
+    }, [loggedInPlayerInfo]);
 
     const spectateRoom = (roomName: string) => {
         const normalizedRoomName = normalizeRoomName(roomName);

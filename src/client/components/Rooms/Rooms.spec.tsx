@@ -32,7 +32,6 @@ describe('Rooms', () => {
 
         expect(webSocket.joinRoom).toHaveBeenCalledWith({
             roomName: 'Room 1 🥑',
-            avatarUrl: '',
         });
     });
 
