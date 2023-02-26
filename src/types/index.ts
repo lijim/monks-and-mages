@@ -26,6 +26,7 @@ export interface ResolveEffectParams {
 
 export interface ClientToServerEvents {
     authorizeToken: (token: string) => void;
+    chooseAvatar: (avatarUrl: string) => void;
     chooseCustomDeck: (skeleton: Skeleton) => void;
     chooseDeck: (deckListSelection: DeckListSelections) => void;
     chooseName: (name: string) => void;
@@ -45,14 +46,13 @@ export interface ClientToServerEvents {
 }
 
 export type DetailedRoom = {
+    avatarsForPlayers: Record<string, string>;
     hasStartedGame?: boolean;
     players: string[];
     roomName: string;
     spectators: string[];
-    avatarsForPlayers: Record<string, string>;
 };
 
 export type JoinRoomParams = {
     roomName: string;
-    avatarUrl: string;
 };

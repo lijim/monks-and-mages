@@ -160,6 +160,10 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('spectateRoom', roomName);
         };
 
+        const chooseAvatar = (avatarUrl: string) => {
+            newSocket.emit('chooseAvatar', avatarUrl);
+        };
+
         const chooseCustomDeck = (deckListSelection: Skeleton) => {
             newSocket.emit('chooseCustomDeck', deckListSelection);
         };
@@ -192,6 +196,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         setWs({
             socket: newSocket,
             authorizeToken,
+            chooseAvatar,
             chooseCustomDeck,
             chooseDeck,
             chooseName,

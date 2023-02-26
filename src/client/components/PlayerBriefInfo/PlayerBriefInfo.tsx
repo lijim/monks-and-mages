@@ -6,6 +6,7 @@ import { Colors } from '@/constants/colors';
 import { CastingCostFrame } from '../CastingCost';
 import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
 import { GameManagerContext } from '../GameManager';
+import { DEFAULT_AVATAR } from '@/types/players';
 
 interface PlayerBriefInfoProps {
     player: Player;
@@ -37,9 +38,6 @@ const UpperSection = styled.div`
 interface MiddleSectionProps {
     avatarUrl: string;
 }
-
-const DEFAULT_AVATAR =
-    'https://monksandmages.com/images/units/alert-feline.webp';
 
 const MiddleSection = styled.div<MiddleSectionProps>`
     position: relative;

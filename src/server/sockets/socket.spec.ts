@@ -71,11 +71,13 @@ describe('sockets', () => {
             });
         });
 
-        it('joins a room', (done) => {
+        it('chooses and avatar and joins a room', (done) => {
+            clientSocket.emit(
+                'chooseAvatar',
+                'https://monksandmages.com/images/units/manta-ray.webp'
+            );
             clientSocket.emit('joinRoom', {
                 roomName: 'treehouse-1',
-                avatarUrl:
-                    'https://monksandmages.com/images/units/manta-ray.webp',
             });
 
             const defaultRooms = DEFAULT_ROOM_NAMES.map(

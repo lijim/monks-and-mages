@@ -6,9 +6,9 @@ import { makeDeck } from '../deck';
 import { PlayerConstants } from '@/constants/gameConstants';
 
 type NewPlayerArgs = {
-    name: string;
-    decklist: DeckList;
     avatarUrl?: string;
+    decklist: DeckList;
+    name: string;
 };
 
 export const makeNewPlayer = ({
