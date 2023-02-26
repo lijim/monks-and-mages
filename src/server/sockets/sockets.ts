@@ -25,6 +25,8 @@ import { calculateGameResult } from '@/factories/games';
 import { Card, Skeleton } from '@/types/cards';
 import { authorize, ExtendedSocket } from '../authorize';
 import { auth0 } from '../auth0';
+import axios from 'axios';
+import { CreateGameResultsBody } from '@/types/api';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
 
@@ -100,6 +102,42 @@ export const configureIo = (server: HttpServer) => {
             latestResults = latestResults.slice(-20);
             io.emit('listLatestGameResults', latestResults);
         }
+    };
+
+    const recordGameResultToDatabase = async (
+        gameResult: GameResult | null
+    ): Promise<void> => {
+        if (!gameResult) {
+            return;
+        }
+
+        const { nonWinners, winners } = gameResult;
+
+        const guests = [...nonWinners, ...winners]
+            .filter((name) => name.startsWith(GUEST_NAME_PREFIX))
+            .map((name) => name.slice(GUEST_NAME_PREFIX.length));
+
+        const loggedInUsers = [...nonWinners, ...winners].filter(
+            (name) => !name.startsWith(GUEST_NAME_PREFIX)
+        );
+
+        const winningGuests = winners
+            .filter((name) => name.startsWith(GUEST_NAME_PREFIX))
+            .map((name) => name.slice(GUEST_NAME_PREFIX.length));
+        const winningUsers = winners.filter(
+            (name) => !name.startsWith(GUEST_NAME_PREFIX)
+        );
+
+        // posts a game result over to the DB server (https://github.com/lijim/monks-and-mages-db-service)
+        await axios.post<unknown, unknown, CreateGameResultsBody>(
+            `${process.env.API_DOMAIN}/game_results`,
+            { guests, usernames: loggedInUsers, winningGuests, winningUsers },
+            {
+                headers: {
+                    'X-API-KEY': `${process.env.API_KEY}`,
+                },
+            }
+        );
     };
 
     /**
@@ -407,6 +445,14 @@ export const configureIo = (server: HttpServer) => {
                 }
 
                 const prevGameState = board.gameState;
+
+                if (
+                    prevGameState === GameState.WIN ||
+                    prevGameState === GameState.TIE
+                ) {
+                    return;
+                }
+
                 const newBoardState = applyGameAction({
                     board,
                     gameAction,
@@ -418,7 +464,10 @@ export const configureIo = (server: HttpServer) => {
                     prevGameState,
                     newBoardState
                 );
-                if (gameResult) addGameResult(gameResult);
+                if (gameResult) {
+                    addGameResult(gameResult);
+                    recordGameResultToDatabase(gameResult);
+                }
 
                 // TODO: add error handling when user tries to take an invalid action
                 startedBoards.set(roomName, newBoardState); // apply state changes to in-memory storage of boards
@@ -433,6 +482,14 @@ export const configureIo = (server: HttpServer) => {
                 if (!board) return;
 
                 const prevGameState = board.gameState;
+
+                if (
+                    prevGameState === GameState.WIN ||
+                    prevGameState === GameState.TIE
+                ) {
+                    return;
+                }
+
                 const newBoardState = resolveEffect(
                     board,
                     effectParams,
@@ -449,7 +506,10 @@ export const configureIo = (server: HttpServer) => {
                         prevGameState,
                         newBoardState
                     );
-                    if (gameResult) addGameResult(gameResult);
+                    if (gameResult) {
+                        addGameResult(gameResult);
+                        recordGameResultToDatabase(gameResult);
+                    }
                 }
             });
 
