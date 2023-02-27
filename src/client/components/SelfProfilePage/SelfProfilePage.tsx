@@ -43,13 +43,7 @@ const StackedProfileStat = styled.div`
 `;
 
 export const SelfProfilePage = (): JSX.Element => {
-    const {
-        currentLevel,
-        nextLevel,
-        data: selfData,
-        availableAvatars,
-        mutate,
-    } = useLoggedInPlayerInfo();
+    const loggedInPlayerInfo = useLoggedInPlayerInfo();
 
     const { trigger } = useSWRMutation<
         unknown,
@@ -62,23 +56,33 @@ export const SelfProfilePage = (): JSX.Element => {
         await trigger({
             avatarUrl: avatar,
         });
-        mutate();
+        loggedInPlayerInfo?.mutate();
     };
+
+    if (!loggedInPlayerInfo) {
+        return null;
+    }
+    const {
+        data: selfData,
+        currentLevel,
+        nextLevel,
+        availableAvatars,
+    } = loggedInPlayerInfo;
 
     const currentAvatar = selfData?.avatarUrl || DEFAULT_AVATAR;
 
     return (
         <CenterColumn>
-            <h1>{selfData.username}</h1>
+            <h1>{selfData?.username}</h1>
             <ProfileStats>
                 <StackedProfileStat>
                     <span>
-                        {new Date(selfData.createdAt).toLocaleDateString()}
+                        {new Date(selfData?.createdAt).toLocaleDateString()}
                     </span>
                     <h3 style={{ margin: 0 }}>Joined</h3>
                 </StackedProfileStat>
                 <StackedProfileStat>
-                    <span>{selfData.numberOfGamesWon}</span>
+                    <span>{selfData?.numberOfGamesWon}</span>
                     <h3 style={{ margin: 0 }}>Games won</h3>
                 </StackedProfileStat>
                 <StackedProfileStat>
@@ -87,7 +91,7 @@ export const SelfProfilePage = (): JSX.Element => {
                 </StackedProfileStat>
                 <StackedProfileStat>
                     <span>
-                        {selfData.exp}{' '}
+                        {selfData?.exp}{' '}
                         {nextLevel ? <>/ {nextLevel.xpRequired}</> : null}
                     </span>
                     <h3 style={{ margin: 0 }}>XP</h3>
@@ -109,6 +113,7 @@ export const SelfProfilePage = (): JSX.Element => {
                             }`,
                             cursor: 'pointer',
                         }}
+                        data-testid={`Avatar-${avatar}`}
                         onClick={onClickAvatar(avatar)}
                     >
                         <CardImage src={avatar} />
