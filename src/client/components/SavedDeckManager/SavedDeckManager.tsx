@@ -11,7 +11,7 @@ import { SavedDeck } from '@/types/deckBuilder';
 import { getSkeletonFromDeckList } from '@/transformers/getSkeletonFromDeckList';
 import { fetcher } from '@/apiHelpers';
 import { SavedDeckSquare } from '@/client/components/SavedDeckSquare';
-import { DeckList, Skeleton } from '@/types/cards';
+import { DeckList } from '@/types/cards';
 import { PrimaryColorButton } from '../Button';
 
 const Backdrop = styled.div`
@@ -32,12 +32,10 @@ const DeckListGrid = styled.div`
 
 type SavedDeckManagerProps = {
     decklist: DeckList;
-    setSkeleton: (decklist: Skeleton) => void;
 };
 
 export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
     decklist,
-    setSkeleton,
 }) => {
     const { mutate } = useSWRConfig();
 
@@ -98,7 +96,6 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
                         <SavedDeckSquare
                             key={savedDeck.id}
                             savedDeck={savedDeck}
-                            setSkeleton={setSkeleton}
                         />
                     ))}
             </DeckListGrid>

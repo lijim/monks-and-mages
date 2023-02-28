@@ -35,11 +35,13 @@ describe('DeckBuilder', () => {
     beforeAll(() => {
         HTMLAnchorElement.prototype.click = jest.fn();
     });
-    it('adds cards from the entire card pool (constructed mode)', () => {
+    it.only('adds cards from the entire card pool (constructed mode)', async () => {
         render(<DeckBuilder />);
         fireEvent.click(screen.getByText('Lancer'));
         expect(
-            within(screen.getByTestId('CurrentDeck')).getByText('Lancer')
+            await within(await screen.findByTestId('CurrentDeck')).findByText(
+                'Lancer'
+            )
         ).toBeInTheDocument();
     });
     // it.todo('adds cards from a filtered card pool');
@@ -261,7 +263,7 @@ describe('DeckBuilder', () => {
 
     describe('Search filters', () => {
         it('searches by free text on card titles', () => {
-            render(<DeckBuilder />, { useRealDispatch: true });
+            render(<DeckBuilder />);
             const searchBar = screen.getByTestId('Filters-FreeText');
             fireEvent.change(searchBar, { target: { value: 'star' } });
             expect(screen.queryByText(UnitCards.LANCER.name)).toBeNull();
@@ -271,7 +273,7 @@ describe('DeckBuilder', () => {
         });
 
         it('searches by rules text', () => {
-            render(<DeckBuilder />, { useRealDispatch: true });
+            render(<DeckBuilder />);
             const searchBar = screen.getByTestId('Filters-FreeText');
             fireEvent.change(searchBar, { target: { value: 'Poison' } });
             expect(
@@ -283,7 +285,7 @@ describe('DeckBuilder', () => {
         });
 
         it('searches by resource cost', () => {
-            render(<DeckBuilder />, { useRealDispatch: true });
+            render(<DeckBuilder />);
 
             fireEvent.click(screen.getByTestId('Filters-ResourceCost-2'));
 
@@ -294,7 +296,7 @@ describe('DeckBuilder', () => {
         });
 
         it('clears the free text search field', () => {
-            render(<DeckBuilder />, { useRealDispatch: true });
+            render(<DeckBuilder />);
             const cardPool = screen.getByTestId('CardPool');
             const searchBar = screen.getByTestId('Filters-FreeText');
             fireEvent.change(searchBar, { target: { value: 'star' } });
@@ -308,7 +310,7 @@ describe('DeckBuilder', () => {
         });
 
         it('searches by colors (exactly)', () => {
-            render(<DeckBuilder />, { useRealDispatch: true });
+            render(<DeckBuilder />);
 
             fireEvent.change(
                 screen.getByTestId('Filters-ResourcesMatchStrategy'),
@@ -333,7 +335,7 @@ describe('DeckBuilder', () => {
         });
 
         it('searches by colors (strictly)', () => {
-            render(<DeckBuilder />, { useRealDispatch: true });
+            render(<DeckBuilder />);
 
             fireEvent.change(
                 screen.getByTestId('Filters-ResourcesMatchStrategy'),
@@ -358,7 +360,7 @@ describe('DeckBuilder', () => {
         });
 
         it('searches by colors (loosely)', () => {
-            render(<DeckBuilder />, { useRealDispatch: true });
+            render(<DeckBuilder />);
 
             fireEvent.change(
                 screen.getByTestId('Filters-ResourcesMatchStrategy'),
@@ -383,7 +385,7 @@ describe('DeckBuilder', () => {
         });
 
         it('filters by unit type', () => {
-            render(<DeckBuilder />, { useRealDispatch: true });
+            render(<DeckBuilder />);
 
             fireEvent.click(screen.getByText('⚔️'));
             fireEvent.click(screen.getByText('🪄'));

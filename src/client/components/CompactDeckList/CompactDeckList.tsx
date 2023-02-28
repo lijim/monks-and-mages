@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import styled from 'styled-components';
 
+import { useDispatch } from 'react-redux';
 import { Card, CardType } from '@/types/cards';
 import { splitDeckListToPiles } from '@/transformers/splitDeckListToPiles';
 import { QuantitySelector } from '../QuantitySelector';
@@ -14,6 +15,7 @@ import {
 import { RESOURCE_GLOSSARY } from '@/types/resources';
 import { CardGridSingleItem } from '../CardGridItem';
 import { Colors } from '@/constants/colors';
+import { addCard } from '@/client/redux/deckBuilder';
 
 interface CompactDeckListProps {
     deck: Card[];
@@ -79,17 +81,16 @@ const CostCell = styled.div`
 
 type MiniCardProps = {
     card: Card;
-    onClickCard: (card: Card) => void;
     quantity: number;
     shouldShowQuantity: boolean;
 };
 
 const MiniCard: React.FC<MiniCardProps> = ({
     card,
-    onClickCard,
     quantity,
     shouldShowQuantity,
 }) => {
+    const dispatch = useDispatch();
     const {
         getArrowProps,
         getTooltipProps,
@@ -105,16 +106,17 @@ const MiniCard: React.FC<MiniCardProps> = ({
         card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;
 
     const { primaryColor, secondaryColor } = getColorsForCard(card);
+    const onAddCard = () => {
+        dispatch(addCard(card));
+    };
 
     return (
         <>
             <MiniCardFrame
-                hasOnClick={!!onClickCard}
+                hasOnClick={true}
                 primaryColor={primaryColor}
                 secondaryColor={secondaryColor}
-                onClick={() => {
-                    onClickCard(card);
-                }}
+                onClick={onAddCard}
                 tabIndex={0}
                 ref={setTriggerRef}
             >
@@ -169,7 +171,6 @@ const MiniCard: React.FC<MiniCardProps> = ({
 
 export const CompactDeckList: React.FC<CompactDeckListProps> = ({
     deck,
-    onClickCard,
     shouldShowQuantity = true,
 }) => {
     const piles = splitDeckListToPiles(deck);
@@ -183,7 +184,6 @@ export const CompactDeckList: React.FC<CompactDeckListProps> = ({
                             card={card}
                             quantity={quantity}
                             shouldShowQuantity={shouldShowQuantity}
-                            onClickCard={onClickCard}
                             key={card.name}
                         />
                     ))}

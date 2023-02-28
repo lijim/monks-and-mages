@@ -9,3 +9,6 @@ export enum Format {
     SINGLETON = 'SINGLETON',
     STANDARD = 'STANDARD',
 }
+
+export const isFormatConstructed = (format: Format) =>
+    [Format.SINGLETON, Format.STANDARD].includes(format);

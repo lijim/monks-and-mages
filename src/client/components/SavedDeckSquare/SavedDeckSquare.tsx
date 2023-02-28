@@ -7,7 +7,6 @@ import { useSWRConfig } from 'swr';
 import cookie from 'cookiejs';
 import { SavedDeck } from '@/types/deckBuilder';
 import { Colors } from '@/constants/colors';
-import { Skeleton } from '@/types/cards';
 import {
     getCleanName,
     getCurrentSavedDeckName,
@@ -17,7 +16,6 @@ import { chooseSavedDeck } from '@/client/redux/deckBuilder';
 
 type SavedDeckSquareProps = {
     savedDeck: SavedDeck;
-    setSkeleton: (decklist: Skeleton) => void;
 };
 
 type OutlineProps = {
@@ -50,9 +48,8 @@ const deleteDeckFn = async (username: string, deckId: string) =>
 
 export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
     savedDeck,
-    setSkeleton,
 }) => {
-    const { name, skeleton, id } = savedDeck;
+    const { name, id } = savedDeck;
     const username = useSelector<RootState, string | undefined>(getCleanName);
     const dispatch = useDispatch();
     const currentSavedDeckName = useSelector<RootState, string>(
@@ -76,7 +73,6 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
             <SavedDeckOutline
                 tabIndex={0}
                 onClick={() => {
-                    setSkeleton(skeleton);
                     dispatch(chooseSavedDeck(savedDeck));
                 }}
                 isHighlighted={currentSavedDeckName === name}

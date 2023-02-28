@@ -1,8 +1,9 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 import { CompactDeckList } from './CompactDeckList';
 import { makeSampleDeck1 } from '@/factories/deck';
+import { render } from '@/test-utils';
 
 describe('DeckList', () => {
     it('renders a deck', () => {
