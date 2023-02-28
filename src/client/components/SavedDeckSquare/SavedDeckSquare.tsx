@@ -25,7 +25,7 @@ type OutlineProps = {
 };
 
 const SavedDeckOutline = styled.div<OutlineProps>`
-    border: 1px solid
+    border: ${({ isHighlighted }) => (isHighlighted ? 3 : 1)}px solid
         ${({ isHighlighted }) =>
             isHighlighted ? Colors.FOCUS_BLUE : Colors.LIGHT_GREY};
     :not(:last-child) {
