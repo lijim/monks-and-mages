@@ -100,23 +100,26 @@ export const SelfProfilePage = (): JSX.Element => {
 
             <h3>Avatars Unlocked</h3>
             <Avatars>
-                {availableAvatars.map((avatar) => (
-                    <div
-                        key={avatar}
-                        style={{
-                            width: 260,
-                            height: 220,
-                            border: `5px solid ${
-                                avatar === currentAvatar
-                                    ? Colors.FIRE_ORANGE_EMPHASIZED
-                                    : Colors.LIGHT_GREY
-                            }`,
-                            cursor: 'pointer',
-                        }}
-                        data-testid={`Avatar-${avatar}`}
-                        onClick={onClickAvatar(avatar)}
-                    >
-                        <CardImage src={avatar} />
+                {availableAvatars.map(({ avatar, name }) => (
+                    <div style={{ textAlign: 'center' }}>
+                        <div
+                            key={avatar}
+                            style={{
+                                width: 260,
+                                height: 220,
+                                border: `5px solid ${
+                                    avatar === currentAvatar
+                                        ? Colors.FIRE_ORANGE_EMPHASIZED
+                                        : Colors.LIGHT_GREY
+                                }`,
+                                cursor: 'pointer',
+                            }}
+                            data-testid={`Avatar-${avatar}`}
+                            onClick={onClickAvatar(avatar)}
+                        >
+                            <CardImage src={avatar} />
+                        </div>
+                        <span>{name}</span>
                     </div>
                 ))}
             </Avatars>

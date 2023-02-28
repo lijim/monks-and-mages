@@ -21,3 +21,5 @@ export type UserPlayer = {
 
 export const DEFAULT_AVATAR =
     'https://monksandmages.com/images/units/alert-feline.webp';
+
+export const DEFAULT_AVATAR_NAME = 'Alert Feline';
