@@ -9,6 +9,7 @@ type DeckBuilderState = {
     currentSavedDeckName: string;
     decklist: DeckList;
     format: Format;
+    isSavedDeckAltered: boolean;
 };
 
 const initialState: DeckBuilderState = {
@@ -16,6 +17,7 @@ const initialState: DeckBuilderState = {
     currentSavedDeckId: '',
     decklist: [],
     format: Format.STANDARD,
+    isSavedDeckAltered: false,
 };
 
 export const deckBuilderSlice = createSlice({
@@ -32,6 +34,7 @@ export const deckBuilderSlice = createSlice({
             if (decklist) {
                 state.decklist = decklist;
             }
+            state.isSavedDeckAltered = false;
         },
         loadDeck(state, action: PayloadAction<Skeleton>) {
             const { decklist } = getDeckListFromSkeleton(action.payload);
@@ -39,6 +42,21 @@ export const deckBuilderSlice = createSlice({
             if (decklist) {
                 state.decklist = decklist;
             }
+            state.currentSavedDeckName = '';
+            state.currentSavedDeckId = '';
+            state.isSavedDeckAltered = false;
+        },
+        saveNewDeck(state, action: PayloadAction<SavedDeck>) {
+            const { name, id } = action.payload;
+            state.currentSavedDeckName = name;
+            state.currentSavedDeckId = id;
+            state.isSavedDeckAltered = false;
+        },
+        saveOldDeck(state, action: PayloadAction<SavedDeck>) {
+            const { name, id } = action.payload;
+            state.currentSavedDeckName = name;
+            state.currentSavedDeckId = id;
+            state.isSavedDeckAltered = false;
         },
         addCard(state, action: PayloadAction<Card>) {
             const card = action.payload;
@@ -68,6 +86,9 @@ export const deckBuilderSlice = createSlice({
                 decklist.push({ card, quantity: 1 });
             }
             state.decklist = decklist;
+            if (state.currentSavedDeckName) {
+                state.isSavedDeckAltered = true;
+            }
         },
         removeCard(state, action: PayloadAction<Card>) {
             const card = action.payload;
@@ -82,9 +103,15 @@ export const deckBuilderSlice = createSlice({
             state.decklist = [
                 ...decklist.filter((cardSlot) => cardSlot.quantity > 0),
             ];
+            if (state.currentSavedDeckName) {
+                state.isSavedDeckAltered = true;
+            }
         },
         clearDeck(state) {
             state.decklist = [];
+            if (state.currentSavedDeckName) {
+                state.isSavedDeckAltered = true;
+            }
         },
     },
 });
@@ -92,5 +119,12 @@ export const deckBuilderSlice = createSlice({
 export const deckBuilderReducer: Reducer<DeckBuilderState> =
     deckBuilderSlice.reducer;
 
-export const { chooseSavedDeck, loadDeck, addCard, removeCard, clearDeck } =
-    deckBuilderSlice.actions;
+export const {
+    chooseSavedDeck,
+    loadDeck,
+    addCard,
+    removeCard,
+    clearDeck,
+    saveNewDeck,
+    saveOldDeck,
+} = deckBuilderSlice.actions;
