@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useSWR, { useSWRConfig } from 'swr';
 
@@ -13,6 +13,7 @@ import { fetcher } from '@/apiHelpers';
 import { SavedDeckSquare } from '@/client/components/SavedDeckSquare';
 import { DeckList } from '@/types/cards';
 import { PrimaryColorButton } from '../Button';
+import { saveNewDeck } from '@/client/redux/deckBuilder';
 
 const Backdrop = styled.div`
     background: rgba(255, 255, 255, 0.8);
@@ -38,6 +39,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
     decklist,
 }) => {
     const { mutate } = useSWRConfig();
+    const dispatch = useDispatch();
 
     const [deckName, setDeckName] = useState('');
     const username = useSelector<RootState, string | undefined>(getCleanName);
@@ -48,7 +50,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
 
     const createDeck = async () => {
         try {
-            await axios.post(
+            const savedDeck = await axios.post<SavedDeck>(
                 '/api/saved_decks',
                 {
                     username,
@@ -61,6 +63,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
                     },
                 }
             );
+            dispatch(saveNewDeck(savedDeck.data));
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);

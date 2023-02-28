@@ -5,14 +5,21 @@ import styled from 'styled-components';
 import { useSWRConfig } from 'swr';
 
 import cookie from 'cookiejs';
+import useSWRMutation from 'swr/mutation';
 import { SavedDeck } from '@/types/deckBuilder';
 import { Colors } from '@/constants/colors';
 import {
     getCleanName,
+    getCurrentSavedDeckId,
     getCurrentSavedDeckName,
+    getIsSavedDeckAltered,
+    getSkeleton,
 } from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
-import { chooseSavedDeck } from '@/client/redux/deckBuilder';
+import { chooseSavedDeck, saveOldDeck } from '@/client/redux/deckBuilder';
+import { Skeleton } from '@/types/cards';
+import { swrPatch } from '@/apiHelpers';
+import { ErrorMessage } from '@/types/api';
 
 type SavedDeckSquareProps = {
     savedDeck: SavedDeck;
@@ -35,7 +42,7 @@ const SavedDeckOutline = styled.div<OutlineProps>`
 
 const HStack = styled.div`
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
 `;
 
 const deleteDeckFn = async (username: string, deckId: string) =>
@@ -46,6 +53,12 @@ const deleteDeckFn = async (username: string, deckId: string) =>
         },
     });
 
+const isSaveResponseError = (
+    response: SavedDeck | ErrorMessage
+): response is ErrorMessage => {
+    return (response as ErrorMessage).message !== undefined;
+};
+
 export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
     savedDeck,
 }) => {
@@ -55,11 +68,46 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
     const currentSavedDeckName = useSelector<RootState, string>(
         getCurrentSavedDeckName
     );
+    const currentSavedDeckId = useSelector<RootState, string>(
+        getCurrentSavedDeckId
+    );
+    const isSavedDeckAltered = useSelector<RootState, boolean>(
+        getIsSavedDeckAltered
+    );
+    const skeleton = useSelector<RootState, Skeleton>(getSkeleton);
     const { mutate } = useSWRConfig();
+    const { trigger } = useSWRMutation<
+        SavedDeck | ErrorMessage,
+        unknown,
+        unknown,
+        { deckId: string; skeleton: Skeleton }
+    >(`/saved_decks`, swrPatch);
+
+    const isHighlighted = currentSavedDeckName === name;
 
     const deleteDeck = async () => {
         try {
             await deleteDeckFn(username, id);
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        } finally {
+            mutate(`/api/saved_decks/${username}`);
+        }
+    };
+
+    const onClickSave = async () => {
+        try {
+            const savedDeckResponse = await trigger({
+                deckId: currentSavedDeckId,
+                skeleton,
+            });
+            if (isSaveResponseError(savedDeckResponse)) {
+                // eslint-disable-next-line no-alert
+                window.alert(savedDeckResponse.message);
+                return;
+            }
+            dispatch(saveOldDeck(savedDeckResponse));
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);
@@ -75,14 +123,23 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
                 onClick={() => {
                     dispatch(chooseSavedDeck(savedDeck));
                 }}
-                isHighlighted={currentSavedDeckName === name}
+                isHighlighted={isHighlighted}
             >
                 <b>{name}</b>
             </SavedDeckOutline>
+            {isSavedDeckAltered && isHighlighted && (
+                <SavedDeckOutline
+                    tabIndex={0}
+                    isHighlighted={isHighlighted}
+                    onClick={onClickSave}
+                >
+                    💾
+                </SavedDeckOutline>
+            )}
             <SavedDeckOutline
                 tabIndex={0}
                 onClick={deleteDeck}
-                isHighlighted={currentSavedDeckName === name}
+                isHighlighted={isHighlighted}
             >
                 🗑
             </SavedDeckOutline>
