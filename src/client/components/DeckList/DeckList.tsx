@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { useDispatch } from 'react-redux';
 import { Card, PileOfCards } from '@/types/cards';
 import { splitDeckListToPiles } from '@/transformers/splitDeckListToPiles';
 import { CardGridItem } from '../CardGridItem';
 import { QuantitySelector } from '../QuantitySelector';
+import { removeCard } from '@/client/redux/deckBuilder';
 
 interface DeckListProps {
-    addCard?: (card: Card) => void;
     deck: Card[];
-    removeCard?: (card: Card) => void;
     shouldShowQuantity?: boolean;
     shouldShowSummary?: boolean;
 }
@@ -59,10 +59,14 @@ const getTotalCardsInPile = (pile: PileOfCards): number => {
 
 export const DeckList: React.FC<DeckListProps> = ({
     deck,
-    removeCard,
     shouldShowQuantity = true,
     shouldShowSummary = true,
 }) => {
+    const dispatch = useDispatch();
+    const onRemoveCard = (card: Card) => {
+        dispatch(removeCard(card));
+    };
+
     if (deck.length === 0) {
         return <Centering />;
     }
@@ -102,7 +106,7 @@ export const DeckList: React.FC<DeckListProps> = ({
                                     <CardGridItem
                                         card={card}
                                         onClick={() => {
-                                            removeCard?.(card);
+                                            onRemoveCard(card);
                                         }}
                                     />
                                 </DeckListCardSlot>

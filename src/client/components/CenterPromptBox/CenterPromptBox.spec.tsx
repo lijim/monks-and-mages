@@ -145,6 +145,7 @@ describe('Center Prompt Box', () => {
 
             const { dispatch, webSocket } = render(<CenterPromptBox />, {
                 preloadedState,
+                useRealDispatch: false,
             });
             fireEvent.click(screen.getByText('Return to Lobby'));
             expect(dispatch).toHaveBeenCalledWith(push('/'));

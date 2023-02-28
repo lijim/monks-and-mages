@@ -1,23 +1,31 @@
 import axios from 'axios';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useSWRConfig } from 'swr';
 
 import cookie from 'cookiejs';
 import { SavedDeck } from '@/types/deckBuilder';
 import { Colors } from '@/constants/colors';
-import { Skeleton } from '@/types/cards';
-import { getCleanName } from '@/client/redux/selectors';
+import {
+    getCleanName,
+    getCurrentSavedDeckName,
+} from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
+import { chooseSavedDeck } from '@/client/redux/deckBuilder';
 
 type SavedDeckSquareProps = {
     savedDeck: SavedDeck;
-    setSkeleton: (decklist: Skeleton) => void;
 };
 
-const SavedDeckOutline = styled.div`
-    border: 1px solid ${Colors.LIGHT_GREY};
+type OutlineProps = {
+    isHighlighted: boolean;
+};
+
+const SavedDeckOutline = styled.div<OutlineProps>`
+    border: ${({ isHighlighted }) => (isHighlighted ? 3 : 1)}px solid
+        ${({ isHighlighted }) =>
+            isHighlighted ? Colors.FOCUS_BLUE : Colors.LIGHT_GREY};
     :not(:last-child) {
         border-right: none;
     }
@@ -39,11 +47,14 @@ const deleteDeckFn = async (username: string, deckId: string) =>
     });
 
 export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
-    savedDeck: { name, skeleton, id },
-    setSkeleton,
+    savedDeck,
 }) => {
+    const { name, id } = savedDeck;
     const username = useSelector<RootState, string | undefined>(getCleanName);
-
+    const dispatch = useDispatch();
+    const currentSavedDeckName = useSelector<RootState, string>(
+        getCurrentSavedDeckName
+    );
     const { mutate } = useSWRConfig();
 
     const deleteDeck = async () => {
@@ -62,12 +73,17 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
             <SavedDeckOutline
                 tabIndex={0}
                 onClick={() => {
-                    setSkeleton(skeleton);
+                    dispatch(chooseSavedDeck(savedDeck));
                 }}
+                isHighlighted={currentSavedDeckName === name}
             >
                 <b>{name}</b>
             </SavedDeckOutline>
-            <SavedDeckOutline tabIndex={0} onClick={deleteDeck}>
+            <SavedDeckOutline
+                tabIndex={0}
+                onClick={deleteDeck}
+                isHighlighted={currentSavedDeckName === name}
+            >
                 🗑
             </SavedDeckOutline>
         </HStack>

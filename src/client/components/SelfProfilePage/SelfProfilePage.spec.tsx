@@ -72,9 +72,7 @@ describe('Self Profile Page', () => {
     it('displays available avatars', async () => {
         render(<SelfProfilePage />);
         expect(
-            await screen.findByTestId(
-                'Avatar-https://monksandmages.com/images/units/manta-ray.webp'
-            )
+            await screen.findByText('Level 2 - Manta Ray')
         ).toBeInTheDocument();
     });
 });

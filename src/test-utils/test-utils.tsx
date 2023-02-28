@@ -65,7 +65,7 @@ export function render(
     ui: ReactElement,
     {
         preloadedState = {},
-        useRealDispatch = false,
+        useRealDispatch = true,
         ...renderOptions
     }: ReduxRenderOptions = {}
 ): RenderValue {

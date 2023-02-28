@@ -101,9 +101,8 @@ export const SelfProfilePage = (): JSX.Element => {
             <h3>Avatars Unlocked</h3>
             <Avatars>
                 {availableAvatars.map(({ avatar, name }) => (
-                    <div style={{ textAlign: 'center' }}>
+                    <div style={{ textAlign: 'center' }} key={name}>
                         <div
-                            key={avatar}
                             style={{
                                 width: 260,
                                 height: 220,
