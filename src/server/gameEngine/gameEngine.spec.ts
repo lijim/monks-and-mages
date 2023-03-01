@@ -441,6 +441,30 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].numCardsInHand).toBe(1);
             expect(newBoardState.players[0].units).toHaveLength(0);
         });
+
+        it('destroys previous legendary units', () => {
+            const unitCard = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            const unitCard2 = makeCard(UnitCards.JAVELINEER);
+            const previousUnitCard = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            board.players[0].hand = [unitCard];
+            board.players[0].units = [previousUnitCard, unitCard2];
+            board.players[0].numCardsInHand = 1;
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.IRON]: 6,
+            };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_UNIT,
+                    cardId: unitCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].hand).toEqual([]);
+            expect(newBoardState.players[0].units[1]).toEqual(unitCard);
+            expect(newBoardState.players[0].units).toHaveLength(2);
+        });
     });
 
     describe('Perform Attack', () => {
