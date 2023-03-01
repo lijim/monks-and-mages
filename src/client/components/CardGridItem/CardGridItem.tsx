@@ -86,7 +86,15 @@ interface HelperTextProps {
 export const HelperText = ({ card }: HelperTextProps): JSX.Element => {
     if (card.cardType === CardType.UNIT) {
         return (
-            <div style={{ width: 185, fontSize: 12, textAlign: 'center' }}>
+            <div
+                style={{
+                    width: 185,
+                    fontSize: 12,
+                    textAlign: 'center',
+                    display: 'grid',
+                    gap: '12px',
+                }}
+            >
                 {card.isSoldier && (
                     <div>
                         Soldiers must be attacked by non-magical units first
@@ -94,11 +102,8 @@ export const HelperText = ({ card }: HelperTextProps): JSX.Element => {
                 )}
                 {card.isMagical && (
                     <div>
-                        Magical units act like ranged units (not taking damage
-                        on your turn from attacking non-ranged units).
-                        <br />
-                        <br />
-                        They are also not forced to attack soldiers first
+                        Magical units are a special type of ranged unit that do
+                        not have to attack soldiers first
                     </div>
                 )}
                 {card.isRanged && !card.isMagical && (
@@ -165,11 +170,13 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                         className: 'tooltip-container',
                     })}
                 >
-                    <CardGridSingleItem
-                        isOnBoard={isOnBoard}
-                        card={cardModifiedForTooltip}
-                    />
-                    {isOnBoard && <HelperText card={card} />}
+                    <div>
+                        <CardGridSingleItem
+                            isOnBoard={isOnBoard}
+                            card={cardModifiedForTooltip}
+                        />
+                        {isOnBoard && <HelperText card={card} />}
+                    </div>
                     <div
                         {...getArrowProps({
                             className: 'tooltip-arrow',
