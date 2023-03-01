@@ -85,34 +85,36 @@ interface HelperTextProps {
 
 export const HelperText = ({ card }: HelperTextProps): JSX.Element => {
     if (card.cardType === CardType.UNIT) {
-        if (card.isSoldier) {
-            return (
-                <div style={{ width: 185, fontSize: 12, textAlign: 'center' }}>
-                    Soldiers must be attacked by non-magical units first
-                </div>
-            );
-        }
-
-        if (card.isMagical) {
-            return (
-                <div style={{ width: 185, fontSize: 12, textAlign: 'center' }}>
-                    Magical units act like ranged units (not taking damage on
-                    your turn from attacking non-ranged units).
-                    <br />
-                    <br />
-                    They are also not forced to attack soldiers first
-                </div>
-            );
-        }
-
-        if (card.isRanged) {
-            return (
-                <div style={{ width: 185, fontSize: 12, textAlign: 'center' }}>
-                    Ranged units do not take damage from attacking units on your
-                    turn (except other ranged + magical units)
-                </div>
-            );
-        }
+        return (
+            <div style={{ width: 185, fontSize: 12, textAlign: 'center' }}>
+                {card.isSoldier && (
+                    <div>
+                        Soldiers must be attacked by non-magical units first
+                    </div>
+                )}
+                {card.isMagical && (
+                    <div>
+                        Magical units act like ranged units (not taking damage
+                        on your turn from attacking non-ranged units).
+                        <br />
+                        <br />
+                        They are also not forced to attack soldiers first
+                    </div>
+                )}
+                {card.isRanged && !card.isMagical && (
+                    <div>
+                        Ranged units do not take damage from attacking units on
+                        your turn (except other ranged + magical units)
+                    </div>
+                )}
+                {card.isLegendary && (
+                    <div>
+                        If you control two legendary units with the same name,
+                        the least recent one goes to the cemetery
+                    </div>
+                )}
+            </div>
+        );
     }
     return null;
 };
