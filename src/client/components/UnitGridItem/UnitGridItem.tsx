@@ -47,6 +47,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         hp,
         hpBuff,
         id,
+        isLegendary,
         isMagical,
         isRanged,
         isSoldier,
@@ -61,6 +62,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
     if (isRanged) unitType = 'Ranged';
     if (isMagical) unitType = 'Magical';
     if (isSoldier) unitType = 'Soldier';
+    if (isLegendary) unitType += ' (Legendary)';
     const { primaryColor, secondaryColor } = getColorsForCard(card);
 
     const numEffectsToDisplay =
