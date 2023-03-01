@@ -136,7 +136,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     };
 
     const onClickClearDeck = () => {
-        dispatch(clearDeck);
+        dispatch(clearDeck());
     };
 
     const { isValid: isCurrentDeckValid, reason: reasonForDeckInvalid } =

@@ -51,6 +51,7 @@ export type UnitBase = {
     description: string;
     enterEffects: Effect[];
     imgSrc?: string;
+    isLegendary?: boolean;
     // can attack without being hit back 🏹
     isMagical: boolean;
     // number of attacks per turn
@@ -77,13 +78,11 @@ export type UnitBase = {
 export interface UnitCard extends UnitBase {
     attackBuff: number;
     cardType: CardType.UNIT;
-    hp: number;
+    hp: number; // current hp
     hpBuff: number;
     id?: string;
-    // number of attack left this turn - starts at 0
     isSelected: boolean;
-    // current hp
-    numAttacksLeft: number;
+    numAttacksLeft: number; // number of attack left this turn - starts at 0
 }
 
 export type UnitType = 'Magical' | 'Soldier' | 'Ranged' | 'None';

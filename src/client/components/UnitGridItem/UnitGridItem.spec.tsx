@@ -20,6 +20,12 @@ describe('Unit Grid Item', () => {
         render(<UnitGridItem card={UnitCards.SQUIRE} />);
         expect(screen.getByText('Unit - Soldier')).toBeInTheDocument();
     });
+    it('displays as legendary', () => {
+        render(<UnitGridItem card={UnitCards.JOAN_OF_ARC_FOLK_HERO} />);
+        expect(
+            screen.getByText('Unit - Soldier (Legendary)')
+        ).toBeInTheDocument();
+    });
     it('displays as ranged', () => {
         render(<UnitGridItem card={UnitCards.JAVELINEER} />);
         expect(screen.getByText('Unit - Ranged')).toBeInTheDocument();

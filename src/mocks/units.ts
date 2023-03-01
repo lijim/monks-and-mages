@@ -537,6 +537,34 @@ const CANNON: UnitCard = makeCard({
     passiveEffects: [],
 });
 
+const JOAN_OF_ARC_FOLK_HERO: UnitCard = makeCard({
+    name: 'Joan of Arc, Folk Hero',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/07/05/00/19/joan-of-arc-5371198_1280.jpg',
+    cost: {
+        [Resource.IRON]: 2,
+        [Resource.GENERIC]: 5,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_TEAM_ATTACK,
+            strength: 2,
+        },
+        {
+            type: EffectType.BUFF_TEAM_HP,
+            strength: 2,
+        },
+    ],
+    totalHp: 5,
+    attack: 4,
+    numAttacks: 1,
+    isLegendary: true,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+});
+
 export const UnitCards = {
     MAGICIANS_APPRENTICE,
     // FIRE
@@ -555,6 +583,7 @@ export const UnitCards = {
     MARTIAL_TRAINER,
     KNIGHT_TEMPLAR,
     TEMPLE_GUARDIAN,
+    JOAN_OF_ARC_FOLK_HERO,
     // ASSASSINS
     ASSASSIN,
     BOUNTY_COLLECTOR,

@@ -288,14 +288,32 @@ export const applyGameAction = ({
                     activePlayer,
                     matchingCard
                 ).resourcePool;
+
+                addSystemChat(
+                    `${activePlayer.name} played [[${matchingCard.name}]]`
+                );
+
+                // check to see if card is legendary
+                if (matchingCard.isLegendary) {
+                    const cardsWithSameNameAsLegendary =
+                        activePlayer.units.filter(
+                            (card) => card.name === matchingCard.name
+                        );
+                    activePlayer.units = activePlayer.units.filter(
+                        (card) => card.name !== matchingCard.name
+                    );
+                    activePlayer.cemetery = activePlayer.cemetery.concat(
+                        cardsWithSameNameAsLegendary
+                    );
+                    addSystemChat(
+                        `The previous [[${matchingCard.name}]] was destroyed due to the legend rule (if there are duplicate legendary units, only 1 is allowed on the board at a time)`
+                    );
+                }
                 activePlayer.units.push(matchingCard);
                 activePlayer.effectQueue = activePlayer.effectQueue.concat(
                     cloneDeep(matchingCard.enterEffects).reverse()
                 );
                 activePlayer.hand.splice(matchingCardIndex, 1);
-                addSystemChat(
-                    `${activePlayer.name} played [[${matchingCard.name}]]`
-                );
             }
             return clonedBoard;
         }

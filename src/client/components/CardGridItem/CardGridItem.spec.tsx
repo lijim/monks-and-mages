@@ -45,6 +45,16 @@ describe('Card (Grid Item)', () => {
         ).toBeInTheDocument();
     });
 
+    it('renders help text for legends', () => {
+        // difficult to mock hover action on card, so testing the component directly
+        render(<HelperText card={makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO)} />);
+        expect(
+            screen.getByText(
+                'If you control two legendary units with the same name, the least recent one goes to the cemetery'
+            )
+        ).toBeInTheDocument();
+    });
+
     it('renders a spell card', () => {
         render(<CardGridItem card={makeCard(SpellCards.CONSTANT_REFILL)} />);
         expect(screen.getByText('Draw 4 cards')).toBeInTheDocument();

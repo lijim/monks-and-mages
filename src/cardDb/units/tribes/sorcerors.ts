@@ -22,6 +22,7 @@ const ALADDIN: UnitCard = makeCard({
     totalHp: 1,
     attack: 2,
     numAttacks: 1,
+    isLegendary: true,
     isRanged: true,
     isMagical: true,
     isSoldier: false,

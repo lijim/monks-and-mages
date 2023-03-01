@@ -392,6 +392,7 @@ const CHAD_THE_AQUAPHILE: UnitCard = makeCard({
     totalHp: 5,
     attack: 4,
     numAttacks: 1,
+    isLegendary: true,
     isRanged: true,
     isMagical: true,
     isSoldier: false,
