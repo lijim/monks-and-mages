@@ -260,7 +260,9 @@ export const resolveEffect = (
 
             playerTargets.forEach((player) => {
                 player.health -= effectStrength;
-                if (player.health <= 0) player.isAlive = false;
+                if (player.health <= 0) {
+                    player.isAlive = false;
+                }
             });
             applyWinState(clonedBoard);
             return clonedBoard;
