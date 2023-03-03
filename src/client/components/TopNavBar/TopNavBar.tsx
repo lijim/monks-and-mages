@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -26,10 +26,14 @@ const NameDisplayer = styled.div`
     }
 `;
 
+interface Props {
+    children?: ReactNode;
+}
+
 /**
  * Top nav bar on the rooms page
  */
-export const TopNavBar: React.FC = ({ children }) => {
+export const TopNavBar = ({ children }: Props) => {
     const guestName = useSelector<RootState, string>(getCleanName);
     const { user } = useAuth0();
     const webSocket = useContext(WebSocketContext);

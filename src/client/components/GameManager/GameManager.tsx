@@ -1,5 +1,6 @@
 import React, {
     createContext,
+    ReactNode,
     useCallback,
     useContext,
     useEffect,
@@ -35,7 +36,11 @@ interface GameManagerContextValue {
 
 export const GameManagerContext = createContext<GameManagerContextValue>(null);
 
-export const GameManager: React.FC = ({ children }) => {
+interface Props {
+    children?: ReactNode;
+}
+
+export const GameManager = ({ children }: Props) => {
     const { socket } = useContext(WebSocketContext) || {};
     const dispatch = useDispatch();
     const rootState = useSelector<RootState, RootState>((state) => state);
