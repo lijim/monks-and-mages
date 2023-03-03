@@ -272,7 +272,7 @@ export const configureIo = (server: HttpServer) => {
                 player.effectQueue = [];
             }
 
-            if (player.isActivePlayer) {
+            if (player?.isActivePlayer) {
                 passTurn(board);
             }
 

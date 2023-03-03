@@ -558,6 +558,8 @@ describe('resolve effect', () => {
                 makeCard(UnitCards.SHADOW_STRIKER),
                 makeCard(UnitCards.LONGBOWMAN),
             ];
+            // test: the other player can have an empty deck too
+            board.players[1].deck = [];
 
             const newBoard = resolveEffect(
                 board,
