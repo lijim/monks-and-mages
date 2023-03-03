@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { ReactNode, createContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
@@ -42,6 +42,10 @@ export interface WebSocketValue extends Partial<ClientToServerEvents> {
     socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 }
 
+interface Props {
+    children: ReactNode;
+}
+
 /**
  * Redux-Integrated WebSockets Provider.  The need for this arises b/c
  * child components will need to call socket.io in order to do things like:
@@ -55,7 +59,7 @@ export interface WebSocketValue extends Partial<ClientToServerEvents> {
  * Based on this guide:
  * https://www.pluralsight.com/guides/using-web-sockets-in-your-reactredux-app
  * */
-export const WebSocketProvider: React.FC = ({ children }) => {
+export const WebSocketProvider = ({ children }: Props) => {
     const [socket, setSocket] =
         useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
     const [ws, setWs] = useState<WebSocketValue>(null);

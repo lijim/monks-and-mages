@@ -32,6 +32,7 @@ type ReduxRenderOptions = {
 };
 
 interface WebSocketContextMockProviderProps {
+    children: ReactNode;
     ws: WebSocketValue;
 }
 
