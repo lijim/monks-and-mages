@@ -640,6 +640,60 @@ describe('resolve effect', () => {
     });
 
     describe('Deal Damage', () => {
+        it('passes the turn to the next player if dealing lethal to self', () => {
+            const boardWith4Players = makeNewBoard({
+                playerNames: ['Timmy', 'Tommy', 'Tom', 'Monty'],
+                startingPlayerIndex: 0,
+            });
+            const [timmy, tommy] = boardWith4Players.players;
+            // tommy has no more cards left, so after timmy loses, tom should be alive
+            tommy.deck = [];
+            tommy.numCardsInDeck = 0;
+            timmy.resourcePool = { [Resource.FIRE]: 2 };
+
+            const newBoard = resolveEffect(
+                boardWith4Players,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE,
+                        strength: 20,
+                    },
+                    playerNames: ['Timmy'],
+                },
+                'Timmy'
+            );
+            expect(newBoard.gameState).toEqual(GameState.PLAYING);
+            expect(newBoard.players[0].isActivePlayer).toBe(false);
+            expect(newBoard.players[0].resourcePool).toEqual({});
+            expect(newBoard.players[1].isAlive).toBe(false);
+            expect(newBoard.players[2].isActivePlayer).toBe(true);
+        });
+
+        it('ends the game if dealing lethal to multiple players', () => {
+            const boardWith4Players = makeNewBoard({
+                playerNames: ['Timmy', 'Tommy', 'Tom', 'Monty'],
+                startingPlayerIndex: 0,
+            });
+            const [timmy, tommy] = boardWith4Players.players;
+            // tommy has no more cards left, so after timmy loses, tom should be alive
+            tommy.deck = [];
+            tommy.numCardsInDeck = 0;
+            timmy.resourcePool = { [Resource.FIRE]: 2 };
+
+            const newBoard = resolveEffect(
+                boardWith4Players,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE,
+                        strength: 20,
+                    },
+                    playerNames: ['Timmy', 'Tom', 'Monty'],
+                },
+                'Timmy'
+            );
+            expect(newBoard.gameState).toEqual(GameState.WIN);
+        });
+
         it('deals damage to a unit', () => {
             const squire = makeCard(UnitCards.SQUIRE);
             board.players[0].units = [squire];

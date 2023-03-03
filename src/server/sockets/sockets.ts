@@ -18,7 +18,7 @@ import {
     ResolveEffectParams,
     ServerToClientEvents,
 } from '@/types';
-import { applyGameAction, applyWinState } from '../gameEngine';
+import { applyGameAction, applyWinState, passTurn } from '../gameEngine';
 import { resolveEffect } from '../resolveEffect';
 import { makePlayerChatMessage, makeSystemChatMessage } from '@/factories/chat';
 import { GameResult } from '@/types/games';
@@ -269,6 +269,11 @@ export const configureIo = (server: HttpServer) => {
                 );
                 player.health = 0;
                 player.isAlive = false;
+                player.effectQueue = [];
+            }
+
+            if (player.isActivePlayer) {
+                passTurn(board);
             }
 
             const playerLeft = board.players.find((p) => p.isAlive);

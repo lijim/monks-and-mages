@@ -8,6 +8,13 @@ import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
 
+const getPlayers = (board: Board) => {
+    const { players } = board;
+    const activePlayer = players.find((player) => player.isActivePlayer);
+    const otherPlayers = players.filter((player) => !player.isActivePlayer);
+    return { players, activePlayer, otherPlayers };
+};
+
 /**
  * @returns {Object} next player who has not readied yet (by accepting their mulligan) or
  * null if everyone has readied up
@@ -31,8 +38,7 @@ const getNextUnreadyPlayer = (board: Board): Player => {
 };
 
 const getNextPlayer = (board: Board): Player => {
-    const { players } = board;
-    const activePlayer = players.find((player) => player.isActivePlayer);
+    const { players, activePlayer } = getPlayers(board);
     const activePlayerIndex = players.findIndex(
         (player) => player.isActivePlayer
     );
@@ -49,16 +55,30 @@ const getNextPlayer = (board: Board): Player => {
     return activePlayer;
 };
 
-export const applyWinState = (board: Board): Board => {
-    const { players } = board;
+/**
+ * Applies a win state based on the number of players alive and left in the game
+ * (0 is a tie, 1 is a win)
+ *
+ * This function is effectful!  It should only be in places where we're
+ * ok with mutating data and not just returning a new board state object
+ *
+ * @param {Object} board - board to analyze
+ * @returns board with a win state applied
+ */
+export function applyWinState(board: Board): Board {
+    const { players, activePlayer } = getPlayers(board);
     if (players.filter((player) => player.isAlive).length === 1) {
         board.gameState = GameState.WIN;
     }
     if (players.filter((player) => player.isAlive).length === 0) {
         board.gameState = GameState.TIE;
     }
+    if (!activePlayer.isAlive) {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        passTurn(board);
+    }
     return board;
-};
+}
 
 export const resetUnitCard = (unitCard: UnitCard) => {
     unitCard.passiveEffects = cloneDeep(unitCard.originalPassiveEffects);
@@ -125,6 +145,54 @@ export const processBoardToCemetery = (
     });
 };
 
+/**
+ * Effectful code to pass the turn to the next player
+ * @param {Object} board - board to analyze
+ * @returns the board, but with one turn passed to the next player
+ */
+export function passTurn(board: Board): Board {
+    let { activePlayer } = getPlayers(board);
+    const { players } = getPlayers(board);
+    activePlayer.resourcePool = {};
+    // tries to loop through all players, in case one draws out of their deck
+    // and loses the game
+    for (let i = 0; i < players.length; i += 1) {
+        const nextPlayer = getNextPlayer(board);
+        activePlayer.isActivePlayer = false;
+        nextPlayer.isActivePlayer = true;
+
+        // Check if the player is the only one alive (or if no one is alive)
+        if (players.filter((player) => player.isAlive).length <= 1) {
+            return board;
+        }
+
+        // Untap
+        nextPlayer.resources.forEach((resource) => {
+            resource.isUsed = false;
+        });
+
+        // give each unit it's starting number of attacks
+        nextPlayer.units.forEach((unit) => {
+            unit.numAttacksLeft = unit.numAttacks;
+        });
+
+        // If you draw out of the deck, you lose the game
+        if (nextPlayer.deck.length === 0) {
+            nextPlayer.isAlive = false;
+            applyWinState(board);
+            if (board.gameState !== GameState.PLAYING) return board;
+            activePlayer = nextPlayer;
+        } else {
+            // proceed to next turn
+            nextPlayer.resourcesLeftToDeploy = 1;
+            nextPlayer.hand.push(nextPlayer.deck.pop());
+            return board;
+        }
+    }
+
+    return board;
+}
+
 type ApplyGameActionParams = {
     addChatMessage?: (chatMessage: string) => void;
     board: Board;
@@ -140,10 +208,8 @@ export const applyGameAction = ({
     playerName,
 }: ApplyGameActionParams): Board => {
     const clonedBoard = cloneDeep(board);
-    const { players } = clonedBoard;
+    const { activePlayer, otherPlayers } = getPlayers(clonedBoard);
     const addSystemChat = (message: string) => addChatMessage?.(message);
-    let activePlayer = players.find((player) => player.isActivePlayer);
-    const otherPlayers = players.filter((player) => !player.isActivePlayer);
 
     // Error out when event is being emitted by the non-active player
     if (activePlayer?.name !== playerName) {
@@ -193,40 +259,7 @@ export const applyGameAction = ({
             return clonedBoard;
         }
         case GameActionTypes.PASS_TURN: {
-            activePlayer.resourcePool = {};
-            // tries to loop through all players, in case one draws out of their deck
-            // and loses the game
-            for (let i = 0; i < players.length; i += 1) {
-                const nextPlayer = getNextPlayer(clonedBoard);
-                activePlayer.isActivePlayer = false;
-                nextPlayer.isActivePlayer = true;
-
-                // Untap
-                nextPlayer.resources.forEach((resource) => {
-                    resource.isUsed = false;
-                });
-
-                // give each unit it's starting number of attacks
-                nextPlayer.units.forEach((unit) => {
-                    unit.numAttacksLeft = unit.numAttacks;
-                });
-
-                // If you draw out of the deck, you lose the game
-                if (nextPlayer.deck.length === 0) {
-                    nextPlayer.isAlive = false;
-                    applyWinState(clonedBoard);
-                    if (clonedBoard.gameState !== GameState.PLAYING)
-                        return clonedBoard;
-                    activePlayer = nextPlayer;
-                } else {
-                    // proceed to next turn
-                    nextPlayer.resourcesLeftToDeploy = 1;
-                    nextPlayer.hand.push(nextPlayer.deck.pop());
-                    return clonedBoard;
-                }
-            }
-
-            return clonedBoard;
+            return passTurn(clonedBoard);
         }
         case GameActionTypes.DEPLOY_RESOURCE: {
             const { cardId } = gameAction;
