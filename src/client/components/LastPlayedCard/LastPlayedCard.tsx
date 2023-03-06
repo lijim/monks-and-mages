@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Card } from '@/types/cards';
 import { CardGridItem } from '../CardGridItem';
 import { RootState } from '@/client/redux/store';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const OuterContainer = styled.div`
     display: grid;
@@ -35,7 +36,33 @@ export const LastPlayedCard: React.FC = () => {
     return (
         <OuterContainer>
             <span>Last Spell</span>
-            <CardGridItem card={lastPlayedCard} hasTooltip zoomLevel={0.8} />
+            <AnimatePresence>
+                <motion.div
+                    key={lastPlayedCard.id}
+                    initial="collapsed"
+                    animate="open"
+                    exit="collapsed"
+                    variants={{
+                        open: { opacity: 1, height: 'auto' },
+                        collapsed: { opacity: 0, height: 0 },
+                    }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <motion.div
+                        variants={{
+                            collapsed: { scale: 0 },
+                            open: { scale: 1 },
+                        }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <CardGridItem
+                            card={lastPlayedCard}
+                            hasTooltip
+                            zoomLevel={0.8}
+                        />
+                    </motion.div>
+                </motion.div>
+            </AnimatePresence>
         </OuterContainer>
     );
 };
