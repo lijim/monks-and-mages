@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useDispatch } from 'react-redux';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Card, PileOfCards } from '@/types/cards';
 import { splitDeckListToPiles } from '@/transformers/splitDeckListToPiles';
 import { CardGridItem } from '../CardGridItem';
@@ -34,7 +35,7 @@ const Centering = styled.div`
     margin: auto;
 `;
 
-const Pile = styled.div`
+const Pile = styled(motion.div)`
     display: block;
     width: 295px;
     grid-auto-rows: 34px;
@@ -88,32 +89,41 @@ export const DeckList: React.FC<DeckListProps> = ({
                 </>
             )}
             <Piles>
-                {piles.map((pile, pileIndex) => (
-                    <Pile key={pileIndex}>
-                        <h2>{pile.title}</h2>
-                        {[...pile.cards.entries()].map(
-                            ([card, quantity], cardIndex) => (
-                                <DeckListCardSlot
-                                    position={cardIndex}
-                                    key={cardIndex}
-                                >
-                                    {shouldShowQuantity && (
-                                        <QuantitySelector
-                                            quantity={quantity}
-                                        ></QuantitySelector>
-                                    )}
-                                    {'  '}
-                                    <CardGridItem
-                                        card={card}
-                                        onClick={() => {
-                                            onRemoveCard(card);
-                                        }}
-                                    />
-                                </DeckListCardSlot>
-                            )
-                        )}
-                    </Pile>
-                ))}
+                <AnimatePresence>
+                    {piles.map((pile, pileIndex) => (
+                        <Pile
+                            key={pileIndex}
+                            initial={{ opacity: 0.01, scale: 0.75 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h2>{pile.title}</h2>
+
+                            {[...pile.cards.entries()].map(
+                                ([card, quantity], cardIndex) => (
+                                    <DeckListCardSlot
+                                        position={cardIndex}
+                                        key={cardIndex}
+                                    >
+                                        {shouldShowQuantity && (
+                                            <QuantitySelector
+                                                quantity={quantity}
+                                            ></QuantitySelector>
+                                        )}
+                                        {'  '}
+                                        <CardGridItem
+                                            card={card}
+                                            onClick={() => {
+                                                onRemoveCard(card);
+                                            }}
+                                        />
+                                    </DeckListCardSlot>
+                                )
+                            )}
+                        </Pile>
+                    ))}
+                </AnimatePresence>
             </Piles>
         </Centering>
     );
