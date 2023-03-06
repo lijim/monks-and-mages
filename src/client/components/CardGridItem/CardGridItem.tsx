@@ -8,7 +8,6 @@ import { UnitGridItem } from '../UnitGridItem';
 import { GameManagerContext } from '../GameManager';
 import { AdvancedResourceGridItem } from '../AdvancedResourceGridItem.tsx';
 import { HandleClickOnCardParams } from '../GameManager/handleClickOnCard';
-import { motion } from 'framer-motion';
 
 interface CardGridItemProps {
     card: Card;

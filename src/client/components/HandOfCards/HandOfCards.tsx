@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import { getSelfPlayer } from '@/client/redux/selectors';
 import { CardGridItem } from '../CardGridItem';
 import { Card } from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { Player } from '@/types/board';
-import { AnimatePresence, motion } from 'framer-motion';
 
 /**
  * We use a dynamically recalculated grid-template-columns property in order to get

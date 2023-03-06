@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useDispatch } from 'react-redux';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Card, PileOfCards } from '@/types/cards';
 import { splitDeckListToPiles } from '@/transformers/splitDeckListToPiles';
 import { CardGridItem } from '../CardGridItem';
 import { QuantitySelector } from '../QuantitySelector';
 import { removeCard } from '@/client/redux/deckBuilder';
-import { AnimatePresence, motion } from 'framer-motion';
 
 interface DeckListProps {
     deck: Card[];

@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import { Card } from '@/types/cards';
 import { CardGridItem } from '../CardGridItem';
 import { RootState } from '@/client/redux/store';
-import { AnimatePresence, motion } from 'framer-motion';
 
 const OuterContainer = styled.div`
     display: grid;

@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Player } from '@/types/board';
 import { Colors } from '@/constants/colors';
 import { CardGridItem } from '../CardGridItem';
 import { getHighlightableCards } from '@/client/redux/selectors/getHighlightableCards';
 import { ORDERED_RESOURCES } from '@/types/resources';
-import { AnimatePresence, motion } from 'framer-motion';
 
 interface PlayerBoardSectionProps {
     isSelfPlayer?: boolean;
