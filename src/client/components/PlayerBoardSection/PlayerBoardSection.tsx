@@ -7,6 +7,7 @@ import { Colors } from '@/constants/colors';
 import { CardGridItem } from '../CardGridItem';
 import { getHighlightableCards } from '@/client/redux/selectors/getHighlightableCards';
 import { ORDERED_RESOURCES } from '@/types/resources';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface PlayerBoardSectionProps {
     isSelfPlayer?: boolean;
@@ -52,31 +53,51 @@ export const PlayerBoardSection: React.FC<PlayerBoardSectionProps> = ({
     );
     const unitsSection = (
         <PlayerBoardSectionRow>
-            {units.map((unitCard) => (
-                <CardGridItem
-                    card={unitCard}
-                    isHighlighted={highlightableUnits.indexOf(unitCard.id) > -1}
-                    key={unitCard.id}
-                    hasOnClick
-                    hasTooltip
-                    isOnBoard
-                    zoomLevel={0.6}
-                />
-            ))}
+            <AnimatePresence>
+                {units.map((unitCard) => (
+                    <motion.div
+                        initial={{ opacity: 0.01, scale: 0.75 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        key={unitCard.id}
+                    >
+                        <CardGridItem
+                            card={unitCard}
+                            isHighlighted={
+                                highlightableUnits.indexOf(unitCard.id) > -1
+                            }
+                            hasOnClick
+                            hasTooltip
+                            isOnBoard
+                            zoomLevel={0.6}
+                        />
+                    </motion.div>
+                ))}
+            </AnimatePresence>
         </PlayerBoardSectionRow>
     );
     const resourcesSection = (
         <PlayerBoardSectionRow>
-            {sortedResources.map((resourceCard) => (
-                <CardGridItem
-                    card={resourceCard}
-                    key={resourceCard.id}
-                    hasTooltip
-                    hasOnClick
-                    isOnBoard
-                    zoomLevel={0.6}
-                />
-            ))}
+            <AnimatePresence>
+                {sortedResources.map((resourceCard) => (
+                    <motion.div
+                        initial={{ opacity: 0.01, scale: 0.75 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        key={resourceCard.id}
+                    >
+                        <CardGridItem
+                            card={resourceCard}
+                            hasTooltip
+                            hasOnClick
+                            isOnBoard
+                            zoomLevel={0.6}
+                        />
+                    </motion.div>
+                ))}
+            </AnimatePresence>
         </PlayerBoardSectionRow>
     );
     return (
