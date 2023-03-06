@@ -27,6 +27,7 @@
         "cookiejs": "^2.1.2",
         "dotenv": "^16.0.1",
         "express": "^4.17.2",
+        "framer-motion": "^10.0.1",
         "history": "^5.3.0",
         "jsonwebtoken": "^8.5.1",
         "lodash.clonedeep": "^4.5.0",

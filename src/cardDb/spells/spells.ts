@@ -1334,7 +1334,7 @@ const WRECK_SHIPS = makeCard({
 const HISTORICAL_RESEARCH = makeCard({
     name: 'Historical Research',
     imgSrc: 'https://images.pexels.com/photos/1557251/pexels-photo-1557251.jpeg',
-    cost: { [Resource.GENERIC]: 5 },
+    cost: { [Resource.GENERIC]: 2 },
     effects: [
         {
             type: EffectType.EXTRACT_CARD,
