@@ -8,6 +8,7 @@ import { UnitGridItem } from '../UnitGridItem';
 import { GameManagerContext } from '../GameManager';
 import { AdvancedResourceGridItem } from '../AdvancedResourceGridItem.tsx';
 import { HandleClickOnCardParams } from '../GameManager/handleClickOnCard';
+import { getAssociatedCards, modifyCardForTooltip } from '@/transformers';
 
 interface CardGridItemProps {
     card: Card;
@@ -143,8 +144,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
         trigger: ['focus', 'hover'],
     });
 
-    const cardModifiedForTooltip =
-        card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;
+    const associatedCards = getAssociatedCards(card);
 
     return (
         <>
@@ -171,10 +171,30 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                     })}
                 >
                     <div>
-                        <CardGridSingleItem
-                            isOnBoard={isOnBoard}
-                            card={cardModifiedForTooltip}
-                        />
+                        <div
+                            style={{
+                                display: 'grid',
+                                gap: '4px',
+                                gridAutoFlow: 'column',
+                            }}
+                        >
+                            <CardGridSingleItem
+                                isOnBoard={isOnBoard}
+                                card={modifyCardForTooltip(card)}
+                            />
+                            {!isOnBoard &&
+                                associatedCards.map(
+                                    (associatedCard) =>
+                                        associatedCard && (
+                                            <CardGridSingleItem
+                                                isOnBoard={false}
+                                                card={modifyCardForTooltip(
+                                                    associatedCard
+                                                )}
+                                            />
+                                        )
+                                )}
+                        </div>
                         {isOnBoard && <HelperText card={card} />}
                     </div>
                     <div

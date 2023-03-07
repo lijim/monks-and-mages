@@ -1,5 +1,5 @@
 import { SpellCards } from '@/cardDb/spells';
-import { UnitCards } from '@/cardDb/units';
+import { Tokens, UnitCards } from '@/cardDb/units';
 import { DeckList } from '@/types/cards';
 import { Resource } from '@/types/resources';
 import { makeResourceCard } from '@/factories/cards';
@@ -289,6 +289,26 @@ export const ALL_CARDS: DeckList = [
         return { card, quantity: 1 };
     }),
     ...Object.values(UnitCards).map((card) => {
+        return { card, quantity: 1 };
+    }),
+];
+
+export const ALL_CARDS_AND_TOKENS: DeckList = [
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 1 },
+    { card: makeResourceCard(Resource.CRYSTAL), quantity: 1 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 1 },
+    { card: makeResourceCard(Resource.IRON), quantity: 1 },
+    { card: makeResourceCard(Resource.WATER), quantity: 1 },
+    ...Object.values(AdvancedResourceCards).map((card) => {
+        return { card, quantity: 1 };
+    }),
+    ...Object.values(SpellCards).map((card) => {
+        return { card, quantity: 1 };
+    }),
+    ...Object.values(UnitCards).map((card) => {
+        return { card, quantity: 1 };
+    }),
+    ...Object.values(Tokens).map((card) => {
         return { card, quantity: 1 };
     }),
 ];

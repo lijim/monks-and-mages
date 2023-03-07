@@ -1002,10 +1002,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash.clonedeep@^4.5.6":
-  version "4.5.6"
-  resolved "https://registry.yarnpkg.com/@types/lodash.clonedeep/-/lodash.clonedeep-4.5.6.tgz#3b6c40a0affe0799a2ce823b440a6cf33571d32b"
-  integrity sha512-cE1jYr2dEg1wBImvXlNtp0xDoS79rfEdGozQVgliDZj1uERH4k+rmEMTudP9b4VQ8O6nRb5gPqft0QzEQGMQgA==
+"@types/lodash.clonedeep@^4.5.7":
+  version "4.5.7"
+  resolved "https://registry.yarnpkg.com/@types/lodash.clonedeep/-/lodash.clonedeep-4.5.7.tgz#0e119f582ed6f9e6b373c04a644651763214f197"
+  integrity sha512-ccNqkPptFIXrpVqUECi60/DFxjNKsfoQxSQsgcBJCX/fuX1wgyQieojkcWH/KpE3xzLoWN/2k+ZeGqIN3paSvw==
   dependencies:
     "@types/lodash" "*"
 
@@ -1034,6 +1034,13 @@
   version "4.2.6"
   resolved "https://registry.yarnpkg.com/@types/lodash.shuffle/-/lodash.shuffle-4.2.6.tgz#191b0fc66699214558352123811d1657d9ed8930"
   integrity sha512-ucI9VswlV9jOZiIh43Nd0tJ4Z8pfXy3PbQ9cB6Re1gPds8gLbOdmB0l3UkVI2crZjnQB95bhyNZVEDH8DgglYA==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash.uniqby@^4.7.7":
+  version "4.7.7"
+  resolved "https://registry.yarnpkg.com/@types/lodash.uniqby/-/lodash.uniqby-4.7.7.tgz#48dbb652c41cc8fb30aa61a44174368081835ab5"
+  integrity sha512-sv2g6vkCIvEUsK5/Vq17haoZaisfj2EWW8mP7QWlnKi6dByoNmeuHDDXHR7sabuDqwO4gvU7ModIL22MmnOocg==
   dependencies:
     "@types/lodash" "*"
 
@@ -4993,6 +5000,11 @@ lodash.shuffle@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.shuffle/-/lodash.shuffle-4.2.0.tgz#145b5053cf875f6f5c2a33f48b6e9948c6ec7b4b"
   integrity sha1-FFtQU8+HX29cKjP0i26ZSMbse0s=
+
+lodash.uniqby@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/lodash.uniqby/-/lodash.uniqby-4.7.0.tgz#d99c07a669e9e6d24e1362dfe266c67616af1302"
+  integrity sha512-e/zcLx6CSbmaEgFHCA7BnoQKyCtKMxnuWrJygbwPs/AIn+IMKl66L8/s+wBUn5LRw2pZx3bUHibiV1b6aTWIww==
 
 lodash@>=4.17.21, lodash@^4.17.11, lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.7.0:
   version "4.17.21"

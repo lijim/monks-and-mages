@@ -5,13 +5,15 @@ import styled from 'styled-components';
 
 import { useDispatch } from 'react-redux';
 import { Card, CardType } from '@/types/cards';
-import { splitDeckListToPiles } from '@/transformers/splitDeckListToPiles';
-import { QuantitySelector } from '../QuantitySelector';
-import { CastingCost } from '../CastingCost';
 import {
+    splitDeckListToPiles,
     getColorsForCard,
     getSecondaryColorForCard,
-} from '@/transformers/getColorsForCard';
+    modifyCardForTooltip,
+    getAssociatedCards,
+} from '@/transformers';
+import { QuantitySelector } from '../QuantitySelector';
+import { CastingCost } from '../CastingCost';
 import { RESOURCE_GLOSSARY } from '@/types/resources';
 import { CardGridSingleItem } from '../CardGridItem';
 import { Colors } from '@/constants/colors';
@@ -102,9 +104,7 @@ const MiniCard: React.FC<MiniCardProps> = ({
         placement: 'right',
     });
 
-    const cardModifiedForTooltip =
-        card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;
-
+    const associatedCards = getAssociatedCards(card);
     const { primaryColor, secondaryColor } = getColorsForCard(card);
     const onAddCard = () => {
         dispatch(addCard(card));
@@ -153,10 +153,29 @@ const MiniCard: React.FC<MiniCardProps> = ({
                             className: 'tooltip-container',
                         })}
                     >
-                        <CardGridSingleItem
-                            isOnBoard={false}
-                            card={cardModifiedForTooltip}
-                        />
+                        <div
+                            style={{
+                                display: 'grid',
+                                gap: '4px',
+                                gridAutoFlow: 'column',
+                            }}
+                        >
+                            <CardGridSingleItem
+                                isOnBoard={false}
+                                card={modifyCardForTooltip(card)}
+                            />
+                            {associatedCards.map(
+                                (associatedCard) =>
+                                    associatedCard && (
+                                        <CardGridSingleItem
+                                            isOnBoard={false}
+                                            card={modifyCardForTooltip(
+                                                associatedCard
+                                            )}
+                                        />
+                                    )
+                            )}
+                        </div>
                         <div
                             {...getArrowProps({
                                 className: 'tooltip-arrow',
