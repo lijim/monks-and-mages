@@ -7,6 +7,7 @@ import { Card, CardType, ResourceCard, UnitCard } from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
+import { PlayerConstants } from '@/constants/gameConstants';
 
 const getPlayers = (board: Board) => {
     const { players } = board;
@@ -222,6 +223,12 @@ export const applyGameAction = ({
             addSystemChat(
                 `${activePlayer.name} has accepted a hand of ${activePlayer.hand.length} cards`
             );
+            if (
+                activePlayer.hand.length <
+                PlayerConstants.STARTING_HAND_SIZE - 1
+            ) {
+                activePlayer.hand.push(activePlayer.deck.pop());
+            }
             const nextPlayer = getNextUnreadyPlayer(clonedBoard);
             if (!nextPlayer) {
                 // everyone has readied up, start the game
