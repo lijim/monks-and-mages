@@ -10,6 +10,7 @@ import { WebSocketContext } from '../WebSockets';
 import { GameActionTypes } from '@/types/gameActions';
 import { PrimaryColorButton, SecondaryColorButton } from '../Button';
 import { Colors } from '@/constants/colors';
+import { PlayerConstants } from '@/constants/gameConstants';
 
 export const ACCEPT_MULLIGAN_COPY = 'This hand looks good';
 export const REJECT_MULLIGAN_COPY = 'No, send it back (but have 1 fewer card)';
@@ -49,6 +50,12 @@ const MulliganPrompt: React.FC = () => {
                         {REJECT_MULLIGAN_COPY}
                     </SecondaryColorButton>
                 </div>
+                <hr style={{ visibility: 'hidden' }} />
+                <span>
+                    Players going to {PlayerConstants.STARTING_HAND_SIZE - 2}{' '}
+                    cards or below draw an extra card to make up for their bad
+                    luck
+                </span>
             </>
         );
     }
