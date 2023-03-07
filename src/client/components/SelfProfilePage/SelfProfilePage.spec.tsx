@@ -75,4 +75,11 @@ describe('Self Profile Page', () => {
             await screen.findByText('Level 2 - Manta Ray')
         ).toBeInTheDocument();
     });
+
+    it('displays the next unlock', async () => {
+        render(<SelfProfilePage />);
+        expect(
+            await screen.findByText('Next Unlock: Level 3 - Bamboo Farmer')
+        ).toBeInTheDocument();
+    });
 });
