@@ -7,6 +7,7 @@ import { EffectType } from '@/types/effects';
 import { render } from '@/test-utils';
 
 import { AdvancedResourceGridItem } from './AdvancedResourceGridItem';
+import { CardRarity } from '@/types/cards';
 
 describe('Advanced Resource Card Grid Item', () => {
     it('renders rules text about tapping for 1 resources', () => {
@@ -20,6 +21,7 @@ describe('Advanced Resource Card Grid Item', () => {
                     strength: 1,
                 },
             ],
+            rarity: CardRarity.COMMON,
         });
 
         render(<AdvancedResourceGridItem card={advancedResourceCard} />);
@@ -40,6 +42,7 @@ describe('Advanced Resource Card Grid Item', () => {
                     strength: 1,
                 },
             ],
+            rarity: CardRarity.COMMON,
         });
 
         render(<AdvancedResourceGridItem card={advancedResourceCard} />);
@@ -55,6 +58,7 @@ describe('Advanced Resource Card Grid Item', () => {
             imgSrc: '/images/example.avif',
             enterEffects: [],
             comesInTapped: true,
+            rarity: CardRarity.COMMON,
         });
 
         render(<AdvancedResourceGridItem card={advancedResourceCard} />);
@@ -74,6 +78,7 @@ describe('Advanced Resource Card Grid Item', () => {
                     strength: 1,
                 },
             ],
+            rarity: CardRarity.COMMON,
         });
         const mockOnClick = jest.fn();
 
@@ -100,6 +105,7 @@ describe('Advanced Resource Card Grid Item', () => {
                     strength: 1,
                 },
             ],
+            rarity: CardRarity.COMMON,
         });
         const mockOnClick = jest.fn();
         render(
@@ -130,6 +136,7 @@ describe('Advanced Resource Card Grid Item', () => {
                     strength: 1,
                 },
             ],
+            rarity: CardRarity.COMMON,
         });
         const mockOnClick = jest.fn();
         render(
