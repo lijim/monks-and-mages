@@ -101,7 +101,7 @@ const MAGICIANS_APPRENTICE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const THE_ORACLE: UnitCard = makeCard({

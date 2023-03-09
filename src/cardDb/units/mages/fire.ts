@@ -222,7 +222,7 @@ const FIRE_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const DEMON_CALLER: UnitCard = makeCard({

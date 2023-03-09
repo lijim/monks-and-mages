@@ -228,7 +228,7 @@ const NOVICE_ASTRONOMER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const ENERGY_ENHANCER: UnitCard = makeCard({
@@ -567,7 +567,7 @@ const INCONSPICUOUS_CRAB: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 const RULER_OF_THE_JUNGLE: UnitCard = makeCard({

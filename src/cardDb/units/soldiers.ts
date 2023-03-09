@@ -301,7 +301,7 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const VILLAGE_DEFENDER: UnitCard = makeCard({
@@ -469,7 +469,7 @@ const WARRIOR_OF_THE_LAKE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const KNIGHT_TEMPLAR: UnitCard = makeCard({
@@ -488,7 +488,7 @@ const KNIGHT_TEMPLAR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const WU_SONG_PILGRIM: UnitCard = makeCard({

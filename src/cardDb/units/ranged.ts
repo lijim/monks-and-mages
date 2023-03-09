@@ -120,7 +120,7 @@ const SILENT_MARKSWOMAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const CANYON_ELITE: UnitCard = makeCard({
@@ -150,7 +150,7 @@ const CANYON_ELITE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const CAVALRY_ARCHER: UnitCard = makeCard({
@@ -169,7 +169,7 @@ const CAVALRY_ARCHER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const WINGED_SAVIOR: UnitCard = makeCard({
@@ -190,7 +190,7 @@ const WINGED_SAVIOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.HEARTY],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 const THE_MONKEY_KING: UnitCard = makeCard({
@@ -262,7 +262,7 @@ const EXCELLENT_EQUESTRIAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.COMMON,
 });
 
 const MERRY_RALLIER: UnitCard = makeCard({
@@ -285,7 +285,7 @@ const MERRY_RALLIER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const CANNON: UnitCard = makeCard({
@@ -311,7 +311,7 @@ const CANNON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const INFERNALIST: UnitCard = makeCard({
@@ -335,7 +335,7 @@ const INFERNALIST: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ELITE_ARCHER: UnitCard = makeCard({
@@ -360,7 +360,7 @@ const ELITE_ARCHER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 const MAHADEV: UnitCard = makeCard({

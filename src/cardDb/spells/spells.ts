@@ -36,7 +36,7 @@ const EMBER_SPEAR = makeCard({
             strength: 3,
         },
     ],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const WARPATH = makeCard({
@@ -50,7 +50,7 @@ const WARPATH = makeCard({
             target: TargetTypes.OPPOSING_UNIT,
         },
     ],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const INCINERATION = makeCard({

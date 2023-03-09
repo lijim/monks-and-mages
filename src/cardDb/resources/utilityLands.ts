@@ -21,7 +21,7 @@ const COASTAL_CASTLE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const BAMBOO_FOOTBRIDGE = makeAdvancedResourceCard({
@@ -40,7 +40,7 @@ const BAMBOO_FOOTBRIDGE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const SLAG_FIELDS = makeAdvancedResourceCard({
@@ -57,7 +57,7 @@ const SLAG_FIELDS = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const STARGAZERS_POINT = makeAdvancedResourceCard({
@@ -80,7 +80,7 @@ const STARGAZERS_POINT = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const HOLY_TEMPLE = makeAdvancedResourceCard({
@@ -99,7 +99,7 @@ const HOLY_TEMPLE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 // Set 2
@@ -120,7 +120,7 @@ const CHILLY_BERG = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const FERTILE_FIELDS = makeAdvancedResourceCard({
@@ -139,7 +139,7 @@ const FERTILE_FIELDS = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const OLD_FARMHOUSE = makeAdvancedResourceCard({
@@ -157,7 +157,7 @@ const OLD_FARMHOUSE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const FOG_POINT = makeAdvancedResourceCard({
@@ -176,7 +176,7 @@ const FOG_POINT = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const LAVA_RIVER = makeAdvancedResourceCard({
@@ -196,7 +196,7 @@ const LAVA_RIVER = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const TREACHEROUS_DESERT = makeAdvancedResourceCard({
@@ -213,7 +213,7 @@ const TREACHEROUS_DESERT = makeAdvancedResourceCard({
             target: TargetTypes.ALL_PLAYERS,
         },
     ],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 export const UTILITY_LANDS = {

@@ -213,7 +213,7 @@ const LONE_TOWER = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const MYSTIFYING_LAKE = makeAdvancedResourceCard({
@@ -233,7 +233,7 @@ const MYSTIFYING_LAKE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const UNPERTURBED_CAMPGROUNDS = makeAdvancedResourceCard({
@@ -253,7 +253,7 @@ const UNPERTURBED_CAMPGROUNDS = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const DIVINE_PALACE = makeAdvancedResourceCard({
@@ -272,7 +272,7 @@ const DIVINE_PALACE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const TROUBLED_PARADISE = makeAdvancedResourceCard({
@@ -292,7 +292,7 @@ const TROUBLED_PARADISE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const HEALING_PLAINS = makeAdvancedResourceCard({
@@ -311,7 +311,7 @@ const HEALING_PLAINS = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const ORNATE_TEMPLE = makeAdvancedResourceCard({
@@ -331,7 +331,7 @@ const ORNATE_TEMPLE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const ROYAL_RESIDENCE = makeAdvancedResourceCard({
@@ -351,7 +351,7 @@ const ROYAL_RESIDENCE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const CITY_CANALS = makeAdvancedResourceCard({
@@ -371,7 +371,7 @@ const CITY_CANALS = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const PREFECTURE_CAPITAL = makeAdvancedResourceCard({
@@ -391,7 +391,7 @@ const PREFECTURE_CAPITAL = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 export const AdvancedResourceCards = {
