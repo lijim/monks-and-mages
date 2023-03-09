@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
@@ -20,6 +20,7 @@ const GIANT_JELLY: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FROST_WYRM: UnitCard = makeCard({
@@ -44,6 +45,7 @@ const FROST_WYRM: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const MEDITATION_EXPERT: UnitCard = makeCard({
@@ -67,6 +69,7 @@ const MEDITATION_EXPERT: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const MANTA_RAY_CONJURER: UnitCard = makeCard({
@@ -91,6 +94,7 @@ const MANTA_RAY_CONJURER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const TINY_MERMAID: UnitCard = makeCard({
@@ -115,6 +119,7 @@ const TINY_MERMAID: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const RAIN_CHANNELER: UnitCard = makeCard({
@@ -138,6 +143,7 @@ const RAIN_CHANNELER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const WAVING_FISHERMAN: UnitCard = makeCard({
@@ -164,6 +170,7 @@ const WAVING_FISHERMAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const MISBEGOTTEN_MISTWALKER = makeCard({
@@ -194,6 +201,7 @@ const MISBEGOTTEN_MISTWALKER = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const WATER_MAGE: UnitCard = makeCard({
@@ -218,6 +226,7 @@ const WATER_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const PELAGIC_PREDATOR = makeCard({
@@ -242,6 +251,7 @@ const PELAGIC_PREDATOR = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const PEACE_BRINGER = makeCard({
@@ -267,6 +277,7 @@ const PEACE_BRINGER = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const CURSED_CHIEFTAIN: UnitCard = makeCard({
@@ -296,6 +307,7 @@ const CURSED_CHIEFTAIN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const AQUARIAN_ADEPT: UnitCard = makeCard({
@@ -315,6 +327,7 @@ const AQUARIAN_ADEPT: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const THUNDER_SCHEDULER: UnitCard = makeCard({
@@ -345,6 +358,7 @@ const THUNDER_SCHEDULER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const MAELSTROM_SEEKER: UnitCard = makeCard({
@@ -370,6 +384,7 @@ const MAELSTROM_SEEKER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const CHAD_THE_AQUAPHILE: UnitCard = makeCard({
@@ -397,6 +412,7 @@ const CHAD_THE_AQUAPHILE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const WATER_GUARDIAN: UnitCard = makeCard({
@@ -427,6 +443,7 @@ const WATER_GUARDIAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const WATER_MAGES = {

@@ -25,7 +25,14 @@ export const FreeTextFilters: React.FC = () => {
     );
 
     return (
-        <div style={{ marginBottom: '4px', zoom: 1.5 }}>
+        <div
+            style={{
+                marginBottom: '4px',
+                zoom: 1.5,
+                display: 'flex',
+                gap: '4px',
+            }}
+        >
             <input
                 type="text"
                 value={freeText}

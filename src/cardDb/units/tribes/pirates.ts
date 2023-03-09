@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
@@ -20,6 +20,7 @@ const NOBLE_STEED: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SCHEMING_EXPLORER: UnitCard = makeCard({
@@ -46,6 +47,7 @@ const SCHEMING_EXPLORER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const ELDER_PIRATE: UnitCard = makeCard({
@@ -70,6 +72,7 @@ const ELDER_PIRATE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const DARING_CORSAIR: UnitCard = makeCard({
@@ -94,6 +97,7 @@ const DARING_CORSAIR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const SHIP_COXSWAIN: UnitCard = makeCard({
@@ -119,6 +123,7 @@ const SHIP_COXSWAIN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const CUTLASS_CRUSADER: UnitCard = makeCard({
@@ -145,6 +150,7 @@ const CUTLASS_CRUSADER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 export const PIRATES = {

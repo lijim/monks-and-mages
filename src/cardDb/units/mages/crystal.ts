@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -18,6 +18,7 @@ const THIRD_YEAR_STUDENTS: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const IGNUS_FATUUS: UnitCard = makeCard({
@@ -48,6 +49,7 @@ const IGNUS_FATUUS: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SPIRIT_TENDER: UnitCard = makeCard({
@@ -75,6 +77,7 @@ const SPIRIT_TENDER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const MAGICIANS_APPRENTICE: UnitCard = makeCard({
@@ -98,6 +101,7 @@ const MAGICIANS_APPRENTICE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const THE_ORACLE: UnitCard = makeCard({
@@ -123,6 +127,7 @@ const THE_ORACLE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const FAE_DRAGON: UnitCard = makeCard({
@@ -147,6 +152,7 @@ const FAE_DRAGON: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const CYRUS_PURPLE_DRAGON: UnitCard = makeCard({
@@ -173,6 +179,7 @@ const CYRUS_PURPLE_DRAGON: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const CRYSTAL_MAGES = {

@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
@@ -20,6 +20,7 @@ const DRAGON_TAMER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FIRE_TECHNICIAN: UnitCard = makeCard({
@@ -43,6 +44,7 @@ const FIRE_TECHNICIAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const AUTUMN_SHAMAN: UnitCard = makeCard({
@@ -68,6 +70,7 @@ const AUTUMN_SHAMAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const PYROCALLER: UnitCard = makeCard({
@@ -91,6 +94,7 @@ const PYROCALLER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const MYSTICAL_FIGURE: UnitCard = makeCard({
@@ -116,6 +120,7 @@ const MYSTICAL_FIGURE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const LA_CATRINA: UnitCard = makeCard({
@@ -141,6 +146,7 @@ const LA_CATRINA: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ZEALOUS_ACOLYTE: UnitCard = makeCard({
@@ -166,6 +172,7 @@ const ZEALOUS_ACOLYTE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const IMPRESSIVE_DANCER: UnitCard = makeCard({
@@ -190,6 +197,7 @@ const IMPRESSIVE_DANCER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FIRE_MAGE: UnitCard = makeCard({
@@ -214,6 +222,7 @@ const FIRE_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const DEMON_CALLER: UnitCard = makeCard({
@@ -240,6 +249,7 @@ const DEMON_CALLER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const FIRE_STARTER: UnitCard = makeCard({
@@ -266,6 +276,7 @@ const FIRE_STARTER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FLAME_PRESERVER: UnitCard = makeCard({
@@ -289,6 +300,7 @@ const FLAME_PRESERVER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const MIDNIGHT_HELLSPAWN: UnitCard = makeCard({
@@ -314,6 +326,7 @@ const MIDNIGHT_HELLSPAWN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const INFERNO_SORCEROR: UnitCard = makeCard({
@@ -348,6 +361,7 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const FIRE_MAGES = {

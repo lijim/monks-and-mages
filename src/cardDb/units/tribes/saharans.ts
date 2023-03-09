@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -30,6 +30,7 @@ const FORTUNE_PREDICTOR: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const CAPTAIN_OF_THE_GUARD: UnitCard = makeCard({
@@ -59,6 +60,7 @@ const CAPTAIN_OF_THE_GUARD: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 export const SAHARANS = {

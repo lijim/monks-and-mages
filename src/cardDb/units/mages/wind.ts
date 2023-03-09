@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -19,6 +19,7 @@ const FERRY_OPERATOR = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FLUX_FIGHTER = makeCard({
@@ -44,6 +45,7 @@ const FLUX_FIGHTER = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FROSTBURN_MAGE = makeCard({
@@ -68,6 +70,7 @@ const FROSTBURN_MAGE = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 const HEAVENLY_FERRIER = makeCard({
@@ -92,6 +95,7 @@ const HEAVENLY_FERRIER = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 const ARCHANGEL = makeCard({
@@ -120,6 +124,7 @@ const ARCHANGEL = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const WIND_MAGE: UnitCard = makeCard({
@@ -148,6 +153,7 @@ const WIND_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const WIND_MAGES = {

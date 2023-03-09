@@ -2,6 +2,7 @@ import { makeAdvancedResourceCard } from '@/factories/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { UTILITY_LANDS } from './utilityLands';
+import { CardRarity } from '@/types/cards';
 
 // Duals - self ping duals
 const STRATOVOLCANO = makeAdvancedResourceCard({
@@ -20,6 +21,7 @@ const STRATOVOLCANO = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const SEASIDE_COVE = makeAdvancedResourceCard({
@@ -38,6 +40,7 @@ const SEASIDE_COVE = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const BLACK_MARSH = makeAdvancedResourceCard({
@@ -56,6 +59,7 @@ const BLACK_MARSH = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const SAHARAN_DESERT = makeAdvancedResourceCard({
@@ -74,6 +78,7 @@ const SAHARAN_DESERT = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const CLOUD_HAVEN = makeAdvancedResourceCard({
@@ -92,6 +97,7 @@ const CLOUD_HAVEN = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const DRAGONS_NEST = makeAdvancedResourceCard({
@@ -110,6 +116,7 @@ const DRAGONS_NEST = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const SMELTING_FORGE = makeAdvancedResourceCard({
@@ -128,6 +135,7 @@ const SMELTING_FORGE = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const LUSH_REEF = makeAdvancedResourceCard({
@@ -146,6 +154,7 @@ const LUSH_REEF = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const HARBOR_TOWN = makeAdvancedResourceCard({
@@ -164,6 +173,7 @@ const HARBOR_TOWN = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const TANGLED_RUINS = makeAdvancedResourceCard({
@@ -182,6 +192,7 @@ const TANGLED_RUINS = makeAdvancedResourceCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 // Duals, heal lands
@@ -202,6 +213,7 @@ const LONE_TOWER = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const MYSTIFYING_LAKE = makeAdvancedResourceCard({
@@ -221,6 +233,7 @@ const MYSTIFYING_LAKE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const UNPERTURBED_CAMPGROUNDS = makeAdvancedResourceCard({
@@ -240,6 +253,7 @@ const UNPERTURBED_CAMPGROUNDS = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const DIVINE_PALACE = makeAdvancedResourceCard({
@@ -258,6 +272,7 @@ const DIVINE_PALACE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const TROUBLED_PARADISE = makeAdvancedResourceCard({
@@ -277,6 +292,7 @@ const TROUBLED_PARADISE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const HEALING_PLAINS = makeAdvancedResourceCard({
@@ -295,6 +311,7 @@ const HEALING_PLAINS = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ORNATE_TEMPLE = makeAdvancedResourceCard({
@@ -314,6 +331,7 @@ const ORNATE_TEMPLE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ROYAL_RESIDENCE = makeAdvancedResourceCard({
@@ -333,6 +351,7 @@ const ROYAL_RESIDENCE = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const CITY_CANALS = makeAdvancedResourceCard({
@@ -352,6 +371,7 @@ const CITY_CANALS = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const PREFECTURE_CAPITAL = makeAdvancedResourceCard({
@@ -371,6 +391,7 @@ const PREFECTURE_CAPITAL = makeAdvancedResourceCard({
         },
     ],
     comesInTapped: true,
+    rarity: CardRarity.UNCOMMON,
 });
 
 export const AdvancedResourceCards = {

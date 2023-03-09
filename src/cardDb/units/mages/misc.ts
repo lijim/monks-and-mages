@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { Resource } from '@/types/resources';
 
 const OLD_TROLL: UnitCard = makeCard({
@@ -18,6 +18,7 @@ const OLD_TROLL: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 export const MISC_MAGES = { OLD_TROLL };
