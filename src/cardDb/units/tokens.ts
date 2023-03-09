@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -18,6 +18,7 @@ const FROG: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FRIAR: UnitCard = makeCard({
@@ -36,6 +37,7 @@ const FRIAR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const PIRATE_PARROT: UnitCard = makeCard({
@@ -53,6 +55,7 @@ const PIRATE_PARROT: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const DEMON: UnitCard = makeCard({
@@ -70,6 +73,7 @@ const DEMON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FALCON: UnitCard = makeCard({
@@ -87,6 +91,7 @@ const FALCON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const MANTA_RAY: UnitCard = makeCard({
@@ -104,6 +109,7 @@ const MANTA_RAY: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const MANATEE: UnitCard = makeCard({
@@ -121,6 +127,7 @@ const MANATEE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const LION: UnitCard = makeCard({
@@ -138,6 +145,7 @@ const LION: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const SCORPION: UnitCard = makeCard({
@@ -155,6 +163,7 @@ const SCORPION: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED],
+    rarity: CardRarity.COMMON,
 });
 
 const SHARK: UnitCard = makeCard({
@@ -173,6 +182,7 @@ const SHARK: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const GOLEM_DRAGON: UnitCard = makeCard({
@@ -191,6 +201,7 @@ const GOLEM_DRAGON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const OCTOPUS: UnitCard = makeCard({
@@ -209,6 +220,7 @@ const OCTOPUS: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 export const Tokens = {

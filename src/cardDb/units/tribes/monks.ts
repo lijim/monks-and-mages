@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -19,6 +19,7 @@ const ASSASSIN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const BOUNTY_COLLECTOR: UnitCard = makeCard({
@@ -38,6 +39,7 @@ const BOUNTY_COLLECTOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED, PassiveEffect.QUICK],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const DISCIPLINED_WARRIOR: UnitCard = makeCard({
@@ -57,6 +59,7 @@ const DISCIPLINED_WARRIOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SHADOW_STRIKER: UnitCard = makeCard({
@@ -76,6 +79,7 @@ const SHADOW_STRIKER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED, PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 const TIGER_GENERAL: UnitCard = makeCard({
@@ -96,6 +100,7 @@ const TIGER_GENERAL: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const MONKS = {

@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
@@ -26,6 +26,7 @@ const TRAINEE_DIVER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SEASONAL_CROPHAND: UnitCard = makeCard({
@@ -50,6 +51,7 @@ const SEASONAL_CROPHAND: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ENTERPRISING_VENDOR: UnitCard = makeCard({
@@ -76,6 +78,7 @@ const ENTERPRISING_VENDOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const CALM_SUMMONER: UnitCard = makeCard({
@@ -105,6 +108,7 @@ const CALM_SUMMONER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 const DEEP_SEA_EXPLORER: UnitCard = makeCard({
@@ -139,6 +143,7 @@ const DEEP_SEA_EXPLORER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const ICTHYOMANCER: UnitCard = makeCard({
@@ -164,6 +169,7 @@ const ICTHYOMANCER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 export const DIVERS = {

@@ -2,34 +2,43 @@ import { PartialRecord } from './generics';
 import { PassiveEffect, TargetTypes, EffectType } from './effects';
 import { Resource } from './resources';
 
+export enum CardRarity {
+    COMMON = 'Common',
+    MYTHIC = 'Mythic',
+    RARE = 'Rare',
+    UNCOMMON = 'Uncommon',
+}
+
 export enum CardType {
     RESOURCE = 'Resource',
     SPELL = 'Spell',
     UNIT = 'Unit',
 }
 
-export type ResourceCard = {
+type CardBase = {
     artistName?: string;
     artistUrl?: string;
+    id?: string;
+    imgSrc?: string;
+    rarity: CardRarity;
+};
+
+export interface ResourceCard extends CardBase {
     cardType: CardType.RESOURCE;
     comesInTapped?: boolean;
     enterEffects?: Effect[];
-    id?: string;
-    imgSrc?: string;
     isAdvanced?: boolean;
     isUsed: boolean; // if true, player has currently used up this resource for turn
     name: string;
     originalImagePage?: string;
     resourceType: Resource;
     secondaryResourceType?: Resource;
-};
+}
 
 /**
  * Needs to be here due to circular dependencies
  */
 export type Effect = {
-    artistName?: string;
-    artistUrl?: string;
     cardName?: string;
     resourceType?: Resource;
     secondaryCardName?: string;
@@ -42,15 +51,12 @@ export type Effect = {
 /**
  * Unit Base is the construct needed to construct a unit card.
  */
-export type UnitBase = {
-    artistName?: string;
-    artistUrl?: string;
+export interface UnitBase extends CardBase {
     attack: number;
     cost: PartialRecord<Resource, number>;
     damagePlayerEffects?: Effect[];
     description: string;
     enterEffects: Effect[];
-    imgSrc?: string;
     isLegendary?: boolean;
     // can attack without being hit back 🏹
     isMagical: boolean;
@@ -67,7 +73,7 @@ export type UnitBase = {
     // all units except magic must attack soldiers first 🛡️
     passiveEffects: PassiveEffect[];
     totalHp: number; // max HP
-};
+}
 
 /**
  * Represents the full Unit Card that has been made from a unit base.
@@ -87,16 +93,13 @@ export interface UnitCard extends UnitBase {
 
 export type UnitType = 'Magical' | 'Soldier' | 'Ranged' | 'None';
 
-export type SpellBase = {
-    artistName?: string;
-    artistUrl?: string;
+export interface SpellBase extends CardBase {
     cost: PartialRecord<Resource, number>;
     effects: Effect[];
-    imgSrc?: string;
     name: string;
     originalCost?: PartialRecord<Resource, number>;
     originalImagePage?: string;
-};
+}
 
 export interface SpellCard extends SpellBase {
     cardType: CardType.SPELL;

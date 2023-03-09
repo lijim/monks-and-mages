@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -27,6 +27,7 @@ const FLAME_FORGED_HOPLITE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const LANCER: UnitCard = makeCard({
@@ -44,6 +45,7 @@ const LANCER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const INFANTRY_OFFICER: UnitCard = makeCard({
@@ -61,6 +63,7 @@ const INFANTRY_OFFICER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const PIKEMAN: UnitCard = makeCard({
@@ -85,6 +88,7 @@ const PIKEMAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const QUESTING_DUO: UnitCard = makeCard({
@@ -109,6 +113,7 @@ const QUESTING_DUO: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const UNHOLY_VETERAN: UnitCard = makeCard({
@@ -133,6 +138,7 @@ const UNHOLY_VETERAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SPIRIT_GUARDIAN: UnitCard = makeCard({
@@ -151,6 +157,7 @@ const SPIRIT_GUARDIAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.COMMON,
 });
 
 /* 2 total cost */
@@ -170,6 +177,7 @@ const SWORDS_MASTER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ARDENT_SPIRITUALIST: UnitCard = makeCard({
@@ -194,6 +202,7 @@ const ARDENT_SPIRITUALIST: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const SQUIRE: UnitCard = makeCard({
@@ -212,6 +221,7 @@ const SQUIRE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const ADVENTURER: UnitCard = makeCard({
@@ -242,6 +252,7 @@ const ADVENTURER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ORCISH_CORPORAL: UnitCard = makeCard({
@@ -261,6 +272,7 @@ const ORCISH_CORPORAL: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.RARE,
 });
 
 /* 3 total cost */
@@ -289,6 +301,7 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const VILLAGE_DEFENDER: UnitCard = makeCard({
@@ -313,6 +326,7 @@ const VILLAGE_DEFENDER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const FROST_WALKER: UnitCard = makeCard({
@@ -332,6 +346,7 @@ const FROST_WALKER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const DRAGON_MIST_WARRIOR: UnitCard = makeCard({
@@ -356,6 +371,7 @@ const DRAGON_MIST_WARRIOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 const AMPHIBIOUS_SHINOBI: UnitCard = makeCard({
@@ -380,6 +396,7 @@ const AMPHIBIOUS_SHINOBI: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 const CELESTIAL_MERCENARY: UnitCard = makeCard({
@@ -400,6 +417,7 @@ const CELESTIAL_MERCENARY: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY, PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 /* 4 total cost */
@@ -427,6 +445,7 @@ const MAGI_RIDER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 const WARRIOR_OF_THE_LAKE: UnitCard = makeCard({
@@ -450,6 +469,7 @@ const WARRIOR_OF_THE_LAKE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const KNIGHT_TEMPLAR: UnitCard = makeCard({
@@ -468,6 +488,7 @@ const KNIGHT_TEMPLAR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const WU_SONG_PILGRIM: UnitCard = makeCard({
@@ -504,6 +525,7 @@ const WU_SONG_PILGRIM: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 /* 5 total cost */
@@ -529,6 +551,7 @@ const ARMORED_CAVALRY: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const RAVEN_KNIGHT: UnitCard = makeCard({
@@ -548,6 +571,7 @@ const RAVEN_KNIGHT: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.RARE,
 });
 
 /* 6 total cost */
@@ -567,6 +591,7 @@ const TEMPLE_GUARDIAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const JOAN_OF_ARC_FOLK_HERO: UnitCard = makeCard({
@@ -595,6 +620,7 @@ const JOAN_OF_ARC_FOLK_HERO: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const SOLDIERS = {

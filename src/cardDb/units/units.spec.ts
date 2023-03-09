@@ -1,4 +1,4 @@
-import { CardType, UnitBase } from '@/types/cards';
+import { CardRarity, CardType, UnitBase } from '@/types/cards';
 import { EffectType, PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { makeUnitCard as makeCard } from '@/factories/cards';
@@ -25,6 +25,7 @@ describe('Unit Cards', () => {
             isMagical: true,
             isSoldier: false,
             passiveEffects: [],
+            rarity: CardRarity.COMMON,
         };
         const unitCard = makeCard(unitBase);
         expect(unitCard.name).toBe(unitBase.name);
@@ -54,6 +55,7 @@ describe('Unit Cards', () => {
             isMagical: true,
             isSoldier: false,
             passiveEffects: [PassiveEffect.QUICK],
+            rarity: CardRarity.COMMON,
         };
         const unitCard = makeCard(unitBase);
         expect(unitCard.numAttacksLeft).toBe(3);

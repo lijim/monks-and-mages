@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
@@ -26,6 +26,7 @@ const COVEN_NOVICE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FAIRY_QUEEN: UnitCard = makeCard({
@@ -56,6 +57,7 @@ const FAIRY_QUEEN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 const INGREDIENT_HUNTER: UnitCard = makeCard({
@@ -85,6 +87,7 @@ const INGREDIENT_HUNTER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const POTION_BREWER: UnitCard = makeCard({
@@ -110,6 +113,7 @@ const POTION_BREWER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const FOREST_SPIRIT: UnitCard = makeCard({
@@ -135,6 +139,7 @@ const FOREST_SPIRIT: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const POWERFUL_CRONE: UnitCard = makeCard({
@@ -160,6 +165,7 @@ const POWERFUL_CRONE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const MASTER_ENCHANTER: UnitCard = makeCard({
@@ -190,6 +196,7 @@ const MASTER_ENCHANTER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const BOG_WARLOCK: UnitCard = makeCard({
@@ -220,6 +227,7 @@ const BOG_WARLOCK: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const WITCHES = {

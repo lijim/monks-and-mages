@@ -1,4 +1,4 @@
-import { Skeleton, UnitType } from './cards';
+import { CardRarity, Skeleton, UnitType } from './cards';
 import { Resource } from './resources';
 
 // Using filter by resource as an example:
@@ -14,11 +14,12 @@ export enum MatchStrategy {
 export type ResourceCost = '7+' | number;
 
 export type Filters = {
-    freeText?: string;
-    resourceCosts?: ResourceCost[];
-    resourceMatchStrategy?: MatchStrategy;
-    resources?: Resource[];
-    unitTypes?: UnitType[];
+    freeText: string;
+    rarities: CardRarity[];
+    resourceCosts: ResourceCost[];
+    resourceMatchStrategy: MatchStrategy;
+    resources: Resource[];
+    unitTypes: UnitType[];
 };
 
 export type SavedDeck = {

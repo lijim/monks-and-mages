@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-import { Colors } from '@/constants/colors';
+import { COLORS_FOR_RARITY, Colors } from '@/constants/colors';
+import { CardRarity } from '@/types/cards';
 
 interface CardFrameProps {
     isHighlighted?: boolean;
@@ -111,6 +112,43 @@ export const CardImage: React.FC<CardImageProps> = ({ src }) => {
             <source srcSet={webPSource} type="image/avif"></source>
             <StretchedImage src={webPSource} />
         </picture>
+    );
+};
+
+type TypesAndRarityLineProps = {
+    children: ReactNode;
+    rarity: CardRarity;
+};
+
+export const TypesAndRarityLine = ({
+    rarity,
+    children,
+}: TypesAndRarityLineProps) => {
+    return (
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+            }}
+        >
+            <span>{children}</span>
+            <span style={{ display: 'flex', gap: '2px', alignItems: 'center' }}>
+                <span
+                    style={{
+                        borderColor: Colors.VANTA_BLACK,
+                        background: COLORS_FOR_RARITY[rarity],
+                        borderStyle: 'solid',
+                        borderWidth: '2px',
+                        display: 'inline-block',
+                        width: '14px',
+                        height: '14px',
+                        transform: 'rotate(45deg)',
+                    }}
+                />
+                {rarity}
+            </span>
+        </div>
     );
 };
 

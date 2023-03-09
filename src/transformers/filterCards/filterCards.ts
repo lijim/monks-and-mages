@@ -1,5 +1,5 @@
 import isEqual from 'lodash.isequal';
-import { Card, CardType, UnitType } from '@/types/cards';
+import { Card, CardRarity, CardType, UnitType } from '@/types/cards';
 import { Filters, MatchStrategy, ResourceCost } from '@/types/deckBuilder';
 import { ORDERED_RESOURCES, Resource } from '@/types/resources';
 import { getTypeForUnitCard } from '../getTypeForUnitCard';
@@ -99,6 +99,11 @@ const cardMatchesUnitTypes = (card: Card, unitTypes: UnitType[]): boolean => {
     return unitTypes.includes(getTypeForUnitCard(card));
 };
 
+const cardMatchesRarities = (card: Card, rarities: CardRarity[]): boolean => {
+    if (rarities.length === 0) return true;
+    return rarities.includes(card.rarity);
+};
+
 /**
  * Note: unit tests omitted temporarily in favor of an integration test on DeckBuilder
  * @param cards - cards to filter
@@ -113,6 +118,7 @@ export const filterCards = (
         resources,
         resourceMatchStrategy,
         unitTypes,
+        rarities,
     }: Filters
 ): Card[] => {
     const cardsFilteredByFreeText = freeText
@@ -129,5 +135,8 @@ export const filterCards = (
     const cardsFilteredByResourceCosts = cardsFilteredByUnitType.filter(
         (card) => cardMatchesResourceCosts(card, resourceCosts)
     );
-    return cardsFilteredByResourceCosts;
+    const cardsFilteredByRarities = cardsFilteredByResourceCosts.filter(
+        (card) => cardMatchesRarities(card, rarities)
+    );
+    return cardsFilteredByRarities;
 };

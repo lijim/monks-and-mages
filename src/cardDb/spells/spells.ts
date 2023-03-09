@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash.clonedeep';
 
-import { CardType, SpellBase, SpellCard } from '@/types/cards';
+import { CardRarity, CardType, SpellBase, SpellCard } from '@/types/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../units';
@@ -23,6 +23,7 @@ const SMOLDER = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const EMBER_SPEAR = makeCard({
@@ -35,6 +36,7 @@ const EMBER_SPEAR = makeCard({
             strength: 3,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const WARPATH = makeCard({
@@ -48,6 +50,7 @@ const WARPATH = makeCard({
             target: TargetTypes.OPPOSING_UNIT,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const INCINERATION = makeCard({
@@ -61,6 +64,7 @@ const INCINERATION = makeCard({
             target: TargetTypes.PLAYER,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const LIGHTNING_SLICK = makeCard({
@@ -79,6 +83,7 @@ const LIGHTNING_SLICK = makeCard({
             target: TargetTypes.ALL_OPPONENTS,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const CURSE_HAND = makeCard({
@@ -97,6 +102,7 @@ const CURSE_HAND = makeCard({
             target: TargetTypes.ALL_OPPONENTS,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SUPERNOVA = makeCard({
@@ -110,6 +116,7 @@ const SUPERNOVA = makeCard({
             target: TargetTypes.ALL_UNITS,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const BEND_AND_SCORCH = makeCard({
@@ -123,6 +130,7 @@ const BEND_AND_SCORCH = makeCard({
             target: TargetTypes.ALL_PLAYERS,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FIRE_CEREMONY = makeCard({
@@ -141,6 +149,7 @@ const FIRE_CEREMONY = makeCard({
             target: TargetTypes.OPPONENT,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const BRUSH_FIRE = makeCard({
@@ -160,6 +169,7 @@ const BRUSH_FIRE = makeCard({
             target: TargetTypes.ALL_OPPONENTS,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const CHANNEL_SPARKS = makeCard({
@@ -173,6 +183,7 @@ const CHANNEL_SPARKS = makeCard({
             target: TargetTypes.ANY,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const CAVE_IMPLOSION = makeCard({
@@ -191,6 +202,7 @@ const CAVE_IMPLOSION = makeCard({
             target: TargetTypes.OPPONENT,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const INCREDIBLE_DISCOVERY = makeCard({
@@ -204,6 +216,7 @@ const INCREDIBLE_DISCOVERY = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const STRIKE_TWICE = makeCard({
@@ -222,6 +235,7 @@ const STRIKE_TWICE = makeCard({
             target: TargetTypes.OPPONENT,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const SUMMON_DEMONS = makeCard({
@@ -240,6 +254,7 @@ const SUMMON_DEMONS = makeCard({
             target: TargetTypes.ALL_OPPONENTS,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const VOLCANIC_INFERNO = makeCard({
@@ -253,6 +268,7 @@ const VOLCANIC_INFERNO = makeCard({
             target: TargetTypes.ALL_UNITS,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const ERUPT = makeCard({
@@ -267,6 +283,7 @@ const ERUPT = makeCard({
             resourceType: Resource.WATER,
         },
     ],
+    rarity: CardRarity.MYTHIC,
 });
 
 // Water Magic
@@ -281,6 +298,7 @@ const BUBBLE_BLAST = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const COLD_ISOLATION = makeCard({
@@ -295,6 +313,7 @@ const COLD_ISOLATION = makeCard({
             strength: -3,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const OASIS_RITUAL = makeCard({
@@ -312,6 +331,7 @@ const OASIS_RITUAL = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const STIR = makeCard({
@@ -325,6 +345,7 @@ const STIR = makeCard({
             target: TargetTypes.ALL_PLAYERS,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const GENEROUS_GEYSER = makeCard({
@@ -342,6 +363,7 @@ const GENEROUS_GEYSER = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const MIDNIGHT_ROW = makeCard({
@@ -355,6 +377,7 @@ const MIDNIGHT_ROW = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const REFLECTION_OPPORTUNITY = makeCard({
@@ -372,6 +395,7 @@ const REFLECTION_OPPORTUNITY = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const SUMMON_SHARKS = makeCard({
@@ -385,6 +409,7 @@ const SUMMON_SHARKS = makeCard({
             summonType: Tokens.SHARK,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const RAGING_WHIRLPOOL = makeCard({
@@ -403,6 +428,7 @@ const RAGING_WHIRLPOOL = makeCard({
             target: TargetTypes.ALL_OPPONENTS,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const CONSTANT_REFILL = makeCard({
@@ -415,6 +441,7 @@ const CONSTANT_REFILL = makeCard({
             strength: 4,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const PIERCE_THE_HEAVENS = makeCard({
@@ -432,6 +459,7 @@ const PIERCE_THE_HEAVENS = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.MYTHIC,
 });
 
 // Wind Magic
@@ -449,6 +477,7 @@ const A_GENTLE_GUST = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const A_THOUSAND_WINDS = makeCard({
@@ -465,6 +494,7 @@ const A_THOUSAND_WINDS = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const SOLFATARA = makeCard({
@@ -486,6 +516,7 @@ const SOLFATARA = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const COLLOSAL_TSUNAMI = makeCard({
@@ -498,6 +529,7 @@ const COLLOSAL_TSUNAMI = makeCard({
             target: TargetTypes.ALL_OPPOSING_UNITS,
         },
     ],
+    rarity: CardRarity.MYTHIC,
 });
 
 const MAGIC_RIFT = makeCard({
@@ -520,6 +552,7 @@ const MAGIC_RIFT = makeCard({
             strength: 3,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const HOLY_REVIVAL = makeCard({
@@ -537,6 +570,7 @@ const HOLY_REVIVAL = makeCard({
             target: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         },
     ],
+    rarity: CardRarity.MYTHIC,
 });
 
 // Crystal Magic
@@ -556,6 +590,7 @@ const SPECTRAL_GENESIS = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const SURREAL_DREAM = makeCard({
@@ -570,6 +605,7 @@ const SURREAL_DREAM = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const DISTORT_REALITY = makeCard({
@@ -588,6 +624,7 @@ const DISTORT_REALITY = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const ZEN_STANCE = makeCard({
@@ -601,6 +638,7 @@ const ZEN_STANCE = makeCard({
             target: TargetTypes.OWN_UNIT,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const BEAM_ME_UP = makeCard({
@@ -620,6 +658,7 @@ const BEAM_ME_UP = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const PRAY_TO_ORION = makeCard({
@@ -639,6 +678,7 @@ const PRAY_TO_ORION = makeCard({
             strength: 4,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const STARRY_ILLUSION = makeCard({
@@ -652,6 +692,7 @@ const STARRY_ILLUSION = makeCard({
             strength: 3,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const SCOUR_THE_LIBRARY = makeCard({
@@ -670,6 +711,7 @@ const SCOUR_THE_LIBRARY = makeCard({
             strength: 7,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const OPEN_NEBULA = makeCard({
@@ -702,6 +744,7 @@ const OPEN_NEBULA = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.MYTHIC,
 });
 
 // Iron
@@ -716,6 +759,7 @@ const THROW_SHURIKEN = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const BANDIT_AMBUSH = makeCard({
@@ -734,6 +778,7 @@ const BANDIT_AMBUSH = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const MAJOR_EARTHQUAKE = makeCard({
@@ -747,6 +792,7 @@ const MAJOR_EARTHQUAKE = makeCard({
             strength: 5,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 // Bamboo
@@ -761,6 +807,7 @@ const TEA = makeCard({
             target: TargetTypes.ANY,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const POISON_MUSHROOM = makeCard({
@@ -774,6 +821,7 @@ const POISON_MUSHROOM = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const ARCHERY_AT_SUNSET = makeCard({
@@ -788,6 +836,7 @@ const ARCHERY_AT_SUNSET = makeCard({
             target: TargetTypes.ANY,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const FEED_TEAM = makeCard({
@@ -807,6 +856,7 @@ const FEED_TEAM = makeCard({
         },
         { type: EffectType.BUFF_TEAM_HP, strength: 1 },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FARMERS_MARKET = makeCard({
@@ -825,6 +875,7 @@ const FARMERS_MARKET = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const WILD_ROSE_HARVEST = makeCard({
@@ -838,6 +889,7 @@ const WILD_ROSE_HARVEST = makeCard({
             strength: 3,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const SPRING_IN_BLOOM = makeCard({
@@ -856,6 +908,7 @@ const SPRING_IN_BLOOM = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const RAIN_OF_ARROWS = makeCard({
@@ -874,6 +927,7 @@ const RAIN_OF_ARROWS = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const TEAM_GATHERING = makeCard({
@@ -885,6 +939,7 @@ const TEAM_GATHERING = makeCard({
             type: EffectType.DRAW_PER_UNIT,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const SUMMON_THE_CROWS = makeCard({
@@ -898,6 +953,7 @@ const SUMMON_THE_CROWS = makeCard({
             summonType: Tokens.FALCON,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 // Monks (bamboo + iron)
@@ -909,6 +965,7 @@ const FISH_MARKET_VISIT = makeCard({
         { type: EffectType.BUFF_TEAM_HP, strength: 1 },
         { type: EffectType.BUFF_HAND_ATTACK, strength: 2 },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const CONCENTRATED_FOCUS = makeCard({
@@ -916,6 +973,7 @@ const CONCENTRATED_FOCUS = makeCard({
     imgSrc: 'https://images.pexels.com/photos/11331536/pexels-photo-11331536.jpeg',
     cost: { [Resource.BAMBOO]: 1, [Resource.IRON]: 1 },
     effects: [{ type: EffectType.BUFF_HAND_ATTACK, strength: 3 }],
+    rarity: CardRarity.RARE,
 });
 
 // Genies
@@ -935,6 +993,7 @@ const SIGNAL_BEACON = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const DECAY = makeCard({
@@ -959,6 +1018,7 @@ const DECAY = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const DESERT_TRIALS = makeCard({
@@ -978,6 +1038,7 @@ const DESERT_TRIALS = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 // Cannon
@@ -998,6 +1059,7 @@ const IGNITE_SPARKS = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SPARK_JOY = makeCard({
@@ -1011,6 +1073,7 @@ const SPARK_JOY = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const FESTIVE_BAZAAR = makeCard({
@@ -1029,6 +1092,7 @@ const FESTIVE_BAZAAR = makeCard({
             resourceType: Resource.FIRE,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FIRE_AWAY = makeCard({
@@ -1047,6 +1111,7 @@ const FIRE_AWAY = makeCard({
             strength: 4,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const BESIEGE_THE_CASTLE = makeCard({
@@ -1065,6 +1130,7 @@ const BESIEGE_THE_CASTLE = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 // 3-color
@@ -1090,6 +1156,7 @@ const UNDERWORLD_MESSAGE = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const MAGNIMUTATION = makeCard({
@@ -1109,6 +1176,7 @@ const MAGNIMUTATION = makeCard({
             target: TargetTypes.ALL_SELF_UNITS,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 // 4-color
@@ -1141,6 +1209,7 @@ const A_DARK_FOREST = makeCard({
             resourceType: Resource.IRON,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const A_MILLION_RAYS = makeCard({
@@ -1177,6 +1246,7 @@ const A_MILLION_RAYS = makeCard({
             resourceType: Resource.IRON,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const QUESTION_REALITY = makeCard({
@@ -1210,6 +1280,7 @@ const QUESTION_REALITY = makeCard({
             target: TargetTypes.ALL_UNITS,
         },
     ],
+    rarity: CardRarity.MYTHIC,
 });
 
 const CALL_THE_HERD = makeCard({
@@ -1254,6 +1325,7 @@ const CALL_THE_HERD = makeCard({
             summonType: Tokens.SHARK,
         },
     ],
+    rarity: CardRarity.MYTHIC,
 });
 
 // Witches
@@ -1268,6 +1340,7 @@ const POLYMORPH_FROG = makeCard({
             summonType: Tokens.FROG,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const DOUBLE_MORPH_FROG = makeCard({
@@ -1291,6 +1364,7 @@ const DOUBLE_MORPH_FROG = makeCard({
             summonType: Tokens.FROG,
         },
     ],
+    rarity: CardRarity.MYTHIC,
 });
 
 // Pirates
@@ -1310,6 +1384,7 @@ const RAISE_THE_MASTS = makeCard({
             strength: 3,
         },
     ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const WRECK_SHIPS = makeCard({
@@ -1328,6 +1403,7 @@ const WRECK_SHIPS = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 // Neutral
@@ -1355,6 +1431,7 @@ const HISTORICAL_RESEARCH = makeCard({
             target: TargetTypes.SELF_PLAYER,
         },
     ],
+    rarity: CardRarity.RARE,
 });
 
 const RICHES = makeCard({
@@ -1368,6 +1445,7 @@ const RICHES = makeCard({
             resourceType: Resource.GENERIC,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const LANDMARK = makeCard({
@@ -1381,6 +1459,7 @@ const LANDMARK = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 export const SpellCards = {

@@ -10,6 +10,7 @@ import {
     CardImageContainer,
     NameCell,
     RulesTextArea,
+    TypesAndRarityLine,
 } from '../CardFrame';
 import { CastingCostFrame } from '../CastingCost';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
@@ -131,7 +132,9 @@ export const AdvancedResourceGridItem: React.FC<
                 <CardImage src={getImgSrcForCard(card)}></CardImage>
             </CardImageContainer>
 
-            <div>Resource - Advanced</div>
+            <TypesAndRarityLine rarity={card.rarity}>
+                Resource - Advanced
+            </TypesAndRarityLine>
             <RulesTextArea
                 shouldCenter={!enterEffects.length}
                 data-testid="RulesTextArea"

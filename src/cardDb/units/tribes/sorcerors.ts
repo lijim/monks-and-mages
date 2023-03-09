@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -27,6 +27,7 @@ const ALADDIN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.MYTHIC,
 });
 
 const CURIOUS_RESEARCHER: UnitCard = makeCard({
@@ -59,6 +60,7 @@ const CURIOUS_RESEARCHER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 const BRIGHT_SCHOLAR: UnitCard = makeCard({
@@ -95,6 +97,7 @@ const BRIGHT_SCHOLAR: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const SORCERORS = {
