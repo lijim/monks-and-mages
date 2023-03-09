@@ -4,6 +4,7 @@ import {
     clearFreeTextFilter,
     searchFreeTextFilter,
     selectResourceMatchStrategy,
+    toggleRarityFilter,
     toggleResourceCardFilter,
     toggleResourceFilter,
     toggleUnitTypeFilter,
@@ -16,9 +17,10 @@ import {
     RESOURCE_GLOSSARY,
 } from '@/types/resources';
 import { CastingCostFrame } from '../CastingCost';
-import { UnitType } from '@/types/cards';
+import { CardRarity, UnitType } from '@/types/cards';
+import { COLORS_FOR_RARITY, Colors } from '@/constants/colors';
 
-export const FreeTextFilters: React.FC = () => {
+const FreeTextFilters: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { freeText } = useSelector<RootState, Filters>(
         (state) => state.deckBuilderFilters
@@ -53,7 +55,7 @@ export const FreeTextFilters: React.FC = () => {
     );
 };
 
-export const ResourceFilter: React.FC = () => {
+const ResourceFilter: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { resources, resourceMatchStrategy } = useSelector<
         RootState,
@@ -103,7 +105,7 @@ export const ResourceFilter: React.FC = () => {
 
 const RESOURCE_COST_FILTERS: ResourceCost[] = [1, 2, 3, 4, 5, 6, '7+'];
 
-export const ResourceCostFilter: React.FC = () => {
+const ResourceCostFilter: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { resourceCosts } = useSelector<RootState, Filters>(
         (state) => state.deckBuilderFilters
@@ -169,6 +171,53 @@ export const UnitTypeFilter: React.FC = () => {
     );
 };
 
+const ALL_RARITIES = [
+    CardRarity.COMMON,
+    CardRarity.UNCOMMON,
+    CardRarity.RARE,
+    CardRarity.MYTHIC,
+];
+
+const RaritiesFilter: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const rarities = useSelector<RootState, CardRarity[]>(
+        (state) => state.deckBuilderFilters.rarities
+    );
+
+    return (
+        <div>
+            <span style={{ zoom: 2, fontSize: '72%' }}>
+                {ALL_RARITIES.map((rarity) => (
+                    <CastingCostFrame
+                        key={rarity}
+                        hasNoMargin
+                        isMuted={!rarities.includes(rarity)}
+                        onClick={() => {
+                            dispatch(toggleRarityFilter(rarity));
+                        }}
+                        style={{ cursor: 'pointer' }}
+                        data-testid={`Filters-UnitType-${rarity}`}
+                        tabIndex={0}
+                    >
+                        <span
+                            style={{
+                                borderColor: Colors.VANTA_BLACK,
+                                background: COLORS_FOR_RARITY[rarity],
+                                borderStyle: 'solid',
+                                borderWidth: '2px',
+                                display: 'inline-block',
+                                width: '10px',
+                                height: '10px',
+                                transform: 'rotate(45deg)',
+                            }}
+                        />
+                    </CastingCostFrame>
+                ))}
+            </span>
+        </div>
+    );
+};
+
 /**
  * Note: unit tests omitted temporarily in favor of an integration test on DeckBuilder
  * @returns Filters component for DeckBuilder
@@ -180,6 +229,7 @@ export const DeckBuilderFilters: React.FC = () => {
             <ResourceFilter />
             <ResourceCostFilter />
             <UnitTypeFilter />
+            <RaritiesFilter />
         </>
     );
 };

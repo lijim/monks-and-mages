@@ -15,6 +15,7 @@ import {
     NameCell,
     RulesTextArea,
     SleepyCell,
+    TypesAndRarityLine,
 } from '../CardFrame';
 import { getColorsForCard } from '@/transformers/getColorsForCard';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
@@ -93,7 +94,9 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
             <CardImageContainer>
                 <CardImage src={getImgSrcForCard(card)}></CardImage>
             </CardImageContainer>
-            <div>Unit{unitType ? ` - ${unitType}` : ''}</div>
+            <TypesAndRarityLine rarity={card.rarity}>
+                Unit{unitType ? ` - ${unitType}` : ''}
+            </TypesAndRarityLine>
             <RulesTextArea
                 shouldCenter={numEffectsToDisplay === 1}
                 shouldFade={numEffectsToDisplay === 0}

@@ -1,7 +1,10 @@
+import { CardRarity } from '@/types/cards';
+
 export enum Colors {
     BAMBOO_GREEN = '#136313',
     BUFF_BLUE = '#0096FF',
     CRYSTAL_PURPLE = '#684B77',
+    COMMON_GREY = '#bdc3c7',
     DARK_BROWN = '#4a2e15',
     DEBUFF_RED = '#c70039',
     FELT_GREEN = '#247345',
@@ -15,9 +18,19 @@ export enum Colors {
     // but different color emojis to contrast against the background
     LIGHT_GREY = '#666',
     MAROON = '#800000',
+    MYTHIC_PURPLE = '#8e44ad',
     NO_COLOR_BROWN = '#5c4d50',
+    RARE_BLUE = '#2980b9',
     SECONDARY_GREEN = '#08A946',
     SECONDARY_GREEN_EMPHASIZED = '#057932',
+    UNCOMMON_GREEN = '#2ecc71',
     VANTA_BLACK = '#101010', // for text against white
     WATER_BLUE = '#093FBE',
 }
+
+export const COLORS_FOR_RARITY: Record<CardRarity, string> = {
+    [CardRarity.COMMON]: Colors.COMMON_GREY,
+    [CardRarity.UNCOMMON]: Colors.UNCOMMON_GREEN,
+    [CardRarity.RARE]: Colors.RARE_BLUE,
+    [CardRarity.MYTHIC]: Colors.MYTHIC_PURPLE,
+};
