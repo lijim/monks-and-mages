@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
     Card,
+    CardRarity,
     CardType,
     ResourceCard,
     UnitBase,
@@ -17,6 +18,7 @@ export const makeResourceCard = (resource: Resource): ResourceCard => ({
     resourceType: resource,
     isUsed: false,
     id: uuidv4(),
+    rarity: CardRarity.COMMON,
 });
 
 export const makeAdvancedResourceCard = (
