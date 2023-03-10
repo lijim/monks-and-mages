@@ -16,12 +16,13 @@ import {
     ClientToServerEvents,
     DetailedRoom,
     ResolveEffectParams,
+    RoomOptions,
     ServerToClientEvents,
 } from '@/types';
 import { applyGameAction, applyWinState, passTurn } from '../gameEngine';
 import { resolveEffect } from '../resolveEffect';
 import { makePlayerChatMessage, makeSystemChatMessage } from '@/factories/chat';
-import { GameResult } from '@/types/games';
+import { Format, GameResult } from '@/types/games';
 import { calculateGameResult } from '@/factories/games';
 import { Card, Skeleton } from '@/types/cards';
 import { authorize, ExtendedSocket } from '../authorize';
@@ -54,6 +55,7 @@ export const configureIo = (server: HttpServer) => {
     const nameToDeckListSelection = new Map<string, DeckListSelections>();
     const nameToCustomDeckSkeleton = new Map<string, Skeleton>();
     const startedBoards = new Map<string, Board>();
+    const roomNameToRoomOptions = new Map<string, RoomOptions>();
 
     /* Utility functions */
     const clearName = (idToMatch: string) => {
@@ -184,6 +186,15 @@ export const configureIo = (server: HttpServer) => {
         );
     };
 
+    const cleanupRooms = () => {
+        const roomsAndIds = io.sockets.adapter.rooms;
+        roomNameToRoomOptions.forEach((_, roomName) => {
+            if (!roomsAndIds.has(roomName)) {
+                roomNameToRoomOptions.delete(roomName);
+            }
+        });
+    };
+
     // TODO: use adapters instead to get rooms => games
     // implement one that just retrieves shallowly all the rooms
     // implement one that retrieves the whole room's game
@@ -205,12 +216,16 @@ export const configureIo = (server: HttpServer) => {
             players.forEach((player) => {
                 avatarsForPlayers[player] = namesToAvatars.get(player);
             });
+
             const room: DetailedRoom = {
                 roomName,
                 players,
                 hasStartedGame: startedBoards.has(roomName),
                 spectators: [] as string[],
                 avatarsForPlayers,
+                format: roomNameToRoomOptions.has(roomName)
+                    ? roomNameToRoomOptions.get(roomName).format
+                    : Format.STANDARD,
             };
             detailedRooms.push(room);
         });
@@ -223,6 +238,7 @@ export const configureIo = (server: HttpServer) => {
                 hasStartedGame: false,
                 spectators: [],
                 avatarsForPlayers: {},
+                format: Format.STANDARD,
             };
             detailedRooms.push(room);
         });
@@ -244,6 +260,9 @@ export const configureIo = (server: HttpServer) => {
                     hasStartedGame: false,
                     spectators: [],
                     avatarsForPlayers: {},
+                    format: roomNameToRoomOptions.has(sanitizedRoomName)
+                        ? roomNameToRoomOptions.get(sanitizedRoomName).format
+                        : Format.STANDARD,
                 };
                 detailedRooms.push(room);
             }
@@ -360,6 +379,22 @@ export const configureIo = (server: HttpServer) => {
                 socket.emit('confirmCustomDeck', null);
             });
 
+            socket.on('chooseGameFormat', (format: Format) => {
+                const roomName = getRoomForSocket(socket);
+                if (!roomName) {
+                    return;
+                }
+                if (roomNameToRoomOptions.has(roomName)) {
+                    roomNameToRoomOptions.get(roomName).format = format;
+                } else {
+                    roomNameToRoomOptions.set(roomName, {
+                        format,
+                    });
+                }
+                // emit to all rooms the new room settings
+                io.emit('listRooms', getDetailedRooms());
+            });
+
             socket.on('chooseName', (newName: string) => {
                 const name = newName ? `${GUEST_NAME_PREFIX}${newName}` : '';
                 // log out
@@ -407,6 +442,7 @@ export const configureIo = (server: HttpServer) => {
                     disconnectFromGame(socket, false);
                     socket.leave(prevRoom);
                 }
+                cleanupRooms();
                 io.emit('listRooms', getDetailedRooms());
             });
 
@@ -417,6 +453,7 @@ export const configureIo = (server: HttpServer) => {
                     disconnectFromGame(socket, false);
                     socket.leave(prevRoom);
                 }
+                cleanupRooms();
                 socket.join(`publicSpectate-${roomName}`);
                 io.emit('listRooms', getDetailedRooms());
             });
@@ -556,6 +593,7 @@ export const configureIo = (server: HttpServer) => {
 
             socket.on('disconnecting', () => {
                 disconnectFromGame(socket);
+                cleanupRooms();
             });
         }
     );

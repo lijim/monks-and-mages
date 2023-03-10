@@ -26,7 +26,7 @@ describe('isDeckValidForFormat', () => {
     it('returns false when there are not enough cards', () => {
         expect(
             isDeckValidForFormat(
-                [{ card: SpellCards.HOLY_REVIVAL, quantity: 3 }],
+                [{ card: SpellCards.HOLY_REVIVAL, quantity: 1 }],
                 Format.SINGLETON
             )
         ).toEqual({

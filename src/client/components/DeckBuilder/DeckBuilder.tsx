@@ -21,7 +21,8 @@ import { filterCards } from '@/transformers/filterCards';
 import { Filters } from '@/types/deckBuilder';
 import { SavedDeckManager } from '../SavedDeckManager';
 import { getAuth0Id, getDeckList } from '@/client/redux/selectors';
-import { clearDeck, loadDeck } from '@/client/redux/deckBuilder';
+import { chooseFormat, clearDeck, loadDeck } from '@/client/redux/deckBuilder';
+import { Format } from '@/types/games';
 
 const DeckListContainers = styled.div`
     display: grid;
@@ -50,10 +51,12 @@ const ValidationMsg = styled.div`
 
 type DeckBuilderProps = {
     cardPool?: Card[];
+    format?: Format;
 };
 
 export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     cardPool = makeDeck(ALL_CARDS),
+    format = Format.STANDARD,
 }) => {
     const webSocket = useContext(WebSocketContext);
     const skeleton = useSelector<RootState, Skeleton>(
@@ -72,6 +75,12 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
             dispatch(loadDeck(skeleton));
         }
     }, []);
+
+    useEffect(() => {
+        // Imperatively set the format for redux on component initialization.
+        // It has no other way of knowing right now
+        dispatch(chooseFormat(format));
+    }, [format]);
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(
@@ -140,13 +149,13 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     };
 
     const { isValid: isCurrentDeckValid, reason: reasonForDeckInvalid } =
-        isDeckValidForFormat(currentDeck);
+        isDeckValidForFormat(currentDeck, format);
 
     const deck = filterCards(cardPool, filters);
     return (
         <>
             <TopNavBar>
-                <b>Customize your deck</b> {} <Link to="/">Back</Link>
+                <b>Customize Your {format} Deck</b> {} <Link to="/">Back</Link>
             </TopNavBar>
             <DeckListContainers>
                 <DeckListBackDrop data-testid="CardPool">

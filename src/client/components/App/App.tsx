@@ -9,6 +9,7 @@ import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import { isUserInitialized } from '@/client/redux/selectors';
 import { history, RootState, store } from '@/client/redux/store';
 import { SelfProfilePage } from '../SelfProfilePage';
+import { Format } from '@/types/games';
 
 const IntroScreen = React.lazy(() =>
     import('../IntroScreen').then((module) => ({
@@ -102,6 +103,14 @@ export const RouterRoutes: React.FC = () => {
                 element={
                     <LobbyBackground>
                         <DeckBuilder />
+                    </LobbyBackground>
+                }
+            />
+            <Route
+                path="/customize/singleton"
+                element={
+                    <LobbyBackground>
+                        <DeckBuilder format={Format.SINGLETON} />
                     </LobbyBackground>
                 }
             />

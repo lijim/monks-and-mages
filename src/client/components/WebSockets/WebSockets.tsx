@@ -35,6 +35,7 @@ import {
     receiveLastPlayedCard,
     startGame as startGameAction,
 } from '@/client/redux/clientSideGameExtras';
+import { Format } from '@/types/games';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
@@ -176,6 +177,10 @@ export const WebSocketProvider = ({ children }: Props) => {
             newSocket.emit('chooseDeck', deckListSelection);
         };
 
+        const chooseGameFormat = (format: Format) => {
+            newSocket.emit('chooseGameFormat', format);
+        };
+
         const chooseName = (name: string) => {
             newSocket.emit('chooseName', name);
         };
@@ -202,6 +207,7 @@ export const WebSocketProvider = ({ children }: Props) => {
             authorizeToken,
             chooseAvatar,
             chooseCustomDeck,
+            chooseGameFormat,
             chooseDeck,
             chooseName,
             joinRoom,

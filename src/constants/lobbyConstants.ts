@@ -35,7 +35,7 @@ export enum DeckListSelections {
 
 export const PREMADE_DECKLIST_DEFAULT = DeckListSelections.MONKS;
 
-export const deckListMappings: Record<DeckListSelections, DeckList> = {
+export const DECKLIST_MAPPINGS: Record<DeckListSelections, DeckList> = {
     [DeckListSelections.CANNONEER]: CANNONEERS_DECKLIST,
     [DeckListSelections.DIVERS]: DIVERS_DECKLIST,
     [DeckListSelections.GENIES]: GENIES_DECKLIST,

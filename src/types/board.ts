@@ -1,5 +1,6 @@
 import { Card, Effect, ResourceCard, UnitCard } from './cards';
 import { ChatLog } from './chat';
+import { Format } from './games';
 import { PartialRecord } from './generics';
 import { Resource } from './resources';
 
@@ -35,6 +36,7 @@ export enum GameState {
 // Board as it's experienced by server / client
 export type Board = {
     chatLog: ChatLog;
+    format: Format;
     gameState: GameState;
     players: Player[];
     startingPlayerIndex: number;

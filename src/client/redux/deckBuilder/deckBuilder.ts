@@ -3,6 +3,7 @@ import { SavedDeck } from '@/types/deckBuilder';
 import { Card, CardType, DeckList, Skeleton } from '@/types/cards';
 import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton';
 import { Format, isFormatConstructed } from '@/types/games';
+import { MAX_DUPLICATES_FOR_FORMATS } from '@/transformers';
 
 type DeckBuilderState = {
     currentSavedDeckId: string;
@@ -24,6 +25,9 @@ export const deckBuilderSlice = createSlice({
     name: 'deckList',
     initialState,
     reducers: {
+        chooseFormat(state, action: PayloadAction<Format>) {
+            state.format = action.payload;
+        },
         chooseSavedDeck(state, action: PayloadAction<SavedDeck>) {
             const { skeleton, name, id } = action.payload;
             state.currentSavedDeckName = name;
@@ -75,7 +79,8 @@ export const deckBuilderSlice = createSlice({
                 isConstructed &&
                 isCardNotBasicResource &&
                 matchingCardSlot &&
-                matchingCardSlot.quantity >= 4
+                matchingCardSlot.quantity >=
+                    MAX_DUPLICATES_FOR_FORMATS[state.format]
             ) {
                 return;
             }
@@ -120,6 +125,7 @@ export const deckBuilderReducer: Reducer<DeckBuilderState> =
     deckBuilderSlice.reducer;
 
 export const {
+    chooseFormat,
     chooseSavedDeck,
     loadDeck,
     addCard,

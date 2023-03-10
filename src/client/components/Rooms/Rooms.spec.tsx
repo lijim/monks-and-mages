@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from '@/test-utils';
 import { Rooms } from './Rooms';
 import { RootState } from '@/client/redux/store';
 import { DeckListSelections } from '@/constants/lobbyConstants';
+import { Format } from '@/types/games';
 
 describe('Rooms', () => {
     it('creates a new room', () => {
@@ -15,12 +16,14 @@ describe('Rooms', () => {
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
                         avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
                         spectators: [],
                         avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                 ],
                 latestGameResults: [],
@@ -44,12 +47,14 @@ describe('Rooms', () => {
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
                         avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
                         spectators: [],
                         avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                 ],
                 latestGameResults: [],
@@ -70,12 +75,14 @@ describe('Rooms', () => {
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
                         avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
                         spectators: [],
                         avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                 ],
                 latestGameResults: [],
