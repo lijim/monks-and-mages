@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { push } from 'redux-first-history';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { WebSocketContext } from '../WebSockets';
 import { RootState } from '@/client/redux/store';
 import { PrimaryColorButton, SecondaryColorButton } from '../Button';
-import { push } from 'redux-first-history';
 
 export const DeckListSelector: React.FC = () => {
     const dispatch = useDispatch();
