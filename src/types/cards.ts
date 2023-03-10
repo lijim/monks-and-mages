@@ -20,6 +20,7 @@ type CardBase = {
     artistUrl?: string;
     id?: string;
     imgSrc?: string;
+    isTokenOnly?: boolean; // true if the card should not show up in packs, e.g. 'Tea' / 'Landmark'
     rarity: CardRarity;
 };
 

@@ -285,9 +285,11 @@ export const ALL_CARDS: DeckList = [
     ...Object.values(AdvancedResourceCards).map((card) => {
         return { card, quantity: 1 };
     }),
-    ...Object.values(SpellCards).map((card) => {
-        return { card, quantity: 1 };
-    }),
+    ...Object.values(SpellCards)
+        .filter((card) => !card.isTokenOnly)
+        .map((card) => {
+            return { card, quantity: 1 };
+        }),
     ...Object.values(UnitCards).map((card) => {
         return { card, quantity: 1 };
     }),
