@@ -30,11 +30,10 @@ const LeftColumn = styled.div`
     grid-template-rows: auto auto 1fr;
     grid-gap: 10px;
     padding: 16px;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(5px);
     color: white;
     box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
-    height: 45%;
 
     label {
         margin-bottom: 4px;

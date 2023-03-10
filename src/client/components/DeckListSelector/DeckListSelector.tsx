@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { WebSocketContext } from '../WebSockets';
 import { RootState } from '@/client/redux/store';
+import { PrimaryColorButton, SecondaryColorButton } from '../Button';
 
 export const DeckListSelector: React.FC = () => {
     const webSocket = useContext(WebSocketContext);
@@ -49,16 +50,23 @@ export const DeckListSelector: React.FC = () => {
             </select>
             <br />
             <br />
-            {currentDeckList !== DeckListSelections.RANDOM && (
-                <Link to="/decklist" style={{ color: 'white' }}>
-                    View Decklist
+            <div style={{ display: 'grid', gap: '12px' }}>
+                {currentDeckList !== DeckListSelections.RANDOM && (
+                    <Link to="/decklist">
+                        <PrimaryColorButton>View Decklist</PrimaryColorButton>
+                    </Link>
+                )}
+                <Link to="/customize">
+                    <SecondaryColorButton fontSize="16px">
+                        Custom (Standard)
+                    </SecondaryColorButton>
                 </Link>
-            )}
-
-            <br />
-            <Link to="/customize" style={{ color: 'white' }}>
-                Customize (in beta)
-            </Link>
+                <Link to="/customize/singleton">
+                    <SecondaryColorButton fontSize="16px">
+                        Custom (Singleton)
+                    </SecondaryColorButton>
+                </Link>
+            </div>
         </div>
     );
 };

@@ -2,7 +2,7 @@ import { PlayerConstants } from '@/constants/gameConstants';
 import { CardType, DeckList } from '@/types/cards';
 import { Format } from '@/types/games';
 
-const MAX_FOR_FORMATS = {
+export const MAX_DUPLICATES_FOR_FORMATS = {
     [Format.SINGLETON]: 1,
     [Format.STANDARD]: 4,
     [Format.DRAFT]: Number.MAX_SAFE_INTEGER,
@@ -20,7 +20,7 @@ export const isDeckValidForFormat = (
 ): ReturnValue => {
     let numCards = 0;
     let isValid = true;
-    const max = MAX_FOR_FORMATS[format];
+    const max = MAX_DUPLICATES_FOR_FORMATS[format];
     const minDeckSize = PlayerConstants.STARTING_DECK_SIZE;
     const maxDeckSize = PlayerConstants.MAX_DECK_SIZE;
     let reason: string;
@@ -34,6 +34,9 @@ export const isDeckValidForFormat = (
             reason = `May have no more than ${max} of [${card.name}]`;
         }
     });
+    if (!isValid) {
+        return { isValid, reason };
+    }
     if (numCards < minDeckSize) {
         return {
             isValid: false,

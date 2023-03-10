@@ -12,13 +12,13 @@ const slugifyName = (name: string): string => {
 export const getImgSrcForCard = (card: Card, format = 'avif'): string => {
     const newName = slugifyName(card.name);
     if (card.cardType === CardType.RESOURCE) {
-        return `images/resources/${newName}.${format}`;
+        return `/images/resources/${newName}.${format}`;
     }
     if (card.cardType === CardType.SPELL) {
-        return `images/spells/${newName}.${format}`;
+        return `/images/spells/${newName}.${format}`;
     }
     if (card.cardType === CardType.UNIT) {
-        return `images/units/${newName}.${format}`;
+        return `/images/units/${newName}.${format}`;
     }
     return '';
 };

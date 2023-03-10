@@ -8,6 +8,7 @@ interface ButtonProps {
     emoji?: string;
     hoverBackgroundColor: string;
     zoom?: number;
+    fontSize?: string;
 }
 
 export const Button = styled.button.attrs(
@@ -17,12 +18,14 @@ export const Button = styled.button.attrs(
         emoji = '',
         hoverBackgroundColor,
         zoom = 1,
+        fontSize = '22px',
     }: ButtonProps) => ({
         backgroundColor,
         borderColor,
         emoji,
         hoverBackgroundColor,
         zoom,
+        fontSize,
     })
 )`
     ::before {
@@ -46,7 +49,7 @@ export const Button = styled.button.attrs(
     padding-left: ${({ emoji }) => (emoji ? '50' : '20')}px;
     padding-right: ${({ emoji }) => (emoji ? '50' : '20')}px;
     color: white;
-    font-size: 22px;
+    font-size: ${({ fontSize }) => fontSize};
     border: 1px solid ${({ borderColor }) => borderColor};
     border-radius: 4px;
     background: ${({ backgroundColor }) => backgroundColor};

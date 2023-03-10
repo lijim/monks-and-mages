@@ -216,7 +216,7 @@ export const configureIo = (server: HttpServer) => {
             players.forEach((player) => {
                 avatarsForPlayers[player] = namesToAvatars.get(player);
             });
-            console.log(roomNameToRoomOptions, roomName);
+
             const room: DetailedRoom = {
                 roomName,
                 players,
