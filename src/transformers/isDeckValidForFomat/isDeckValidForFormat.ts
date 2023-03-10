@@ -5,6 +5,8 @@ import { Format } from '@/types/games';
 const MAX_FOR_FORMATS = {
     [Format.SINGLETON]: 1,
     [Format.STANDARD]: 4,
+    [Format.DRAFT]: Number.MAX_SAFE_INTEGER,
+    [Format.SEALED]: Number.MAX_SAFE_INTEGER,
 };
 
 type ReturnValue = {

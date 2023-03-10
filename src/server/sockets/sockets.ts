@@ -16,12 +16,13 @@ import {
     ClientToServerEvents,
     DetailedRoom,
     ResolveEffectParams,
+    RoomOptions,
     ServerToClientEvents,
 } from '@/types';
 import { applyGameAction, applyWinState, passTurn } from '../gameEngine';
 import { resolveEffect } from '../resolveEffect';
 import { makePlayerChatMessage, makeSystemChatMessage } from '@/factories/chat';
-import { GameResult } from '@/types/games';
+import { Format, GameResult } from '@/types/games';
 import { calculateGameResult } from '@/factories/games';
 import { Card, Skeleton } from '@/types/cards';
 import { authorize, ExtendedSocket } from '../authorize';
@@ -54,6 +55,7 @@ export const configureIo = (server: HttpServer) => {
     const nameToDeckListSelection = new Map<string, DeckListSelections>();
     const nameToCustomDeckSkeleton = new Map<string, Skeleton>();
     const startedBoards = new Map<string, Board>();
+    const roomNameToRoomOptions = new Map<string, RoomOptions>();
 
     /* Utility functions */
     const clearName = (idToMatch: string) => {
@@ -211,6 +213,9 @@ export const configureIo = (server: HttpServer) => {
                 hasStartedGame: startedBoards.has(roomName),
                 spectators: [] as string[],
                 avatarsForPlayers,
+                format: roomNameToRoomOptions.has(roomName)
+                    ? roomNameToRoomOptions.get(roomName).format
+                    : Format.STANDARD,
             };
             detailedRooms.push(room);
         });
@@ -223,6 +228,7 @@ export const configureIo = (server: HttpServer) => {
                 hasStartedGame: false,
                 spectators: [],
                 avatarsForPlayers: {},
+                format: Format.STANDARD,
             };
             detailedRooms.push(room);
         });
@@ -244,6 +250,9 @@ export const configureIo = (server: HttpServer) => {
                     hasStartedGame: false,
                     spectators: [],
                     avatarsForPlayers: {},
+                    format: roomNameToRoomOptions.has(sanitizedRoomName)
+                        ? roomNameToRoomOptions.get(sanitizedRoomName).format
+                        : Format.STANDARD,
                 };
                 detailedRooms.push(room);
             }

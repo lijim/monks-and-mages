@@ -9,13 +9,16 @@ import { makeNewPlayer } from '../player';
 import { Skeleton } from '@/types/cards';
 import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/getDeckListFromSkeleton';
 import { isDeckValidForFormat } from '@/transformers/isDeckValidForFomat';
+import { Format } from '@/types/games';
 
 export type MakeNewBoardParams = {
     avatarsForPlayers?: Record<string, string>;
+    // player name to avatar mapping
+    format?: Format;
     nameToCustomDeckSkeleton?: Map<string, Skeleton>;
     playerDeckListSelections?: DeckListSelections[];
     playerNames: string[];
-    startingPlayerIndex?: number; // player name to avatar mapping
+    startingPlayerIndex?: number;
 };
 
 export const makeNewBoard = ({
@@ -24,6 +27,7 @@ export const makeNewBoard = ({
     playerNames,
     startingPlayerIndex = Math.floor(Math.random() * playerNames.length),
     avatarsForPlayers = {},
+    format = Format.STANDARD,
 }: MakeNewBoardParams): Board => {
     const players = playerNames.map((playerName, playerIndex) => {
         const skeleton = nameToCustomDeckSkeleton?.get(playerName);
@@ -55,5 +59,6 @@ export const makeNewBoard = ({
         gameState: GameState.PLAYING,
         players,
         startingPlayerIndex,
+        format,
     };
 };

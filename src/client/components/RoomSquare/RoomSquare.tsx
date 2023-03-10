@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { DetailedRoom } from '@/types';
 import { SecondaryColorButton } from '../Button';
+import { Format } from '@/types/games';
 
 type RoomSquareProps = {
     detailedRoom: DetailedRoom;
@@ -23,7 +24,7 @@ const PlayerList = styled.ul`
  * Rooms component.  Should show the name of the group + players
  */
 export const RoomSquare: React.FC<RoomSquareProps> = ({
-    detailedRoom: { hasStartedGame, roomName, players, spectators },
+    detailedRoom: { hasStartedGame, roomName, players, spectators, format },
     hasJoined,
     isSpectacting,
     joinRoom,
@@ -59,7 +60,17 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
                         <SecondaryColorButton onClick={spectateRoom}>
                             {hasJoined ? 'Switch to spectating' : 'Spectate'}
                         </SecondaryColorButton>
-                    )}
+                    )}{' '}
+                    <select
+                        value={format}
+                        onChange={() => null}
+                        style={{ zoom: 1.7 }}
+                    >
+                        <option value={Format.STANDARD}>Standard</option>
+                        <option value={Format.SINGLETON}>Singleton</option>
+                        <option value={Format.DRAFT}>Draft</option>
+                        <option value={Format.SEALED}>Sealed</option>
+                    </select>
                 </span>
             </h2>
             {hasStartedGame && <span>Started</span>}

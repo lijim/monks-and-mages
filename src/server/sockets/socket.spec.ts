@@ -14,6 +14,7 @@ import {
     ServerToClientEvents,
 } from '@/types';
 import { DEFAULT_ROOM_NAMES } from '@/constants/lobbyConstants';
+import { Format } from '@/types/games';
 
 jest.mock('../auth0/', () => ({
     __esModule: true,
@@ -88,6 +89,7 @@ describe('sockets', () => {
                         spectators: [],
                         hasStartedGame: false,
                         avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     };
                 }
             );
@@ -102,6 +104,7 @@ describe('sockets', () => {
                             'Guest - Dora Wini':
                                 'https://monksandmages.com/images/units/manta-ray.webp',
                         },
+                        format: Format.STANDARD,
                     },
                     ...defaultRooms,
                 ]);

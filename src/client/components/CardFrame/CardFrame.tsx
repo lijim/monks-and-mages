@@ -139,7 +139,7 @@ export const TypesAndRarityLine = ({
                         points="7,1 13,7 7,13 1,7"
                         fill={COLORS_FOR_RARITY[rarity]}
                         stroke="white"
-                        stroke-width="1"
+                        strokeWidth="1"
                     />
                 </svg>
                 {rarity}

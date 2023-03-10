@@ -6,6 +6,8 @@ export type GameResult = {
 };
 
 export enum Format {
+    DRAFT = 'DRAFT',
+    SEALED = 'SEALED',
     SINGLETON = 'SINGLETON',
     STANDARD = 'STANDARD',
 }
