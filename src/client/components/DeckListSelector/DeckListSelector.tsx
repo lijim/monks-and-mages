@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { WebSocketContext } from '../WebSockets';
 import { RootState } from '@/client/redux/store';
 import { PrimaryColorButton, SecondaryColorButton } from '../Button';
+import { push } from 'redux-first-history';
 
 export const DeckListSelector: React.FC = () => {
+    const dispatch = useDispatch();
     const webSocket = useContext(WebSocketContext);
     const currentDeckList = useSelector<RootState, DeckListSelections>(
         (state) => state.deckList.premadeDecklist
@@ -52,20 +54,30 @@ export const DeckListSelector: React.FC = () => {
             <br />
             <div style={{ display: 'grid', gap: '12px' }}>
                 {currentDeckList !== DeckListSelections.RANDOM && (
-                    <Link to="/decklist">
-                        <PrimaryColorButton>View Decklist</PrimaryColorButton>
-                    </Link>
+                    <SecondaryColorButton
+                        onClick={() => {
+                            dispatch(push('/decklist'));
+                        }}
+                    >
+                        View Decklist
+                    </SecondaryColorButton>
                 )}
-                <Link to="/customize">
-                    <SecondaryColorButton fontSize="16px">
-                        Custom (Standard)
-                    </SecondaryColorButton>
-                </Link>
-                <Link to="/customize/singleton">
-                    <SecondaryColorButton fontSize="16px">
-                        Custom (Singleton)
-                    </SecondaryColorButton>
-                </Link>
+                <PrimaryColorButton
+                    onClick={() => {
+                        dispatch(push('/customize'));
+                    }}
+                    fontSize="16px"
+                >
+                    Custom (Standard)
+                </PrimaryColorButton>
+                <PrimaryColorButton
+                    onClick={() => {
+                        dispatch(push('/customize/singleton'));
+                    }}
+                    fontSize="16px"
+                >
+                    Custom (Singleton)
+                </PrimaryColorButton>
             </div>
         </div>
     );

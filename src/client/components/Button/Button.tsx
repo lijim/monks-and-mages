@@ -6,9 +6,9 @@ interface ButtonProps {
     backgroundColor: string;
     borderColor?: string;
     emoji?: string;
+    fontSize?: string;
     hoverBackgroundColor: string;
     zoom?: number;
-    fontSize?: string;
 }
 
 export const Button = styled.button.attrs(
