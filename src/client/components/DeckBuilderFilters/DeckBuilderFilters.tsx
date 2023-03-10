@@ -18,7 +18,7 @@ import {
 } from '@/types/resources';
 import { CastingCostFrame } from '../CastingCost';
 import { CardRarity, UnitType } from '@/types/cards';
-import { COLORS_FOR_RARITY, Colors } from '@/constants/colors';
+import { COLORS_FOR_RARITY } from '@/constants/colors';
 
 const FreeTextFilters: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();

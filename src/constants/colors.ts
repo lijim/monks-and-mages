@@ -3,8 +3,8 @@ import { CardRarity } from '@/types/cards';
 export enum Colors {
     BAMBOO_GREEN = '#136313',
     BUFF_BLUE = '#0096FF',
-    CRYSTAL_PURPLE = '#684B77',
     COMMON_GREY = '#bdc3c7',
+    CRYSTAL_PURPLE = '#684B77',
     DARK_BROWN = '#4a2e15',
     DEBUFF_RED = '#c70039',
     FELT_GREEN = '#247345',
