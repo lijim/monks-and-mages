@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { DetailedRoom } from '@/types';
 import { SecondaryColorButton } from '../Button';
 import { Format } from '@/types/games';
+import { WebSocketContext } from '../WebSockets';
 
 type RoomSquareProps = {
     detailedRoom: DetailedRoom;
@@ -32,6 +33,7 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
     rejoinRoom,
     spectateRoom,
 }) => {
+    const webSocket = useContext(WebSocketContext);
     const normalizedRoomName = roomName.replace('public-', '');
     const shouldShowSpectate = !hasStartedGame && !isSpectacting;
     const shouldShowJoin = !hasJoined && !hasStartedGame && players.length < 4;
@@ -61,16 +63,24 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
                             {hasJoined ? 'Switch to spectating' : 'Spectate'}
                         </SecondaryColorButton>
                     )}{' '}
-                    <select
-                        value={format}
-                        onChange={() => null}
-                        style={{ zoom: 1.7 }}
-                    >
-                        <option value={Format.STANDARD}>Standard</option>
-                        <option value={Format.SINGLETON}>Singleton</option>
-                        <option value={Format.DRAFT}>Draft</option>
-                        <option value={Format.SEALED}>Sealed</option>
-                    </select>
+                    {hasJoined ? (
+                        <select
+                            value={format}
+                            onChange={(event) => {
+                                webSocket.chooseGameFormat(
+                                    event.target.value as Format
+                                );
+                            }}
+                            style={{ zoom: 1.7 }}
+                        >
+                            <option value={Format.STANDARD}>Standard</option>
+                            <option value={Format.SINGLETON}>Singleton</option>
+                            <option value={Format.DRAFT}>Draft</option>
+                            <option value={Format.SEALED}>Sealed</option>
+                        </select>
+                    ) : (
+                        format
+                    )}
                 </span>
             </h2>
             {hasStartedGame && <span>Started</span>}

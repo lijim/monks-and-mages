@@ -186,6 +186,15 @@ export const configureIo = (server: HttpServer) => {
         );
     };
 
+    const cleanupRooms = () => {
+        const roomsAndIds = io.sockets.adapter.rooms;
+        roomNameToRoomOptions.forEach((_, roomName) => {
+            if (!roomsAndIds.has(roomName)) {
+                roomNameToRoomOptions.delete(roomName);
+            }
+        });
+    };
+
     // TODO: use adapters instead to get rooms => games
     // implement one that just retrieves shallowly all the rooms
     // implement one that retrieves the whole room's game
@@ -207,6 +216,7 @@ export const configureIo = (server: HttpServer) => {
             players.forEach((player) => {
                 avatarsForPlayers[player] = namesToAvatars.get(player);
             });
+            console.log(roomNameToRoomOptions, roomName);
             const room: DetailedRoom = {
                 roomName,
                 players,
@@ -369,6 +379,22 @@ export const configureIo = (server: HttpServer) => {
                 socket.emit('confirmCustomDeck', null);
             });
 
+            socket.on('chooseGameFormat', (format: Format) => {
+                const roomName = getRoomForSocket(socket);
+                if (!roomName) {
+                    return;
+                }
+                if (roomNameToRoomOptions.has(roomName)) {
+                    roomNameToRoomOptions.get(roomName).format = format;
+                } else {
+                    roomNameToRoomOptions.set(roomName, {
+                        format,
+                    });
+                }
+                // emit to all rooms the new room settings
+                io.emit('listRooms', getDetailedRooms());
+            });
+
             socket.on('chooseName', (newName: string) => {
                 const name = newName ? `${GUEST_NAME_PREFIX}${newName}` : '';
                 // log out
@@ -416,6 +442,7 @@ export const configureIo = (server: HttpServer) => {
                     disconnectFromGame(socket, false);
                     socket.leave(prevRoom);
                 }
+                cleanupRooms();
                 io.emit('listRooms', getDetailedRooms());
             });
 
@@ -426,6 +453,7 @@ export const configureIo = (server: HttpServer) => {
                     disconnectFromGame(socket, false);
                     socket.leave(prevRoom);
                 }
+                cleanupRooms();
                 socket.join(`publicSpectate-${roomName}`);
                 io.emit('listRooms', getDetailedRooms());
             });
@@ -565,6 +593,7 @@ export const configureIo = (server: HttpServer) => {
 
             socket.on('disconnecting', () => {
                 disconnectFromGame(socket);
+                cleanupRooms();
             });
         }
     );

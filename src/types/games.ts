@@ -6,10 +6,10 @@ export type GameResult = {
 };
 
 export enum Format {
-    DRAFT = 'DRAFT',
-    SEALED = 'SEALED',
-    SINGLETON = 'SINGLETON',
-    STANDARD = 'STANDARD',
+    DRAFT = 'Draft',
+    SEALED = 'Sealed',
+    SINGLETON = 'Singleton',
+    STANDARD = 'Standard',
 }
 
 export const isFormatConstructed = (format: Format) =>

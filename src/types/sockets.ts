@@ -29,6 +29,7 @@ export interface ClientToServerEvents {
     chooseAvatar: (avatarUrl: string) => void;
     chooseCustomDeck: (skeleton: Skeleton) => void;
     chooseDeck: (deckListSelection: DeckListSelections) => void;
+    chooseGameFormat: (format: Format) => void;
     chooseName: (name: string) => void;
     getRooms: () => void;
     joinRoom: (params: JoinRoomParams) => void;
