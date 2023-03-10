@@ -808,6 +808,7 @@ const TEA = makeCard({
         },
     ],
     rarity: CardRarity.COMMON,
+    isTokenOnly: true,
 });
 
 const POISON_MUSHROOM = makeCard({
@@ -822,6 +823,7 @@ const POISON_MUSHROOM = makeCard({
         },
     ],
     rarity: CardRarity.COMMON,
+    isTokenOnly: true,
 });
 
 const ARCHERY_AT_SUNSET = makeCard({
@@ -1074,6 +1076,7 @@ const SPARK_JOY = makeCard({
         },
     ],
     rarity: CardRarity.COMMON,
+    isTokenOnly: true,
 });
 
 const FESTIVE_BAZAAR = makeCard({
@@ -1446,6 +1449,7 @@ const RICHES = makeCard({
         },
     ],
     rarity: CardRarity.COMMON,
+    isTokenOnly: true,
 });
 
 const LANDMARK = makeCard({
@@ -1460,6 +1464,7 @@ const LANDMARK = makeCard({
         },
     ],
     rarity: CardRarity.COMMON,
+    isTokenOnly: true,
 });
 
 export const SpellCards = {
