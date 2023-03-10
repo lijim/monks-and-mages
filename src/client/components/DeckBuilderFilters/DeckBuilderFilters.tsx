@@ -199,18 +199,14 @@ const RaritiesFilter: React.FC = () => {
                         data-testid={`Filters-UnitType-${rarity}`}
                         tabIndex={0}
                     >
-                        <span
-                            style={{
-                                borderColor: Colors.VANTA_BLACK,
-                                background: COLORS_FOR_RARITY[rarity],
-                                borderStyle: 'solid',
-                                borderWidth: '2px',
-                                display: 'inline-block',
-                                width: '10px',
-                                height: '10px',
-                                transform: 'rotate(45deg)',
-                            }}
-                        />
+                        <svg width="14" height="14">
+                            <polygon
+                                points="7,1 13,7 7,13 1,7"
+                                fill={COLORS_FOR_RARITY[rarity]}
+                                stroke="white"
+                                stroke-width="1"
+                            />
+                        </svg>
                     </CastingCostFrame>
                 ))}
             </span>

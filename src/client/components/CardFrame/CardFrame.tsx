@@ -134,18 +134,14 @@ export const TypesAndRarityLine = ({
         >
             <span>{children}</span>
             <span style={{ display: 'flex', gap: '2px', alignItems: 'center' }}>
-                <span
-                    style={{
-                        borderColor: Colors.VANTA_BLACK,
-                        background: COLORS_FOR_RARITY[rarity],
-                        borderStyle: 'solid',
-                        borderWidth: '2px',
-                        display: 'inline-block',
-                        width: '14px',
-                        height: '14px',
-                        transform: 'rotate(45deg)',
-                    }}
-                />
+                <svg width="14" height="14">
+                    <polygon
+                        points="7,1 13,7 7,13 1,7"
+                        fill={COLORS_FOR_RARITY[rarity]}
+                        stroke="white"
+                        stroke-width="1"
+                    />
+                </svg>
                 {rarity}
             </span>
         </div>
