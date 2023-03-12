@@ -8,6 +8,7 @@ export type Player = {
     avatar?: string;
     cemetery: Card[];
     deck: Card[];
+    deckBuildingPool: Card[];
     effectQueue: Effect[];
     hand: Card[]; // defaults to 1 every turn
     health: number;
@@ -27,11 +28,15 @@ export type Player = {
 export enum GameState {
     // players decide whether to keep their opening cards 1 at a time, with the active player
     // making a choice and passing
+    DRAFTING = 'DRAFTING',
+    DECKBUILDING = 'DECKBUILDING',
     MULLIGANING = 'MULLIGANING',
     PLAYING = 'PLAYING',
     TIE = 'TIE',
     WIN = 'WIN',
 }
+
+export type DraftPile = Card[];
 
 // Board as it's experienced by server / client
 export type Board = {
@@ -40,6 +45,9 @@ export type Board = {
     gameState: GameState;
     players: Player[];
     startingPlayerIndex: number;
+    draftPool: Card[];
+    draftPoolSize: number;
+    draftPiles: DraftPile[];
 };
 
 /**

@@ -25,6 +25,7 @@ export const makeNewPlayer = ({
         avatar: avatarUrl,
         cemetery: [],
         deck: activeDeck,
+        deckBuildingPool: [],
         effectQueue: [],
         hand,
         health: STARTING_HEALTH,

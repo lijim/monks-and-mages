@@ -4,12 +4,20 @@ import {
     DECKLIST_MAPPINGS,
     DeckListSelections,
 } from '@/constants/lobbyConstants';
-import { Board, GameState } from '@/types/board';
+import { Board, DraftPile, GameState } from '@/types/board';
 import { makeNewPlayer } from '../player';
-import { Skeleton } from '@/types/cards';
+import { Card, Skeleton } from '@/types/cards';
 import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/getDeckListFromSkeleton';
 import { isDeckValidForFormat } from '@/transformers/isDeckValidForFomat';
 import { Format } from '@/types/games';
+import { makePack } from '../pack';
+import {
+    DRAFT_PACKS_BY_PLAYER_COUNT,
+    DRAFT_PILE_QUANTITY,
+    DRAFT_PILE_STARTING_SIZE,
+    SEALED_PACK_QUANTITY,
+} from '@/constants/gameConstants';
+import shuffle from 'lodash.shuffle';
 
 export type MakeNewBoardParams = {
     avatarsForPlayers?: Record<string, string>;
@@ -50,15 +58,49 @@ export const makeNewBoard = ({
             );
         }
         const avatarUrl = avatarsForPlayers[playerName];
-        return makeNewPlayer({ name: playerName, decklist, avatarUrl });
+        const player = makeNewPlayer({ name: playerName, decklist, avatarUrl });
+
+        if (format === Format.SEALED) {
+            [...Array(SEALED_PACK_QUANTITY)].forEach(() => {
+                player.deckBuildingPool = [
+                    ...player.deckBuildingPool,
+                    ...makePack(),
+                ];
+            });
+        }
+
+        return player;
     });
 
     players[startingPlayerIndex].isActivePlayer = true;
+
+    let draftPool: Card[] = [];
+    const draftPiles: DraftPile[] = [...Array(DRAFT_PILE_QUANTITY)].map(
+        () => []
+    );
+
+    if (format === Format.DRAFT) {
+        const numberOfPacks = DRAFT_PACKS_BY_PLAYER_COUNT[playerNames.length];
+        [...Array(numberOfPacks)].forEach(() => {
+            draftPool = [...draftPool, ...makePack()];
+        });
+        draftPool = shuffle(draftPool);
+
+        draftPiles.forEach((pile) => {
+            [...Array(DRAFT_PILE_STARTING_SIZE)].forEach(() => {
+                pile.push(draftPool.pop());
+            });
+        });
+    }
+
     return {
         chatLog: [],
         gameState: GameState.PLAYING,
         players,
         startingPlayerIndex,
         format,
+        draftPool,
+        draftPoolSize: draftPool.length,
+        draftPiles,
     };
 };

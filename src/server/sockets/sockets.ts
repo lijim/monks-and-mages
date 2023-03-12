@@ -167,6 +167,12 @@ export const configureIo = (server: HttpServer) => {
         return board;
     };
 
+    const getFormatForRoom = (roomName: string) => {
+        return roomNameToRoomOptions.has(roomName)
+            ? roomNameToRoomOptions.get(roomName).format
+            : Format.STANDARD;
+    };
+
     const sendChatMessageForRoom =
         (socket: Socket) => (chatMessage: string) => {
             const firstRoomName = getRoomForSocket(socket);
@@ -223,9 +229,7 @@ export const configureIo = (server: HttpServer) => {
                 hasStartedGame: startedBoards.has(roomName),
                 spectators: [] as string[],
                 avatarsForPlayers,
-                format: roomNameToRoomOptions.has(roomName)
-                    ? roomNameToRoomOptions.get(roomName).format
-                    : Format.STANDARD,
+                format: getFormatForRoom(roomName),
             };
             detailedRooms.push(room);
         });
@@ -260,9 +264,7 @@ export const configureIo = (server: HttpServer) => {
                     hasStartedGame: false,
                     spectators: [],
                     avatarsForPlayers: {},
-                    format: roomNameToRoomOptions.has(sanitizedRoomName)
-                        ? roomNameToRoomOptions.get(sanitizedRoomName).format
-                        : Format.STANDARD,
+                    format: getFormatForRoom(sanitizedRoomName),
                 };
                 detailedRooms.push(room);
             }
@@ -473,13 +475,24 @@ export const configureIo = (server: HttpServer) => {
                 });
                 const playerDeckListSelections =
                     getDeckListSelectionsFromNames(playerNames);
+                const format = getFormatForRoom(roomName);
+
                 const board = makeNewBoard({
                     playerDeckListSelections,
                     playerNames,
                     nameToCustomDeckSkeleton,
                     avatarsForPlayers,
+                    format,
                 });
-                board.gameState = GameState.MULLIGANING;
+
+                if (format === Format.DRAFT) {
+                    board.gameState = GameState.DRAFTING;
+                } else if (format === Format.SEALED) {
+                    board.gameState = GameState.DECKBUILDING;
+                } else {
+                    board.gameState = GameState.MULLIGANING;
+                }
+
                 startedBoards.set(roomName, board);
                 io.to(roomName).emit('startGame');
                 io.to(
