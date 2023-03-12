@@ -1,9 +1,15 @@
 import { FIRE_MAGES_DECKLIST } from '@/constants/deckLists';
-import { PlayerConstants } from '@/constants/gameConstants';
+import {
+    DRAFT_PACKS_BY_PLAYER_COUNT,
+    DRAFT_PILE_QUANTITY,
+    DRAFT_PILE_STARTING_SIZE,
+    PlayerConstants,
+} from '@/constants/gameConstants';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { Skeleton } from '@/types/cards';
 import { makeDeck } from '../deck';
 import { makeNewBoard } from './makeNewBoard';
+import { Format } from '@/types/games';
 
 describe('Make New Board', () => {
     it('makes a new board with players', () => {
@@ -71,5 +77,24 @@ describe('Make New Board', () => {
         expect(board.players[0].hand[0].name).toEqual('Assassin');
     });
 
-    it.todo('caps at 4 players and makes everyone else a spectator');
+    it('makes a draft game', () => {
+        const board = makeNewBoard({
+            playerNames: ['Hal', 'Orin', 'Samus'],
+            format: Format.DRAFT,
+        });
+        expect(board.draftPoolSize).toEqual(
+            DRAFT_PACKS_BY_PLAYER_COUNT[3] * 15 -
+                DRAFT_PILE_QUANTITY * DRAFT_PILE_STARTING_SIZE
+        );
+        expect(board.draftPiles).toHaveLength(DRAFT_PILE_QUANTITY);
+        expect(board.draftPiles[0]).toHaveLength(DRAFT_PILE_STARTING_SIZE);
+    });
+
+    it('makes a sealed game', () => {
+        const board = makeNewBoard({
+            playerNames: ['Hal', 'Orin', 'Samus'],
+            format: Format.SEALED,
+        });
+        expect(board.players[0].deckBuildingPool).toHaveLength(6 * 15);
+    });
 });

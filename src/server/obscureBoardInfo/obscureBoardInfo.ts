@@ -11,6 +11,8 @@ export const obscureBoardInfo = (
     forPlayerName?: string
 ): Board => {
     const obscuredBoard = cloneDeep(board);
+    // hide drafting pools
+    obscuredBoard.draftPool = [];
 
     obscuredBoard.players.forEach((player) => {
         player.numCardsInHand = player.hand.length;
