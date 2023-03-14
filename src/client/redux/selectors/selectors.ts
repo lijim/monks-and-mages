@@ -29,13 +29,13 @@ export const getDeckbuildingPoolForPlayer =
     (state: RootState): Card[] => {
         if (!state.board?.players) return [];
 
-        const player = (state.board.players || []).find(
+        const matchingPlayer = (state.board.players || []).find(
             (player) => player.name === playerName
         );
-        if (!player) {
+        if (!matchingPlayer) {
             return [];
         }
-        return player.deckBuildingPool;
+        return matchingPlayer.deckBuildingPool;
     };
 
 export const getDraftPoolSize = (state: RootState): number =>
