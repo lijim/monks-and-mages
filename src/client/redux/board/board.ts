@@ -21,6 +21,7 @@ export const boardSlice = createSlice({
             state.players = action.payload.players;
             state.draftPiles = action.payload.draftPiles;
             state.draftPoolSize = action.payload.draftPoolSize;
+            state.format = action.payload.format;
         },
     },
 });

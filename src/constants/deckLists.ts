@@ -275,6 +275,14 @@ export const PIRATES_DECKLIST: DeckList = [
     { card: AdvancedResourceCards.OLD_FARMHOUSE, quantity: 2 },
 ];
 
+export const ALL_BASIC_RESOURCES: DeckList = [
+    { card: makeResourceCard(Resource.BAMBOO), quantity: 1 },
+    { card: makeResourceCard(Resource.CRYSTAL), quantity: 1 },
+    { card: makeResourceCard(Resource.FIRE), quantity: 1 },
+    { card: makeResourceCard(Resource.IRON), quantity: 1 },
+    { card: makeResourceCard(Resource.WATER), quantity: 1 },
+];
+
 // For debugging / gamebuilding purposes
 export const ALL_CARDS: DeckList = [
     { card: makeResourceCard(Resource.BAMBOO), quantity: 1 },

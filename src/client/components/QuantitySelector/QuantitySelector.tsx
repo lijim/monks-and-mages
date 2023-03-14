@@ -39,16 +39,18 @@ export const QuantitySelector: React.FC<QuantitySelectorProps> = ({
     hasNoBorder = false,
     quantity,
 }) => {
+    const quantityToDisplay =
+        quantity === Number.MAX_SAFE_INTEGER ? '∞' : quantity;
     if (!isEditable)
         return (
             <span>
-                <Square hasNoBorder={hasNoBorder}>{quantity}</Square>
+                <Square hasNoBorder={hasNoBorder}>{quantityToDisplay}</Square>
             </span>
         );
     return (
         <Grid>
             <Square hasNoBorder={hasNoBorder}>-</Square>
-            <Square hasNoBorder={hasNoBorder}>{quantity}</Square>
+            <Square hasNoBorder={hasNoBorder}>{quantityToDisplay}</Square>
             <Square hasNoBorder={hasNoBorder}>+</Square>
         </Grid>
     );

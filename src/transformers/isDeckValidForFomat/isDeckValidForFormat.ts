@@ -1,6 +1,6 @@
 import { PlayerConstants } from '@/constants/gameConstants';
 import { CardType, DeckList } from '@/types/cards';
-import { Format } from '@/types/games';
+import { Format, isFormatConstructed } from '@/types/games';
 
 export const MAX_DUPLICATES_FOR_FORMATS = {
     [Format.SINGLETON]: 1,
@@ -21,7 +21,9 @@ export const isDeckValidForFormat = (
     let numCards = 0;
     let isValid = true;
     const max = MAX_DUPLICATES_FOR_FORMATS[format];
-    const minDeckSize = PlayerConstants.STARTING_DECK_SIZE;
+    const minDeckSize = isFormatConstructed(format)
+        ? PlayerConstants.STARTING_DECK_SIZE
+        : PlayerConstants.STARTING_DECK_SIZE_LIMITED;
     const maxDeckSize = PlayerConstants.MAX_DECK_SIZE;
     let reason: string;
     deck.forEach(({ card, quantity }) => {

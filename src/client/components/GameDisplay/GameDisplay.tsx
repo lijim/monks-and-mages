@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import {
+    getDeckbuildingPoolForPlayer,
+    getGameFormat,
     getGameState,
     getLastEffectForActivePlayer,
     getOtherPlayers,
@@ -14,12 +16,14 @@ import { SelfPlayerInfo } from '../SelfPlayerInfo';
 import { OtherPlayerInfo } from '../OtherPlayerInfo';
 import { HandOfCards } from '../HandOfCards';
 import { PlayerBoardSection } from '../PlayerBoardSection';
-import { Effect } from '@/types/cards';
+import { Card, Effect } from '@/types/cards';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { CenterPromptBox } from '../CenterPromptBox';
 import { GameChatMessages } from '../GameChatMessages';
 import { LastPlayedCard } from '../LastPlayedCard';
 import { DraftingTable } from '../DraftingTable';
+import { DeckBuilder } from '../DeckBuilder';
+import { Format } from '@/types/games';
 
 const GameGrid = styled.div`
     width: 100%;
@@ -301,15 +305,27 @@ const GameBoard: React.FC<GameBoardProps> = ({ otherPlayers, selfPlayer }) => {
  */
 export const GameDisplay: React.FC = () => {
     const gameState = useSelector<RootState, GameState>(getGameState);
+    const gameFormat = useSelector<RootState, Format>(getGameFormat);
     const selfPlayer = useSelector<RootState, Player>(getSelfPlayer);
     const otherPlayers = useSelector<RootState, Player[]>(getOtherPlayers);
     const lastEffect = useSelector<RootState, Effect>(
         getLastEffectForActivePlayer
     );
+    const deckbuildingPool = useSelector<RootState, Card[]>(
+        getDeckbuildingPoolForPlayer(selfPlayer?.name)
+    );
 
     return (
         <GameGrid>
             {gameState === GameState.DRAFTING && <DraftingTable />}
+            {gameState === GameState.DECKBUILDING && (
+                <div>
+                    <DeckBuilder
+                        cardPool={deckbuildingPool}
+                        format={gameFormat}
+                    />
+                </div>
+            )}
             {[
                 GameState.MULLIGANING,
                 GameState.PLAYING,
