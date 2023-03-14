@@ -50,15 +50,16 @@ export const DraftingTable = () => {
     );
 
     const takePile = (draftPileIndex: number) => () => {
-        isActivePlayer &&
+        if (isActivePlayer) {
             takeGameAction({
                 type: GameActionTypes.TAKE_DRAFT_PILE,
                 draftPileIndex,
             });
+        }
     };
 
-    const peekAtPlayersDeck = (player: Player) => () => {
-        setPlayer(player);
+    const peekAtPlayersDeck = (playerToPeekAt: Player) => () => {
+        setPlayer(playerToPeekAt);
     };
 
     return (
