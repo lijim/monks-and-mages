@@ -9,8 +9,26 @@ import { EffectType } from '@/types/effects';
 import { makeSystemChatMessage } from '@/factories/chat';
 import { makeCard } from '@/factories/cards';
 import { SpellCards } from '@/mocks/spells';
+import { Format } from '@/types/games';
+import { GameState } from '@/types/board';
 
 describe('GameDisplay', () => {
+    it('renders a drafting screen', () => {
+        const board = makeNewBoard({
+            playerNames: ['Tommy', 'Timmy'],
+            format: Format.DRAFT,
+        });
+        board.gameState = GameState.DRAFTING;
+        const preloadedState: Partial<RootState> = {
+            user: {
+                name: 'Tommy',
+            },
+            board,
+        };
+        render(<GameDisplay />, { preloadedState });
+        expect(screen.queryByText('Pile 4')).toBeInTheDocument();
+    });
+
     it('renders player names', () => {
         const preloadedState: Partial<RootState> = {
             user: {
