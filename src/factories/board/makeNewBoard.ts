@@ -1,4 +1,5 @@
 import sampleSize from 'lodash.samplesize';
+import shuffle from 'lodash.shuffle';
 import { MONKS_DECKLIST, SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 import {
     DECKLIST_MAPPINGS,
@@ -17,7 +18,6 @@ import {
     DRAFT_PILE_STARTING_SIZE,
     SEALED_PACK_QUANTITY,
 } from '@/constants/gameConstants';
-import shuffle from 'lodash.shuffle';
 
 export type MakeNewBoardParams = {
     avatarsForPlayers?: Record<string, string>;

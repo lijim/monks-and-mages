@@ -9,6 +9,7 @@ import { Resource } from '@/types/resources';
 import { applyGameAction } from './gameEngine';
 import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 import { EffectType, PassiveEffect } from '@/types/effects';
+import { Format } from '@/types/games';
 
 describe('Game Action', () => {
     let board: Board;
@@ -1155,6 +1156,30 @@ describe('Game Action', () => {
                 ).toEqual([PassiveEffect.POISONED, PassiveEffect.QUICK]);
                 expect(newBoardState.players[0].units[0].hp).toEqual(1);
             });
+        });
+    });
+
+    describe('Draft mode', () => {
+        it('takes a pile', () => {
+            const draftBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.DRAFT,
+                startingPlayerIndex: 1,
+            });
+            board.gameState = GameState.DRAFTING;
+            const newBoardState = applyGameAction({
+                board: draftBoard,
+                gameAction: {
+                    type: GameActionTypes.TAKE_DRAFT_PILE,
+                    draftPileIndex: 0,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.players[0].isActivePlayer).toBe(true);
+            expect(newBoardState.players[1].deckBuildingPool).toHaveLength(3);
+            expect(newBoardState.draftPiles[0]).toHaveLength(1);
+            expect(newBoardState.draftPiles[2]).toHaveLength(4);
         });
     });
 });

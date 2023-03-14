@@ -8,6 +8,7 @@ export enum GameActionTypes {
     PASS_TURN = 'PASS_TURN',
     PERFORM_ATTACK = 'PERFORM_ATTACK',
     REJECT_MULLIGAN = 'REJECT_MULLIGAN',
+    TAKE_DRAFT_PILE = 'TAKE_DRAFT_PILE',
     TAP_RESOURCE = 'TAP_RESOURCE',
 }
 
@@ -53,12 +54,18 @@ export interface PerformAttack {
     unitTarget?: string; // card id's
 }
 
+export interface TakeDraftPile {
+    draftPileIndex: number;
+    type: GameActionTypes.TAKE_DRAFT_PILE;
+}
+
 export type GameAction =
     | AcceptMulliganAction
-    | RejectMulliganAction
-    | PassTurnAction
-    | DeployResource
-    | TapResource
-    | DeployUnit
     | CastSpell
-    | PerformAttack;
+    | DeployResource
+    | DeployUnit
+    | PassTurnAction
+    | PerformAttack
+    | RejectMulliganAction
+    | TakeDraftPile
+    | TapResource;

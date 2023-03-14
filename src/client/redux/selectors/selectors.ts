@@ -1,5 +1,5 @@
-import { GameState, Player } from '@/types/board';
-import { Effect } from '@/types/cards';
+import { DraftPile, GameState, Player } from '@/types/board';
+import { Card, Effect } from '@/types/cards';
 import { TargetTypes, getDefaultTargetForEffect } from '@/types/effects';
 import { RootState } from '../store';
 
@@ -16,6 +16,37 @@ export const getSelfPlayer = (state: Partial<RootState>): Player | null => {
     return (state.board.players || []).find(
         (player) => player.name === state.user.name
     );
+};
+
+export const getGameState = (state: RootState): GameState =>
+    state.board.gameState;
+
+export const getDraftPiles = (state: RootState): DraftPile[] =>
+    state.board.draftPiles;
+
+export const getDeckbuildingPoolForPlayer =
+    (playerName: string) =>
+    (state: RootState): Card[] => {
+        if (!state.board?.players) return [];
+
+        const player = (state.board.players || []).find(
+            (player) => player.name === playerName
+        );
+        if (!player) {
+            return [];
+        }
+        return player.deckBuildingPool;
+    };
+
+export const getDraftPoolSize = (state: RootState): number =>
+    state.board.draftPoolSize;
+
+export const isActivePlayer = (state: RootState): boolean => {
+    const self = getSelfPlayer(state);
+    if (!self) {
+        return false;
+    }
+    return self.isActivePlayer;
 };
 
 export const getAuth0Id = (state: RootState) => state.user.auth0Id;

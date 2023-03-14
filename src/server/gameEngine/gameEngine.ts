@@ -506,6 +506,29 @@ export const applyGameAction = ({
 
             return clonedBoard;
         }
+        case GameActionTypes.TAKE_DRAFT_PILE: {
+            const { draftPileIndex } = gameAction;
+            // take draft pile
+            activePlayer.deckBuildingPool = [
+                ...activePlayer.deckBuildingPool,
+                ...clonedBoard.draftPiles[draftPileIndex],
+            ];
+            clonedBoard.draftPiles[draftPileIndex] = [];
+
+            // deal out new cards
+            clonedBoard.draftPiles.forEach((draftPile) => {
+                if (clonedBoard.draftPool.length > 0) {
+                    draftPile.push(clonedBoard.draftPool.pop());
+                }
+            });
+            clonedBoard.draftPoolSize = clonedBoard.draftPool.length;
+
+            const nextPlayer = getNextPlayer(clonedBoard);
+            activePlayer.isActivePlayer = false;
+            nextPlayer.isActivePlayer = true;
+
+            return clonedBoard;
+        }
         default:
             return clonedBoard;
     }

@@ -20,7 +20,7 @@ interface DeckListCardSlotProps {
 }
 
 // controls positioning, hover of a CardGridItem in the deck list
-const DeckListCardSlot = styled.div<DeckListCardSlotProps>`
+export const DeckListCardSlot = styled.div<DeckListCardSlotProps>`
     height: 35px;
     z-index: 0;
     transition: all 0.2s ease-in-out 0.1s;
@@ -35,13 +35,13 @@ const Centering = styled.div`
     margin: auto;
 `;
 
-const Pile = styled(motion.div)`
+export const Pile = styled(motion.div)`
     display: block;
     width: 295px;
     grid-auto-rows: 34px;
 `;
 
-const Piles = styled.div`
+export const Piles = styled.div`
     margin: auto;
     display: grid;
     grid-template-columns: repeat(auto-fill, 300px);
@@ -104,7 +104,7 @@ export const DeckList: React.FC<DeckListProps> = ({
                                 ([card, quantity], cardIndex) => (
                                     <DeckListCardSlot
                                         position={cardIndex}
-                                        key={cardIndex}
+                                        key={card.id}
                                     >
                                         {shouldShowQuantity && (
                                             <QuantitySelector
