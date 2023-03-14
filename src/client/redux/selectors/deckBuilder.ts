@@ -1,6 +1,7 @@
-import { DeckList, Skeleton } from '@/types/cards';
+import { Card, DeckList, Skeleton } from '@/types/cards';
 import { RootState } from '../store';
 import { getSkeletonFromDeckList } from '@/transformers/getSkeletonFromDeckList';
+import { getSelfPlayer } from './selectors';
 
 export const getCurrentSavedDeckName = (state: Partial<RootState>): string =>
     state.deckBuilder.currentSavedDeckName;
@@ -16,3 +17,23 @@ export const getSkeleton = (state: Partial<RootState>): Skeleton =>
 
 export const getIsSavedDeckAltered = (state: Partial<RootState>): boolean =>
     state.deckBuilder.isSavedDeckAltered;
+
+export const getNumberLeft =
+    (cardToFind: Card) =>
+    (state: Partial<RootState>): number => {
+        const self = getSelfPlayer(state);
+        if (!self?.deckBuildingPool) {
+            return 0;
+        }
+
+        const quantityInPool =
+            self.deckBuildingPool.filter(
+                (card) => card.name === cardToFind.name
+            ).length || 0;
+        const usedSoFar =
+            state.deckBuilder.decklist.find(
+                ({ card }) => card.name === cardToFind.name
+            )?.quantity || 0;
+
+        return quantityInPool - usedSoFar;
+    };

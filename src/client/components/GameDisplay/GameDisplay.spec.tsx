@@ -13,20 +13,42 @@ import { Format } from '@/types/games';
 import { GameState } from '@/types/board';
 
 describe('GameDisplay', () => {
-    it('renders a drafting screen', () => {
-        const board = makeNewBoard({
-            playerNames: ['Tommy', 'Timmy'],
-            format: Format.DRAFT,
+    describe('Limited modes', () => {
+        it('renders a drafting screen', () => {
+            const board = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.DRAFT,
+            });
+            board.gameState = GameState.DRAFTING;
+            const preloadedState: Partial<RootState> = {
+                user: {
+                    name: 'Tommy',
+                },
+                board,
+            };
+            render(<GameDisplay />, { preloadedState });
+            expect(screen.queryByText('Pile 4')).toBeInTheDocument();
         });
-        board.gameState = GameState.DRAFTING;
-        const preloadedState: Partial<RootState> = {
-            user: {
-                name: 'Tommy',
-            },
-            board,
-        };
-        render(<GameDisplay />, { preloadedState });
-        expect(screen.queryByText('Pile 4')).toBeInTheDocument();
+
+        it('renders deckbuilding view', () => {
+            const board = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.SEALED,
+            });
+            board.gameState = GameState.DECKBUILDING;
+            const preloadedState: Partial<RootState> = {
+                user: {
+                    name: 'Tommy',
+                },
+                board,
+            };
+            render(<GameDisplay />, { preloadedState });
+            expect(
+                screen.queryByText('Must have at least 40 cards in deck')
+            ).toBeInTheDocument();
+            expect(screen.queryAllByText('∞')[0]).toBeInTheDocument();
+            expect(screen.queryAllByText('Fire')[0]).toBeInTheDocument();
+        });
     });
 
     it('renders player names', () => {

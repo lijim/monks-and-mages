@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import styled from 'styled-components';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardType } from '@/types/cards';
 import {
     splitDeckListToPiles,
@@ -18,15 +18,26 @@ import { RESOURCE_GLOSSARY } from '@/types/resources';
 import { CardGridSingleItem } from '../CardGridItem';
 import { Colors } from '@/constants/colors';
 import { addCard } from '@/client/redux/deckBuilder';
+import {
+    getGameFormat,
+    getGameState,
+    getNumberLeft,
+} from '@/client/redux/selectors';
+import { GameState } from '@/types/board';
+import { RootState } from '@/client/redux/store';
+import { ALL_BASIC_RESOURCES } from '@/constants/deckLists';
+import { isFormatConstructed } from '@/types/games';
 
 interface CompactDeckListProps {
     deck: Card[];
+    isDisplayOnly?: boolean;
     onClickCard?: (card: Card) => void;
     shouldShowQuantity?: boolean;
 }
 
 type MiniCardFrameProps = {
     hasOnClick: boolean;
+    isDisplayOnly?: boolean;
     primaryColor: string;
     secondaryColor: string;
 };
@@ -83,6 +94,7 @@ const CostCell = styled.div`
 
 type MiniCardProps = {
     card: Card;
+    isDisplayOnly: boolean;
     quantity: number;
     shouldShowQuantity: boolean;
 };
@@ -91,6 +103,7 @@ const MiniCard: React.FC<MiniCardProps> = ({
     card,
     quantity,
     shouldShowQuantity,
+    isDisplayOnly,
 }) => {
     const dispatch = useDispatch();
     const {
@@ -104,16 +117,40 @@ const MiniCard: React.FC<MiniCardProps> = ({
         placement: 'right',
     });
 
+    const gameFormat = useSelector(getGameFormat);
+    const numberLeft = useSelector(getNumberLeft(card));
+
     const associatedCards = getAssociatedCards(card);
     const { primaryColor, secondaryColor } = getColorsForCard(card);
+
+    let quantityToDisplay = 0;
+    if (isFormatConstructed(gameFormat)) {
+        quantityToDisplay = quantity;
+    } else if (quantity !== Number.MAX_SAFE_INTEGER) {
+        quantityToDisplay = numberLeft;
+    } else {
+        quantityToDisplay = quantity;
+    }
+
     const onAddCard = () => {
+        if (isDisplayOnly) {
+            return;
+        }
+        if (
+            gameFormat &&
+            !isFormatConstructed(gameFormat) &&
+            quantityToDisplay <= 0
+        ) {
+            return;
+        }
         dispatch(addCard(card));
     };
 
     return (
         <>
             <MiniCardFrame
-                hasOnClick={true}
+                style={{ opacity: quantityToDisplay === 0 ? '.7' : '1' }}
+                hasOnClick={!isDisplayOnly && quantityToDisplay > 0}
                 primaryColor={primaryColor}
                 secondaryColor={secondaryColor}
                 onClick={onAddCard}
@@ -121,7 +158,10 @@ const MiniCard: React.FC<MiniCardProps> = ({
                 ref={setTriggerRef}
             >
                 {shouldShowQuantity && (
-                    <QuantitySelector hasNoBorder quantity={quantity} />
+                    <QuantitySelector
+                        hasNoBorder
+                        quantity={quantityToDisplay}
+                    />
                 )}
                 <div>
                     <NameCell
@@ -191,8 +231,37 @@ const MiniCard: React.FC<MiniCardProps> = ({
 export const CompactDeckList: React.FC<CompactDeckListProps> = ({
     deck,
     shouldShowQuantity = true,
+    isDisplayOnly = false,
 }) => {
-    const piles = splitDeckListToPiles(deck);
+    let piles = splitDeckListToPiles(deck);
+    const gameState = useSelector<RootState, GameState>(getGameState);
+
+    const shouldShowBasicResources = gameState === GameState.DECKBUILDING;
+
+    if (shouldShowBasicResources) {
+        const basicResourceCards = new Map(
+            ALL_BASIC_RESOURCES.map(({ card }) => [
+                card,
+                Number.MAX_SAFE_INTEGER,
+            ])
+        );
+        let resources = piles.find((pile) => pile.title === 'Resources');
+        if (!resources) {
+            piles = [
+                {
+                    title: 'Resources',
+                    cards: basicResourceCards,
+                },
+                ...piles,
+            ];
+        } else {
+            resources.cards = new Map([
+                ...basicResourceCards.entries(),
+                ...resources.cards.entries(),
+            ]);
+        }
+    }
+
     return (
         <>
             {piles.map((pile) => (
@@ -204,6 +273,7 @@ export const CompactDeckList: React.FC<CompactDeckListProps> = ({
                             quantity={quantity}
                             shouldShowQuantity={shouldShowQuantity}
                             key={card.name}
+                            isDisplayOnly={isDisplayOnly}
                         />
                     ))}
                 </div>

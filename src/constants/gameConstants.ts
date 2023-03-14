@@ -3,6 +3,7 @@ export enum PlayerConstants {
     STARTING_HEALTH = 20,
     STARTING_HAND_SIZE = 7,
     STARTING_DECK_SIZE = 60,
+    STARTING_DECK_SIZE_LIMITED = 40,
 }
 
 export const AUTO_RESOLVE_LINGER_DURATION = 1000;

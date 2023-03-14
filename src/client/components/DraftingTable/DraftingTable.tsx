@@ -168,7 +168,10 @@ export const DraftingTable = () => {
                                 gridTemplateRows: 'auto auto 1fr',
                             }}
                         >
-                            <CompactDeckList deck={deckbuildingPool} />
+                            <CompactDeckList
+                                deck={deckbuildingPool}
+                                isDisplayOnly
+                            />
                         </div>
                     </div>
                 </div>

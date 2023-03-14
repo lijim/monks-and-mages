@@ -22,7 +22,7 @@ import { Filters } from '@/types/deckBuilder';
 import { SavedDeckManager } from '../SavedDeckManager';
 import { getAuth0Id, getDeckList } from '@/client/redux/selectors';
 import { chooseFormat, clearDeck, loadDeck } from '@/client/redux/deckBuilder';
-import { Format } from '@/types/games';
+import { Format, isFormatConstructed } from '@/types/games';
 
 const DeckListContainers = styled.div`
     display: grid;
@@ -154,42 +154,58 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     const deck = filterCards(cardPool, filters);
     return (
         <>
-            <TopNavBar>
-                <b>Customize Your {format} Deck</b> {} <Link to="/">Back</Link>
-            </TopNavBar>
+            {isFormatConstructed(format) && (
+                <TopNavBar>
+                    <b>Customize Your {format} Deck</b> {}{' '}
+                    <Link to="/">Back</Link>
+                </TopNavBar>
+            )}
             <DeckListContainers>
                 <DeckListBackDrop data-testid="CardPool">
                     <DeckBuilderFilters />
                     {deck.length}
-                    <CompactDeckList deck={deck} shouldShowQuantity={false} />
+                    <CompactDeckList
+                        deck={deck}
+                        shouldShowQuantity={!isFormatConstructed(format)}
+                    />
                 </DeckListBackDrop>
                 <DeckListBackDrop data-testid="CurrentDeck">
-                    <SecondaryColorButton onClick={copyToClipboard} zoom={0.8}>
-                        Copy to Clipboard
-                    </SecondaryColorButton>
-                    &nbsp;&nbsp;
-                    <SecondaryColorButton
-                        onClick={importFromClipboard}
-                        zoom={0.8}
-                    >
-                        Import from Clipboard
-                    </SecondaryColorButton>
-                    &nbsp;&nbsp;
-                    <SecondaryColorButton onClick={download} zoom={0.8}>
-                        Download as File
-                    </SecondaryColorButton>
-                    &nbsp;&nbsp;
-                    <input
-                        type="file"
-                        onChange={upload}
-                        accept="text/plain"
-                        style={{ display: 'none' }}
-                        ref={fileInputEl}
-                    />
-                    <SecondaryColorButton onClick={importFile} zoom={0.8}>
-                        Import File
-                    </SecondaryColorButton>{' '}
-                    &nbsp;&nbsp;
+                    {isFormatConstructed(format) && (
+                        <>
+                            <SecondaryColorButton
+                                onClick={copyToClipboard}
+                                zoom={0.8}
+                            >
+                                Copy to Clipboard
+                            </SecondaryColorButton>
+                            &nbsp;&nbsp;
+                            <SecondaryColorButton
+                                onClick={importFromClipboard}
+                                zoom={0.8}
+                            >
+                                Import from Clipboard
+                            </SecondaryColorButton>
+                            &nbsp;&nbsp;
+                            <SecondaryColorButton onClick={download} zoom={0.8}>
+                                Download as File
+                            </SecondaryColorButton>
+                            &nbsp;&nbsp;
+                            <input
+                                type="file"
+                                onChange={upload}
+                                accept="text/plain"
+                                style={{ display: 'none' }}
+                                ref={fileInputEl}
+                            />
+                            <SecondaryColorButton
+                                onClick={importFile}
+                                zoom={0.8}
+                            >
+                                Import File
+                            </SecondaryColorButton>{' '}
+                            &nbsp;&nbsp;
+                        </>
+                    )}
                     <SecondaryColorButton onClick={onClickClearDeck} zoom={0.8}>
                         Clear
                     </SecondaryColorButton>{' '}

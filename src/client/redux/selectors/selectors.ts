@@ -2,6 +2,7 @@ import { DraftPile, GameState, Player } from '@/types/board';
 import { Card, Effect } from '@/types/cards';
 import { TargetTypes, getDefaultTargetForEffect } from '@/types/effects';
 import { RootState } from '../store';
+import { Format } from '@/types/games';
 
 export const isUserInitialized = (state: Partial<RootState>): boolean =>
     !!state.user.name;
@@ -20,6 +21,8 @@ export const getSelfPlayer = (state: Partial<RootState>): Player | null => {
 
 export const getGameState = (state: RootState): GameState =>
     state.board.gameState;
+
+export const getGameFormat = (state: RootState): Format => state.board?.format;
 
 export const getDraftPiles = (state: RootState): DraftPile[] =>
     state.board.draftPiles;
