@@ -49,6 +49,24 @@ describe('GameDisplay', () => {
             expect(screen.queryAllByText('∞')[0]).toBeInTheDocument();
             expect(screen.queryAllByText('Fire')[0]).toBeInTheDocument();
         });
+
+        it('renders deckbuilding view for spectators', () => {
+            const board = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.SEALED,
+            });
+            board.gameState = GameState.DECKBUILDING;
+            const preloadedState: Partial<RootState> = {
+                user: {
+                    name: 'Phyllis',
+                },
+                board,
+            };
+            render(<GameDisplay />, { preloadedState });
+            expect(
+                screen.queryByText('Must have at least 40 cards in deck')
+            ).toBeInTheDocument();
+        });
     });
 
     it('renders player names', () => {

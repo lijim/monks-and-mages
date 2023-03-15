@@ -34,7 +34,7 @@ export const DeckManager: React.FC = () => {
                 <b>Viewing Deck:</b> {deckName} <Link to="/">Back</Link>
             </TopNavBar>
             <DeckListBackDrop>
-                <DeckList deck={deck} />
+                <DeckList deck={deck} isDisplayOnly />
             </DeckListBackDrop>
         </>
     );

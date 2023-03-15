@@ -20,9 +20,16 @@ import { DeckBuilderFilters } from '../DeckBuilderFilters';
 import { filterCards } from '@/transformers/filterCards';
 import { Filters } from '@/types/deckBuilder';
 import { SavedDeckManager } from '../SavedDeckManager';
-import { getAuth0Id, getDeckList } from '@/client/redux/selectors';
+import {
+    getAuth0Id,
+    getDeckList,
+    getGameFormat,
+    getSelfPlayer,
+} from '@/client/redux/selectors';
 import { chooseFormat, clearDeck, loadDeck } from '@/client/redux/deckBuilder';
 import { Format, isFormatConstructed } from '@/types/games';
+import { GameActionTypes } from '@/types/gameActions';
+import { Player } from '@/types/board';
 
 const DeckListContainers = styled.div`
     display: grid;
@@ -63,15 +70,21 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
         (state) => state.deckList.customDeckList
     );
     const currentDeck = useSelector<RootState, DeckListType>(getDeckList);
+    const gameFormat = useSelector<RootState, Format>(getGameFormat);
+    const selfPlayer = useSelector<RootState, Player>(getSelfPlayer);
     const dispatch = useDispatch();
     const fileInputEl = useRef<HTMLInputElement>(null);
     const filters = useSelector<RootState, Filters>(
         (state) => state.deckBuilderFilters
     );
     const auth0Id = useSelector<RootState, string | undefined>(getAuth0Id);
+    const isDisplayOnly =
+        !isFormatConstructed(format) && selfPlayer?.numCardsInHand > 0;
 
     useEffect(() => {
-        if (skeleton) {
+        if (format && !isFormatConstructed(format)) {
+            dispatch(clearDeck());
+        } else if (skeleton) {
             dispatch(loadDeck(skeleton));
         }
     }, []);
@@ -140,8 +153,15 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     };
 
     const submitDecklist = () => {
-        webSocket.chooseCustomDeck(getSkeletonFromDeckList(currentDeck));
-        dispatch(push('/'));
+        if (gameFormat) {
+            webSocket.takeGameAction({
+                type: GameActionTypes.SUBMIT_DECK,
+                skeleton: getSkeletonFromDeckList(currentDeck),
+            });
+        } else {
+            webSocket.chooseCustomDeck(getSkeletonFromDeckList(currentDeck));
+            dispatch(push('/'));
+        }
     };
 
     const onClickClearDeck = () => {
@@ -167,6 +187,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                     <CompactDeckList
                         deck={deck}
                         shouldShowQuantity={!isFormatConstructed(format)}
+                        isDisplayOnly={isDisplayOnly}
                     />
                 </DeckListBackDrop>
                 <DeckListBackDrop data-testid="CurrentDeck">
@@ -212,17 +233,22 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                     &nbsp;&nbsp;
                     <SecondaryColorButton
                         onClick={submitDecklist}
-                        disabled={!isCurrentDeckValid}
+                        disabled={!isCurrentDeckValid || isDisplayOnly}
                         zoom={0.8}
                     >
-                        Submit
+                        {isDisplayOnly ? 'Deck submitted' : 'Submit'}
                     </SecondaryColorButton>
                     <br />
                     <ValidationMsg>{reasonForDeckInvalid}</ValidationMsg>
                     <br />
-                    <DeckList deck={makeDeck(currentDeck)} />
+                    <DeckList
+                        deck={makeDeck(currentDeck)}
+                        isDisplayOnly={isDisplayOnly}
+                    />
                 </DeckListBackDrop>
-                {auth0Id && <SavedDeckManager decklist={currentDeck} />}
+                {auth0Id && isFormatConstructed(format) && (
+                    <SavedDeckManager decklist={currentDeck} />
+                )}
             </DeckListContainers>
         </>
     );
