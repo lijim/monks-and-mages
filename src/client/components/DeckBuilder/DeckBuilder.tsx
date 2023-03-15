@@ -79,7 +79,7 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     );
     const auth0Id = useSelector<RootState, string | undefined>(getAuth0Id);
     const isDisplayOnly =
-        !isFormatConstructed(format) && selfPlayer.numCardsInHand > 0;
+        !isFormatConstructed(format) && selfPlayer?.numCardsInHand > 0;
 
     useEffect(() => {
         if (format && !isFormatConstructed(format)) {
