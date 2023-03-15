@@ -1181,5 +1181,104 @@ describe('Game Action', () => {
             expect(newBoardState.draftPiles[0]).toHaveLength(1);
             expect(newBoardState.draftPiles[2]).toHaveLength(4);
         });
+
+        it('starts deckbuilding', () => {
+            const draftBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.DRAFT,
+                startingPlayerIndex: 1,
+            });
+            draftBoard.gameState = GameState.DRAFTING;
+            draftBoard.draftPiles = [[], [], [], []];
+            draftBoard.draftPoolSize = 0;
+            const newBoardState = applyGameAction({
+                board: draftBoard,
+                gameAction: {
+                    type: GameActionTypes.START_DECKBUILDING,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.gameState).toBe(GameState.DECKBUILDING);
+        });
+
+        it('does not start deckbuilding if there are still draft piles', () => {
+            const draftBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.DRAFT,
+                startingPlayerIndex: 1,
+            });
+            draftBoard.gameState = GameState.DRAFTING;
+            draftBoard.draftPiles = [
+                [makeCard(UnitCards.ASSASSIN)],
+                [],
+                [],
+                [],
+            ];
+            draftBoard.draftPoolSize = 0;
+            const newBoardState = applyGameAction({
+                board: draftBoard,
+                gameAction: {
+                    type: GameActionTypes.START_DECKBUILDING,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.gameState).toBe(GameState.DRAFTING);
+        });
+
+        it('submits a decklist', () => {
+            const sealedBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.SEALED,
+                startingPlayerIndex: 1,
+            });
+            sealedBoard.gameState = GameState.DECKBUILDING;
+            const newBoardState = applyGameAction({
+                board: sealedBoard,
+                gameAction: {
+                    type: GameActionTypes.SUBMIT_DECK,
+                    skeleton: {
+                        mainBoard: [{ card: 'Bamboo', quantity: 40 }],
+                        sideBoard: [],
+                    },
+                },
+                playerName: 'Tommy',
+            });
+            expect(newBoardState.players[0].hand[0].name).toEqual('Bamboo');
+            expect(newBoardState.players[0].hand[6].name).toEqual('Bamboo');
+        });
+
+        it('starts a game when the last player submits their decklist', () => {
+            const sealedBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.SEALED,
+                startingPlayerIndex: 1,
+            });
+            sealedBoard.gameState = GameState.DECKBUILDING;
+            const newBoardState = applyGameAction({
+                board: sealedBoard,
+                gameAction: {
+                    type: GameActionTypes.SUBMIT_DECK,
+                    skeleton: {
+                        mainBoard: [{ card: 'Bamboo', quantity: 40 }],
+                        sideBoard: [],
+                    },
+                },
+                playerName: 'Tommy',
+            });
+            const newBoardState2 = applyGameAction({
+                board: newBoardState,
+                gameAction: {
+                    type: GameActionTypes.SUBMIT_DECK,
+                    skeleton: {
+                        mainBoard: [{ card: 'Bamboo', quantity: 40 }],
+                        sideBoard: [],
+                    },
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState2.gameState).toEqual(GameState.MULLIGANING);
+        });
     });
 });

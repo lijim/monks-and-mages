@@ -10,7 +10,7 @@ import { makeNewPlayer } from '../player';
 import { Card, Skeleton } from '@/types/cards';
 import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/getDeckListFromSkeleton';
 import { isDeckValidForFormat } from '@/transformers/isDeckValidForFomat';
-import { Format } from '@/types/games';
+import { Format, isFormatConstructed } from '@/types/games';
 import { makePack } from '../pack';
 import {
     DRAFT_PACKS_BY_PLAYER_COUNT,
@@ -39,7 +39,7 @@ export const makeNewBoard = ({
 }: MakeNewBoardParams): Board => {
     const players = playerNames.map((playerName, playerIndex) => {
         const skeleton = nameToCustomDeckSkeleton?.get(playerName);
-        if (skeleton) {
+        if (skeleton && isFormatConstructed(format)) {
             const { decklist } = getDeckListFromSkeleton(skeleton);
             if (isDeckValidForFormat(decklist)) {
                 return makeNewPlayer({ name: playerName, decklist });
@@ -67,6 +67,11 @@ export const makeNewBoard = ({
                     ...makePack(),
                 ];
             });
+        }
+
+        if (!isFormatConstructed(format)) {
+            player.hand = [];
+            player.deck = [];
         }
 
         return player;

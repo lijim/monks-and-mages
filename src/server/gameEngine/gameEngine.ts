@@ -8,6 +8,8 @@ import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
 import { PlayerConstants } from '@/constants/gameConstants';
+import { getDeckListFromSkeleton } from '@/transformers';
+import { makeNewPlayer } from '@/factories';
 
 const getPlayers = (board: Board) => {
     const { players } = board;
@@ -210,10 +212,20 @@ export const applyGameAction = ({
 }: ApplyGameActionParams): Board => {
     const clonedBoard = cloneDeep(board);
     const { activePlayer, otherPlayers } = getPlayers(clonedBoard);
+    const self = clonedBoard.players.find(
+        (player) => player.name === playerName
+    );
     const addSystemChat = (message: string) => addChatMessage?.(message);
 
+    const ALLOWED_NON_ACTIVE_PLAYER_ACTIONS = [
+        GameActionTypes.START_DECKBUILDING,
+        GameActionTypes.SUBMIT_DECK,
+    ];
     // Error out when event is being emitted by the non-active player
-    if (activePlayer?.name !== playerName) {
+    if (
+        activePlayer?.name !== playerName &&
+        !ALLOWED_NON_ACTIVE_PLAYER_ACTIONS.includes(gameAction.type)
+    ) {
         return board; // TODO: implement error UI
     }
 
@@ -527,6 +539,35 @@ export const applyGameAction = ({
             activePlayer.isActivePlayer = false;
             nextPlayer.isActivePlayer = true;
 
+            return clonedBoard;
+        }
+        case GameActionTypes.START_DECKBUILDING: {
+            if (
+                clonedBoard.draftPoolSize === 0 &&
+                clonedBoard.draftPiles.every((pile) => pile.length === 0)
+            ) {
+                clonedBoard.gameState = GameState.DECKBUILDING;
+            }
+            return clonedBoard;
+        }
+        case GameActionTypes.SUBMIT_DECK: {
+            if (self.hand.length > 0) {
+                return clonedBoard;
+            }
+
+            const { skeleton } = gameAction;
+            const { decklist, errors } = getDeckListFromSkeleton(skeleton);
+            if (decklist && errors.length === 0) {
+                const { deck, hand, numCardsInDeck, numCardsInHand } =
+                    makeNewPlayer({ name: playerName, decklist });
+                self.deck = deck;
+                self.hand = hand;
+                self.numCardsInDeck = numCardsInDeck;
+                self.numCardsInHand = numCardsInHand;
+            }
+            if (clonedBoard.players.every((player) => player.hand.length > 0)) {
+                clonedBoard.gameState = GameState.MULLIGANING;
+            }
             return clonedBoard;
         }
         default:
