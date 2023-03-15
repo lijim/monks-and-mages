@@ -9,9 +9,9 @@ export enum PlayerConstants {
 export const AUTO_RESOLVE_LINGER_DURATION = 1000;
 
 export const DRAFT_PACKS_BY_PLAYER_COUNT: Record<number, number> = {
-    2: 7,
-    3: 11,
-    4: 14,
+    2: 9,
+    3: 13,
+    4: 18,
 };
 
 export const DRAFT_PILE_QUANTITY = 4;
