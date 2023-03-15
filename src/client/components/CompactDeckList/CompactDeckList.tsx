@@ -118,6 +118,7 @@ const MiniCard: React.FC<MiniCardProps> = ({
     });
 
     const gameFormat = useSelector(getGameFormat);
+    const gameState = useSelector(getGameState);
     const numberLeft = useSelector(getNumberLeft(card));
 
     const associatedCards = getAssociatedCards(card);
@@ -126,7 +127,10 @@ const MiniCard: React.FC<MiniCardProps> = ({
     let quantityToDisplay = 0;
     if (isFormatConstructed(gameFormat)) {
         quantityToDisplay = quantity;
-    } else if (quantity !== Number.MAX_SAFE_INTEGER) {
+    } else if (
+        quantity !== Number.MAX_SAFE_INTEGER &&
+        gameState === GameState.DECKBUILDING
+    ) {
         quantityToDisplay = numberLeft;
     } else {
         quantityToDisplay = quantity;
