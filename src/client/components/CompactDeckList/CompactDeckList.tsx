@@ -132,25 +132,31 @@ const MiniCard: React.FC<MiniCardProps> = ({
         quantityToDisplay = quantity;
     }
 
-    const onAddCard = () => {
+    const hasOnClick = () => {
         if (isDisplayOnly) {
-            return;
+            return false;
         }
         if (
             gameFormat &&
             !isFormatConstructed(gameFormat) &&
             quantityToDisplay <= 0
         ) {
-            return;
+            return false;
         }
-        dispatch(addCard(card));
+        return true;
+    };
+
+    const onAddCard = () => {
+        if (hasOnClick()) {
+            dispatch(addCard(card));
+        }
     };
 
     return (
         <>
             <MiniCardFrame
-                style={{ opacity: quantityToDisplay === 0 ? '.7' : '1' }}
-                hasOnClick={!isDisplayOnly && quantityToDisplay > 0}
+                style={{ opacity: hasOnClick() ? '1' : '.7' }}
+                hasOnClick={hasOnClick()}
                 primaryColor={primaryColor}
                 secondaryColor={secondaryColor}
                 onClick={onAddCard}
