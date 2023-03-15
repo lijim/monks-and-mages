@@ -67,9 +67,10 @@ describe('Make New Board', () => {
 
     it('makes a board with custom decklists', () => {
         const nameToCustomDeckSkeleton = new Map<string, Skeleton>();
-        nameToCustomDeckSkeleton.set('Hal', [
-            { card: 'Assassin', quantity: 4 },
-        ]);
+        nameToCustomDeckSkeleton.set('Hal', {
+            mainBoard: [{ card: 'Assassin', quantity: 4 }],
+            sideBoard: [],
+        });
         const board = makeNewBoard({
             playerNames: ['Hal', 'Orin', 'Samus'],
             nameToCustomDeckSkeleton,

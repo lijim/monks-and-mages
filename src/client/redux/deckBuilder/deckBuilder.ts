@@ -16,7 +16,7 @@ type DeckBuilderState = {
 const initialState: DeckBuilderState = {
     currentSavedDeckName: '',
     currentSavedDeckId: '',
-    decklist: [],
+    decklist: { mainBoard: [], sideBoard: [] },
     format: Format.STANDARD,
     isSavedDeckAltered: false,
 };
@@ -69,7 +69,7 @@ export const deckBuilderSlice = createSlice({
             );
             const { decklist } = state;
 
-            const matchingCardSlot = decklist.find(
+            const matchingCardSlot = decklist.mainBoard.find(
                 (cardSlot) => cardSlot.card.name === card.name
             );
             const isConstructed = isFormatConstructed(state.format);
@@ -88,7 +88,7 @@ export const deckBuilderSlice = createSlice({
             if (matchingCardSlot) {
                 matchingCardSlot.quantity += 1;
             } else {
-                decklist.push({ card, quantity: 1 });
+                decklist.mainBoard.push({ card, quantity: 1 });
             }
             state.decklist = decklist;
             if (state.currentSavedDeckName) {
@@ -98,22 +98,24 @@ export const deckBuilderSlice = createSlice({
         removeCard(state, action: PayloadAction<Card>) {
             const card = action.payload;
             const { decklist } = state;
-            const matchingCardSlot = decklist.find(
+            const matchingCardSlot = decklist.mainBoard.find(
                 (cardSlot) => cardSlot.card.name === card.name
             );
 
             if (matchingCardSlot) {
                 matchingCardSlot.quantity -= 1;
             }
-            state.decklist = [
-                ...decklist.filter((cardSlot) => cardSlot.quantity > 0),
+            state.decklist.mainBoard = [
+                ...decklist.mainBoard.filter(
+                    (cardSlot) => cardSlot.quantity > 0
+                ),
             ];
             if (state.currentSavedDeckName) {
                 state.isSavedDeckAltered = true;
             }
         },
         clearDeck(state) {
-            state.decklist = [];
+            state.decklist.mainBoard = [];
             if (state.currentSavedDeckName) {
                 state.isSavedDeckAltered = true;
             }

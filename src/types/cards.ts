@@ -110,7 +110,10 @@ export interface SpellCard extends SpellBase {
 
 export type Card = ResourceCard | UnitCard | SpellCard;
 
-export type DeckList = { card: Card; quantity: number }[];
+export type DeckList = {
+    mainBoard: { card: Card; quantity: number }[];
+    sideBoard: { card: Card; quantity: number }[];
+};
 
 /**
  * Used to store decklists as 'skeleton states' for imports + downloads.
@@ -119,7 +122,10 @@ export type DeckList = { card: Card; quantity: number }[];
  * Can be easily stringified b/c this construct is so minimalistic:
  * just a card string and a number
  */
-export type Skeleton = { card: string; quantity: number }[];
+export type Skeleton = {
+    mainBoard: { card: string; quantity: number }[];
+    sideBoard: { card: string; quantity: number }[];
+};
 
 export type PileOfCards = {
     cards: Map<Card, number>;
