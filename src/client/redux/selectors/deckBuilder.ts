@@ -31,9 +31,13 @@ export const getNumberLeft =
                 (card) => card.name === cardToFind.name
             ).length || 0;
         const usedSoFar =
-            state.deckBuilder.decklist.find(
+            state.deckBuilder.decklist.mainBoard.find(
+                ({ card }) => card.name === cardToFind.name
+            )?.quantity || 0;
+        const usedSoFarInSideboard =
+            state.deckBuilder.decklist.sideBoard.find(
                 ({ card }) => card.name === cardToFind.name
             )?.quantity || 0;
 
-        return quantityInPool - usedSoFar;
+        return quantityInPool - usedSoFar - usedSoFarInSideboard;
     };

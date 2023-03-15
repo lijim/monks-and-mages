@@ -26,7 +26,7 @@ export const isDeckValidForFormat = (
         : PlayerConstants.STARTING_DECK_SIZE_LIMITED;
     const maxDeckSize = PlayerConstants.MAX_DECK_SIZE;
     let reason: string;
-    deck.forEach(({ card, quantity }) => {
+    deck.mainBoard.forEach(({ card, quantity }) => {
         numCards += quantity;
         if (card.cardType === CardType.RESOURCE && !card.isAdvanced) {
             return;

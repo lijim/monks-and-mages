@@ -251,7 +251,10 @@ describe('DeckBuilder', () => {
         render(<DeckBuilder />, {
             preloadedState: {
                 deckList: {
-                    customDeckList: [{ card: 'Lancer', quantity: 1 }],
+                    customDeckList: {
+                        mainBoard: [{ card: 'Lancer', quantity: 1 }],
+                        sideBoard: [],
+                    },
                     premadeDecklist: null,
                 },
             },

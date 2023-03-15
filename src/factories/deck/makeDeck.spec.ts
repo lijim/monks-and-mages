@@ -6,16 +6,19 @@ import { makeDeck } from './makeDeck';
 
 describe('Make Deck', () => {
     it('takes a decklist and makes a deck', () => {
-        const deckList: DeckList = [
-            {
-                card: makeResourceCard(Resource.BAMBOO),
-                quantity: 20,
-            },
-            {
-                card: makeCard(UnitCards.LONGBOWMAN),
-                quantity: 4,
-            },
-        ];
+        const deckList: DeckList = {
+            mainBoard: [
+                {
+                    card: makeResourceCard(Resource.BAMBOO),
+                    quantity: 20,
+                },
+                {
+                    card: makeCard(UnitCards.LONGBOWMAN),
+                    quantity: 4,
+                },
+            ],
+            sideBoard: [],
+        };
 
         const deck = makeDeck(deckList);
         expect(

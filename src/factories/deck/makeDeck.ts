@@ -9,7 +9,7 @@ import { SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
  */
 export const makeDeck = (deckList: DeckList): Card[] => {
     const cards: Card[] = [];
-    deckList.forEach(({ card, quantity }) => {
+    deckList.mainBoard.forEach(({ card, quantity }) => {
         [...new Array(quantity)].forEach(() => {
             if (card.cardType !== CardType.RESOURCE) {
                 cards.push(makeCard(card));

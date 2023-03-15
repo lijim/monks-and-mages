@@ -26,7 +26,10 @@ describe('isDeckValidForFormat', () => {
     it('returns false when there are not enough cards', () => {
         expect(
             isDeckValidForFormat(
-                [{ card: SpellCards.HOLY_REVIVAL, quantity: 1 }],
+                {
+                    mainBoard: [{ card: SpellCards.HOLY_REVIVAL, quantity: 1 }],
+                    sideBoard: [],
+                },
                 Format.SINGLETON
             )
         ).toEqual({
@@ -38,7 +41,15 @@ describe('isDeckValidForFormat', () => {
     it('returns false when there are too many cards', () => {
         expect(
             isDeckValidForFormat(
-                [{ card: makeResourceCard(Resource.BAMBOO), quantity: 400 }],
+                {
+                    mainBoard: [
+                        {
+                            card: makeResourceCard(Resource.BAMBOO),
+                            quantity: 400,
+                        },
+                    ],
+                    sideBoard: [],
+                },
                 Format.SINGLETON
             )
         ).toEqual({
@@ -49,9 +60,13 @@ describe('isDeckValidForFormat', () => {
 
     it('validates for singleton', () => {
         expect(
-            isDeckValidForFormat(
-                ALL_CARDS.slice(0, PlayerConstants.MAX_DECK_SIZE)
-            )
+            isDeckValidForFormat({
+                mainBoard: ALL_CARDS.mainBoard.slice(
+                    0,
+                    PlayerConstants.MAX_DECK_SIZE
+                ),
+                sideBoard: [],
+            })
         ).toEqual({
             isValid: true,
             reason: undefined,

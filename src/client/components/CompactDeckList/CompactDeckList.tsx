@@ -240,12 +240,12 @@ export const CompactDeckList: React.FC<CompactDeckListProps> = ({
 
     if (shouldShowBasicResources) {
         const basicResourceCards = new Map(
-            ALL_BASIC_RESOURCES.map(({ card }) => [
+            ALL_BASIC_RESOURCES.mainBoard.map(({ card }) => [
                 card,
                 Number.MAX_SAFE_INTEGER,
             ])
         );
-        let resources = piles.find((pile) => pile.title === 'Resources');
+        const resources = piles.find((pile) => pile.title === 'Resources');
         if (!resources) {
             piles = [
                 {

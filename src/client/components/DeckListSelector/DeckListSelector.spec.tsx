@@ -56,10 +56,13 @@ describe('DeckListSelector', () => {
             },
             deckList: {
                 premadeDecklist: DeckListSelections.RANDOM,
-                customDeckList: [
-                    { card: 'Lancer', quantity: 4 },
-                    { card: 'Iron', quantity: 44 },
-                ],
+                customDeckList: {
+                    mainBoard: [
+                        { card: 'Lancer', quantity: 4 },
+                        { card: 'Iron', quantity: 44 },
+                    ],
+                    sideBoard: [],
+                },
             },
         };
         render(<DeckListSelector />, { preloadedState });

@@ -15,11 +15,14 @@ describe('Split deck list to piles', () => {
 
     it('splits apart advanced and basic resources', () => {
         const piles = splitDeckListToPiles(
-            makeDeck([
-                { card: makeResourceCard(Resource.CRYSTAL), quantity: 8 },
-                { card: makeResourceCard(Resource.IRON), quantity: 9 },
-                { card: AdvancedResourceCards.SAHARAN_DESERT, quantity: 4 },
-            ])
+            makeDeck({
+                mainBoard: [
+                    { card: makeResourceCard(Resource.CRYSTAL), quantity: 8 },
+                    { card: makeResourceCard(Resource.IRON), quantity: 9 },
+                    { card: AdvancedResourceCards.SAHARAN_DESERT, quantity: 4 },
+                ],
+                sideBoard: [],
+            })
         );
         expect(piles[0].title).toEqual('Resources');
         expect(piles[0].cards.size).toEqual(3);
