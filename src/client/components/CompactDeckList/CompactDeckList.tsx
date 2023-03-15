@@ -159,7 +159,12 @@ const MiniCard: React.FC<MiniCardProps> = ({
     return (
         <>
             <MiniCardFrame
-                style={{ opacity: hasOnClick() ? '1' : '.7' }}
+                style={{
+                    opacity:
+                        hasOnClick() || gameState === GameState.DRAFTING
+                            ? '1'
+                            : '.7',
+                }}
                 hasOnClick={hasOnClick()}
                 primaryColor={primaryColor}
                 secondaryColor={secondaryColor}
