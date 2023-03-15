@@ -62,6 +62,12 @@ export const DraftingTable = () => {
         setPlayer(playerToPeekAt);
     };
 
+    const startDeckbuilding = () => {
+        takeGameAction({
+            type: GameActionTypes.START_DECKBUILDING,
+        });
+    };
+
     return (
         <>
             <Piles
@@ -120,6 +126,13 @@ export const DraftingTable = () => {
                 >
                     <h2 style={{ margin: 0 }}>Cards Left</h2>
                     <h3 style={{ margin: 0 }}>{draftPoolSize} 🂡</h3>
+                    {draftPiles.every(
+                        (draftPile) => draftPile.length === 0
+                    ) && (
+                        <PrimaryColorButton onClick={startDeckbuilding}>
+                            Start Deckbuilding
+                        </PrimaryColorButton>
+                    )}
                 </div>
 
                 <div

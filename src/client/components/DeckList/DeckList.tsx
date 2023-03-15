@@ -13,6 +13,7 @@ interface DeckListProps {
     deck: Card[];
     shouldShowQuantity?: boolean;
     shouldShowSummary?: boolean;
+    isDisplayOnly: boolean;
 }
 
 interface DeckListCardSlotProps {
@@ -62,10 +63,13 @@ export const DeckList: React.FC<DeckListProps> = ({
     deck,
     shouldShowQuantity = true,
     shouldShowSummary = true,
+    isDisplayOnly = false,
 }) => {
     const dispatch = useDispatch();
     const onRemoveCard = (card: Card) => {
-        dispatch(removeCard(card));
+        if (!isDisplayOnly) {
+            dispatch(removeCard(card));
+        }
     };
 
     if (deck.length === 0) {

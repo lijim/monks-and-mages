@@ -9,6 +9,8 @@ import { SpellCards } from '@/cardDb/spells';
 import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 import { MatchStrategy } from '@/types/deckBuilder';
 import { mockSavedDeck } from '@/mocks/savedDecks';
+import { Format } from '@/types/games';
+import { GameActionTypes } from '@/types/gameActions';
 
 const server = setupServer(
     // Describe the requests to mock.
@@ -207,6 +209,36 @@ describe('DeckBuilder', () => {
             { card: 'Iron', quantity: 56 },
             { card: 'Lancer', quantity: 4 },
         ]);
+        expect(dispatch).toHaveBeenCalledWith(push('/'));
+    });
+
+    it('submits a deck for limited mode', async () => {
+        Object.assign(navigator, {
+            clipboard: {
+                readText: () =>
+                    `[{"card":"Iron","quantity":56},{"card":"Lancer","quantity":4}]`,
+            },
+        });
+
+        navigator.clipboard.writeText = jest.fn();
+        const { webSocket, dispatch } = render(
+            <DeckBuilder format={Format.SEALED} />
+        );
+        const myDeck = screen.getByTestId('CurrentDeck');
+
+        fireEvent.click(screen.getByText('Import from Clipboard'));
+        expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
+
+        fireEvent.click(screen.getByText('Submit'));
+        expect(webSocket.takeGameAction).toHaveBeenCalledWith({
+            type: GameActionTypes.SUBMIT_DECK,
+            decklist: {
+                mainBoard: [
+                    { card: 'Iron', quantity: 56 },
+                    { card: 'Lancer', quantity: 4 },
+                ],
+            },
+        });
         expect(dispatch).toHaveBeenCalledWith(push('/'));
     });
 
