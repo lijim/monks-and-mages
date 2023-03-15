@@ -4,6 +4,7 @@ import {
     DRAFT_PILE_QUANTITY,
     DRAFT_PILE_STARTING_SIZE,
     PlayerConstants,
+    SEALED_PACK_QUANTITY,
 } from '@/constants/gameConstants';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { Skeleton } from '@/types/cards';
@@ -96,6 +97,8 @@ describe('Make New Board', () => {
             playerNames: ['Hal', 'Orin', 'Samus'],
             format: Format.SEALED,
         });
-        expect(board.players[0].deckBuildingPool).toHaveLength(6 * 15);
+        expect(board.players[0].deckBuildingPool).toHaveLength(
+            SEALED_PACK_QUANTITY * 15
+        );
     });
 });
