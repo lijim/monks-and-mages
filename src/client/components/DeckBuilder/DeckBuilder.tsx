@@ -71,7 +71,9 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
     const auth0Id = useSelector<RootState, string | undefined>(getAuth0Id);
 
     useEffect(() => {
-        if (skeleton) {
+        if (format && !isFormatConstructed(format)) {
+            dispatch(clearDeck());
+        } else if (skeleton) {
             dispatch(loadDeck(skeleton));
         }
     }, []);
