@@ -73,7 +73,7 @@ describe('sockets', () => {
             });
         });
 
-        it('chooses an avatar and joins a room', (done) => {
+        it('chooses an avatar and joins a room', async () => {
             clientSocket.emit(
                 'chooseAvatar',
                 'https://monksandmages.com/images/units/manta-ray.webp'
@@ -109,7 +109,6 @@ describe('sockets', () => {
                     },
                     ...defaultRooms,
                 ]);
-                done();
             });
         });
     });
