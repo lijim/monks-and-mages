@@ -13,6 +13,7 @@ export const LogoutButton = () => {
     return (
         <SecondaryColorButton
             onClick={() => {
+                webSocket.logout();
                 webSocket.chooseName('');
                 dispatch(push('/'));
                 logout({ returnTo: window.location.origin });

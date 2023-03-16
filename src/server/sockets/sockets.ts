@@ -2,6 +2,7 @@ import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import { Board, GameState } from '@/types/board';
 import { makeNewBoard } from '@/factories/board';
 import { obscureBoardInfo } from '../obscureBoardInfo';
@@ -31,6 +32,7 @@ import {
     CreateGameResultsBody,
     DEFAULT_AVATAR_SOURCE_DOMAIN,
 } from '@/types/api';
+import { createMemorySessionStore } from './sessionStore';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
 
@@ -42,8 +44,35 @@ export const configureIo = (server: HttpServer) => {
         },
     });
 
+    const sessionStore = createMemorySessionStore();
+
     instrument(io, {
         auth: false,
+    });
+
+    /* Persistent Session Storage */
+    io.use((socket, next) => {
+        console.log(socket.handshake.auth);
+        const { sessionID } = socket.handshake.auth;
+        if (sessionID) {
+            const session = sessionStore.findSession(sessionID);
+            if (session) {
+                socket.sessionID = sessionID;
+                socket.userID = session.userID;
+                socket.username = session.username;
+                return next();
+            }
+        }
+
+        const { username } = socket.handshake.auth;
+        if (!username) {
+            return next(new Error('invalid username'));
+        }
+
+        socket.sessionID = uuidv4();
+        socket.userID = uuidv4();
+        socket.username = username;
+        return next();
     });
 
     /* Stateful Objects */
@@ -317,6 +346,19 @@ export const configureIo = (server: HttpServer) => {
         (
             socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
         ) => {
+            // persist session
+            sessionStore.saveSession(socket.sessionID, {
+                userID: socket.userID,
+                username: socket.username,
+                connected: true,
+            });
+
+            // emit session details
+            socket.emit('session', {
+                sessionID: socket.sessionID,
+                userID: socket.userID,
+            });
+
             socket.emit('listRooms', getDetailedRooms());
             socket.emit('listLatestGameResults', latestResults);
 
@@ -604,7 +646,18 @@ export const configureIo = (server: HttpServer) => {
                 );
             });
 
-            socket.on('disconnecting', () => {
+            socket.on('disconnecting', async () => {
+                const matchingSockets = await io.in(socket.userID).allSockets();
+                const isDisconnected = matchingSockets.size === 0;
+
+                if (isDisconnected) {
+                    sessionStore.saveSession(socket.sessionID, {
+                        userID: socket.userID,
+                        username: socket.username,
+                        connected: false,
+                    });
+                }
+
                 disconnectFromGame(socket);
                 cleanupRooms();
             });

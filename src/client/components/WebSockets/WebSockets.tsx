@@ -39,8 +39,14 @@ import { Format } from '@/types/games';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
+export interface CustomSocket
+    extends Socket<ServerToClientEvents, ClientToServerEvents> {
+    userID: string;
+}
+
 export interface WebSocketValue extends Partial<ClientToServerEvents> {
-    socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+    socket: CustomSocket;
+    logout: () => void;
 }
 
 interface Props {
@@ -61,8 +67,7 @@ interface Props {
  * https://www.pluralsight.com/guides/using-web-sockets-in-your-reactredux-app
  * */
 export const WebSocketProvider = ({ children }: Props) => {
-    const [socket, setSocket] =
-        useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
+    const [socket, setSocket] = useState<CustomSocket>(null);
     const [ws, setWs] = useState<WebSocketValue>(null);
 
     const { user, getAccessTokenWithPopup, getAccessTokenSilently } =
@@ -94,8 +99,13 @@ export const WebSocketProvider = ({ children }: Props) => {
     const dispatch = useDispatch<AppDispatch>();
 
     if (!socket) {
-        const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> =
-            io();
+        const newSocket: CustomSocket = io() as CustomSocket;
+
+        newSocket.on('session', ({ sessionID, userID }) => {
+            newSocket.auth = { sessionID };
+            localStorage.setItem('sessionID', sessionID);
+            newSocket.userID = userID;
+        });
 
         // Server-to-client events
         newSocket.on('confirmCustomDeck', (skeleton: Skeleton) => {
@@ -161,6 +171,10 @@ export const WebSocketProvider = ({ children }: Props) => {
             newSocket.emit('leaveRoom');
         };
 
+        const logout = () => {
+            newSocket.disconnect();
+        };
+
         const spectateRoom = (roomName: string) => {
             newSocket.emit('spectateRoom', roomName);
         };
@@ -182,6 +196,8 @@ export const WebSocketProvider = ({ children }: Props) => {
         };
 
         const chooseName = (name: string) => {
+            newSocket.auth = { username: name };
+            newSocket.connect();
             newSocket.emit('chooseName', name);
         };
 
@@ -212,6 +228,7 @@ export const WebSocketProvider = ({ children }: Props) => {
             chooseName,
             joinRoom,
             leaveRoom,
+            logout,
             resolveEffect,
             sendChatMessage,
             spectateRoom,
