@@ -45,8 +45,8 @@ export interface CustomSocket
 }
 
 export interface WebSocketValue extends Partial<ClientToServerEvents> {
-    socket: CustomSocket;
     logout: () => void;
+    socket: CustomSocket;
 }
 
 interface Props {
@@ -102,7 +102,7 @@ export const WebSocketProvider = ({ children }: Props) => {
         const newSocket: CustomSocket = io() as CustomSocket;
 
         newSocket.on('session', ({ sessionID, userID }) => {
-            newSocket.auth = { sessionID };
+            newSocket.auth = { ...newSocket.auth, sessionID };
             localStorage.setItem('sessionID', sessionID);
             newSocket.userID = userID;
         });
@@ -196,7 +196,7 @@ export const WebSocketProvider = ({ children }: Props) => {
         };
 
         const chooseName = (name: string) => {
-            newSocket.auth = { username: name };
+            newSocket.auth = { ...newSocket.auth, username: name };
             newSocket.connect();
             newSocket.emit('chooseName', name);
         };

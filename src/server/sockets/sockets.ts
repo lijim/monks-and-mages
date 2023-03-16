@@ -52,7 +52,6 @@ export const configureIo = (server: HttpServer) => {
 
     /* Persistent Session Storage */
     io.use((socket, next) => {
-        console.log(socket.handshake.auth);
         const { sessionID } = socket.handshake.auth;
         if (sessionID) {
             const session = sessionStore.findSession(sessionID);
@@ -115,14 +114,14 @@ export const configureIo = (server: HttpServer) => {
         );
     };
 
-    const sendBoardForRoom = (roomName: string): void => {
+    const sendBoardForRoom = async (roomName: string) => {
         const board = startedBoards.get(roomName);
-        const socketIds = io.sockets.adapter.rooms.get(roomName);
-        if (!socketIds?.size || !board) return;
-        socketIds.forEach((socketId) => {
-            const name = idsToNames.get(socketId);
+        const allSockets = await io.of(roomName).fetchSockets();
+        if (!allSockets?.length || !board) return;
+        allSockets.forEach((socket) => {
+            const name = (socket as any).username;
             if (!name) return;
-            io.to(socketId).emit('updateBoard', obscureBoardInfo(board, name));
+            io.to(socket.id).emit('updateBoard', obscureBoardInfo(board, name));
         });
         // broadcast to spectators as well
         io.to(`publicSpectate-${roomName.slice('public-'.length)}`).emit(
@@ -308,8 +307,8 @@ export const configureIo = (server: HttpServer) => {
     ) => {
         const board = getBoardForSocket(socket);
         const roomName = getRoomForSocket(socket);
-        const name = idsToNames.get(socket.id);
-        if (shouldClearName) clearName(socket.id);
+        const name = idsToNames.get(socket.userID);
+        if (shouldClearName) clearName(socket.userID);
         if (board) {
             const player = board.players.find((p) => p.name === name);
 
@@ -373,9 +372,9 @@ export const configureIo = (server: HttpServer) => {
                                 id: decodedToken.sub,
                             });
                             const { username: name, user_id: userId } = user;
-                            clearName(socket.id);
-                            namesToIds.set(name, socket.id);
-                            idsToNames.set(socket.id, name);
+                            clearName(socket.userID);
+                            namesToIds.set(name, socket.userID);
+                            idsToNames.set(socket.userID, name);
                             nameToDeckListSelection.set(
                                 name,
                                 PREMADE_DECKLIST_DEFAULT
@@ -394,18 +393,18 @@ export const configureIo = (server: HttpServer) => {
                     },
                     // eslint-disable-next-line no-console
                 })(socket, console.log);
-                clearName(socket.id);
+                clearName(socket.userID);
             });
 
             socket.on('chooseCustomDeck', (skeleton: Skeleton) => {
-                const name = idsToNames.get(socket.id);
+                const name = idsToNames.get(socket.userID);
                 if (!name) return;
                 nameToCustomDeckSkeleton.set(name, skeleton);
                 socket.emit('confirmCustomDeck', skeleton);
             });
 
             socket.on('chooseAvatar', (avatarUrl: string) => {
-                const name = idsToNames.get(socket.id);
+                const name = idsToNames.get(socket.userID);
                 if (!name) return;
                 if (!avatarUrl.startsWith(DEFAULT_AVATAR_SOURCE_DOMAIN)) {
                     return;
@@ -414,7 +413,7 @@ export const configureIo = (server: HttpServer) => {
             });
 
             socket.on('chooseDeck', (deckListSelection: DeckListSelections) => {
-                const name = idsToNames.get(socket.id);
+                const name = idsToNames.get(socket.userID);
                 if (!name) return;
                 nameToDeckListSelection.set(name, deckListSelection);
                 socket.emit('confirmPremadeDeckList', deckListSelection);
@@ -453,9 +452,9 @@ export const configureIo = (server: HttpServer) => {
                     return;
                 }
                 if (!namesToIds.has(name)) {
-                    clearName(socket.id);
-                    namesToIds.set(name, socket.id);
-                    idsToNames.set(socket.id, name);
+                    clearName(socket.userID);
+                    namesToIds.set(name, socket.userID);
+                    idsToNames.set(socket.userID, name);
                     nameToDeckListSelection.set(name, PREMADE_DECKLIST_DEFAULT);
                     socket.emit(
                         'confirmPremadeDeckList',
@@ -547,7 +546,7 @@ export const configureIo = (server: HttpServer) => {
             socket.on('takeGameAction', (gameAction) => {
                 const board = getBoardForSocket(socket);
                 const roomName = getRoomForSocket(socket);
-                const playerName = idsToNames.get(socket.id);
+                const playerName = idsToNames.get(socket.userID);
                 if (!board || !playerName) {
                     // TODO: add error handling emits down to the client, display via error toasts
                     return;
@@ -586,7 +585,7 @@ export const configureIo = (server: HttpServer) => {
             socket.on('resolveEffect', (effectParams: ResolveEffectParams) => {
                 const board = getBoardForSocket(socket);
                 const roomName = getRoomForSocket(socket);
-                const playerName = idsToNames.get(socket.id);
+                const playerName = idsToNames.get(socket.userID);
 
                 if (!board) return;
 
@@ -625,7 +624,7 @@ export const configureIo = (server: HttpServer) => {
             socket.on('sendChatMessage', (message: string) => {
                 // TODO: handle race condition where 2 people start game at same time
                 const roomName = getRoomForSocket(socket);
-                const playerName = idsToNames.get(socket.id);
+                const playerName = idsToNames.get(socket.userID);
                 if (!roomName?.startsWith('public-') || !playerName) return;
 
                 io.to(roomName).emit(

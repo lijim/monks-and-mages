@@ -46,6 +46,7 @@ describe('sockets', () => {
             clientSocket = clientIo(`http://localhost:${port}`, {
                 multiplex: false,
                 reconnection: false,
+                auth: { username: 'Dora Wini', sessionID: 'a' },
             });
             clientSocket.on('connect', done);
         });
@@ -72,7 +73,7 @@ describe('sockets', () => {
             });
         });
 
-        it('chooses and avatar and joins a room', (done) => {
+        it('chooses an avatar and joins a room', (done) => {
             clientSocket.emit(
                 'chooseAvatar',
                 'https://monksandmages.com/images/units/manta-ray.webp'
