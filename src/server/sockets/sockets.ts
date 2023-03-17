@@ -33,6 +33,7 @@ import {
     DEFAULT_AVATAR_SOURCE_DOMAIN,
 } from '@/types/api';
 import { createMemorySessionStore } from './sessionStore';
+import { CustomSocket } from '@/client/components/WebSockets';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
 
@@ -126,7 +127,9 @@ export const configureIo = (server: HttpServer) => {
         const allSockets = await io.in(roomName).fetchSockets();
         if (!allSockets?.length || !board) return;
         allSockets.forEach((socket) => {
-            const name = idsToNames.get((socket as any).userID);
+            const name = idsToNames.get(
+                (socket as unknown as CustomSocket).userID
+            );
             if (!name) return;
             io.to(socket.id).emit('updateBoard', obscureBoardInfo(board, name));
         });
@@ -243,19 +246,18 @@ export const configureIo = (server: HttpServer) => {
     // gets all public rooms + players in those rooms
     const getDetailedRooms = async () => {
         const detailedRooms: DetailedRoom[] = [];
-        const sockets = io.sockets.sockets;
-        sockets.forEach((socket) => () => {
-            socket.rooms;
-        });
         const roomsAndIds = io.sockets.adapter.rooms;
         const defaultRoomNames = DEFAULT_ROOM_NAMES.map(
             (roomName) => `public-${roomName}`
         ).filter((roomName) => !roomsAndIds.has(roomName));
 
         // Process public rooms
+        // eslint-disable-next-line no-restricted-syntax
         for (const [roomName] of [...roomsAndIds.entries()]) {
+            // eslint-disable-next-line no-continue
             if (!roomName.startsWith('public-')) continue; // process public rooms
 
+            // eslint-disable-next-line no-await-in-loop
             const sockets = await io.in(roomName).fetchSockets();
             const players = getNamesFromIds(
                 [...sockets].map(
@@ -299,7 +301,9 @@ export const configureIo = (server: HttpServer) => {
         });
 
         // Process Spectators
+        // eslint-disable-next-line no-restricted-syntax
         for (const [roomName] of [...roomsAndIds.entries()]) {
+            // eslint-disable-next-line no-continue
             if (!roomName.startsWith('publicSpectate-')) continue;
 
             const sanitizedRoomName = roomName.slice('publicSpectate-'.length);
@@ -320,6 +324,7 @@ export const configureIo = (server: HttpServer) => {
                 detailedRooms.push(room);
             }
 
+            // eslint-disable-next-line no-await-in-loop
             const sockets = await io.in(roomName).fetchSockets();
             const userIDs = [...sockets].map(
                 (socket) =>
@@ -566,9 +571,9 @@ export const configureIo = (server: HttpServer) => {
 
                 const sockets = await io.in(roomName).fetchSockets();
                 const userIDs = [...sockets].map(
-                    (socket) =>
+                    (remoteSocket) =>
                         (
-                            socket as CustomRemoteSocket<
+                            remoteSocket as CustomRemoteSocket<
                                 ServerToClientEvents,
                                 unknown
                             >
