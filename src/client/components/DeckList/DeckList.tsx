@@ -11,9 +11,9 @@ import { removeCard } from '@/client/redux/deckBuilder';
 
 interface DeckListProps {
     deck: Card[];
+    isDisplayOnly: boolean;
     shouldShowQuantity?: boolean;
     shouldShowSummary?: boolean;
-    isDisplayOnly: boolean;
 }
 
 interface DeckListCardSlotProps {

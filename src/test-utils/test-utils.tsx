@@ -19,6 +19,7 @@ import {
     RootState,
 } from '@/client/redux/store';
 import {
+    CustomSocket,
     WebSocketContext,
     WebSocketValue,
 } from '@/client/components/WebSockets';
@@ -95,7 +96,7 @@ export function render(
     if (!useRealDispatch) {
         store.dispatch = jest.fn();
     }
-    const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
+    const newSocket = io() as CustomSocket;
 
     const mockWebSocket = {
         socket: newSocket,
@@ -104,6 +105,7 @@ export function render(
         chooseName: jest.fn(),
         joinRoom: jest.fn(),
         leaveRoom: jest.fn(),
+        logout: jest.fn(),
         sendChatMessage: jest.fn(),
         spectateRoom: jest.fn(),
         resolveEffect: jest.fn(),
@@ -112,6 +114,7 @@ export function render(
     };
 
     mockWebSocket.socket.emit = jest.fn();
+    mockWebSocket.socket.userID = '';
 
     function Wrapper({ children }: { children?: ReactNode }): ReactElement {
         useEffect(() => {

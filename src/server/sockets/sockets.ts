@@ -1,7 +1,8 @@
 import { Server as HttpServer } from 'http';
-import { Server, Socket } from 'socket.io';
+import { RemoteSocket, Server, Socket } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import { Board, GameState } from '@/types/board';
 import { makeNewBoard } from '@/factories/board';
 import { obscureBoardInfo } from '../obscureBoardInfo';
@@ -31,8 +32,17 @@ import {
     CreateGameResultsBody,
     DEFAULT_AVATAR_SOURCE_DOMAIN,
 } from '@/types/api';
+import { createMemorySessionStore } from './sessionStore';
+import { CustomSocket } from '@/client/components/WebSockets';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
+
+interface CustomRemoteSocket<EmitEvents, SocketData>
+    extends RemoteSocket<EmitEvents, SocketData> {
+    sessionID: string;
+    userID: string;
+    username: string;
+}
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -42,8 +52,34 @@ export const configureIo = (server: HttpServer) => {
         },
     });
 
+    const sessionStore = createMemorySessionStore();
+
     instrument(io, {
         auth: false,
+    });
+
+    /* Persistent Session Storage */
+    io.use((socket, next) => {
+        const { sessionID } = socket.handshake.auth;
+        if (sessionID) {
+            const session = sessionStore.findSession(sessionID);
+            if (session) {
+                socket.sessionID = sessionID;
+                socket.userID = session.userID;
+                socket.username = session.username;
+                return next();
+            }
+        }
+
+        const { username } = socket.handshake.auth;
+        if (!username) {
+            return next(new Error('invalid username'));
+        }
+
+        socket.sessionID = uuidv4();
+        socket.userID = uuidv4();
+        socket.username = username;
+        return next();
     });
 
     /* Stateful Objects */
@@ -86,14 +122,16 @@ export const configureIo = (server: HttpServer) => {
         );
     };
 
-    const sendBoardForRoom = (roomName: string): void => {
+    const sendBoardForRoom = async (roomName: string) => {
         const board = startedBoards.get(roomName);
-        const socketIds = io.sockets.adapter.rooms.get(roomName);
-        if (!socketIds?.size || !board) return;
-        socketIds.forEach((socketId) => {
-            const name = idsToNames.get(socketId);
+        const allSockets = await io.in(roomName).fetchSockets();
+        if (!allSockets?.length || !board) return;
+        allSockets.forEach((socket) => {
+            const name = idsToNames.get(
+                (socket as unknown as CustomSocket).userID
+            );
             if (!name) return;
-            io.to(socketId).emit('updateBoard', obscureBoardInfo(board, name));
+            io.to(socket.id).emit('updateBoard', obscureBoardInfo(board, name));
         });
         // broadcast to spectators as well
         io.to(`publicSpectate-${roomName.slice('public-'.length)}`).emit(
@@ -206,7 +244,7 @@ export const configureIo = (server: HttpServer) => {
     // implement one that retrieves the whole room's game
 
     // gets all public rooms + players in those rooms
-    const getDetailedRooms = () => {
+    const getDetailedRooms = async () => {
         const detailedRooms: DetailedRoom[] = [];
         const roomsAndIds = io.sockets.adapter.rooms;
         const defaultRoomNames = DEFAULT_ROOM_NAMES.map(
@@ -214,10 +252,25 @@ export const configureIo = (server: HttpServer) => {
         ).filter((roomName) => !roomsAndIds.has(roomName));
 
         // Process public rooms
-        [...roomsAndIds.entries()].forEach(([roomName, socketIds]) => {
-            if (!roomName.startsWith('public-')) return; // process public rooms
+        // eslint-disable-next-line no-restricted-syntax
+        for (const [roomName] of [...roomsAndIds.entries()]) {
+            // eslint-disable-next-line no-continue
+            if (!roomName.startsWith('public-')) continue; // process public rooms
 
-            const players = getNamesFromIds([...socketIds]);
+            // eslint-disable-next-line no-await-in-loop
+            const sockets = await io.in(roomName).fetchSockets();
+            const players = getNamesFromIds(
+                [...sockets].map(
+                    (socket) =>
+                        (
+                            socket as CustomRemoteSocket<
+                                ServerToClientEvents,
+                                unknown
+                            >
+                        ).userID
+                )
+            );
+
             const avatarsForPlayers = {} as DetailedRoom['avatarsForPlayers'];
             players.forEach((player) => {
                 avatarsForPlayers[player] = namesToAvatars.get(player);
@@ -232,7 +285,7 @@ export const configureIo = (server: HttpServer) => {
                 format: getFormatForRoom(roomName),
             };
             detailedRooms.push(room);
-        });
+        }
 
         // Process empty default rooms
         defaultRoomNames.forEach((roomName) => {
@@ -248,8 +301,10 @@ export const configureIo = (server: HttpServer) => {
         });
 
         // Process Spectators
-        [...roomsAndIds.entries()].forEach(([roomName, socketIds]) => {
-            if (!roomName.startsWith('publicSpectate-')) return;
+        // eslint-disable-next-line no-restricted-syntax
+        for (const [roomName] of [...roomsAndIds.entries()]) {
+            // eslint-disable-next-line no-continue
+            if (!roomName.startsWith('publicSpectate-')) continue;
 
             const sanitizedRoomName = roomName.slice('publicSpectate-'.length);
             let room = detailedRooms.find(
@@ -268,19 +323,33 @@ export const configureIo = (server: HttpServer) => {
                 };
                 detailedRooms.push(room);
             }
-            room.spectators = getNamesFromIds([...socketIds]);
-        });
+
+            // eslint-disable-next-line no-await-in-loop
+            const sockets = await io.in(roomName).fetchSockets();
+            const userIDs = [...sockets].map(
+                (socket) =>
+                    (
+                        socket as CustomRemoteSocket<
+                            ServerToClientEvents,
+                            unknown
+                        >
+                    ).userID
+            );
+
+            room.spectators = getNamesFromIds(userIDs);
+        }
         return detailedRooms;
     };
 
-    const disconnectFromGame = (
+    const disconnectFromGame = async (
         socket: Socket<ClientToServerEvents, ServerToClientEvents>,
-        shouldClearName = true
+        shouldClearName = true,
+        shouldNotEmit = false
     ) => {
         const board = getBoardForSocket(socket);
         const roomName = getRoomForSocket(socket);
-        const name = idsToNames.get(socket.id);
-        if (shouldClearName) clearName(socket.id);
+        const name = idsToNames.get(socket.userID);
+        if (shouldClearName) clearName(socket.userID);
         if (board) {
             const player = board.players.find((p) => p.name === name);
 
@@ -306,18 +375,33 @@ export const configureIo = (server: HttpServer) => {
             if (!playerLeft) {
                 startedBoards.delete(roomName);
             } else {
-                sendBoardForRoom(roomName);
+                await sendBoardForRoom(roomName);
             }
         }
-        io.emit('listRooms', getDetailedRooms());
+        if (!shouldNotEmit) {
+            io.emit('listRooms', await getDetailedRooms());
+        }
     };
 
     io.on(
         'connection',
-        (
+        async (
             socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
         ) => {
-            socket.emit('listRooms', getDetailedRooms());
+            // persist session
+            sessionStore.saveSession(socket.sessionID, {
+                userID: socket.userID,
+                username: socket.username,
+                connected: true,
+            });
+
+            // emit session details
+            socket.emit('session', {
+                sessionID: socket.sessionID,
+                userID: socket.userID,
+            });
+
+            socket.emit('listRooms', await getDetailedRooms());
             socket.emit('listLatestGameResults', latestResults);
 
             socket.on('login', (accessToken) => {
@@ -331,9 +415,22 @@ export const configureIo = (server: HttpServer) => {
                                 id: decodedToken.sub,
                             });
                             const { username: name, user_id: userId } = user;
-                            clearName(socket.id);
-                            namesToIds.set(name, socket.id);
-                            idsToNames.set(socket.id, name);
+                            socket.username = name;
+                            socket.userID = userId;
+                            sessionStore.saveSession(socket.sessionID, {
+                                userID: socket.userID,
+                                username: name,
+                                connected: true,
+                            });
+
+                            // emit session details
+                            socket.emit('session', {
+                                sessionID: socket.sessionID,
+                                userID: socket.userID,
+                            });
+                            clearName(socket.userID);
+                            namesToIds.set(name, socket.userID);
+                            idsToNames.set(socket.userID, name);
                             nameToDeckListSelection.set(
                                 name,
                                 PREMADE_DECKLIST_DEFAULT
@@ -352,18 +449,18 @@ export const configureIo = (server: HttpServer) => {
                     },
                     // eslint-disable-next-line no-console
                 })(socket, console.log);
-                clearName(socket.id);
+                clearName(socket.userID);
             });
 
             socket.on('chooseCustomDeck', (skeleton: Skeleton) => {
-                const name = idsToNames.get(socket.id);
+                const name = idsToNames.get(socket.userID);
                 if (!name) return;
                 nameToCustomDeckSkeleton.set(name, skeleton);
                 socket.emit('confirmCustomDeck', skeleton);
             });
 
             socket.on('chooseAvatar', (avatarUrl: string) => {
-                const name = idsToNames.get(socket.id);
+                const name = idsToNames.get(socket.userID);
                 if (!name) return;
                 if (!avatarUrl.startsWith(DEFAULT_AVATAR_SOURCE_DOMAIN)) {
                     return;
@@ -372,7 +469,7 @@ export const configureIo = (server: HttpServer) => {
             });
 
             socket.on('chooseDeck', (deckListSelection: DeckListSelections) => {
-                const name = idsToNames.get(socket.id);
+                const name = idsToNames.get(socket.userID);
                 if (!name) return;
                 nameToDeckListSelection.set(name, deckListSelection);
                 socket.emit('confirmPremadeDeckList', deckListSelection);
@@ -381,7 +478,7 @@ export const configureIo = (server: HttpServer) => {
                 socket.emit('confirmCustomDeck', null);
             });
 
-            socket.on('chooseGameFormat', (format: Format) => {
+            socket.on('chooseGameFormat', async (format: Format) => {
                 const roomName = getRoomForSocket(socket);
                 if (!roomName) {
                     return;
@@ -394,26 +491,28 @@ export const configureIo = (server: HttpServer) => {
                     });
                 }
                 // emit to all rooms the new room settings
-                io.emit('listRooms', getDetailedRooms());
+                io.emit('listRooms', await getDetailedRooms());
             });
 
-            socket.on('chooseName', (newName: string) => {
+            socket.on('chooseName', async (newName: string) => {
                 const name = newName ? `${GUEST_NAME_PREFIX}${newName}` : '';
                 // log out
                 if (!name) {
                     disconnectFromGame(socket);
                     const roomName = getRoomForSocket(socket);
-                    if (roomName) socket.leave(roomName);
-                    io.emit('listRooms', getDetailedRooms());
+                    if (roomName) {
+                        await socket.leave(roomName);
+                    }
+                    io.emit('listRooms', await getDetailedRooms());
                     socket.emit('confirmName', '');
                     // remove decklist on client
                     socket.emit('confirmPremadeDeckList', undefined);
                     return;
                 }
                 if (!namesToIds.has(name)) {
-                    clearName(socket.id);
-                    namesToIds.set(name, socket.id);
-                    idsToNames.set(socket.id, name);
+                    clearName(socket.userID);
+                    namesToIds.set(name, socket.userID);
+                    idsToNames.set(socket.userID, name);
                     nameToDeckListSelection.set(name, PREMADE_DECKLIST_DEFAULT);
                     socket.emit(
                         'confirmPremadeDeckList',
@@ -423,50 +522,65 @@ export const configureIo = (server: HttpServer) => {
                 }
             });
 
-            socket.on('getRooms', () => {
-                socket.emit('listRooms', getDetailedRooms());
+            socket.on('getRooms', async () => {
+                socket.emit('listRooms', await getDetailedRooms());
             });
 
-            socket.on('joinRoom', ({ roomName }) => {
+            socket.on('joinRoom', async ({ roomName }) => {
                 if (!roomName) return; // blank-string room name not allowed
                 const prevRoom = getRoomForSocket(socket);
                 if (prevRoom) {
                     disconnectFromGame(socket, false);
-                    socket.leave(prevRoom);
+                    await socket.leave(prevRoom);
                 }
                 socket.join(`public-${roomName}`);
-                io.emit('listRooms', getDetailedRooms());
+                const detailedRooms = await getDetailedRooms();
+                io.emit('listRooms', detailedRooms);
             });
 
-            socket.on('leaveRoom', () => {
+            socket.on('leaveRoom', async () => {
                 const prevRoom = getRoomForSocket(socket);
                 if (prevRoom) {
-                    disconnectFromGame(socket, false);
-                    socket.leave(prevRoom);
+                    await disconnectFromGame(socket, false);
+                    await socket.leave(prevRoom);
                 }
                 cleanupRooms();
-                io.emit('listRooms', getDetailedRooms());
+                io.emit('listRooms', await getDetailedRooms());
             });
 
-            socket.on('spectateRoom', (roomName) => {
+            socket.on('spectateRoom', async (roomName) => {
                 if (!roomName) return; // blank-string room name not allowed
                 const prevRoom = getRoomForSocket(socket);
+                await socket.join(`publicSpectate-${roomName}`);
                 if (prevRoom) {
-                    disconnectFromGame(socket, false);
-                    socket.leave(prevRoom);
+                    await disconnectFromGame(socket, false, true);
+
+                    // TODO: this is calling leaveRoom
+                    // which is causing listRooms to get emitted twice
+                    await socket.leave(prevRoom);
                 }
                 cleanupRooms();
-                socket.join(`publicSpectate-${roomName}`);
-                io.emit('listRooms', getDetailedRooms());
+                const detailedRoom = await getDetailedRooms();
+                io.emit('listRooms', detailedRoom);
             });
 
-            socket.on('startGame', () => {
+            socket.on('startGame', async () => {
                 // TODO: handle race condition where 2 people start game at same time
                 const roomName = getRoomForSocket(socket);
                 if (!roomName) return;
 
-                const socketIds = io.sockets.adapter.rooms.get(roomName);
-                const playerNames = getNamesFromIds([...socketIds]);
+                const sockets = await io.in(roomName).fetchSockets();
+                const userIDs = [...sockets].map(
+                    (remoteSocket) =>
+                        (
+                            remoteSocket as CustomRemoteSocket<
+                                ServerToClientEvents,
+                                unknown
+                            >
+                        ).userID
+                );
+
+                const playerNames = getNamesFromIds(userIDs);
 
                 const avatarsForPlayers =
                     {} as DetailedRoom['avatarsForPlayers'];
@@ -498,14 +612,14 @@ export const configureIo = (server: HttpServer) => {
                 io.to(
                     `publicSpectate-${roomName.slice('public-'.length)}`
                 ).emit('startGame');
-                sendBoardForRoom(roomName);
-                io.emit('listRooms', getDetailedRooms());
+                await sendBoardForRoom(roomName);
+                io.emit('listRooms', await getDetailedRooms());
             });
 
-            socket.on('takeGameAction', (gameAction) => {
+            socket.on('takeGameAction', async (gameAction) => {
                 const board = getBoardForSocket(socket);
                 const roomName = getRoomForSocket(socket);
-                const playerName = idsToNames.get(socket.id);
+                const playerName = idsToNames.get(socket.userID);
                 if (!board || !playerName) {
                     // TODO: add error handling emits down to the client, display via error toasts
                     return;
@@ -538,52 +652,55 @@ export const configureIo = (server: HttpServer) => {
 
                 // TODO: add error handling when user tries to take an invalid action
                 startedBoards.set(roomName, newBoardState); // apply state changes to in-memory storage of boards
-                sendBoardForRoom(roomName); // update clients with changes
+                await sendBoardForRoom(roomName); // update clients with changes
             });
 
-            socket.on('resolveEffect', (effectParams: ResolveEffectParams) => {
-                const board = getBoardForSocket(socket);
-                const roomName = getRoomForSocket(socket);
-                const playerName = idsToNames.get(socket.id);
+            socket.on(
+                'resolveEffect',
+                async (effectParams: ResolveEffectParams) => {
+                    const board = getBoardForSocket(socket);
+                    const roomName = getRoomForSocket(socket);
+                    const playerName = idsToNames.get(socket.userID);
 
-                if (!board) return;
+                    if (!board) return;
 
-                const prevGameState = board.gameState;
+                    const prevGameState = board.gameState;
 
-                if (
-                    prevGameState === GameState.WIN ||
-                    prevGameState === GameState.TIE
-                ) {
-                    return;
-                }
+                    if (
+                        prevGameState === GameState.WIN ||
+                        prevGameState === GameState.TIE
+                    ) {
+                        return;
+                    }
 
-                const newBoardState = resolveEffect(
-                    board,
-                    effectParams,
-                    playerName,
-                    true,
-                    sendChatMessageForRoom(socket)
-                );
-
-                if (newBoardState) {
-                    startedBoards.set(roomName, newBoardState);
-                    sendBoardForRoom(roomName);
-
-                    const gameResult = calculateGameResult(
-                        prevGameState,
-                        newBoardState
+                    const newBoardState = resolveEffect(
+                        board,
+                        effectParams,
+                        playerName,
+                        true,
+                        sendChatMessageForRoom(socket)
                     );
-                    if (gameResult) {
-                        addGameResult(gameResult);
-                        recordGameResultToDatabase(gameResult);
+
+                    if (newBoardState) {
+                        startedBoards.set(roomName, newBoardState);
+                        await sendBoardForRoom(roomName);
+
+                        const gameResult = calculateGameResult(
+                            prevGameState,
+                            newBoardState
+                        );
+                        if (gameResult) {
+                            addGameResult(gameResult);
+                            recordGameResultToDatabase(gameResult);
+                        }
                     }
                 }
-            });
+            );
 
             socket.on('sendChatMessage', (message: string) => {
                 // TODO: handle race condition where 2 people start game at same time
                 const roomName = getRoomForSocket(socket);
-                const playerName = idsToNames.get(socket.id);
+                const playerName = idsToNames.get(socket.userID);
                 if (!roomName?.startsWith('public-') || !playerName) return;
 
                 io.to(roomName).emit(
@@ -604,7 +721,18 @@ export const configureIo = (server: HttpServer) => {
                 );
             });
 
-            socket.on('disconnecting', () => {
+            socket.on('disconnecting', async () => {
+                const matchingSockets = await io.in(socket.userID).allSockets();
+                const isDisconnected = matchingSockets.size === 0;
+
+                if (isDisconnected) {
+                    sessionStore.saveSession(socket.sessionID, {
+                        userID: socket.userID,
+                        username: socket.username,
+                        connected: false,
+                    });
+                }
+
                 disconnectFromGame(socket);
                 cleanupRooms();
             });
