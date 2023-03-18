@@ -52,6 +52,11 @@ export const configureIo = (server: HttpServer) => {
 
     const sessionStore = createMemorySessionStore();
     const roomStore = createRoomStore({ sessionStore, io });
+    const {
+        namesToAvatars,
+        nameToDeckListSelection,
+        nameToCustomDeckSkeleton,
+    } = roomStore;
 
     instrument(io, {
         auth: false,
@@ -84,24 +89,12 @@ export const configureIo = (server: HttpServer) => {
     /* Stateful Objects */
     let latestResults: GameResult[] = [];
 
-    const namesToAvatars = new Map<string, string>(); // usernames to avatars chosen
-    const nameToDeckListSelection = new Map<string, DeckListSelections>();
-    const nameToCustomDeckSkeleton = new Map<string, Skeleton>();
-    const startedBoards = new Map<string, Board>();
-    const roomNameToRoomOptions = new Map<string, RoomOptions>();
-
     /* Utility functions */
     const clearName = (username: string) => {
         if (!username) return;
         namesToAvatars.delete(username);
         nameToDeckListSelection.delete(username);
         nameToCustomDeckSkeleton.delete(username);
-    };
-
-    const getDeckListSelectionsFromNames = (playerNames: string[]) => {
-        return playerNames.map((playerName) =>
-            nameToDeckListSelection.get(playerName)
-        );
     };
 
     const addGameResult = (gameResult: GameResult | null): void => {
@@ -148,86 +141,13 @@ export const configureIo = (server: HttpServer) => {
         );
     };
 
-    /**
-     * Sockets have their own rooms, but we want to expose just the one
-     * that players have joined (public rooms)
-     * @param socket - socket.io socket
-     * @returns matching room
-     */
-    const getRoomForSocket = (socket: Socket): string | null => {
-        const firstRoomName = [...socket.rooms].filter(
-            (room) =>
-                room.startsWith('public-') || room.startsWith('publicSpectate-')
-        )[0];
-        return firstRoomName || null;
-    };
-
-    const getBoardForSocket = (socket: Socket): Board | null => {
-        const firstRoomName = getRoomForSocket(socket);
-        if (!firstRoomName) return null;
-        const board = startedBoards.get(firstRoomName);
-        return board;
-    };
-
-    const getFormatForRoom = (roomName: string) => {
-        return roomNameToRoomOptions.has(roomName)
-            ? roomNameToRoomOptions.get(roomName).format
-            : Format.STANDARD;
-    };
-
-    const sendChatMessageForRoom =
-        (socket: Socket) => (chatMessage: string) => {
-            const firstRoomName = getRoomForSocket(socket);
-            const systemMessage = makeSystemChatMessage(chatMessage);
-            io.sockets.in(firstRoomName).emit('gameChatMessage', systemMessage);
-            io.to(
-                `publicSpectate-${firstRoomName.slice('public-'.length)}`
-            ).emit('gameChatMessage', systemMessage);
-        };
-
-    const displayLastPlayedCardForRoom = (socket: Socket) => (card: Card) => {
-        const firstRoomName = getRoomForSocket(socket);
-        io.sockets.in(firstRoomName).emit('displayLastPlayedCard', card);
-        io.to(`publicSpectate-${firstRoomName.slice('public-'.length)}`).emit(
-            'displayLastPlayedCard',
-            card
-        );
-    };
-
     const disconnectFromGame = async (
-        socket: Socket<ClientToServerEvents, ServerToClientEvents>
+        socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
     ) => {
-        const board = getBoardForSocket(socket);
-        const roomName = getRoomForSocket(socket);
-        const name = socket.username;
-        if (board) {
-            const player = board.players.find((p) => p.name === name);
-
-            if (player) {
-                sendChatMessageForRoom(socket)(
-                    `${player.name} has left the game`
-                );
-                player.health = 0;
-                player.isAlive = false;
-                player.effectQueue = [];
-            }
-
-            if (player?.isActivePlayer) {
-                passTurn(board);
-            }
-
-            const playerLeft = board.players.find((p) => p.isAlive);
-            // update win state if there are only 1 players alive left
-            const prevGameState = board.gameState;
-            applyWinState(board);
-            const gameResult = calculateGameResult(prevGameState, board);
-            addGameResult(gameResult);
-            if (!playerLeft) {
-                startedBoards.delete(roomName);
-            } else {
-                await roomStore.broadcastBoardForRoom(roomName);
-            }
-        }
+        await roomStore.disconnectFromGame({
+            socket,
+            addGameResult,
+        });
     };
 
     io.on(
@@ -322,18 +242,8 @@ export const configureIo = (server: HttpServer) => {
                 socket.emit('confirmCustomDeck', null);
             });
 
-            socket.on('chooseGameFormat', async (format: Format) => {
-                const roomName = getRoomForSocket(socket);
-                if (!roomName) {
-                    return;
-                }
-                if (roomNameToRoomOptions.has(roomName)) {
-                    roomNameToRoomOptions.get(roomName).format = format;
-                } else {
-                    roomNameToRoomOptions.set(roomName, {
-                        format,
-                    });
-                }
+            socket.on('chooseGameFormat', (format: Format) => {
+                roomStore.chooseGameFormat(socket, format);
                 // emit to all rooms the new room settings
                 roomStore.broadcastRooms();
             });
@@ -365,7 +275,7 @@ export const configureIo = (server: HttpServer) => {
                 roomStore.joinRoom({ socket, roomName, asSpectator: true });
                 await socket.join(`publicSpectate-${roomName}`);
 
-                const prevRoom = getRoomForSocket(socket);
+                const prevRoom = roomStore.getRoomNameForSocket(socket);
                 if (prevRoom) {
                     await disconnectFromGame(socket);
                 }
@@ -374,138 +284,34 @@ export const configureIo = (server: HttpServer) => {
             });
 
             socket.on('startGame', async () => {
-                // TODO: handle race condition where 2 people start game at same time
-                const roomName = getRoomForSocket(socket);
-                if (!roomName) return;
-
-                const sockets = await io.in(roomName).fetchSockets();
-                const playerNames = [...sockets].map(
-                    (remoteSocket) =>
-                        (
-                            remoteSocket as CustomRemoteSocket<
-                                ServerToClientEvents,
-                                unknown
-                            >
-                        ).username
-                );
-
-                const avatarsForPlayers =
-                    {} as DetailedRoom['avatarsForPlayers'];
-                playerNames.forEach((player) => {
-                    avatarsForPlayers[player] = namesToAvatars.get(player);
-                });
-                const playerDeckListSelections =
-                    getDeckListSelectionsFromNames(playerNames);
-                const format = getFormatForRoom(roomName);
-
-                const board = makeNewBoard({
-                    playerDeckListSelections,
-                    playerNames,
-                    nameToCustomDeckSkeleton,
-                    avatarsForPlayers,
-                    format,
-                });
-
-                if (format === Format.DRAFT) {
-                    board.gameState = GameState.DRAFTING;
-                } else if (format === Format.SEALED) {
-                    board.gameState = GameState.DECKBUILDING;
-                } else {
-                    board.gameState = GameState.MULLIGANING;
-                }
-
-                startedBoards.set(roomName, board);
-                io.to(roomName).emit('startGame');
-                io.to(
-                    `publicSpectate-${roomName.slice('public-'.length)}`
-                ).emit('startGame');
+                roomStore.startGameForSocket(socket);
                 roomStore.broadcastRooms();
             });
 
             socket.on('takeGameAction', async (gameAction) => {
-                const board = getBoardForSocket(socket);
-                const roomName = getRoomForSocket(socket);
-                const playerName = socket.username;
-                if (!board || !playerName) {
-                    // TODO: add error handling emits down to the client, display via error toasts
-                    return;
-                }
-
-                const prevGameState = board.gameState;
-
-                if (
-                    prevGameState === GameState.WIN ||
-                    prevGameState === GameState.TIE
-                ) {
-                    return;
-                }
-
-                const newBoardState = applyGameAction({
-                    board,
+                roomStore.takeGameAction({
+                    socket,
                     gameAction,
-                    playerName,
-                    addChatMessage: sendChatMessageForRoom(socket),
-                    displayLastCard: displayLastPlayedCardForRoom(socket),
-                }); // calculate new state after actions is taken
-                const gameResult = calculateGameResult(
-                    prevGameState,
-                    newBoardState
-                );
-                if (gameResult) {
-                    addGameResult(gameResult);
-                    recordGameResultToDatabase(gameResult);
-                }
-
-                // TODO: add error handling when user tries to take an invalid action
-                startedBoards.set(roomName, newBoardState); // apply state changes to in-memory storage of boards
-                await roomStore.broadcastBoardForRoom(roomName); // update clients with changes
+                    recordGameResultToDatabase,
+                    addGameResult,
+                });
             });
 
             socket.on(
                 'resolveEffect',
                 async (effectParams: ResolveEffectParams) => {
-                    const board = getBoardForSocket(socket);
-                    const roomName = getRoomForSocket(socket);
-                    const playerName = socket.username;
-
-                    if (!board) return;
-
-                    const prevGameState = board.gameState;
-
-                    if (
-                        prevGameState === GameState.WIN ||
-                        prevGameState === GameState.TIE
-                    ) {
-                        return;
-                    }
-
-                    const newBoardState = resolveEffect(
-                        board,
+                    roomStore.resolveEffectForSocket({
+                        socket,
                         effectParams,
-                        playerName,
-                        true,
-                        sendChatMessageForRoom(socket)
-                    );
-
-                    if (newBoardState) {
-                        startedBoards.set(roomName, newBoardState);
-                        await roomStore.broadcastBoardForRoom(roomName);
-
-                        const gameResult = calculateGameResult(
-                            prevGameState,
-                            newBoardState
-                        );
-                        if (gameResult) {
-                            addGameResult(gameResult);
-                            recordGameResultToDatabase(gameResult);
-                        }
-                    }
+                        addGameResult,
+                        recordGameResultToDatabase,
+                    });
                 }
             );
 
             socket.on('sendChatMessage', (message: string) => {
                 // TODO: handle race condition where 2 people start game at same time
-                const roomName = getRoomForSocket(socket);
+                const roomName = roomStore.getRoomNameForSocket(socket);
                 const playerName = socket.username;
                 if (!roomName?.startsWith('public-') || !playerName) return;
 
