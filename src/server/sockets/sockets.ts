@@ -9,7 +9,6 @@ import { obscureBoardInfo } from '../obscureBoardInfo';
 
 import {
     DeckListSelections,
-    DEFAULT_ROOM_NAMES,
     GUEST_NAME_PREFIX,
     PREMADE_DECKLIST_DEFAULT,
 } from '@/constants/lobbyConstants';
@@ -32,7 +31,7 @@ import {
     CreateGameResultsBody,
     DEFAULT_AVATAR_SOURCE_DOMAIN,
 } from '@/types/api';
-import { createMemorySessionStore } from '../stores';
+import { createMemorySessionStore, createRoomStore } from '../stores';
 import { CustomSocket } from '@/client/components/WebSockets';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
@@ -53,6 +52,7 @@ export const configureIo = (server: HttpServer) => {
     });
 
     const sessionStore = createMemorySessionStore();
+    const roomStore = createRoomStore({ sessionStore, io });
 
     instrument(io, {
         auth: false,
@@ -106,37 +106,9 @@ export const configureIo = (server: HttpServer) => {
         idsToNames.delete(idToMatch);
     };
 
-    const getNamesFromIds = (ids: string[]): string[] => {
-        const names = [] as string[];
-        ids.forEach((id) => {
-            if (idsToNames.has(id)) {
-                names.push(idsToNames.get(id));
-            }
-        });
-        return names;
-    };
-
     const getDeckListSelectionsFromNames = (playerNames: string[]) => {
         return playerNames.map((playerName) =>
             nameToDeckListSelection.get(playerName)
-        );
-    };
-
-    const sendBoardForRoom = async (roomName: string) => {
-        const board = startedBoards.get(roomName);
-        const allSockets = await io.in(roomName).fetchSockets();
-        if (!allSockets?.length || !board) return;
-        allSockets.forEach((socket) => {
-            const name = idsToNames.get(
-                (socket as unknown as CustomSocket).userID
-            );
-            if (!name) return;
-            io.to(socket.id).emit('updateBoard', obscureBoardInfo(board, name));
-        });
-        // broadcast to spectators as well
-        io.to(`publicSpectate-${roomName.slice('public-'.length)}`).emit(
-            'updateBoard',
-            obscureBoardInfo(board)
         );
     };
 
@@ -230,117 +202,6 @@ export const configureIo = (server: HttpServer) => {
         );
     };
 
-    const cleanupRooms = () => {
-        const roomsAndIds = io.sockets.adapter.rooms;
-        roomNameToRoomOptions.forEach((_, roomName) => {
-            if (!roomsAndIds.has(roomName)) {
-                roomNameToRoomOptions.delete(roomName);
-            }
-        });
-    };
-
-    // TODO: use adapters instead to get rooms => games
-    // implement one that just retrieves shallowly all the rooms
-    // implement one that retrieves the whole room's game
-
-    // gets all public rooms + players in those rooms
-    const getDetailedRooms = async () => {
-        const detailedRooms: DetailedRoom[] = [];
-        const roomsAndIds = io.sockets.adapter.rooms;
-        const defaultRoomNames = DEFAULT_ROOM_NAMES.map(
-            (roomName) => `public-${roomName}`
-        ).filter((roomName) => !roomsAndIds.has(roomName));
-
-        // Process public rooms
-        // eslint-disable-next-line no-restricted-syntax
-        for (const [roomName] of [...roomsAndIds.entries()]) {
-            // eslint-disable-next-line no-continue
-            if (!roomName.startsWith('public-')) continue; // process public rooms
-
-            // eslint-disable-next-line no-await-in-loop
-            const sockets = await io.in(roomName).fetchSockets();
-            const players = getNamesFromIds(
-                [...sockets].map(
-                    (socket) =>
-                        (
-                            socket as CustomRemoteSocket<
-                                ServerToClientEvents,
-                                unknown
-                            >
-                        ).userID
-                )
-            );
-
-            const avatarsForPlayers = {} as DetailedRoom['avatarsForPlayers'];
-            players.forEach((player) => {
-                avatarsForPlayers[player] = namesToAvatars.get(player);
-            });
-
-            const room: DetailedRoom = {
-                roomName,
-                players,
-                hasStartedGame: startedBoards.has(roomName),
-                spectators: [] as string[],
-                avatarsForPlayers,
-                format: getFormatForRoom(roomName),
-            };
-            detailedRooms.push(room);
-        }
-
-        // Process empty default rooms
-        defaultRoomNames.forEach((roomName) => {
-            const room: DetailedRoom = {
-                roomName,
-                players: [] as string[],
-                hasStartedGame: false,
-                spectators: [],
-                avatarsForPlayers: {},
-                format: Format.STANDARD,
-            };
-            detailedRooms.push(room);
-        });
-
-        // Process Spectators
-        // eslint-disable-next-line no-restricted-syntax
-        for (const [roomName] of [...roomsAndIds.entries()]) {
-            // eslint-disable-next-line no-continue
-            if (!roomName.startsWith('publicSpectate-')) continue;
-
-            const sanitizedRoomName = roomName.slice('publicSpectate-'.length);
-            let room = detailedRooms.find(
-                (detailedRoom) =>
-                    detailedRoom.roomName === `public-${sanitizedRoomName}`
-            );
-            if (!room) {
-                const originalRoomName = `public-${sanitizedRoomName}`;
-                room = {
-                    roomName: originalRoomName,
-                    players: [],
-                    hasStartedGame: false,
-                    spectators: [],
-                    avatarsForPlayers: {},
-                    format: getFormatForRoom(sanitizedRoomName),
-                };
-                detailedRooms.push(room);
-            }
-
-            // eslint-disable-next-line no-await-in-loop
-            const sockets = await io.in(roomName).fetchSockets();
-            const userIDs = [...sockets].map(
-                (socket) =>
-                    (
-                        socket as CustomRemoteSocket<
-                            ServerToClientEvents,
-                            unknown
-                        >
-                    ).userID
-            );
-
-            room.spectators = getNamesFromIds(userIDs);
-        }
-        return detailedRooms;
-    };
-
     const disconnectFromGame = async (
         socket: Socket<ClientToServerEvents, ServerToClientEvents>,
         shouldClearName = true,
@@ -375,11 +236,11 @@ export const configureIo = (server: HttpServer) => {
             if (!playerLeft) {
                 startedBoards.delete(roomName);
             } else {
-                await sendBoardForRoom(roomName);
+                await roomStore.broadcastBoardForRoom(roomName);
             }
         }
         if (!shouldNotEmit) {
-            io.emit('listRooms', await getDetailedRooms());
+            roomStore.broadcastRooms();
         }
     };
 
@@ -402,7 +263,7 @@ export const configureIo = (server: HttpServer) => {
                 username: socket.username,
             });
 
-            socket.emit('listRooms', await getDetailedRooms());
+            roomStore.broadcastRoomsForSocket(socket);
             socket.emit('listLatestGameResults', latestResults);
 
             socket.on('login', (accessToken) => {
@@ -493,7 +354,7 @@ export const configureIo = (server: HttpServer) => {
                     });
                 }
                 // emit to all rooms the new room settings
-                io.emit('listRooms', await getDetailedRooms());
+                roomStore.broadcastRooms();
             });
 
             socket.on('chooseName', async (newName: string) => {
@@ -505,7 +366,7 @@ export const configureIo = (server: HttpServer) => {
                     if (roomName) {
                         await socket.leave(roomName);
                     }
-                    io.emit('listRooms', await getDetailedRooms());
+                    roomStore.broadcastRooms();
                     socket.emit('confirmName', '');
                     // remove decklist on client
                     socket.emit('confirmPremadeDeckList', undefined);
@@ -524,30 +385,22 @@ export const configureIo = (server: HttpServer) => {
                 }
             });
 
-            socket.on('getRooms', async () => {
-                socket.emit('listRooms', await getDetailedRooms());
-            });
-
             socket.on('joinRoom', async ({ roomName }) => {
                 if (!roomName) return; // blank-string room name not allowed
-                const prevRoom = getRoomForSocket(socket);
-                if (prevRoom) {
-                    disconnectFromGame(socket, false);
-                    await socket.leave(prevRoom);
-                }
+
+                roomStore.joinRoom({ socket, asSpectator: false, roomName });
+                roomStore.broadcastRooms();
                 socket.join(`public-${roomName}`);
-                const detailedRooms = await getDetailedRooms();
-                io.emit('listRooms', detailedRooms);
             });
 
             socket.on('leaveRoom', async () => {
+                roomStore.disconnectSocketFromRoom(socket);
                 const prevRoom = getRoomForSocket(socket);
                 if (prevRoom) {
                     await disconnectFromGame(socket, false);
                     await socket.leave(prevRoom);
                 }
-                cleanupRooms();
-                io.emit('listRooms', await getDetailedRooms());
+                roomStore.broadcastRooms();
             });
 
             socket.on('spectateRoom', async (roomName) => {
@@ -561,9 +414,7 @@ export const configureIo = (server: HttpServer) => {
                     // which is causing listRooms to get emitted twice
                     await socket.leave(prevRoom);
                 }
-                cleanupRooms();
-                const detailedRoom = await getDetailedRooms();
-                io.emit('listRooms', detailedRoom);
+                roomStore.broadcastRooms();
             });
 
             socket.on('startGame', async () => {
@@ -572,17 +423,15 @@ export const configureIo = (server: HttpServer) => {
                 if (!roomName) return;
 
                 const sockets = await io.in(roomName).fetchSockets();
-                const userIDs = [...sockets].map(
+                const playerNames = [...sockets].map(
                     (remoteSocket) =>
                         (
                             remoteSocket as CustomRemoteSocket<
                                 ServerToClientEvents,
                                 unknown
                             >
-                        ).userID
+                        ).username
                 );
-
-                const playerNames = getNamesFromIds(userIDs);
 
                 const avatarsForPlayers =
                     {} as DetailedRoom['avatarsForPlayers'];
@@ -614,8 +463,7 @@ export const configureIo = (server: HttpServer) => {
                 io.to(
                     `publicSpectate-${roomName.slice('public-'.length)}`
                 ).emit('startGame');
-                await sendBoardForRoom(roomName);
-                io.emit('listRooms', await getDetailedRooms());
+                roomStore.broadcastRooms();
             });
 
             socket.on('takeGameAction', async (gameAction) => {
@@ -654,7 +502,7 @@ export const configureIo = (server: HttpServer) => {
 
                 // TODO: add error handling when user tries to take an invalid action
                 startedBoards.set(roomName, newBoardState); // apply state changes to in-memory storage of boards
-                await sendBoardForRoom(roomName); // update clients with changes
+                await roomStore.broadcastBoardForRoom(roomName); // update clients with changes
             });
 
             socket.on(
@@ -685,7 +533,7 @@ export const configureIo = (server: HttpServer) => {
 
                     if (newBoardState) {
                         startedBoards.set(roomName, newBoardState);
-                        await sendBoardForRoom(roomName);
+                        await roomStore.broadcastBoardForRoom(roomName);
 
                         const gameResult = calculateGameResult(
                             prevGameState,
@@ -743,9 +591,7 @@ export const configureIo = (server: HttpServer) => {
                 ) {
                     disconnectFromGame(socket);
                 }
-
-                cleanupRooms();
-                io.emit('listRooms', await getDetailedRooms());
+                roomStore.broadcastRooms();
             });
         }
     );
