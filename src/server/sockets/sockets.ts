@@ -1,11 +1,8 @@
 import { Server as HttpServer } from 'http';
-import { RemoteSocket, Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import { instrument } from '@socket.io/admin-ui';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { Board, GameState } from '@/types/board';
-import { makeNewBoard } from '@/factories/board';
-import { obscureBoardInfo } from '../obscureBoardInfo';
 
 import {
     DeckListSelections,
@@ -14,17 +11,12 @@ import {
 } from '@/constants/lobbyConstants';
 import {
     ClientToServerEvents,
-    DetailedRoom,
     ResolveEffectParams,
-    RoomOptions,
     ServerToClientEvents,
 } from '@/types';
-import { applyGameAction, applyWinState, passTurn } from '../gameEngine';
-import { resolveEffect } from '../resolveEffect';
-import { makePlayerChatMessage, makeSystemChatMessage } from '@/factories/chat';
+import { makePlayerChatMessage } from '@/factories/chat';
 import { Format, GameResult } from '@/types/games';
-import { calculateGameResult } from '@/factories/games';
-import { Card, Skeleton } from '@/types/cards';
+import { Skeleton } from '@/types/cards';
 import { authorize, ExtendedSocket } from '../authorize';
 import { auth0 } from '../auth0';
 import {
@@ -34,13 +26,6 @@ import {
 import { createMemorySessionStore, createRoomStore } from '../stores';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
-
-interface CustomRemoteSocket<EmitEvents, SocketData>
-    extends RemoteSocket<EmitEvents, SocketData> {
-    sessionID: string;
-    userID: string;
-    username: string;
-}
 
 export const configureIo = (server: HttpServer) => {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {

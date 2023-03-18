@@ -1,5 +1,4 @@
 import { Server } from 'socket.io';
-import { Socket } from 'socket.io-client';
 import {
     DEFAULT_ROOM_NAMES,
     DeckListSelections,

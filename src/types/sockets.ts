@@ -66,7 +66,3 @@ export interface DetailedRoomWithBoard extends DetailedRoom {
 export type JoinRoomParams = {
     roomName: string;
 };
-
-export type RoomOptions = {
-    format: Format;
-};
