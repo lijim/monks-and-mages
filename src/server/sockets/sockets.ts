@@ -273,6 +273,19 @@ export const configureIo = (server: HttpServer) => {
                 roomStore.broadcastRooms();
             });
 
+            socket.on('rejoinGame', async () => {
+                const room = roomStore.getCurrentRoom(socket);
+                const roomName = room?.roomName;
+                if (roomName) {
+                    if (room.players.includes(socket.username)) {
+                        await socket.join(`public-${roomName}`);
+                    } else if (room.spectators.includes(socket.username)) {
+                        await socket.join(`publicSpectate-${roomName}`);
+                    }
+                    roomStore.broadcastBoardForRoom(roomName);
+                }
+            });
+
             socket.on('takeGameAction', async (gameAction) => {
                 roomStore.takeGameAction({
                     socket,

@@ -128,6 +128,7 @@ export const Rooms: React.FC = () => {
 
     const rejoinRoom = () => {
         dispatch(push('/ingame'));
+        webSocket.rejoinGame();
     };
 
     const startGame = () => {

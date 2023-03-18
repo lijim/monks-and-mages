@@ -38,7 +38,8 @@ export interface ClientToServerEvents {
     chooseName: (name: string) => void;
     joinRoom: (params: JoinRoomParams) => void;
     leaveRoom: () => void;
-    login: (accessToken: string) => void; // leave the current room
+    login: (accessToken: string) => void;
+    rejoinGame: () => void; // leave the current room
     resolveEffect: ({
         effect,
         playerNames,

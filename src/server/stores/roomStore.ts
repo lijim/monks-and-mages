@@ -52,11 +52,11 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
     const getRoomNameForSocket = (
         socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
     ): string | null => {
-        const firstRoomName = [...socket.rooms].filter(
+        return detailedRooms.find(
             (room) =>
-                room.startsWith('public-') || room.startsWith('publicSpectate-')
-        )[0];
-        return firstRoomName || null;
+                room.players.includes(socket.username) ||
+                room.spectators.includes(socket.username)
+        )?.roomName;
     };
 
     const getDetailedRooms = (): DetailedRoom[] => {
@@ -156,7 +156,8 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
     ) => {
         const roomNameToLeave = getRoomNameForSocket(socket);
-        socket.leave(roomNameToLeave);
+        socket.leave(`public-${roomNameToLeave}`);
+        socket.leave(`publicSpectate-${roomNameToLeave}`);
 
         const room = getCurrentRoom(socket);
         const username = sessionStore.findUserNameForSession(socket.sessionID);
@@ -251,6 +252,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         }
 
         room.board = board;
+        room.hasStartedGame = true;
         io.to(`public-${room.roomName}`).emit('startGame');
         io.to(`publicSpectate-${room.roomName.slice('public-'.length)}`).emit(
             'startGame'
@@ -399,6 +401,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
             const gameResult = calculateGameResult(prevGameState, board);
             addGameResult(gameResult);
             if (!playerLeft) {
+                room.hasStartedGame = false;
                 room.board = null;
             } else {
                 await broadcastBoardForRoom(roomName);
@@ -413,6 +416,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         broadcastBoardForRoom,
         disconnectSocketFromRoom,
         getRoomNameForSocket,
+        getCurrentRoom,
         chooseGameFormat,
         namesToAvatars,
         nameToDeckListSelection,

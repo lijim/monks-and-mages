@@ -222,6 +222,10 @@ export const WebSocketProvider = ({ children }: Props) => {
             newSocket.emit('chooseName', name);
         };
 
+        const rejoinGame = () => {
+            newSocket.emit('rejoinGame');
+        };
+
         const resolveEffect = (params: ResolveEffectParams) => {
             newSocket.emit('resolveEffect', params);
         };
@@ -252,6 +256,7 @@ export const WebSocketProvider = ({ children }: Props) => {
             logout,
             resolveEffect,
             sendChatMessage,
+            rejoinGame,
             spectateRoom,
             startGame,
             takeGameAction,
