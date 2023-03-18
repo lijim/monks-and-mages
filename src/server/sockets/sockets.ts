@@ -399,6 +399,7 @@ export const configureIo = (server: HttpServer) => {
             socket.emit('session', {
                 sessionID: socket.sessionID,
                 userID: socket.userID,
+                username: socket.username,
             });
 
             socket.emit('listRooms', await getDetailedRooms());
@@ -427,6 +428,7 @@ export const configureIo = (server: HttpServer) => {
                             socket.emit('session', {
                                 sessionID: socket.sessionID,
                                 userID: socket.userID,
+                                username: socket.username,
                             });
                             clearName(socket.userID);
                             namesToIds.set(name, socket.userID);
@@ -721,8 +723,8 @@ export const configureIo = (server: HttpServer) => {
                 );
             });
 
-            socket.on('disconnecting', async () => {
-                const matchingSockets = await io.in(socket.userID).allSockets();
+            socket.on('disconnecting', async (reason) => {
+                const matchingSockets = await io.in(socket.id).allSockets();
                 const isDisconnected = matchingSockets.size === 0;
 
                 if (isDisconnected) {
@@ -733,8 +735,17 @@ export const configureIo = (server: HttpServer) => {
                     });
                 }
 
-                disconnectFromGame(socket);
+                if (
+                    [
+                        'client namespace disconnect',
+                        'server namespace disconnect',
+                    ].includes(reason)
+                ) {
+                    disconnectFromGame(socket);
+                }
+
                 cleanupRooms();
+                io.emit('listRooms', await getDetailedRooms());
             });
         }
     );

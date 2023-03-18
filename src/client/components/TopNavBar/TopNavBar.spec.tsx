@@ -14,6 +14,6 @@ describe('TopNavBar', () => {
 
         fireEvent.click(screen.getByText('Log Out'));
 
-        expect(webSocket.chooseName).toHaveBeenCalledWith('');
+        expect(webSocket.logout).toHaveBeenCalled();
     });
 });

@@ -1,12 +1,10 @@
-import React, { ReactNode, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { ReactNode } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { push } from 'redux-first-history';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
 import { RootState } from '@/client/redux/store';
-import { WebSocketContext } from '../WebSockets';
 import { SecondaryColorButton } from '../Button';
 import { LogoutButton } from '../LogoutButton';
 import { getCleanName } from '@/client/redux/selectors';
@@ -40,14 +38,8 @@ interface Props {
 export const TopNavBar = ({ children }: Props) => {
     const guestName = useSelector<RootState, string>(getCleanName);
     const { user } = useAuth0();
-    const webSocket = useContext(WebSocketContext);
     const loggedInPlayerInfo = useLoggedInPlayerInfo();
-    const dispatch = useDispatch();
 
-    const logOut = () => {
-        webSocket.chooseName('');
-        dispatch(push('/'));
-    };
     if (user && loggedInPlayerInfo?.data) {
         const { data, nextLevel, currentLevel } = loggedInPlayerInfo;
         const xpIntoCurrentLevel = data.exp - currentLevel.xpRequired;
@@ -131,7 +123,7 @@ export const TopNavBar = ({ children }: Props) => {
                         gap: '4px',
                     }}
                 >
-                    <LogoutButton />
+                    <LogoutButton shouldLogOutFromAuth0 />
                     <Link to="/instructions">
                         <SecondaryColorButton>Help</SecondaryColorButton>
                     </Link>
@@ -152,9 +144,7 @@ export const TopNavBar = ({ children }: Props) => {
             </div>
             <div className="topNavBar-center">{children}</div>
             <div style={{ display: 'flex', justifyContent: 'end', gap: '4px' }}>
-                <SecondaryColorButton onClick={logOut}>
-                    Log Out
-                </SecondaryColorButton>
+                <LogoutButton />
                 <Link to="/instructions">
                     <SecondaryColorButton>Help</SecondaryColorButton>
                 </Link>

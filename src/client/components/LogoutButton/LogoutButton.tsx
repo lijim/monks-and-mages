@@ -5,7 +5,11 @@ import { push } from 'redux-first-history';
 import { SecondaryColorButton } from '../Button';
 import { WebSocketContext } from '../WebSockets';
 
-export const LogoutButton = () => {
+type Props = {
+    shouldLogOutFromAuth0?: boolean;
+};
+
+export const LogoutButton = ({ shouldLogOutFromAuth0 }: Props) => {
     const { logout } = useAuth0();
     const webSocket = useContext(WebSocketContext);
     const dispatch = useDispatch();
@@ -14,9 +18,10 @@ export const LogoutButton = () => {
         <SecondaryColorButton
             onClick={() => {
                 webSocket.logout();
-                webSocket.chooseName('');
                 dispatch(push('/'));
-                logout({ returnTo: window.location.origin });
+                if (shouldLogOutFromAuth0) {
+                    logout({ returnTo: window.location.origin });
+                }
             }}
         >
             Log Out
