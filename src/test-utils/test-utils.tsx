@@ -52,6 +52,7 @@ interface RenderValue {
         chooseName: jest.Mock;
         joinRoom: jest.Mock;
         leaveRoom: jest.Mock;
+        logout: jest.Mock;
         resolveEffect: jest.Mock;
         sendChatMessage: jest.Mock;
         socket: Socket<ServerToClientEvents, ClientToServerEvents>;
