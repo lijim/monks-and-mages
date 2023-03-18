@@ -269,7 +269,7 @@ export const configureIo = (server: HttpServer) => {
             });
 
             socket.on('startGame', async () => {
-                roomStore.startGameForSocket(socket);
+                await roomStore.startGameForSocket(socket);
                 roomStore.broadcastRooms();
             });
 

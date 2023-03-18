@@ -262,6 +262,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         io.to(`publicSpectate-${room.roomName.slice('public-'.length)}`).emit(
             'startGame'
         );
+        broadcastBoardForRoom(room.roomName);
     };
 
     type TakeGameActionParams = {
