@@ -23,7 +23,10 @@ import {
     ServerToClientEvents,
 } from '@/types';
 import { GameAction } from '@/types/gameActions';
-import { DeckListSelections } from '@/constants/lobbyConstants';
+import {
+    DeckListSelections,
+    GUEST_NAME_PREFIX,
+} from '@/constants/lobbyConstants';
 import {
     confirmCustomDeckList,
     confirmPremadeDecklist,
@@ -41,6 +44,7 @@ export const WebSocketContext = createContext<WebSocketValue>(null);
 
 export interface CustomSocket
     extends Socket<ServerToClientEvents, ClientToServerEvents> {
+    sessionID: string;
     userID: string;
 }
 
@@ -107,7 +111,14 @@ export const WebSocketProvider = ({ children }: Props) => {
     if (!socket) {
         const newSocket: CustomSocket = io() as CustomSocket;
 
-        newSocket.on('session', ({ sessionID, userID }) => {
+        const sessionIDFromCache = localStorage.getItem('sessionID');
+        if (typeof sessionIDFromCache === 'string') {
+            newSocket.auth = { sessionID: sessionIDFromCache };
+            newSocket.connect();
+        }
+
+        newSocket.on('session', ({ sessionID, userID, username }) => {
+            dispatch(chooseNameReducer({ name: username }));
             newSocket.auth = { ...newSocket.auth, sessionID };
             localStorage.setItem('sessionID', sessionID);
             newSocket.userID = userID;
@@ -134,7 +145,7 @@ export const WebSocketProvider = ({ children }: Props) => {
         );
 
         newSocket.on('connect', () => {
-            dispatch(initializeUser({ id: newSocket.id }));
+            dispatch(initializeUser({ id: newSocket.userID }));
         });
 
         newSocket.on('displayLastPlayedCard', (card: Card) => {
@@ -178,6 +189,7 @@ export const WebSocketProvider = ({ children }: Props) => {
         };
 
         const logout = () => {
+            localStorage.removeItem('sessionID');
             newSocket.disconnect();
         };
 
@@ -202,7 +214,10 @@ export const WebSocketProvider = ({ children }: Props) => {
         };
 
         const chooseName = (name: string) => {
-            newSocket.auth = { ...newSocket.auth, username: name };
+            newSocket.auth = {
+                ...newSocket.auth,
+                username: `${GUEST_NAME_PREFIX}${name}`,
+            };
             newSocket.connect();
             newSocket.emit('chooseName', name);
         };

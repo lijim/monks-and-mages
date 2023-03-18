@@ -14,7 +14,11 @@ export interface ServerToClientEvents {
     gameChatMessage: (message: ChatMessage) => void;
     listLatestGameResults: (gameResults: GameResult[]) => void;
     listRooms: (rooms: DetailedRoom[]) => void;
-    session: (session: { sessionID: string; userID: string }) => void;
+    session: (session: {
+        sessionID: string;
+        userID: string;
+        username: string;
+    }) => void;
     startGame: () => void;
     updateBoard: (board: Board) => void;
 }
