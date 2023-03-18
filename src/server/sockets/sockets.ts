@@ -195,14 +195,11 @@ export const configureIo = (server: HttpServer) => {
     };
 
     const disconnectFromGame = async (
-        socket: Socket<ClientToServerEvents, ServerToClientEvents>,
-        shouldClearName = true,
-        shouldNotEmit = false
+        socket: Socket<ClientToServerEvents, ServerToClientEvents>
     ) => {
         const board = getBoardForSocket(socket);
         const roomName = getRoomForSocket(socket);
         const name = socket.username;
-        if (shouldClearName) clearName(socket.username);
         if (board) {
             const player = board.players.find((p) => p.name === name);
 
@@ -230,9 +227,6 @@ export const configureIo = (server: HttpServer) => {
             } else {
                 await roomStore.broadcastBoardForRoom(roomName);
             }
-        }
-        if (!shouldNotEmit) {
-            roomStore.broadcastRooms();
         }
     };
 
@@ -364,7 +358,7 @@ export const configureIo = (server: HttpServer) => {
                 roomStore.disconnectSocketFromRoom(socket);
                 const prevRoom = getRoomForSocket(socket);
                 if (prevRoom) {
-                    await disconnectFromGame(socket, false);
+                    await disconnectFromGame(socket);
                     await socket.leave(prevRoom);
                 }
                 roomStore.broadcastRooms();
@@ -375,10 +369,7 @@ export const configureIo = (server: HttpServer) => {
                 const prevRoom = getRoomForSocket(socket);
                 await socket.join(`publicSpectate-${roomName}`);
                 if (prevRoom) {
-                    await disconnectFromGame(socket, false, true);
-
-                    // TODO: this is calling leaveRoom
-                    // which is causing listRooms to get emitted twice
+                    await disconnectFromGame(socket);
                     await socket.leave(prevRoom);
                 }
                 roomStore.broadcastRooms();
@@ -557,6 +548,7 @@ export const configureIo = (server: HttpServer) => {
                     ].includes(reason)
                 ) {
                     disconnectFromGame(socket);
+                    clearName(socket.username);
                 }
                 roomStore.broadcastRooms();
             });
