@@ -89,7 +89,9 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         if (!board) {
             return;
         }
-        const allSocketsInRoom = await io.in(roomName).fetchSockets();
+        const allSocketsInRoom = await io
+            .in(`public-${roomName}`)
+            .fetchSockets();
         allSocketsInRoom.forEach((socket) => {
             const name = (
                 socket as unknown as ExtendedSocket<
@@ -222,16 +224,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         const room = getCurrentRoom(socket);
         if (!room) return;
 
-        const sockets = await io.in(room.roomName).fetchSockets();
-        const playerNames = [...sockets].map(
-            (remoteSocket) =>
-                (
-                    remoteSocket as unknown as ExtendedSocket<
-                        ServerToClientEvents,
-                        ClientToServerEvents
-                    >
-                ).username
-        );
+        const playerNames = room.players;
 
         const avatarsForPlayers = {} as DetailedRoom['avatarsForPlayers'];
         playerNames.forEach((player) => {
@@ -258,7 +251,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         }
 
         room.board = board;
-        io.to(room.roomName).emit('startGame');
+        io.to(`public-${room.roomName}`).emit('startGame');
         io.to(`publicSpectate-${room.roomName.slice('public-'.length)}`).emit(
             'startGame'
         );
