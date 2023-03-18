@@ -32,7 +32,6 @@ import {
     DEFAULT_AVATAR_SOURCE_DOMAIN,
 } from '@/types/api';
 import { createMemorySessionStore, createRoomStore } from '../stores';
-import { CustomSocket } from '@/client/components/WebSockets';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
 
@@ -85,8 +84,6 @@ export const configureIo = (server: HttpServer) => {
     /* Stateful Objects */
     let latestResults: GameResult[] = [];
 
-    const idsToNames = new Map<string, string>(); // mapping of socket ids to user-chosen names
-    const namesToIds = new Map<string, string>(); // reverse map of idsToNames
     const namesToAvatars = new Map<string, string>(); // usernames to avatars chosen
     const nameToDeckListSelection = new Map<string, DeckListSelections>();
     const nameToCustomDeckSkeleton = new Map<string, Skeleton>();
@@ -94,16 +91,11 @@ export const configureIo = (server: HttpServer) => {
     const roomNameToRoomOptions = new Map<string, RoomOptions>();
 
     /* Utility functions */
-    const clearName = (idToMatch: string) => {
-        const matchingName = [...namesToIds.entries()].find(
-            ([, id]) => id === idToMatch
-        );
-        if (!matchingName) return;
-        namesToIds.delete(matchingName[0]);
-        namesToAvatars.delete(matchingName[0]);
-        nameToDeckListSelection.delete(matchingName[0]);
-        nameToCustomDeckSkeleton.delete(matchingName[0]);
-        idsToNames.delete(idToMatch);
+    const clearName = (username: string) => {
+        if (!username) return;
+        namesToAvatars.delete(username);
+        nameToDeckListSelection.delete(username);
+        nameToCustomDeckSkeleton.delete(username);
     };
 
     const getDeckListSelectionsFromNames = (playerNames: string[]) => {
@@ -209,8 +201,8 @@ export const configureIo = (server: HttpServer) => {
     ) => {
         const board = getBoardForSocket(socket);
         const roomName = getRoomForSocket(socket);
-        const name = idsToNames.get(socket.userID);
-        if (shouldClearName) clearName(socket.userID);
+        const name = socket.username;
+        if (shouldClearName) clearName(socket.username);
         if (board) {
             const player = board.players.find((p) => p.name === name);
 
@@ -291,9 +283,7 @@ export const configureIo = (server: HttpServer) => {
                                 userID: socket.userID,
                                 username: socket.username,
                             });
-                            clearName(socket.userID);
-                            namesToIds.set(name, socket.userID);
-                            idsToNames.set(socket.userID, name);
+                            clearName(socket.username);
                             nameToDeckListSelection.set(
                                 name,
                                 PREMADE_DECKLIST_DEFAULT
@@ -312,32 +302,29 @@ export const configureIo = (server: HttpServer) => {
                     },
                     // eslint-disable-next-line no-console
                 })(socket, console.log);
-                clearName(socket.userID);
+                clearName(socket.username);
             });
 
             socket.on('chooseCustomDeck', (skeleton: Skeleton) => {
-                const name = idsToNames.get(socket.userID);
-                if (!name) return;
-                nameToCustomDeckSkeleton.set(name, skeleton);
+                if (!socket.username) return;
+                nameToCustomDeckSkeleton.set(socket.username, skeleton);
                 socket.emit('confirmCustomDeck', skeleton);
             });
 
             socket.on('chooseAvatar', (avatarUrl: string) => {
-                const name = idsToNames.get(socket.userID);
-                if (!name) return;
+                if (!socket.username) return;
                 if (!avatarUrl.startsWith(DEFAULT_AVATAR_SOURCE_DOMAIN)) {
                     return;
                 }
-                namesToAvatars.set(name, avatarUrl);
+                namesToAvatars.set(socket.username, avatarUrl);
             });
 
             socket.on('chooseDeck', (deckListSelection: DeckListSelections) => {
-                const name = idsToNames.get(socket.userID);
-                if (!name) return;
-                nameToDeckListSelection.set(name, deckListSelection);
+                if (!socket.username) return;
+                nameToDeckListSelection.set(socket.username, deckListSelection);
                 socket.emit('confirmPremadeDeckList', deckListSelection);
                 // clear any previous custom decks
-                nameToCustomDeckSkeleton.delete(name);
+                nameToCustomDeckSkeleton.delete(socket.username);
                 socket.emit('confirmCustomDeck', null);
             });
 
@@ -359,30 +346,10 @@ export const configureIo = (server: HttpServer) => {
 
             socket.on('chooseName', async (newName: string) => {
                 const name = newName ? `${GUEST_NAME_PREFIX}${newName}` : '';
-                // log out
-                if (!name) {
-                    disconnectFromGame(socket);
-                    const roomName = getRoomForSocket(socket);
-                    if (roomName) {
-                        await socket.leave(roomName);
-                    }
-                    roomStore.broadcastRooms();
-                    socket.emit('confirmName', '');
-                    // remove decklist on client
-                    socket.emit('confirmPremadeDeckList', undefined);
-                    return;
-                }
-                if (!namesToIds.has(name)) {
-                    clearName(socket.userID);
-                    namesToIds.set(name, socket.userID);
-                    idsToNames.set(socket.userID, name);
-                    nameToDeckListSelection.set(name, PREMADE_DECKLIST_DEFAULT);
-                    socket.emit(
-                        'confirmPremadeDeckList',
-                        PREMADE_DECKLIST_DEFAULT
-                    );
-                    socket.emit('confirmName', name);
-                }
+                clearName(socket.username);
+                nameToDeckListSelection.set(name, PREMADE_DECKLIST_DEFAULT);
+                socket.emit('confirmPremadeDeckList', PREMADE_DECKLIST_DEFAULT);
+                socket.emit('confirmName', name);
             });
 
             socket.on('joinRoom', async ({ roomName }) => {
@@ -469,7 +436,7 @@ export const configureIo = (server: HttpServer) => {
             socket.on('takeGameAction', async (gameAction) => {
                 const board = getBoardForSocket(socket);
                 const roomName = getRoomForSocket(socket);
-                const playerName = idsToNames.get(socket.userID);
+                const playerName = socket.username;
                 if (!board || !playerName) {
                     // TODO: add error handling emits down to the client, display via error toasts
                     return;
@@ -510,7 +477,7 @@ export const configureIo = (server: HttpServer) => {
                 async (effectParams: ResolveEffectParams) => {
                     const board = getBoardForSocket(socket);
                     const roomName = getRoomForSocket(socket);
-                    const playerName = idsToNames.get(socket.userID);
+                    const playerName = socket.username;
 
                     if (!board) return;
 
@@ -550,7 +517,7 @@ export const configureIo = (server: HttpServer) => {
             socket.on('sendChatMessage', (message: string) => {
                 // TODO: handle race condition where 2 people start game at same time
                 const roomName = getRoomForSocket(socket);
-                const playerName = idsToNames.get(socket.userID);
+                const playerName = socket.username;
                 if (!roomName?.startsWith('public-') || !playerName) return;
 
                 io.to(roomName).emit(
