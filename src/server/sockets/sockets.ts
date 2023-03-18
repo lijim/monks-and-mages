@@ -356,22 +356,20 @@ export const configureIo = (server: HttpServer) => {
 
             socket.on('leaveRoom', async () => {
                 roomStore.disconnectSocketFromRoom(socket);
-                const prevRoom = getRoomForSocket(socket);
-                if (prevRoom) {
-                    await disconnectFromGame(socket);
-                    await socket.leave(prevRoom);
-                }
+                await disconnectFromGame(socket);
                 roomStore.broadcastRooms();
             });
 
             socket.on('spectateRoom', async (roomName) => {
                 if (!roomName) return; // blank-string room name not allowed
-                const prevRoom = getRoomForSocket(socket);
+                roomStore.joinRoom({ socket, roomName, asSpectator: true });
                 await socket.join(`publicSpectate-${roomName}`);
+
+                const prevRoom = getRoomForSocket(socket);
                 if (prevRoom) {
                     await disconnectFromGame(socket);
-                    await socket.leave(prevRoom);
                 }
+
                 roomStore.broadcastRooms();
             });
 
