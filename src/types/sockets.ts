@@ -60,6 +60,10 @@ export type DetailedRoom = {
     spectators: string[];
 };
 
+export interface DetailedRoomWithBoard extends DetailedRoom {
+    board: Board | null;
+}
+
 export type JoinRoomParams = {
     roomName: string;
 };

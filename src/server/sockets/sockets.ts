@@ -32,7 +32,7 @@ import {
     CreateGameResultsBody,
     DEFAULT_AVATAR_SOURCE_DOMAIN,
 } from '@/types/api';
-import { createMemorySessionStore } from './sessionStore';
+import { createMemorySessionStore } from '../stores';
 import { CustomSocket } from '@/client/components/WebSockets';
 
 const SIGNING_SECRET = process.env.AUTH0_SIGNING_KEY;
