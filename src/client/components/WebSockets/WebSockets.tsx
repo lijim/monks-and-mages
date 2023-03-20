@@ -190,6 +190,7 @@ export const WebSocketProvider = ({ children }: Props) => {
 
         const logout = () => {
             localStorage.removeItem('sessionID');
+            dispatch(chooseNameReducer({ name: '' }));
             newSocket.disconnect();
         };
 
