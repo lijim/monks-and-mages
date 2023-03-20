@@ -29,17 +29,11 @@ export const createMemorySessionStore = () => {
         if (!room) {
             return false;
         }
-        const sessions = findAllSessions();
+        const allSessions = findAllSessions();
         const { players } = room;
-        console.log(players);
-        players.forEach((player) => [
-            console.log(
-                sessions.find((session) => session.username === player)
-            ),
-        ]);
         return players.every(
             (player) =>
-                !sessions.find((session) => session.username === player)
+                !allSessions.find((session) => session.username === player)
                     ?.connected
         );
     };
