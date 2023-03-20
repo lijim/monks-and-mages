@@ -9,7 +9,10 @@ import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
 import { DetailedRoom } from '@/types';
 import { PrimaryColorButton } from '../Button';
-import { MAX_ROOM_NAME_LENGTH } from '@/constants/lobbyConstants';
+import {
+    MAX_ROOM_NAME_LENGTH,
+    PLAYER_ROOM_PREFIX,
+} from '@/constants/lobbyConstants';
 import { Colors } from '@/constants/colors';
 import { DeckListSelector } from '../DeckListSelector';
 import { LatestWinners } from '../LatestWinners';
@@ -80,7 +83,8 @@ const RoomsTab = styled.h1`
 `;
 
 const normalizeRoomName = (roomName: string): string => {
-    if (roomName.startsWith('public-')) return roomName.slice('public-'.length);
+    if (roomName.startsWith(PLAYER_ROOM_PREFIX))
+        return roomName.slice(PLAYER_ROOM_PREFIX.length);
     return roomName;
 };
 

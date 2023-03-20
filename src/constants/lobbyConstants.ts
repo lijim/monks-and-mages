@@ -19,6 +19,10 @@ export const DEFAULT_ROOM_NAMES = [
     'Cobra Castle 🐍',
 ];
 
+export const PLAYER_ROOM_PREFIX = 'public-';
+
+export const SPECTATOR_ROOM_PREFIX = 'publicSpectate-';
+
 export enum DeckListSelections {
     CANNONEER = 'Cannoneers 🧨',
     DIVERS = 'Divers 🤿',
