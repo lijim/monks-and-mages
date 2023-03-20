@@ -5,6 +5,7 @@ import { DetailedRoom } from '@/types';
 import { SecondaryColorButton } from '../Button';
 import { Format } from '@/types/games';
 import { WebSocketContext } from '../WebSockets';
+import { PLAYER_ROOM_PREFIX } from '@/constants/lobbyConstants';
 
 type RoomSquareProps = {
     detailedRoom: DetailedRoom;
@@ -34,7 +35,7 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
     spectateRoom,
 }) => {
     const webSocket = useContext(WebSocketContext);
-    const normalizedRoomName = roomName.replace('public-', '');
+    const normalizedRoomName = roomName.replace(PLAYER_ROOM_PREFIX, '');
     const shouldShowSpectate = !hasStartedGame && !isSpectacting;
     const shouldShowJoin = !hasJoined && !hasStartedGame && players.length < 4;
     return (

@@ -7,7 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 import {
     DeckListSelections,
     GUEST_NAME_PREFIX,
+    PLAYER_ROOM_PREFIX,
     PREMADE_DECKLIST_DEFAULT,
+    SPECTATOR_ROOM_PREFIX,
 } from '@/constants/lobbyConstants';
 import {
     ClientToServerEvents,
@@ -246,7 +248,7 @@ export const configureIo = (server: HttpServer) => {
 
                 roomStore.joinRoom({ socket, asSpectator: false, roomName });
                 roomStore.broadcastRooms();
-                socket.join(`public-${roomName}`);
+                socket.join(`${PLAYER_ROOM_PREFIX}${roomName}`);
             });
 
             socket.on('leaveRoom', async () => {
@@ -258,7 +260,7 @@ export const configureIo = (server: HttpServer) => {
             socket.on('spectateRoom', async (roomName) => {
                 if (!roomName) return; // blank-string room name not allowed
                 roomStore.joinRoom({ socket, roomName, asSpectator: true });
-                await socket.join(`publicSpectate-${roomName}`);
+                await socket.join(`${SPECTATOR_ROOM_PREFIX}${roomName}`);
 
                 const prevRoom = roomStore.getRoomNameForSocket(socket);
                 if (prevRoom) {
@@ -278,9 +280,11 @@ export const configureIo = (server: HttpServer) => {
                 const roomName = room?.roomName;
                 if (roomName) {
                     if (room.players.includes(socket.username)) {
-                        await socket.join(`public-${roomName}`);
+                        await socket.join(`${PLAYER_ROOM_PREFIX}${roomName}`);
                     } else if (room.spectators.includes(socket.username)) {
-                        await socket.join(`publicSpectate-${roomName}`);
+                        await socket.join(
+                            `${SPECTATOR_ROOM_PREFIX}${roomName}`
+                        );
                     }
                     roomStore.broadcastBoardForRoom(roomName);
                 }
@@ -309,20 +313,23 @@ export const configureIo = (server: HttpServer) => {
 
             socket.on('sendChatMessage', (message: string) => {
                 // TODO: handle race condition where 2 people start game at same time
-                const roomName = roomStore.getRoomNameForSocket(socket);
+                const room = roomStore.getCurrentRoom(socket);
+                if (!room) {
+                    return;
+                }
                 const playerName = socket.username;
-                if (!roomName?.startsWith('public-') || !playerName) return;
+                if (!playerName || !room.players.includes(playerName)) {
+                    return;
+                }
 
-                io.to(roomName).emit(
+                io.to(`${PLAYER_ROOM_PREFIX}${room.roomName}`).emit(
                     'gameChatMessage',
                     makePlayerChatMessage({
                         message,
                         playerName,
                     })
                 );
-                io.to(
-                    `publicSpectate-${roomName.slice('public-'.length)}`
-                ).emit(
+                io.to(`${SPECTATOR_ROOM_PREFIX}${room.roomName}`).emit(
                     'gameChatMessage',
                     makePlayerChatMessage({
                         message,

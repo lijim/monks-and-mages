@@ -2,6 +2,8 @@ import { Server } from 'socket.io';
 import {
     DEFAULT_ROOM_NAMES,
     DeckListSelections,
+    PLAYER_ROOM_PREFIX,
+    SPECTATOR_ROOM_PREFIX,
 } from '@/constants/lobbyConstants';
 import {
     ClientToServerEvents,
@@ -90,7 +92,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
             return;
         }
         const allSocketsInRoom = await io
-            .in(`public-${roomName}`)
+            .in(`${PLAYER_ROOM_PREFIX}${roomName}`)
             .fetchSockets();
         allSocketsInRoom.forEach((socket) => {
             const name = (
@@ -103,7 +105,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
             io.to(socket.id).emit('updateBoard', obscureBoardInfo(board, name));
         });
         // broadcast to spectators as well
-        io.to(`publicSpectate-${roomName.slice('public-'.length)}`).emit(
+        io.to(`${SPECTATOR_ROOM_PREFIX}${roomName}`).emit(
             'updateBoard',
             obscureBoardInfo(board)
         );
@@ -112,22 +114,28 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
     const sendChatMessageForRoom =
         (socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>) =>
         (chatMessage: string) => {
-            const firstRoomName = getRoomNameForSocket(socket);
+            const roomName = getRoomNameForSocket(socket);
             const systemMessage = makeSystemChatMessage(chatMessage);
-            io.sockets.in(firstRoomName).emit('gameChatMessage', systemMessage);
-            io.to(
-                `publicSpectate-${firstRoomName.slice('public-'.length)}`
-            ).emit('gameChatMessage', systemMessage);
+            io.sockets
+                .in(`${PLAYER_ROOM_PREFIX}${roomName}`)
+                .emit('gameChatMessage', systemMessage);
+            io.to(`${SPECTATOR_ROOM_PREFIX}${roomName}`).emit(
+                'gameChatMessage',
+                systemMessage
+            );
         };
 
     const displayLastPlayedCardForRoom =
         (socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>) =>
         (card: Card) => {
-            const firstRoomName = getRoomNameForSocket(socket);
-            io.sockets.in(firstRoomName).emit('displayLastPlayedCard', card);
-            io.to(
-                `publicSpectate-${firstRoomName.slice('public-'.length)}`
-            ).emit('displayLastPlayedCard', card);
+            const roomName = getRoomNameForSocket(socket);
+            io.sockets
+                .in(`${PLAYER_ROOM_PREFIX}${roomName}`)
+                .emit('displayLastPlayedCard', card);
+            io.to(`${SPECTATOR_ROOM_PREFIX}${roomName}`).emit(
+                'displayLastPlayedCard',
+                card
+            );
         };
 
     const getCurrentRoom = (
@@ -156,8 +164,8 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>
     ) => {
         const roomNameToLeave = getRoomNameForSocket(socket);
-        socket.leave(`public-${roomNameToLeave}`);
-        socket.leave(`publicSpectate-${roomNameToLeave}`);
+        socket.leave(`${PLAYER_ROOM_PREFIX}${roomNameToLeave}`);
+        socket.leave(`${SPECTATOR_ROOM_PREFIX}${roomNameToLeave}`);
 
         const room = getCurrentRoom(socket);
         const username = sessionStore.findUserNameForSession(socket.sessionID);
@@ -253,10 +261,8 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
 
         room.board = board;
         room.hasStartedGame = true;
-        io.to(`public-${room.roomName}`).emit('startGame');
-        io.to(`publicSpectate-${room.roomName.slice('public-'.length)}`).emit(
-            'startGame'
-        );
+        io.to(`${PLAYER_ROOM_PREFIX}${room.roomName}`).emit('startGame');
+        io.to(`${SPECTATOR_ROOM_PREFIX}${room.roomName}`).emit('startGame');
         broadcastBoardForRoom(room.roomName);
     };
 
