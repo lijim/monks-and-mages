@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -11,6 +11,7 @@ import { getCleanName } from '@/client/redux/selectors';
 import { useLoggedInPlayerInfo } from '@/client/hooks';
 import { CardImage } from '../CardFrame';
 import { Colors } from '@/constants/colors';
+import cookie from 'cookiejs';
 
 // TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
 
@@ -39,6 +40,12 @@ export const TopNavBar = ({ children }: Props) => {
     const guestName = useSelector<RootState, string>(getCleanName);
     const { user } = useAuth0();
     const loggedInPlayerInfo = useLoggedInPlayerInfo();
+
+    useEffect(() => {
+        if (cookie.get('accessToken')) {
+            loggedInPlayerInfo?.mutate();
+        }
+    }, [cookie.get('accessToken')]);
 
     if (user && loggedInPlayerInfo?.data) {
         const { data, nextLevel, currentLevel } = loggedInPlayerInfo;
