@@ -349,7 +349,8 @@ export const configureIo = (server: HttpServer) => {
                         'server namespace disconnect',
                     ].includes(reason)
                 ) {
-                    disconnectFromGame(socket);
+                    await disconnectFromGame(socket);
+                    roomStore.disconnectSocketFromRoom(socket);
                     clearName(socket.username);
                 }
                 roomStore.broadcastRooms();
