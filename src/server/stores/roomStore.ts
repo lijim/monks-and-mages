@@ -409,6 +409,24 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         }
     };
 
+    /**
+     * Remove an entire room, including the boards and players associated with it
+     * @param roomName - room name to remove
+     */
+    const removeRoomEntirely = (roomName: string) => {
+        const matchingRoomIndex = detailedRooms.findIndex(
+            (room) => room.roomName === roomName
+        );
+        if (matchingRoomIndex < 0) {
+            return;
+        }
+        if (DEFAULT_ROOM_NAMES.includes(roomName)) {
+            detailedRooms[matchingRoomIndex] = createRoomFromScratch(roomName);
+        } else {
+            detailedRooms = detailedRooms.splice(matchingRoomIndex, 1);
+        }
+    };
+
     return {
         joinRoom,
         broadcastRooms,
@@ -425,5 +443,6 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         takeGameAction,
         resolveEffectForSocket,
         disconnectFromGame,
+        removeRoomEntirely,
     };
 };

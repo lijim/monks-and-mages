@@ -331,7 +331,8 @@ export const configureIo = (server: HttpServer) => {
                 );
             });
 
-            socket.on('disconnecting', async (reason) => {
+            socket.on('disconnect', async (reason) => {
+                const room = roomStore.getCurrentRoom(socket);
                 const matchingSockets = await io.in(socket.id).allSockets();
                 const isDisconnected = matchingSockets.size === 0;
 
@@ -341,6 +342,16 @@ export const configureIo = (server: HttpServer) => {
                         username: socket.username,
                         connected: false,
                     });
+                }
+
+                // stop spectating any games
+                if (room?.spectators.includes(socket.username)) {
+                    roomStore.disconnectSocketFromRoom(socket);
+                }
+
+                // if nobody connected is left, clean the room out
+                if (room && sessionStore.isEntireRoomDisconnected(room)) {
+                    roomStore.removeRoomEntirely(room.roomName);
                 }
 
                 if (

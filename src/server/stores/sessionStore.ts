@@ -1,3 +1,5 @@
+import { DetailedRoomWithBoard } from '@/types';
+
 type Session = {
     connected: boolean;
     userID: string;
@@ -23,10 +25,30 @@ export const createMemorySessionStore = () => {
         return Array.from(sessions.values());
     };
 
+    const isEntireRoomDisconnected = (room: DetailedRoomWithBoard): boolean => {
+        if (!room) {
+            return false;
+        }
+        const sessions = findAllSessions();
+        const { players } = room;
+        console.log(players);
+        players.forEach((player) => [
+            console.log(
+                sessions.find((session) => session.username === player)
+            ),
+        ]);
+        return players.every(
+            (player) =>
+                !sessions.find((session) => session.username === player)
+                    ?.connected
+        );
+    };
+
     return {
         findAllSessions,
         findSession,
         findUserNameForSession,
         saveSession,
+        isEntireRoomDisconnected,
     };
 };
