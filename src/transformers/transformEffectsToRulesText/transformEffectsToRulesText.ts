@@ -134,6 +134,9 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 numToDestroy === 'all' ? '' : ' at random'
             }`;
         }
+        case EffectType.DESTROY_UNIT: {
+            return `Destroy ${targetName}`;
+        }
         case EffectType.DISCARD_HAND: {
             if (strength === Number.MAX_SAFE_INTEGER) {
                 return `Make ${targetName} discard all cards`;
@@ -228,6 +231,11 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Turn ${
                 strength || 'all'
             } [${cardName}] card${pluralizationEffectStrength} in hand into [${secondaryCardName}]${forText}`;
+        }
+        case EffectType.TUCK: {
+            return `Put ${targetName} on top of ${
+                isTargetTypePlural(target) ? 'their' : 'its'
+            } current player's library`;
         }
         default: {
             return '';

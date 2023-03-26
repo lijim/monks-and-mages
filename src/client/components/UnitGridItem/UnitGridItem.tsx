@@ -107,8 +107,8 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 ))}{' '}
                 {numAttacks > 1 && <div>{numAttacks} attacks per turn</div>}
                 {enterEffects.length > 0 && <b>Upon entering the board:</b>}
-                {enterEffects.map((effect) => (
-                    <div key={transformEffectToRulesText(effect)}>
+                {enterEffects.map((effect, index) => (
+                    <div key={`${index}-${transformEffectToRulesText(effect)}`}>
                         {transformEffectToRulesText(effect)}
                     </div>
                 ))}

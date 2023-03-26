@@ -695,6 +695,29 @@ const STARRY_ILLUSION = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const HAT_AND_HALO = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/woman-stairs-backlighting-the-shade-3340958/',
+
+    name: 'Hat and Halo',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/04/22/12/48/woman-3340958_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'LANDMARK',
+            strength: 1,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const SCOUR_THE_LIBRARY = makeCard({
     name: 'Scour The Library',
     imgSrc: 'https://images.unsplash.com/photo-1549383028-df014fa3a325',
@@ -712,6 +735,23 @@ const SCOUR_THE_LIBRARY = makeCard({
         },
     ],
     rarity: CardRarity.RARE,
+});
+
+const NIGHT_TEMPEST = makeCard({
+    artistName: 'Amy Art-Dreams',
+    artistUrl: 'https://pixabay.com/users/art_dreams-5864742/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/lightning-storm-library-books-7570980/',
+    name: 'Night Tempest',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/11/05/02/15/lightning-7570980_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 3 },
+    effects: [
+        {
+            type: EffectType.TUCK,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    rarity: CardRarity.COMMON,
 });
 
 const OPEN_NEBULA = makeCard({
@@ -1519,6 +1559,8 @@ export const SpellCards = {
     PRAY_TO_ORION,
     STARRY_ILLUSION,
     SCOUR_THE_LIBRARY,
+    HAT_AND_HALO,
+    NIGHT_TEMPEST,
     OPEN_NEBULA,
 
     // Iron

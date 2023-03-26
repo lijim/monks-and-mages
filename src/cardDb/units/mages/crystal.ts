@@ -57,7 +57,7 @@ const SPIRIT_TENDER: UnitCard = makeCard({
     // https://pixabay.com/photos/fantasy-woman-forest-girl-young-6193818/
     imgSrc: 'https://cdn.pixabay.com/photo/2021/04/20/12/48/fantasy-6193818_1280.jpg',
     cost: {
-        [Resource.GENERIC]: 2,
+        [Resource.GENERIC]: 1,
         [Resource.CRYSTAL]: 1,
     },
     damagePlayerEffects: [
@@ -71,7 +71,7 @@ const SPIRIT_TENDER: UnitCard = makeCard({
     description: '',
     enterEffects: [],
     totalHp: 1,
-    attack: 1,
+    attack: 2,
     numAttacks: 1,
     isRanged: true,
     isMagical: true,
@@ -130,6 +130,35 @@ const THE_ORACLE: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const GADGETEER: UnitCard = makeCard({
+    artistName: 'Oleksandr Pidvalnyi',
+    artistUrl: 'https://www.pexels.com/@freestockpro/',
+    originalImagePage:
+        'https://www.pexels.com/photo/woman-in-steampunk-glasses-12969137/',
+    name: 'Gadgeteer',
+    imgSrc: 'https://images.pexels.com/photos/12969137/pexels-photo-12969137.jpeg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
 const FAE_DRAGON: UnitCard = makeCard({
     name: 'Fae Dragon',
     imgSrc: 'https://cdn.pixabay.com/photo/2017/09/13/21/29/fantasy-2747066_1280.jpg', // https://images.unsplash.com/photo-1615962122149-ef6987cf19f4'
@@ -153,6 +182,36 @@ const FAE_DRAGON: UnitCard = makeCard({
     isSoldier: false,
     passiveEffects: [],
     rarity: CardRarity.RARE,
+});
+
+const CRACKLING_OCCULTIST: UnitCard = makeCard({
+    artistName: 'Gioele Fazzeri',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-woman-viking-magic-6141885/',
+    name: 'Crackling Occultist',
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/04/01/10/50/fantasy-6141885_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.RETURN_FROM_CEMETERY,
+            target: TargetTypes.SELF_PLAYER,
+            cardName: 'Crystal',
+            strength: 2,
+        },
+    ],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const CYRUS_PURPLE_DRAGON: UnitCard = makeCard({
@@ -188,6 +247,8 @@ export const CRYSTAL_MAGES = {
     SPIRIT_TENDER,
     THE_ORACLE,
     MAGICIANS_APPRENTICE,
+    GADGETEER,
+    CRACKLING_OCCULTIST,
     FAE_DRAGON,
     CYRUS_PURPLE_DRAGON,
 };

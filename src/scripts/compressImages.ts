@@ -15,6 +15,10 @@ const FORMATS = ['webp', 'avif'];
 const formatToWebP = (imageName: string, imagePath: string) => {
     const newName = slugifyName(imageName);
 
+    if (fs.existsSync(`assets/images/${imagePath}/${newName}.webp`)) {
+        return;
+    }
+
     imageMagick.resize(
         {
             srcPath: `assets/images/${imagePath}/${newName}.avif`,
@@ -44,7 +48,7 @@ const formatImages = (imageName: string, imagePath: string) => {
         imageMagick.resize(
             {
                 srcPath: `tmp/${newName}.jpg`,
-                format: 'avif',
+                format,
                 srcFormat: 'jpg',
                 width: 520,
                 dstPath: `assets/images/${imagePath}/${newName}.${format}`,

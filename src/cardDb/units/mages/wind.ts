@@ -23,8 +23,11 @@ const FERRY_OPERATOR = makeCard({
 });
 
 const FLUX_FIGHTER = makeCard({
+    artistName: 'Sachu Sanjayan',
+    artistUrl: 'https://pixabay.com/users/spacentity-8333341/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/wizard-3d-art-scifi-magic-fantasy-5091194/',
     name: 'Flux Fighter',
-    // https://pixabay.com/illustrations/wizard-3d-art-scifi-magic-fantasy-5091194/
     imgSrc: 'https://cdn.pixabay.com/photo/2020/04/25/15/05/wizard-5091194_1280.jpg',
     cost: {
         [Resource.FIRE]: 1,
