@@ -285,6 +285,16 @@ export const resolveEffect = (
             applyWinState(clonedBoard);
             return clonedBoard;
         }
+        case EffectType.DESTROY_UNIT: {
+            if (unitTargets) {
+                unitTargets.forEach(({ unitCard }) => {
+                    unitCard.hp = 0;
+                });
+                processBoardToCemetery(clonedBoard, addSystemChat);
+            }
+
+            return clonedBoard;
+        }
         case EffectType.DISCARD_HAND: {
             playerTargets.forEach((player) => {
                 const { hand } = player;
@@ -578,6 +588,14 @@ export const resolveEffect = (
                         player.hand[handIndex] = makeCard(cardToMake);
                     }
                 }
+            });
+            return clonedBoard;
+        }
+        case EffectType.TUCK: {
+            unitTargets.forEach(({ player, unitCard }) => {
+                player.units = player.units.filter((card) => card !== unitCard);
+                player.deck.push(unitCard);
+                resetUnitCard(unitCard);
             });
             return clonedBoard;
         }

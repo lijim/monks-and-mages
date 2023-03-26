@@ -39,6 +39,7 @@ export enum EffectType {
     CURSE_HAND = 'Curse Hand', // adds one generic cost to cards in hand
     DEAL_DAMAGE = 'Deal Damage', // to any target
     DESTROY_RESOURCE = 'Destroy Resource',
+    DESTROY_UNIT = 'Destroy Unit',
     DISCARD_HAND = 'Discard Hand', // discard X cards at random
     DRAW = 'Draw',
     DRAW_MILL_WIN = 'Draw Mill Win',
@@ -62,6 +63,7 @@ export enum EffectType {
     SHUFFLE_FROM_HAND = 'Shuffle from hand', // shuffle [all / N of] [X] card from hand into deck
     SUMMON_UNITS = 'Summon Units', // summon units from cemeteries
     TRANSMUTE = 'Transmute', // turn [all/N of] [X] from hand into [Y]
+    TUCK = 'Tuck', // put on top of the deck
 }
 
 /**
@@ -82,6 +84,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.CURSE_HAND]: TargetTypes.OPPONENT,
         [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
         [EffectType.DESTROY_RESOURCE]: TargetTypes.OPPONENT,
+        [EffectType.DESTROY_UNIT]: TargetTypes.OPPOSING_UNIT,
         [EffectType.DISCARD_HAND]: TargetTypes.OPPONENT,
         [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW_MILL_WIN]: TargetTypes.SELF_PLAYER,
@@ -100,6 +103,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.SHUFFLE_FROM_HAND]: TargetTypes.PLAYER,
         [EffectType.SUMMON_UNITS]: TargetTypes.SELF_PLAYER,
         [EffectType.TRANSMUTE]: TargetTypes.SELF_PLAYER,
+        [EffectType.TUCK]: TargetTypes.OPPOSING_UNIT,
     }[effectType];
 };
 
@@ -113,7 +117,7 @@ export enum PassiveEffect {
         STRONG_VS_SOLDIER, // deal double damage to soldier units
         HEARTY, // cannot be taken down in 1 hit
     */
-    HEARTY = 'Hearty (if this unit would take lethal damage, instead lose hearty and go to 1 hp)',
+    HEARTY = 'Hearty (Rather than going to cemetery, lose hearty and go to 1 hp)',
     POISONED = 'Poisonous (deals lethal damage)', // deals lethal dmg to enemy units
     QUICK = 'Quick (can attack right away)', // no summoning sickness
 }

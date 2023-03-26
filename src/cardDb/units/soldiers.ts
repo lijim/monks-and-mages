@@ -421,6 +421,39 @@ const CELESTIAL_MERCENARY: UnitCard = makeCard({
 });
 
 /* 4 total cost */
+const RUSTED_GUARDIAN: UnitCard = makeCard({
+    artistName: 'Amy Art-Dreams',
+    artistUrl: 'https://pixabay.com/users/art_dreams-5864742/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/steampunk-rust-grunge-metal-gears-7623597/',
+    name: 'Rusted Guardian',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/11/29/04/04/steampunk-7623597_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
 const MAGI_RIDER: UnitCard = makeCard({
     name: 'Magi Rider',
     // https://pixabay.com/illustrations/pyramids-giza-night-caravan-camel-3913843/
@@ -646,6 +679,7 @@ export const SOLDIERS = {
     FROST_WALKER,
     CELESTIAL_MERCENARY,
     // 4
+    RUSTED_GUARDIAN,
     MAGI_RIDER,
     WARRIOR_OF_THE_LAKE,
     KNIGHT_TEMPLAR,

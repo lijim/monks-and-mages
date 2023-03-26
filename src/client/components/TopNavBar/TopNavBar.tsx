@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
+import cookie from 'cookiejs';
 import { RootState } from '@/client/redux/store';
 import { SecondaryColorButton } from '../Button';
 import { LogoutButton } from '../LogoutButton';
@@ -11,7 +12,6 @@ import { getCleanName } from '@/client/redux/selectors';
 import { useLoggedInPlayerInfo } from '@/client/hooks';
 import { CardImage } from '../CardFrame';
 import { Colors } from '@/constants/colors';
-import cookie from 'cookiejs';
 
 // TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
 

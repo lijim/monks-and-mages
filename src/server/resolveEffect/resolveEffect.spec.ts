@@ -443,6 +443,26 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Destroy Unit', () => {
+        it('puts the unit in the cemetery', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DESTROY_UNIT,
+                    },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].cemetery.splice(-1)[0].name).toBe(
+                'Squire'
+            );
+        });
+    });
+
     describe('Draw Cards', () => {
         it('draws cards for players', () => {
             const deckLength = board.players[0].deck.length;
@@ -1201,6 +1221,24 @@ describe('resolve effect', () => {
                 'Timmy'
             );
             expect(newBoard.players[0].hand[0].name).toBe('Assassin');
+        });
+    });
+
+    describe('Tuck', () => {
+        it('puts a card on top of the deck', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.TUCK,
+                    },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].deck.splice(-1)[0].name).toBe('Squire');
         });
     });
 });

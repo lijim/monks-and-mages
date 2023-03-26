@@ -214,6 +214,17 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
+    describe('Destroy unit', () => {
+        it('displays rules for destroying units', () => {
+            const effect: Effect = {
+                type: EffectType.DESTROY_UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Destroy any opposing unit`
+            );
+        });
+    });
+
     it('displays rules for dealing damage', () => {
         const effect: Effect = {
             type: EffectType.DEAL_DAMAGE,
@@ -520,6 +531,17 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Turn 3 [Tea] cards in hand into [Poison Mushroom] for all players`
+            );
+        });
+    });
+
+    describe('Tuck', () => {
+        it('displays rules for tucking units', () => {
+            const effect: Effect = {
+                type: EffectType.TUCK,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Put any opposing unit on top of its current player's library`
             );
         });
     });
