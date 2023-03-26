@@ -444,6 +444,28 @@ const CONSTANT_REFILL = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const PEACE_AND_HARMONY = makeCard({
+    artistName: 'Sasin Tipchai',
+    artistUrl: 'https://pixabay.com/users/sasint-3639875/',
+    originalImagePage:
+        'https://pixabay.com/photos/boys-monks-river-ritual-water-1793421/',
+    name: 'Peace and Harmony',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/11/03/04/02/boys-1793421_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.GENERIC]: 4 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 3,
+        },
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.ANY,
+            strength: 3,
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const PIERCE_THE_HEAVENS = makeCard({
     name: 'Pierce the Heavens',
     imgSrc: 'https://images.pexels.com/photos/4666754/pexels-photo-4666754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
@@ -819,6 +841,23 @@ const BANDIT_AMBUSH = makeCard({
         },
     ],
     rarity: CardRarity.COMMON,
+});
+
+const PERSECUTE = makeCard({
+    artistName: 'Gioele Fazzeri',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/witch-gothic-forest-horror-goth-7487743/',
+    name: 'Persecute',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/09/29/17/53/witch-7487743_1280.jpg',
+    cost: { [Resource.IRON]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.UNIT,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const MAJOR_EARTHQUAKE = makeCard({
@@ -1538,6 +1577,7 @@ export const SpellCards = {
     RAGING_WHIRLPOOL,
     SUMMON_SHARKS,
     REFLECTION_OPPORTUNITY,
+    PEACE_AND_HARMONY,
     PIERCE_THE_HEAVENS,
 
     // Wind
@@ -1566,6 +1606,7 @@ export const SpellCards = {
     // Iron
     THROW_SHURIKEN,
     BANDIT_AMBUSH,
+    PERSECUTE,
     MAJOR_EARTHQUAKE,
 
     // Bamboo

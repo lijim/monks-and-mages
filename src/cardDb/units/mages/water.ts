@@ -1,6 +1,6 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
 import { CardRarity, UnitCard } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
@@ -173,6 +173,36 @@ const WAVING_FISHERMAN: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const MOUNTAIN_SENTINEL: UnitCard = makeCard({
+    artistName: 'Gioele Fazzeri',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/witch-gothic-forest-horror-goth-7487743/',
+    name: 'Mountain Sentinel',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/02/04/18/49/water-3130542_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.ALL_UNITS,
+            strength: 3,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const MISBEGOTTEN_MISTWALKER = makeCard({
     name: 'Misbegotten Mistwalker',
     // https://pixabay.com/photos/fantasy-spirit-nightmare-dream-2847724/
@@ -278,6 +308,35 @@ const PEACE_BRINGER = makeCard({
     isSoldier: false,
     passiveEffects: [],
     rarity: CardRarity.UNCOMMON,
+});
+
+const FROZEN_PATHFINDER: UnitCard = makeCard({
+    artistName: 'Gioele Fazzeri',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/witch-gothic-forest-horror-goth-7487743/',
+    name: 'Frozen Pathfinder',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/12/27/18/08/lonely-7681509_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.BOUNCE,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const CURSED_CHIEFTAIN: UnitCard = makeCard({
@@ -446,6 +505,41 @@ const WATER_GUARDIAN: UnitCard = makeCard({
     rarity: CardRarity.MYTHIC,
 });
 
+const PENELOPE_THE_TORTOISE: UnitCard = makeCard({
+    artistName: 'Alan (AD_Images)',
+    artistUrl: 'https://pixabay.com/users/ad_images-6663717/',
+    originalImagePage:
+        'https://pixabay.com/photos/water-sea-nature-summer-ocean-3184711/',
+    name: 'Penelope the Tortoise',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/02/27/05/02/water-3184711_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 3,
+        },
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Bubble Blast',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 5,
+    attack: 5,
+    numAttacks: 0,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
 export const WATER_MAGES = {
     GIANT_JELLY,
     FROST_WYRM,
@@ -454,14 +548,17 @@ export const WATER_MAGES = {
     TINY_MERMAID,
     RAIN_CHANNELER,
     WAVING_FISHERMAN,
+    MOUNTAIN_SENTINEL,
     MISBEGOTTEN_MISTWALKER,
     PELAGIC_PREDATOR,
     WATER_MAGE,
     PEACE_BRINGER,
     THUNDER_SCHEDULER,
+    FROZEN_PATHFINDER,
     MAELSTROM_SEEKER,
     CURSED_CHIEFTAIN,
     AQUARIAN_ADEPT,
     CHAD_THE_AQUAPHILE,
+    PENELOPE_THE_TORTOISE,
     WATER_GUARDIAN,
 };

@@ -66,11 +66,18 @@ describe('Unit Grid Item', () => {
         ).toBeInTheDocument();
     });
 
-    it('displays "2 attacks per turn', () => {
+    it('displays "2 attacks per turn"', () => {
         const card = makeCard(UnitCards.SQUIRE);
         card.numAttacks = 2;
         render(<UnitGridItem card={card} />);
         expect(screen.getByText('2 attacks per turn')).toBeInTheDocument();
+    });
+
+    it('displays "0 attacks per turn', () => {
+        const card = makeCard(UnitCards.SQUIRE);
+        card.numAttacks = 0;
+        render(<UnitGridItem card={card} />);
+        expect(screen.getByText('Cannot attack')).toBeInTheDocument();
     });
 
     it('displays sleepiness', () => {

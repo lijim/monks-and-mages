@@ -545,6 +545,57 @@ const GENEROUS_BUDDHA: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const SNOW_LION: UnitCard = makeCard({
+    artistName: 'JL G',
+    artistUrl: 'https://pixabay.com/users/ractapopulous-24766/',
+    originalImagePage:
+        'https://pixabay.com/photos/lion-snow-lying-down-art-animal-2217152/',
+    name: 'Snow Lion',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/04/09/22/54/lion-2217152_1280.jpg',
+    cost: {
+        [Resource.WATER]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const TUNDRA_FROST_PACK: UnitCard = makeCard({
+    artistName: '0fjd125gk87',
+    artistUrl: 'https://pixabay.com/users/0fjd125gk87-51581/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/wolf-wolves-deer-to-hunt-predator-1353253/',
+    name: 'Tundra Frost Pack',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/04/25/21/34/wolf-1353253_1280.jpg',
+    cost: {
+        [Resource.WATER]: 2,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_ATTACK_FOR_CYCLE,
+            strength: -2,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+        },
+    ],
+    totalHp: 3,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
 const INCONSPICUOUS_CRAB: UnitCard = makeCard({
     name: 'Inconspicuous Crab',
     imgSrc: 'https://images.pexels.com/photos/4890161/pexels-photo-4890161.jpeg',
@@ -567,7 +618,7 @@ const INCONSPICUOUS_CRAB: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const RULER_OF_THE_JUNGLE: UnitCard = makeCard({
@@ -624,6 +675,8 @@ export const MISC_UNITS = {
     SPELUNKER,
     KING_TUT,
     GENEROUS_BUDDHA,
+    SNOW_LION,
+    TUNDRA_FROST_PACK,
     INCONSPICUOUS_CRAB,
     RULER_OF_THE_JUNGLE,
 };
