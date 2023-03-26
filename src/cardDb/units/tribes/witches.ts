@@ -9,7 +9,7 @@ const COVEN_NOVICE: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/1548743/pexels-photo-1548743.jpeg',
     cost: {
         [Resource.CRYSTAL]: 1,
-        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [

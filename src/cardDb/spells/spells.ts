@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash.clonedeep';
 
 import { CardRarity, CardType, SpellBase, SpellCard } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../units';
 
@@ -65,6 +65,24 @@ const INCINERATION = makeCard({
         },
     ],
     rarity: CardRarity.UNCOMMON,
+});
+
+const FURY_OF_THE_OWL = makeCard({
+    artistName: 'Barroa_Artworks',
+    artistUrl: 'https://pixabay.com/users/barroa_artworks-1783849/',
+    originalImagePage:
+        'https://pixabay.com/photos/owl-fire-flame-woman-fantasy-bird-1212930/',
+    name: 'Fury of the Owl',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/02/20/22/19/owl-1212930_1280.jpg',
+    cost: { [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.GRANT_PASSIVE_EFFECT,
+            passiveEffect: PassiveEffect.QUICK,
+            target: TargetTypes.UNIT,
+        },
+    ],
+    rarity: CardRarity.COMMON,
 });
 
 const LIGHTNING_SLICK = makeCard({
@@ -698,6 +716,27 @@ const PRAY_TO_ORION = makeCard({
             type: EffectType.DISCARD_HAND,
             target: TargetTypes.SELF_PLAYER,
             strength: 4,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const CATS_OUT_OF_THE_BAG = makeCard({
+    artistName: 'Arthur Rackham',
+    artistUrl: 'https://pixabay.com/users/prawny-162579/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/vintage-literature-book-illustration-1723773/',
+    name: "Cat's Out of the Bag",
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/10/08/14/14/vintage-1723773_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 3,
+        },
+        {
+            type: EffectType.TUCK,
+            target: TargetTypes.OWN_UNIT,
         },
     ],
     rarity: CardRarity.UNCOMMON,
@@ -1552,6 +1591,7 @@ export const SpellCards = {
     EMBER_SPEAR,
     WARPATH,
     INCINERATION,
+    FURY_OF_THE_OWL,
     LIGHTNING_SLICK,
     CURSE_HAND,
     SUPERNOVA,
@@ -1597,6 +1637,7 @@ export const SpellCards = {
     ZEN_STANCE,
     BEAM_ME_UP,
     PRAY_TO_ORION,
+    CATS_OUT_OF_THE_BAG,
     STARRY_ILLUSION,
     SCOUR_THE_LIBRARY,
     HAT_AND_HALO,

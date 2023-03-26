@@ -9,6 +9,7 @@ import { Board, Player } from '@/types/board';
 import {
     EffectType,
     getDefaultTargetForEffect,
+    PassiveEffect,
     TargetTypes,
 } from '@/types/effects';
 import { CardType, ResourceCard, SpellCard, UnitCard } from '@/types/cards';
@@ -34,6 +35,7 @@ export const resolveEffect = (
         strength: effectStrength = 0,
         cardName,
         secondaryCardName,
+        passiveEffect,
     } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
@@ -400,6 +402,23 @@ export const resolveEffect = (
                     activePlayer.effectQueue = activePlayer.effectQueue.concat(
                         cloneDeep(unitCard.enterEffects).reverse()
                     );
+                }
+            });
+            return clonedBoard;
+        }
+        case EffectType.GRANT_PASSIVE_EFFECT: {
+            unitTargets.forEach(({ unitCard }) => {
+                if (!unitCard.passiveEffects.includes(passiveEffect)) {
+                    unitCard.passiveEffects.push(passiveEffect);
+
+                    // handle adding attacks to units getting 'quick'
+                    if (
+                        passiveEffect === PassiveEffect.QUICK &&
+                        unitCard.isFresh
+                    ) {
+                        unitCard.numAttacksLeft = unitCard.numAttacks;
+                        unitCard.isFresh = false;
+                    }
                 }
             });
             return clonedBoard;

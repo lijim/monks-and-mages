@@ -33,10 +33,11 @@ export const makeAdvancedResourceCard = (
 export const makeUnitCard = (unitBase: UnitBase): UnitCard => {
     const hasQuick = unitBase.passiveEffects.indexOf(PassiveEffect.QUICK) > -1;
     return {
-        ...unitBase,
+        ...cloneDeep(unitBase),
         cardType: CardType.UNIT,
         hp: unitBase.totalHp,
         numAttacksLeft: hasQuick ? unitBase.numAttacks : 0,
+        isFresh: true,
         isSelected: false,
         hpBuff: 0,
         attackBuff: 0,

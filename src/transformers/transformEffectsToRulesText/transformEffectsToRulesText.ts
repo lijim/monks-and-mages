@@ -40,6 +40,22 @@ const TARGET_TYPES_TO_RULES_TEXT_POSSESIVE = {
     [TargetTypes.UNIT]: "any unit's",
 };
 
+const TARGET_TYPES_TO_RULES_TEXT_CONTROLLER_POSSESIVE = {
+    [TargetTypes.ALL_OPPONENTS]: '',
+    [TargetTypes.ALL_OPPOSING_UNITS]: "their controllers'",
+    [TargetTypes.ALL_PLAYERS]: '',
+    [TargetTypes.ALL_SELF_UNITS_CEMETERY]: 'your',
+    [TargetTypes.ALL_SELF_UNITS]: 'your',
+    [TargetTypes.ALL_UNITS]: "their controllers'",
+    [TargetTypes.ANY]: "its controller's",
+    [TargetTypes.OPPONENT]: '',
+    [TargetTypes.OPPOSING_UNIT]: "its controller's",
+    [TargetTypes.OWN_UNIT]: 'your',
+    [TargetTypes.PLAYER]: '',
+    [TargetTypes.SELF_PLAYER]: '',
+    [TargetTypes.UNIT]: "its controller's",
+};
+
 const PLURAL_TARGET_TYPES = [
     TargetTypes.ALL_OPPONENTS,
     TargetTypes.ALL_OPPOSING_UNITS,
@@ -63,6 +79,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         resourceType,
         summonType,
         type,
+        passiveEffect,
     } = effect;
     const targetName =
         TARGET_TYPES_TO_RULES_TEXT[target || getDefaultTargetForEffect(type)];
@@ -77,9 +94,10 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         forText = ` for ${targetName}`;
     }
 
-    const controllerPossessiveText = isTargetTypePlural(target)
-        ? "their controllers'"
-        : "its controller's";
+    const controllerPossessiveText =
+        TARGET_TYPES_TO_RULES_TEXT_CONTROLLER_POSSESIVE[
+            target || getDefaultTargetForEffect(type)
+        ];
 
     switch (effect.type) {
         case EffectType.BLOOM: {
@@ -195,6 +213,10 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Remove ${targetName} from the game, then return ${
                 isTargetTypePlural(target) ? 'them' : 'it'
             } to the board`;
+        }
+
+        case EffectType.GRANT_PASSIVE_EFFECT: {
+            return `Give ${targetName} [${passiveEffect}]`;
         }
         case EffectType.HEAL: {
             return `Restore ${strength} HP to ${targetName}`;

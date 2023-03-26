@@ -34,9 +34,8 @@ const CURIOUS_RESEARCHER: UnitCard = makeCard({
     name: 'Curious Researcher',
     imgSrc: 'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg',
     cost: {
-        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 2,
         [Resource.FIRE]: 1,
-        [Resource.WATER]: 1,
     },
     description: '',
     enterEffects: [
@@ -60,7 +59,7 @@ const CURIOUS_RESEARCHER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 const BRIGHT_SCHOLAR: UnitCard = makeCard({
@@ -68,9 +67,7 @@ const BRIGHT_SCHOLAR: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/8390504/pexels-photo-8390504.jpeg',
     cost: {
         [Resource.FIRE]: 1,
-        [Resource.WATER]: 1,
-        [Resource.CRYSTAL]: 1,
-        [Resource.GENERIC]: 2,
+        [Resource.GENERIC]: 4,
     },
     description: '',
     enterEffects: [
@@ -90,7 +87,7 @@ const BRIGHT_SCHOLAR: UnitCard = makeCard({
             strength: 1,
         },
     ],
-    totalHp: 2,
+    totalHp: 3,
     attack: 2,
     numAttacks: 1,
     isRanged: true,

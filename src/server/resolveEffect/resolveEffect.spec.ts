@@ -2,9 +2,9 @@ import cloneDeep from 'lodash.clonedeep';
 import { PlayerConstants } from '@/constants/gameConstants';
 import { makeNewBoard } from '@/factories/board';
 import { Board, GameState } from '@/types/board';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { resolveEffect } from './resolveEffect';
-import { makeCard, makeResourceCard } from '@/factories/cards';
+import { makeCard, makeResourceCard, makeUnitCard } from '@/factories/cards';
 import { Tokens, UnitCards } from '@/mocks/units';
 import { UnitCard } from '@/types/cards';
 import { Resource } from '@/types/resources';
@@ -957,6 +957,32 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].effectQueue).toEqual(
                 unitCard.enterEffects.reverse()
             );
+        });
+    });
+
+    describe('Grant effects', () => {
+        it('grants quick', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            const squire2 = makeUnitCard(UnitCards.SQUIRE);
+            squire1.isFresh = false;
+            squire1.numAttacksLeft = 0;
+            board.players[0].units = [squire1, squire2];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GRANT_PASSIVE_EFFECT,
+                        target: TargetTypes.ALL_UNITS,
+                        passiveEffect: PassiveEffect.QUICK,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].numAttacksLeft).toEqual(0);
+            expect(newBoard.players[0].units[1].passiveEffects).toEqual([
+                PassiveEffect.QUICK,
+            ]);
+            expect(newBoard.players[0].units[1].numAttacksLeft).toEqual(1);
         });
     });
 

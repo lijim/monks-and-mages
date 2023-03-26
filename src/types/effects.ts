@@ -54,6 +54,7 @@ export enum EffectType {
      * effect resolutions)
      */
     FLICKER = 'Flicker',
+    GRANT_PASSIVE_EFFECT = 'Grant Passive Effect', // give unit(s) a passive effect
     HEAL = 'Heal', // to any target
     LEARN = 'Learn', // add spells / units to hand
     POLYMORPH = 'Polymorph', // polymorph a unit into a token type
@@ -96,6 +97,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.DRAW_UNTIL]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_CARD]: TargetTypes.SELF_PLAYER,
         [EffectType.FLICKER]: TargetTypes.OWN_UNIT,
+        [EffectType.GRANT_PASSIVE_EFFECT]: TargetTypes.UNIT,
         [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.LEARN]: TargetTypes.SELF_PLAYER,
         [EffectType.POLYMORPH]: TargetTypes.UNIT,

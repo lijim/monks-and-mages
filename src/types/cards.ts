@@ -46,6 +46,7 @@ export type Effect = {
     strength?: number;
     summonType?: UnitCard;
     target?: TargetTypes;
+    passiveEffect?: PassiveEffect;
     type: EffectType;
 };
 
@@ -89,6 +90,7 @@ export interface UnitCard extends UnitBase {
     hpBuff: number;
     id?: string;
     isSelected: boolean;
+    isFresh: boolean; // true if unit card has entered this past turn
     numAttacksLeft: number;
     oneCycleAttackBuff: number;
     // number of attack left this turn - starts at 0
