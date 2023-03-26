@@ -180,7 +180,7 @@ const PASTURE_EXPLORER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.COMMON,
 });
 
 const RELAXED_ROWBOATER: UnitCard = makeCard({
