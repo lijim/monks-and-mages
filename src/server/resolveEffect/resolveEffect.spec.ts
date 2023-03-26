@@ -263,6 +263,44 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].units[0].attackBuff).toEqual(2);
         });
 
+        it('buffs attack until the end of turn', () => {
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[0].units = [apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_ATTACK_FOR_TURN,
+                        strength: 2,
+                    },
+                    unitCardIds: [apprentice.id],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[0].oneTurnAttackBuff).toEqual(2);
+        });
+
+        it('buffs attack until the next cycle', () => {
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[0].units = [apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_ATTACK_FOR_CYCLE,
+                        strength: 2,
+                    },
+                    unitCardIds: [apprentice.id],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[0].oneCycleAttackBuff).toEqual(2);
+        });
+
         it('buffs magic units on your board', () => {
             const squire = makeCard(UnitCards.SQUIRE);
             const cannon = makeCard(UnitCards.CANNON);
@@ -882,6 +920,8 @@ describe('resolve effect', () => {
         it('resets health and buffs', () => {
             const unitCard = makeCard(UnitCards.CANNON);
             unitCard.attackBuff = 3;
+            unitCard.oneCycleAttackBuff = 2;
+            unitCard.oneTurnAttackBuff = 1;
             unitCard.hp = 1;
             board.players[0].units = [unitCard];
             const newBoard = resolveEffect(
@@ -897,6 +937,8 @@ describe('resolve effect', () => {
             const cannon = newBoard.players[0].units[0];
             expect(cannon.hp).toBe(UnitCards.CANNON.totalHp);
             expect(cannon.attackBuff).toBe(0);
+            expect(cannon.oneCycleAttackBuff).toBe(0);
+            expect(cannon.oneTurnAttackBuff).toBe(0);
         });
 
         it('retriggers "Enter the Board" effects', () => {

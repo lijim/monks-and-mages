@@ -90,6 +90,8 @@ export const resetUnitCard = (unitCard: UnitCard) => {
     unitCard.hp = unitCard.totalHp;
     unitCard.hpBuff = 0;
     unitCard.attackBuff = 0;
+    unitCard.oneCycleAttackBuff = 0;
+    unitCard.oneTurnAttackBuff = 0;
     unitCard.numAttacksLeft = hasQuick ? unitCard.numAttacks : 0;
     unitCard.cost = cloneDeep(unitCard.originalCost);
 };

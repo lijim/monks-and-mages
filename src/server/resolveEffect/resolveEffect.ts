@@ -178,6 +178,18 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.BUFF_ATTACK_FOR_CYCLE: {
+            unitTargets.forEach(({ unitCard }) => {
+                unitCard.oneCycleAttackBuff += effectStrength;
+            });
+            return clonedBoard;
+        }
+        case EffectType.BUFF_ATTACK_FOR_TURN: {
+            unitTargets.forEach(({ unitCard }) => {
+                unitCard.oneTurnAttackBuff += effectStrength;
+            });
+            return clonedBoard;
+        }
         case EffectType.BUFF_MAGIC: {
             unitTargets.forEach(({ unitCard }) => {
                 if (!unitCard.isMagical) return;
