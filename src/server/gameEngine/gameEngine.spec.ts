@@ -2,7 +2,7 @@ import { SpellCards } from '@/mocks/spells';
 import { UnitCards } from '@/mocks/units';
 import { PlayerConstants } from '@/constants/gameConstants';
 import { makeNewBoard } from '@/factories/board';
-import { makeCard, makeResourceCard } from '@/factories/cards';
+import { makeCard, makeResourceCard, makeUnitCard } from '@/factories/cards';
 import { Board, GameState } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
 import { Resource } from '@/types/resources';
@@ -121,6 +121,33 @@ describe('Game Action', () => {
     });
 
     describe('Pass Turn', () => {
+        it('resets attack buffs', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            squire1.oneTurnAttackBuff = 3;
+            squire1.oneCycleAttackBuff = 1;
+            board.players[0].units = [squire1];
+
+            const squire2 = makeUnitCard(UnitCards.SQUIRE);
+            squire1.oneCycleAttackBuff = 1;
+            board.players[1].units = [squire2];
+
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: { type: GameActionTypes.PASS_TURN },
+                playerName: 'Timmy',
+            });
+            expect(
+                newBoardState.players[0].units[0].oneCycleAttackBuff
+            ).toEqual(1);
+            expect(newBoardState.players[0].units[0].oneTurnAttackBuff).toEqual(
+                0
+            );
+
+            expect(
+                newBoardState.players[1].units[0].oneCycleAttackBuff
+            ).toEqual(0);
+        });
+
         it("resets the active player's resource pool", () => {
             board.players[0].resourcePool = { [Resource.CRYSTAL]: 1 };
             const newBoardState = applyGameAction({
@@ -903,6 +930,8 @@ describe('Game Action', () => {
         it('attacks the opposing player (attack buff)', () => {
             const attacker = makeCard(UnitCards.WATER_GUARDIAN);
             attacker.attackBuff = 3;
+            attacker.oneTurnAttackBuff = 4;
+            attacker.oneCycleAttackBuff = 7;
             attacker.numAttacksLeft = 1;
             board.players[0].units = [attacker];
             const newBoardState = applyGameAction({
@@ -917,7 +946,9 @@ describe('Game Action', () => {
             expect(newBoardState.players[1].health).toEqual(
                 PlayerConstants.STARTING_HEALTH -
                     attacker.attack -
-                    attacker.attackBuff
+                    attacker.attackBuff -
+                    attacker.oneCycleAttackBuff -
+                    attacker.oneTurnAttackBuff
             );
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });

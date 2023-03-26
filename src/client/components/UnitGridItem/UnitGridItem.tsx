@@ -55,6 +55,8 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         name,
         numAttacks,
         numAttacksLeft,
+        oneCycleAttackBuff,
+        oneTurnAttackBuff,
         originalCost,
         passiveEffects,
         totalHp,
@@ -124,8 +126,17 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 )}
             </RulesTextArea>
             <AttackHPFooter>
-                <AttackCell data-testid="attack" buffAmount={attackBuff}>
-                    {attack + attackBuff} ⚔️
+                <AttackCell
+                    data-testid="attack"
+                    buffAmount={
+                        attackBuff + oneCycleAttackBuff + oneTurnAttackBuff
+                    }
+                >
+                    {attack +
+                        attackBuff +
+                        oneCycleAttackBuff +
+                        oneTurnAttackBuff}{' '}
+                    ⚔️
                 </AttackCell>
                 <SleepyCell>
                     {isOnBoard && numAttacksLeft === 0 && '💤'}

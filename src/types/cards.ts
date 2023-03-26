@@ -89,7 +89,10 @@ export interface UnitCard extends UnitBase {
     hpBuff: number;
     id?: string;
     isSelected: boolean;
-    numAttacksLeft: number; // number of attack left this turn - starts at 0
+    numAttacksLeft: number;
+    oneCycleAttackBuff: number;
+    // number of attack left this turn - starts at 0
+    oneTurnAttackBuff: number;
 }
 
 export type UnitType = 'Magical' | 'Soldier' | 'Ranged' | 'None';

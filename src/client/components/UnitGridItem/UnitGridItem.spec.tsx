@@ -91,10 +91,17 @@ describe('Unit Grid Item', () => {
     it('renders attack and hp buffs', () => {
         const unitCard = makeCard(UnitCards.SQUIRE);
         unitCard.attackBuff = 5;
+        unitCard.oneTurnAttackBuff = 2;
+        unitCard.oneCycleAttackBuff = 1;
         unitCard.hpBuff = 6;
         render(<UnitGridItem card={unitCard} isOnBoard />);
         expect(screen.getByTestId('attack')).toHaveTextContent(
-            `${unitCard.attackBuff + unitCard.attack} ⚔️`
+            `${
+                unitCard.attackBuff +
+                unitCard.attack +
+                unitCard.oneTurnAttackBuff +
+                unitCard.oneCycleAttackBuff
+            } ⚔️`
         );
         const newHpTotal = unitCard.hpBuff + unitCard.hp;
         expect(screen.getByTestId('hp')).toHaveTextContent(
