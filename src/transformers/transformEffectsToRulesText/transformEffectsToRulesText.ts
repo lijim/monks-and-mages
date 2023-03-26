@@ -63,6 +63,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         resourceType,
         summonType,
         type,
+        passiveEffect,
     } = effect;
     const targetName =
         TARGET_TYPES_TO_RULES_TEXT[target || getDefaultTargetForEffect(type)];
@@ -195,6 +196,10 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Remove ${targetName} from the game, then return ${
                 isTargetTypePlural(target) ? 'them' : 'it'
             } to the board`;
+        }
+
+        case EffectType.GRANT_PASSIVE_EFFECT: {
+            return `Give ${targetName} [${passiveEffect}]`;
         }
         case EffectType.HEAL: {
             return `Restore ${strength} HP to ${targetName}`;

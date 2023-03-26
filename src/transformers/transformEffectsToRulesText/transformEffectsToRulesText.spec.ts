@@ -1,6 +1,6 @@
 import { Tokens } from '@/cardDb/units';
 import { Effect } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { transformEffectToRulesText } from './transformEffectsToRulesText';
 
@@ -396,6 +396,19 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Remove all your units from the game, then return them to the board`
+            );
+        });
+    });
+
+    describe('Granting passive effects', () => {
+        it('displays rules for granting effects', () => {
+            const effect: Effect = {
+                type: EffectType.GRANT_PASSIVE_EFFECT,
+                target: TargetTypes.ALL_SELF_UNITS,
+                passiveEffect: PassiveEffect.POISONED,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Give all your units [Poisonous (deals lethal damage)]`
             );
         });
     });

@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash.clonedeep';
 
 import { CardRarity, CardType, SpellBase, SpellCard } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../units';
 
@@ -65,6 +65,24 @@ const INCINERATION = makeCard({
         },
     ],
     rarity: CardRarity.UNCOMMON,
+});
+
+const FURY_OF_THE_OWL = makeCard({
+    artistName: 'Barroa_Artworks',
+    artistUrl: 'https://pixabay.com/users/barroa_artworks-1783849/',
+    originalImagePage:
+        'https://pixabay.com/photos/owl-fire-flame-woman-fantasy-bird-1212930/',
+    name: 'Fury of the Owl',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/02/20/22/19/owl-1212930_1280.jpg',
+    cost: { [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.GRANT_PASSIVE_EFFECT,
+            passiveEffect: PassiveEffect.QUICK,
+            target: TargetTypes.UNIT,
+        },
+    ],
+    rarity: CardRarity.COMMON,
 });
 
 const LIGHTNING_SLICK = makeCard({
@@ -1552,6 +1570,7 @@ export const SpellCards = {
     EMBER_SPEAR,
     WARPATH,
     INCINERATION,
+    FURY_OF_THE_OWL,
     LIGHTNING_SLICK,
     CURSE_HAND,
     SUPERNOVA,

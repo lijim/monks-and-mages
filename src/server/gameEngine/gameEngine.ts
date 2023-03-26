@@ -92,6 +92,7 @@ export const resetUnitCard = (unitCard: UnitCard) => {
     unitCard.attackBuff = 0;
     unitCard.oneCycleAttackBuff = 0;
     unitCard.oneTurnAttackBuff = 0;
+    unitCard.isFresh = true;
     unitCard.numAttacksLeft = hasQuick ? unitCard.numAttacks : 0;
     unitCard.cost = cloneDeep(unitCard.originalCost);
 };
@@ -161,6 +162,7 @@ export function passTurn(board: Board): Board {
     activePlayer.resourcePool = {};
     activePlayer.units.forEach((unit) => {
         unit.oneTurnAttackBuff = 0;
+        unit.isFresh = false;
     });
     // tries to loop through all players, in case one draws out of their deck
     // and loses the game

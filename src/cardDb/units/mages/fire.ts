@@ -329,6 +329,37 @@ const MIDNIGHT_HELLSPAWN: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const LU_ZISHEN_FLOWERY_MONK: UnitCard = makeCard({
+    artistName: 'Artie_Navarre',
+    artistUrl: 'https://pixabay.com/users/artie_navarre-66276/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/sorcerer-magician-d-and-d-7832390/',
+    name: 'Lu Zishen, Flowery Monk',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/05/23/46/sorcerer-7832390_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.OPPOSING_UNIT,
+            strength: 2,
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 2,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
 const INFERNO_SORCEROR: UnitCard = makeCard({
     name: 'Inferno Sorceror',
     imgSrc: 'https://images.unsplash.com/photo-1476611550464-4b94f060e1c6',
@@ -378,5 +409,6 @@ export const FIRE_MAGES = {
     FIRE_STARTER,
     MIDNIGHT_HELLSPAWN,
     FLAME_PRESERVER,
+    LU_ZISHEN_FLOWERY_MONK,
     INFERNO_SORCEROR,
 };
