@@ -721,6 +721,27 @@ const PRAY_TO_ORION = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const CATS_OUT_OF_THE_BAG = makeCard({
+    artistName: 'Arthur Rackham',
+    artistUrl: 'https://pixabay.com/users/prawny-162579/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/vintage-literature-book-illustration-1723773/',
+    name: "Cat's Out of the Bag",
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/10/08/14/14/vintage-1723773_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 3,
+        },
+        {
+            type: EffectType.TUCK,
+            target: TargetTypes.OWN_UNIT,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const STARRY_ILLUSION = makeCard({
     name: 'Starry Illusion',
     imgSrc: 'https://images.pexels.com/photos/3689634/pexels-photo-3689634.jpeg',
@@ -1616,6 +1637,7 @@ export const SpellCards = {
     ZEN_STANCE,
     BEAM_ME_UP,
     PRAY_TO_ORION,
+    CATS_OUT_OF_THE_BAG,
     STARRY_ILLUSION,
     SCOUR_THE_LIBRARY,
     HAT_AND_HALO,

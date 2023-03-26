@@ -130,6 +130,36 @@ const THE_ORACLE: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const BABA_YAGA: UnitCard = makeCard({
+    artistName: 'carolround',
+    artistUrl: 'https://pixabay.com/users/carolround-1867410/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/baba-yaga-witch-crone-slavic-magic-1151964/',
+    name: 'Baba Yaga',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/01/20/17/17/baba-yaga-1151964_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 2,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    damagePlayerEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.ALL_OPPONENTS,
+            strength: 1,
+        },
+    ],
+    enterEffects: [],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
 const GADGETEER: UnitCard = makeCard({
     artistName: 'Oleksandr Pidvalnyi',
     artistUrl: 'https://www.pexels.com/@freestockpro/',
@@ -182,6 +212,36 @@ const FAE_DRAGON: UnitCard = makeCard({
     isSoldier: false,
     passiveEffects: [],
     rarity: CardRarity.RARE,
+});
+
+const SHROOMKEEP_WIZARD: UnitCard = makeCard({
+    artistName: 'Boyan Minchev',
+    artistUrl: 'https://pixabay.com/users/boyans-296627/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/wizard-forest-mushroom-fantasy-hat-7795475/',
+    name: 'Shroomkeep Wizard',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/02/17/08/17/wizard-7795475_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    damagePlayerEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'POISON_MUSHROOM',
+            strength: 1,
+        },
+    ],
+    enterEffects: [],
+    totalHp: 4,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const CRACKLING_OCCULTIST: UnitCard = makeCard({
@@ -247,7 +307,9 @@ export const CRYSTAL_MAGES = {
     SPIRIT_TENDER,
     THE_ORACLE,
     MAGICIANS_APPRENTICE,
+    BABA_YAGA,
     GADGETEER,
+    SHROOMKEEP_WIZARD,
     CRACKLING_OCCULTIST,
     FAE_DRAGON,
     CYRUS_PURPLE_DRAGON,
