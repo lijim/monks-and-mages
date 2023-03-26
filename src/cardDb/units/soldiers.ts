@@ -346,7 +346,7 @@ const FROST_WALKER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const DRAGON_MIST_WARRIOR: UnitCard = makeCard({

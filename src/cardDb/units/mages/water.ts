@@ -143,7 +143,7 @@ const RAIN_CHANNELER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.COMMON,
 });
 
 const WAVING_FISHERMAN: UnitCard = makeCard({
@@ -170,7 +170,7 @@ const WAVING_FISHERMAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const MISBEGOTTEN_MISTWALKER = makeCard({
@@ -201,7 +201,7 @@ const MISBEGOTTEN_MISTWALKER = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const WATER_MAGE: UnitCard = makeCard({
@@ -358,7 +358,7 @@ const THUNDER_SCHEDULER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const MAELSTROM_SEEKER: UnitCard = makeCard({
