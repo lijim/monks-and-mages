@@ -995,7 +995,7 @@ const SUMMON_THE_CROWS = makeCard({
             summonType: Tokens.FALCON,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.COMMON,
 });
 
 // Monks (bamboo + iron)

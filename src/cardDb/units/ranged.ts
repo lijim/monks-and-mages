@@ -243,7 +243,7 @@ const FALCON_RIDER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const EXCELLENT_EQUESTRIAN: UnitCard = makeCard({

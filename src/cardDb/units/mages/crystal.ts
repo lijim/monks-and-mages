@@ -238,7 +238,7 @@ const CYRUS_PURPLE_DRAGON: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 export const CRYSTAL_MAGES = {
