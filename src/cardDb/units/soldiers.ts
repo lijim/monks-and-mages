@@ -295,13 +295,41 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
         },
     ],
     totalHp: 0,
-    attack: 0,
+    attack: 1,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
     rarity: CardRarity.COMMON,
+});
+
+const UNSTOPPABLE_BERSERKER: UnitCard = makeCard({
+    artistName: 'Gioele Fazzeri',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/viking-warrior-vikings-sword-5164299/',
+    name: 'Unstoppable Berserker',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/05/12/18/14/viking-5164299_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_ATTACK_FOR_TURN,
+            strength: 2,
+        },
+    ],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 2,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const VILLAGE_DEFENDER: UnitCard = makeCard({
@@ -346,7 +374,7 @@ const FROST_WALKER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.COMMON,
 });
 
 const DRAGON_MIST_WARRIOR: UnitCard = makeCard({
@@ -452,6 +480,39 @@ const RUSTED_GUARDIAN: UnitCard = makeCard({
     isSoldier: true,
     passiveEffects: [],
     rarity: CardRarity.COMMON,
+});
+
+const DRAGON_SLAYER: UnitCard = makeCard({
+    artistName: 'Michael Seibt',
+    artistUrl: 'https://pixabay.com/users/fantasticpicture-1560299/',
+    originalImagePage:
+        'https://pixabay.com/photos/people-a-adult-waters-smoke-3075152/',
+    name: 'Dragon Slayer',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/01/11/00/36/human-3075152_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_ATTACK_FOR_TURN,
+            strength: 2,
+        },
+        {
+            type: EffectType.BUFF_MAGIC,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+            strength: -2,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const MAGI_RIDER: UnitCard = makeCard({
@@ -587,6 +648,38 @@ const ARMORED_CAVALRY: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const SUNRISE_RIDER: UnitCard = makeCard({
+    artistName: 'ha11ok',
+    artistUrl: 'https://pixabay.com/users/ha11ok-1785462/',
+    originalImagePage:
+        'https://pixabay.com/photos/knight-warrior-artillery-horse-2565957/',
+    name: 'Sunrise Rider',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/08/01/14/42/knight-2565957_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_ATTACK_FOR_CYCLE,
+            strength: 2,
+        },
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const RAVEN_KNIGHT: UnitCard = makeCard({
     name: 'Raven Knight',
     // https://pixabay.com/photos/knight-middle-ages-armor-crusader-3002031/
@@ -678,8 +771,10 @@ export const SOLDIERS = {
     VILLAGE_DEFENDER,
     FROST_WALKER,
     CELESTIAL_MERCENARY,
+    UNSTOPPABLE_BERSERKER,
     // 4
     RUSTED_GUARDIAN,
+    DRAGON_SLAYER,
     MAGI_RIDER,
     WARRIOR_OF_THE_LAKE,
     KNIGHT_TEMPLAR,
@@ -687,6 +782,7 @@ export const SOLDIERS = {
     // 5
     ARMORED_CAVALRY,
     RAVEN_KNIGHT,
+    SUNRISE_RIDER,
     // 6
     TEMPLE_GUARDIAN,
     // 7

@@ -37,7 +37,7 @@ describe('Unit Grid Item', () => {
     it('displays rules text (ETBs)', () => {
         render(<UnitGridItem card={UnitCards.WATER_MAGE} />);
         expect(
-            screen.getByText(`Return any unit back to its owner's hand`)
+            screen.getByText(`Return any unit back to its controller's hand`)
         ).toBeInTheDocument();
         expect(
             screen.getByText('Upon entering the board:')
@@ -66,11 +66,18 @@ describe('Unit Grid Item', () => {
         ).toBeInTheDocument();
     });
 
-    it('displays "2 attacks per turn', () => {
+    it('displays "2 attacks per turn"', () => {
         const card = makeCard(UnitCards.SQUIRE);
         card.numAttacks = 2;
         render(<UnitGridItem card={card} />);
         expect(screen.getByText('2 attacks per turn')).toBeInTheDocument();
+    });
+
+    it('displays "0 attacks per turn', () => {
+        const card = makeCard(UnitCards.SQUIRE);
+        card.numAttacks = 0;
+        render(<UnitGridItem card={card} />);
+        expect(screen.getByText('Cannot attack')).toBeInTheDocument();
     });
 
     it('displays sleepiness', () => {
@@ -91,10 +98,17 @@ describe('Unit Grid Item', () => {
     it('renders attack and hp buffs', () => {
         const unitCard = makeCard(UnitCards.SQUIRE);
         unitCard.attackBuff = 5;
+        unitCard.oneTurnAttackBuff = 2;
+        unitCard.oneCycleAttackBuff = 1;
         unitCard.hpBuff = 6;
         render(<UnitGridItem card={unitCard} isOnBoard />);
         expect(screen.getByTestId('attack')).toHaveTextContent(
-            `${unitCard.attackBuff + unitCard.attack} ⚔️`
+            `${
+                unitCard.attackBuff +
+                unitCard.attack +
+                unitCard.oneTurnAttackBuff +
+                unitCard.oneCycleAttackBuff
+            } ⚔️`
         );
         const newHpTotal = unitCard.hpBuff + unitCard.hp;
         expect(screen.getByTestId('hp')).toHaveTextContent(

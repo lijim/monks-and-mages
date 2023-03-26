@@ -22,7 +22,7 @@ describe('transformEffectstoRulesText', () => {
                 target: TargetTypes.UNIT,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Return any unit back to its owner's hand`
+                `Return any unit back to its controller's hand`
             );
         });
 
@@ -32,7 +32,7 @@ describe('transformEffectstoRulesText', () => {
                 target: TargetTypes.OPPOSING_UNIT,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Return any opposing unit back to its owner's hand`
+                `Return any opposing unit back to its controller's hand`
             );
         });
 
@@ -42,7 +42,7 @@ describe('transformEffectstoRulesText', () => {
                 target: TargetTypes.ALL_OPPOSING_UNITS,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Return all opposing units back to their owners' hand`
+                `Return all opposing units back to their controllers' hand`
             );
         });
     });
@@ -67,6 +67,54 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Decrease attack of any unit by 5`
+            );
+        });
+    });
+
+    describe('Buff attack / nerf attack (temp, for turn cycle)', () => {
+        it('displays rules for buffing a unit', () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_ATTACK_FOR_CYCLE,
+                strength: 5,
+                target: TargetTypes.UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase attack of any unit by 5 until its controller's next turn`
+            );
+        });
+
+        it("displays rules for nerfing a unit's attack", () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_ATTACK_FOR_CYCLE,
+                strength: -5,
+                target: TargetTypes.UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease attack of any unit by 5 until its controller's next turn`
+            );
+        });
+    });
+
+    describe('Buff attack / nerf attack (temp, for turn)', () => {
+        it('displays rules for buffing a unit', () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_ATTACK_FOR_TURN,
+                strength: 5,
+                target: TargetTypes.UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase attack of any unit by 5 until end of turn`
+            );
+        });
+
+        it("displays rules for nerfing a unit's attack", () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_ATTACK_FOR_TURN,
+                strength: -5,
+                target: TargetTypes.UNIT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease attack of any unit by 5 until end of turn`
             );
         });
     });
@@ -541,7 +589,7 @@ describe('transformEffectstoRulesText', () => {
                 type: EffectType.TUCK,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Put any opposing unit on top of its current player's library`
+                `Put any opposing unit on top of its controller's library`
             );
         });
     });

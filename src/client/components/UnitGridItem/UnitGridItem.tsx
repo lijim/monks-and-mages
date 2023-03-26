@@ -55,6 +55,8 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         name,
         numAttacks,
         numAttacksLeft,
+        oneCycleAttackBuff,
+        oneTurnAttackBuff,
         originalCost,
         passiveEffects,
         totalHp,
@@ -105,6 +107,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 {passiveEffects.map((effect) => (
                     <div key={effect}>{effect}</div>
                 ))}{' '}
+                {numAttacks === 0 && <div>Cannot attack</div>}
                 {numAttacks > 1 && <div>{numAttacks} attacks per turn</div>}
                 {enterEffects.length > 0 && <b>Upon entering the board:</b>}
                 {enterEffects.map((effect, index) => (
@@ -124,8 +127,17 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 )}
             </RulesTextArea>
             <AttackHPFooter>
-                <AttackCell data-testid="attack" buffAmount={attackBuff}>
-                    {attack + attackBuff} ⚔️
+                <AttackCell
+                    data-testid="attack"
+                    buffAmount={
+                        attackBuff + oneCycleAttackBuff + oneTurnAttackBuff
+                    }
+                >
+                    {attack +
+                        attackBuff +
+                        oneCycleAttackBuff +
+                        oneTurnAttackBuff}{' '}
+                    ⚔️
                 </AttackCell>
                 <SleepyCell>
                     {isOnBoard && numAttacksLeft === 0 && '💤'}

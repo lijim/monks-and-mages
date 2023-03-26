@@ -77,19 +77,31 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         forText = ` for ${targetName}`;
     }
 
+    const controllerPossessiveText = isTargetTypePlural(target)
+        ? "their controllers'"
+        : "its controller's";
+
     switch (effect.type) {
         case EffectType.BLOOM: {
             return `You may play ${strength} additional resource${pluralizationEffectStrength} this turn`;
         }
         case EffectType.BOUNCE: {
-            return `Return ${targetName} back to ${
-                isTargetTypePlural(target) ? "their owners'" : "its owner's"
-            } hand`;
+            return `Return ${targetName} back to ${controllerPossessiveText} hand`;
         }
         case EffectType.BUFF_ATTACK: {
             if (strength < 0)
                 return `Decrease attack of ${targetName} by ${-strength}`;
             return `Increase attack of ${targetName} by ${strength}`;
+        }
+        case EffectType.BUFF_ATTACK_FOR_CYCLE: {
+            if (strength < 0)
+                return `Decrease attack of ${targetName} by ${-strength} until ${controllerPossessiveText} next turn`;
+            return `Increase attack of ${targetName} by ${strength} until ${controllerPossessiveText} next turn`;
+        }
+        case EffectType.BUFF_ATTACK_FOR_TURN: {
+            if (strength < 0)
+                return `Decrease attack of ${targetName} by ${-strength} until end of turn`;
+            return `Increase attack of ${targetName} by ${strength} until end of turn`;
         }
         case EffectType.BUFF_HAND_ATTACK: {
             return `Increase attack of non-magical units in your hand by ${strength}`;
@@ -233,9 +245,7 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             } [${cardName}] card${pluralizationEffectStrength} in hand into [${secondaryCardName}]${forText}`;
         }
         case EffectType.TUCK: {
-            return `Put ${targetName} on top of ${
-                isTargetTypePlural(target) ? 'their' : 'its'
-            } current player's library`;
+            return `Put ${targetName} on top of ${controllerPossessiveText} library`;
         }
         default: {
             return '';

@@ -90,6 +90,8 @@ export const resetUnitCard = (unitCard: UnitCard) => {
     unitCard.hp = unitCard.totalHp;
     unitCard.hpBuff = 0;
     unitCard.attackBuff = 0;
+    unitCard.oneCycleAttackBuff = 0;
+    unitCard.oneTurnAttackBuff = 0;
     unitCard.numAttacksLeft = hasQuick ? unitCard.numAttacks : 0;
     unitCard.cost = cloneDeep(unitCard.originalCost);
 };
@@ -157,6 +159,9 @@ export function passTurn(board: Board): Board {
     let { activePlayer } = getPlayers(board);
     const { players } = getPlayers(board);
     activePlayer.resourcePool = {};
+    activePlayer.units.forEach((unit) => {
+        unit.oneTurnAttackBuff = 0;
+    });
     // tries to loop through all players, in case one draws out of their deck
     // and loses the game
     for (let i = 0; i < players.length; i += 1) {
@@ -177,6 +182,7 @@ export function passTurn(board: Board): Board {
         // give each unit it's starting number of attacks
         nextPlayer.units.forEach((unit) => {
             unit.numAttacksLeft = unit.numAttacks;
+            unit.oneCycleAttackBuff = 0;
         });
 
         // If you draw out of the deck, you lose the game
@@ -195,6 +201,15 @@ export function passTurn(board: Board): Board {
 
     return board;
 }
+
+const getTotalAttack = (card: UnitCard) => {
+    return (
+        card.attack +
+        card.attackBuff +
+        card.oneCycleAttackBuff +
+        card.oneTurnAttackBuff
+    );
+};
 
 type ApplyGameActionParams = {
     addChatMessage?: (chatMessage: string) => void;
@@ -377,10 +392,7 @@ export const applyGameAction = ({
             if (!attacker?.numAttacksLeft) {
                 return clonedBoard;
             }
-            const attackTotal = Math.max(
-                0,
-                attacker.attack + attacker.attackBuff
-            );
+            const attackTotal = Math.max(0, getTotalAttack(attacker));
 
             let attackEmoji = '';
             if (attacker.isMagical) attackEmoji = '🪄';
@@ -406,12 +418,12 @@ export const applyGameAction = ({
                     defender.passiveEffects.some(
                         (passiveEffect) =>
                             passiveEffect === PassiveEffect.POISONED
-                    ) && defender.attack + defender.attackBuff > 0;
+                    ) && getTotalAttack(defender) > 0;
                 const attackerHasPoisonous =
                     attacker.passiveEffects.some(
                         (passiveEffect) =>
                             passiveEffect === PassiveEffect.POISONED
-                    ) && attacker.attack + attacker.attackBuff > 0;
+                    ) && getTotalAttack(attacker) > 0;
 
                 // Soldiers prevent attacks vs. non-soldiers (unless magical)
                 const defendingPlayerHasSoldier = defendingPlayer.units.some(
@@ -428,13 +440,9 @@ export const applyGameAction = ({
                 attacker.numAttacksLeft -= 1;
 
                 const { hp } = attacker;
-                const {
-                    attack: defenderAttack,
-                    attackBuff: defenderAttackBuff,
-                    hp: defenderHp,
-                } = defender;
+                const { hp: defenderHp } = defender;
                 const defenderAttackTotal = Math.max(
-                    defenderAttack + defenderAttackBuff,
+                    getTotalAttack(defender),
                     0
                 );
                 if (
