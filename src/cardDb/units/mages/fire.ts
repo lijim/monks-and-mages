@@ -350,7 +350,7 @@ const LU_ZISHEN_FLOWERY_MONK: UnitCard = makeCard({
         },
     ],
     totalHp: 3,
-    attack: 3,
+    attack: 2,
     numAttacks: 2,
     isRanged: true,
     isMagical: true,

@@ -34,7 +34,7 @@ const CURIOUS_RESEARCHER: UnitCard = makeCard({
     name: 'Curious Researcher',
     imgSrc: 'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg',
     cost: {
-        [Resource.GENERIC]: 2,
+        [Resource.GENERIC]: 3,
         [Resource.FIRE]: 1,
     },
     description: '',
