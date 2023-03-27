@@ -1053,7 +1053,7 @@ const RAIN_OF_ARROWS = makeCard({
 const TEAM_GATHERING = makeCard({
     name: 'Team Gathering',
     imgSrc: 'https://images.pexels.com/photos/2152958/pexels-photo-2152958.jpeg',
-    cost: { [Resource.BAMBOO]: 2, [Resource.GENERIC]: 3 },
+    cost: { [Resource.BAMBOO]: 2, [Resource.GENERIC]: 2 },
     effects: [
         {
             type: EffectType.DRAW_PER_UNIT,

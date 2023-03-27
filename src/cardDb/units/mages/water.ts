@@ -520,7 +520,12 @@ const PENELOPE_THE_TORTOISE: UnitCard = makeCard({
     enterEffects: [
         {
             type: EffectType.DRAW,
-            strength: 3,
+            strength: 2,
+        },
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 4,
         },
         {
             type: EffectType.EXTRACT_CARD,

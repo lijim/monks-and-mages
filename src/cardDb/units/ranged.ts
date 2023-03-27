@@ -270,7 +270,7 @@ const MERRY_RALLIER: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/9935713/pexels-photo-9935713.jpeg',
     cost: {
         [Resource.BAMBOO]: 2,
-        [Resource.GENERIC]: 4,
+        [Resource.GENERIC]: 3,
     },
     description: '',
     enterEffects: [
