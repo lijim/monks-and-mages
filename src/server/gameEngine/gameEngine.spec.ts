@@ -106,6 +106,11 @@ describe('Game Action', () => {
             });
             newBoardState = applyGameAction({
                 board: newBoardState,
+                gameAction: { type: GameActionTypes.REJECT_MULLIGAN },
+                playerName: 'Tommy',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
                 gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
                 playerName: 'Tommy',
             });
@@ -114,7 +119,7 @@ describe('Game Action', () => {
                 newBoardState.players.filter((player) => player.readyToStart)
             ).toHaveLength(3);
             expect(newBoardState.players[1].hand).toHaveLength(
-                PlayerConstants.STARTING_HAND_SIZE - 1 // Tommy mulligans 2 away, but draws 1
+                PlayerConstants.STARTING_HAND_SIZE - 1 // Tommy mulligans 3 away, but draws 1 + has a landmark in his hand
             );
             expect(newBoardState.gameState).toEqual(GameState.PLAYING);
         });
@@ -445,7 +450,10 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
             expect(newBoardState.players[0].effectQueue).toEqual(
-                unitCard.enterEffects.reverse()
+                unitCard.enterEffects.reverse().map((effect) => ({
+                    ...effect,
+                    sourceId: unitCard.id,
+                }))
             );
         });
 
@@ -864,7 +872,7 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });
 
-        it('attacks the opposing player', () => {
+        it('causes an on damage effect on attacking opposing player', () => {
             const attacker = makeCard(UnitCards.WATER_GUARDIAN);
             attacker.damagePlayerEffects = [
                 { type: EffectType.BLOOM, resourceType: Resource.WATER },
@@ -880,9 +888,10 @@ describe('Game Action', () => {
                 },
                 playerName: 'Timmy',
             });
-            expect(newBoardState.players[0].effectQueue).toEqual([
-                { type: EffectType.BLOOM, resourceType: Resource.WATER },
-            ]);
+            expect(newBoardState.players[0].effectQueue[0]).toMatchObject({
+                type: EffectType.BLOOM,
+                resourceType: Resource.WATER,
+            });
         });
 
         it('deals zero damage if buffed below 0 attack', () => {

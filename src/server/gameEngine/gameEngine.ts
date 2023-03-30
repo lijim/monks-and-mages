@@ -9,7 +9,8 @@ import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
 import { PlayerConstants } from '@/constants/gameConstants';
 import { getDeckListFromSkeleton } from '@/transformers';
-import { makeNewPlayer } from '@/factories';
+import { makeCard, makeNewPlayer } from '@/factories';
+import { SpellCards } from '@/cardDb/spells';
 
 const getPlayers = (board: Board) => {
     const { players } = board;
@@ -263,8 +264,28 @@ export const applyGameAction = ({
                 // everyone has readied up, start the game
                 clonedBoard.gameState = GameState.PLAYING;
                 clonedBoard.players.forEach((player, index) => {
+                    // TODO: account for when players drop off mid-mulligan
                     player.isActivePlayer =
                         index === clonedBoard.startingPlayerIndex;
+                    if (!player.isActivePlayer) {
+                        const positionAfterStartingPlayer =
+                            (index - clonedBoard.startingPlayerIndex) %
+                            clonedBoard.players.length;
+                        if (
+                            clonedBoard.players.length === 2 ||
+                            positionAfterStartingPlayer > 1
+                        ) {
+                            player.hand.push(makeCard(SpellCards.RICHES));
+                            addSystemChat(
+                                `${player.name} get a [[Riches]] for not going first`
+                            );
+                        } else if (positionAfterStartingPlayer === 1) {
+                            player.hand.push(makeCard(SpellCards.LANDMARK));
+                            addSystemChat(
+                                `${player.name} get a [[Landmark]] for not going first`
+                            );
+                        }
+                    }
                 });
             } else {
                 activePlayer.isActivePlayer = false;
@@ -317,7 +338,12 @@ export const applyGameAction = ({
             resources.push(resourceCard);
             if (resourceCard.enterEffects) {
                 activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                    cloneDeep(resourceCard.enterEffects).reverse()
+                    cloneDeep(resourceCard.enterEffects)
+                        .reverse()
+                        .map((effect) => ({
+                            ...effect,
+                            sourceId: resourceCard.id,
+                        }))
                 );
             }
             if (resourceCard.comesInTapped) resourceCard.isUsed = true;
@@ -380,7 +406,12 @@ export const applyGameAction = ({
                 }
                 activePlayer.units.push(matchingCard);
                 activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                    cloneDeep(matchingCard.enterEffects).reverse()
+                    cloneDeep(matchingCard.enterEffects)
+                        .reverse()
+                        .map((effect) => ({
+                            ...effect,
+                            sourceId: cardId,
+                        }))
                 );
                 activePlayer.hand.splice(matchingCardIndex, 1);
             }
@@ -485,7 +516,12 @@ export const applyGameAction = ({
                 defendingPlayer.health -= attackTotal;
                 if (attackTotal && attacker.damagePlayerEffects?.length > 0) {
                     activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                        cloneDeep(attacker.damagePlayerEffects).reverse()
+                        cloneDeep(attacker.damagePlayerEffects)
+                            .reverse()
+                            .map((effect) => ({
+                                ...effect,
+                                sourceId: cardId,
+                            }))
                     );
                 }
                 if (defendingPlayer.health <= 0) {

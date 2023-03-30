@@ -41,12 +41,13 @@ export interface ResourceCard extends CardBase {
  */
 export type Effect = {
     cardName?: string;
+    passiveEffect?: PassiveEffect;
     resourceType?: Resource;
     secondaryCardName?: string;
     strength?: number;
     summonType?: UnitCard;
     target?: TargetTypes;
-    passiveEffect?: PassiveEffect;
+    sourceId?: string;
     type: EffectType;
 };
 
@@ -89,8 +90,8 @@ export interface UnitCard extends UnitBase {
     hp: number; // current hp
     hpBuff: number;
     id?: string;
-    isSelected: boolean;
-    isFresh: boolean; // true if unit card has entered this past turn
+    isFresh: boolean;
+    isSelected: boolean; // true if unit card has entered this past turn
     numAttacksLeft: number;
     oneCycleAttackBuff: number;
     // number of attack left this turn - starts at 0
