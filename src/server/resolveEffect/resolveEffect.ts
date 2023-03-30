@@ -402,8 +402,8 @@ export const resolveEffect = (
                     activePlayer.effectQueue = activePlayer.effectQueue.concat(
                         cloneDeep(unitCard.enterEffects)
                             .reverse()
-                            .map((effect) => ({
-                                ...effect,
+                            .map((enterEffect) => ({
+                                ...enterEffect,
                                 sourceId: unitCard.id,
                             }))
                     );
