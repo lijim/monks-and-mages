@@ -47,6 +47,7 @@ export type Effect = {
     strength?: number;
     summonType?: UnitCard;
     target?: TargetTypes;
+    sourceId?: string;
     type: EffectType;
 };
 

@@ -450,7 +450,10 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
             expect(newBoardState.players[0].effectQueue).toEqual(
-                unitCard.enterEffects.reverse()
+                unitCard.enterEffects.reverse().map((effect) => ({
+                    ...effect,
+                    sourceId: unitCard.id,
+                }))
             );
         });
 
@@ -869,7 +872,7 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });
 
-        it('attacks the opposing player', () => {
+        it('causes an on damage effect on attacking opposing player', () => {
             const attacker = makeCard(UnitCards.WATER_GUARDIAN);
             attacker.damagePlayerEffects = [
                 { type: EffectType.BLOOM, resourceType: Resource.WATER },
@@ -885,9 +888,10 @@ describe('Game Action', () => {
                 },
                 playerName: 'Timmy',
             });
-            expect(newBoardState.players[0].effectQueue).toEqual([
-                { type: EffectType.BLOOM, resourceType: Resource.WATER },
-            ]);
+            expect(newBoardState.players[0].effectQueue[0]).toMatchObject({
+                type: EffectType.BLOOM,
+                resourceType: Resource.WATER,
+            });
         });
 
         it('deals zero damage if buffed below 0 attack', () => {

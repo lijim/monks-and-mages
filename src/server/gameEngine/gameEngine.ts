@@ -338,7 +338,12 @@ export const applyGameAction = ({
             resources.push(resourceCard);
             if (resourceCard.enterEffects) {
                 activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                    cloneDeep(resourceCard.enterEffects).reverse()
+                    cloneDeep(resourceCard.enterEffects)
+                        .reverse()
+                        .map((effect) => ({
+                            ...effect,
+                            sourceId: resourceCard.id,
+                        }))
                 );
             }
             if (resourceCard.comesInTapped) resourceCard.isUsed = true;
@@ -401,7 +406,12 @@ export const applyGameAction = ({
                 }
                 activePlayer.units.push(matchingCard);
                 activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                    cloneDeep(matchingCard.enterEffects).reverse()
+                    cloneDeep(matchingCard.enterEffects)
+                        .reverse()
+                        .map((effect) => ({
+                            ...effect,
+                            sourceId: cardId,
+                        }))
                 );
                 activePlayer.hand.splice(matchingCardIndex, 1);
             }
@@ -506,7 +516,12 @@ export const applyGameAction = ({
                 defendingPlayer.health -= attackTotal;
                 if (attackTotal && attacker.damagePlayerEffects?.length > 0) {
                     activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                        cloneDeep(attacker.damagePlayerEffects).reverse()
+                        cloneDeep(attacker.damagePlayerEffects)
+                            .reverse()
+                            .map((effect) => ({
+                                ...effect,
+                                sourceId: cardId,
+                            }))
                     );
                 }
                 if (defendingPlayer.health <= 0) {

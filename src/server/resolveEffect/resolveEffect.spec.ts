@@ -954,7 +954,7 @@ describe('resolve effect', () => {
                 },
                 'Timmy'
             );
-            expect(newBoard.players[0].effectQueue).toEqual(
+            expect(newBoard.players[0].effectQueue).toMatchObject(
                 unitCard.enterEffects.reverse()
             );
         });

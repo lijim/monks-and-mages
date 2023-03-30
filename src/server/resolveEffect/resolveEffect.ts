@@ -400,7 +400,12 @@ export const resolveEffect = (
 
                 if (unitCard.enterEffects) {
                     activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                        cloneDeep(unitCard.enterEffects).reverse()
+                        cloneDeep(unitCard.enterEffects)
+                            .reverse()
+                            .map((effect) => ({
+                                ...effect,
+                                sourceId: unitCard.id,
+                            }))
                     );
                 }
             });
