@@ -80,27 +80,30 @@ export const WebSocketProvider = ({ children }: Props) => {
     useEffect(() => {
         const authToken = async () => {
             if (!user) return;
+            let accessToken = '';
             if (process.env.ENVIRONMENT !== 'production') {
-                const accessToken = await getAccessTokenWithPopup({
+                accessToken = await getAccessTokenWithPopup({
                     audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
                     scope: 'read:users_app_metadata',
                 });
-                cookie.set('accessToken', accessToken);
-                socket.auth = { ...socket.auth, username: user.name };
-                socket.connect();
-                socket.emit('login', `Bearer ${accessToken}`);
-                setSocket(socket);
             } else {
-                const accessToken = await getAccessTokenSilently({
+                accessToken = await getAccessTokenSilently({
                     audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
                     scope: 'read:users_app_metadata',
                 });
-                cookie.set('accessToken', accessToken);
-                socket.auth = { ...socket.auth, username: user.name };
-                socket.connect();
-                socket.emit('login', `Bearer ${accessToken}`);
-                setSocket(socket);
             }
+
+            socket.on('session', ({ sessionID, userID, username }) => {
+                dispatch(chooseNameReducer({ name: username }));
+                socket.auth = { ...socket.auth, sessionID };
+                localStorage.setItem('sessionID', sessionID);
+                socket.userID = userID;
+            });
+            cookie.set('accessToken', accessToken);
+            socket.auth = { ...socket.auth, username: user.name };
+            socket.connect();
+            socket.emit('login', `Bearer ${accessToken}`);
+            setSocket(socket);
         };
         authToken();
     }, [user]);
@@ -116,13 +119,6 @@ export const WebSocketProvider = ({ children }: Props) => {
             newSocket.auth = { sessionID: sessionIDFromCache };
             newSocket.connect();
         }
-
-        newSocket.on('session', ({ sessionID, userID, username }) => {
-            dispatch(chooseNameReducer({ name: username }));
-            newSocket.auth = { ...newSocket.auth, sessionID };
-            localStorage.setItem('sessionID', sessionID);
-            newSocket.userID = userID;
-        });
 
         // Server-to-client events
         newSocket.on('confirmCustomDeck', (skeleton: Skeleton) => {
