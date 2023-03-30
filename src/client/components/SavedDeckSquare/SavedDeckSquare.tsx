@@ -81,7 +81,7 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
         unknown,
         unknown,
         { deckId: string; skeleton: Skeleton }
-    >(`/saved_decks`, swrPatch);
+    >(`/saved_decks`, swrPatch());
 
     const isHighlighted = currentSavedDeckName === name;
 

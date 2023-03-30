@@ -29,11 +29,11 @@ export const useLoggedInPlayerInfo = () => {
 
     const { data: levelsData } = useSWR<Level[]>(
         user ? '/api/levels' : null,
-        fetcher
+        fetcher()
     );
     const { data, mutate } = useSWR<UserPlayer>(
         user ? '/api/users/self' : null,
-        fetcher
+        fetcher()
     );
 
     if (!data || !levelsData) {

@@ -6,12 +6,13 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
 import cookie from 'cookiejs';
 import { RootState } from '@/client/redux/store';
-import { SecondaryColorButton } from '../Button';
+import { PrimaryColorButton, SecondaryColorButton } from '../Button';
 import { LogoutButton } from '../LogoutButton';
 import { getCleanName } from '@/client/redux/selectors';
 import { useLoggedInPlayerInfo } from '@/client/hooks';
 import { CardImage } from '../CardFrame';
 import { Colors } from '@/constants/colors';
+import { GUEST_NAME_PREFIX } from '@/constants/lobbyConstants';
 
 // TODO: rename IntroScreen to LoginBar: https://github.com/lijim/monks-and-mages/issues/28
 
@@ -38,7 +39,7 @@ interface Props {
  */
 export const TopNavBar = ({ children }: Props) => {
     const guestName = useSelector<RootState, string>(getCleanName);
-    const { user } = useAuth0();
+    const { user, loginWithRedirect } = useAuth0();
     const loggedInPlayerInfo = useLoggedInPlayerInfo();
 
     useEffect(() => {
@@ -148,6 +149,11 @@ export const TopNavBar = ({ children }: Props) => {
                 }}
             >
                 👤 <b>{guestName}</b>{' '}
+                {guestName && !guestName.startsWith(GUEST_NAME_PREFIX) && (
+                    <PrimaryColorButton onClick={() => loginWithRedirect()}>
+                        Log In
+                    </PrimaryColorButton>
+                )}
             </div>
             <div className="topNavBar-center">{children}</div>
             <div style={{ display: 'flex', justifyContent: 'end', gap: '4px' }}>

@@ -53,7 +53,7 @@ export const SelfProfilePage = (): JSX.Element => {
         unknown,
         unknown,
         ChooseAvatarParams
-    >(`/users/self/choose_avatar`, swrPatch);
+    >(`/users/self/choose_avatar`, swrPatch());
 
     const onClickAvatar = (avatar: string) => async () => {
         await trigger({

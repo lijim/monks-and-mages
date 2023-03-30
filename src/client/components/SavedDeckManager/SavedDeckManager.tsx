@@ -45,7 +45,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
     const username = useSelector<RootState, string | undefined>(getCleanName);
     const { data: savedDecks } = useSWR<SavedDeck[]>(
         `/api/saved_decks/${username}`,
-        fetcher
+        fetcher()
     );
 
     const createDeck = async () => {
