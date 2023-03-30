@@ -106,6 +106,11 @@ describe('Game Action', () => {
             });
             newBoardState = applyGameAction({
                 board: newBoardState,
+                gameAction: { type: GameActionTypes.REJECT_MULLIGAN },
+                playerName: 'Tommy',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
                 gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
                 playerName: 'Tommy',
             });
@@ -114,7 +119,7 @@ describe('Game Action', () => {
                 newBoardState.players.filter((player) => player.readyToStart)
             ).toHaveLength(3);
             expect(newBoardState.players[1].hand).toHaveLength(
-                PlayerConstants.STARTING_HAND_SIZE - 1 // Tommy mulligans 2 away, but draws 1
+                PlayerConstants.STARTING_HAND_SIZE - 1 // Tommy mulligans 3 away, but draws 1 + has a landmark in his hand
             );
             expect(newBoardState.gameState).toEqual(GameState.PLAYING);
         });
