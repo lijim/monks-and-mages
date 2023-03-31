@@ -31,9 +31,14 @@ const cardMatchesText = (card: Card, text: string): boolean => {
 
 const getResourcesForCard = (card: Card): Resource[] => {
     if (card.cardType === CardType.RESOURCE) {
-        if (!card.isAdvanced || !card.secondaryResourceType)
-            return [card.resourceType];
-        return [card.resourceType, card.secondaryResourceType];
+        if (!card.isAdvanced || !card.secondaryResourceType) {
+            return [card.resourceType].filter(
+                (resource) => resource !== Resource.GENERIC
+            );
+        }
+        return [card.resourceType, card.secondaryResourceType].filter(
+            (resource) => resource !== Resource.GENERIC
+        );
     }
     const toReturn: Resource[] = [];
     ORDERED_RESOURCES.forEach((r) => {
@@ -43,7 +48,7 @@ const getResourcesForCard = (card: Card): Resource[] => {
     return toReturn;
 };
 
-const cardMatchesResources = (
+export const cardMatchesResources = (
     card: Card,
     resourcesToMatch: Resource[],
     resourceMatchStrategy: MatchStrategy
@@ -58,21 +63,11 @@ const cardMatchesResources = (
                 resources.slice().sort()
             );
         }
-        // all filtered resources match
-        case MatchStrategy.STRICT: {
-            let toReturn = true;
-            resourcesToMatch.forEach((r) => {
-                if (resources.indexOf(r) === -1) toReturn = false;
-            });
-            return toReturn;
-        }
         // At least one color matches on the card
         case MatchStrategy.LOOSE: {
-            let toReturn = false;
-            resourcesToMatch.forEach((r) => {
-                if (resources.indexOf(r) > -1) toReturn = true;
-            });
-            return toReturn;
+            return resources.every((resource) =>
+                resourcesToMatch.includes(resource)
+            );
         }
         default: {
             return true;
@@ -105,7 +100,6 @@ const cardMatchesRarities = (card: Card, rarities: CardRarity[]): boolean => {
 };
 
 /**
- * Note: unit tests omitted temporarily in favor of an integration test on DeckBuilder
  * @param cards - cards to filter
  * @param filters - see @/types/Filters
  * @returns - cards that match the criteria

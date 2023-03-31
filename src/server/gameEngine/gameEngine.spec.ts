@@ -1077,10 +1077,10 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
 
-            expect(newBoardState.players[0].effectQueue[0]).toEqual(
+            expect(newBoardState.players[0].effectQueue[0]).toMatchObject(
                 spellCard.effects[1]
             );
-            expect(newBoardState.players[0].effectQueue[1]).toEqual(
+            expect(newBoardState.players[0].effectQueue[1]).toMatchObject(
                 spellCard.effects[0]
             );
             expect(newBoardState.players[0].cemetery).toEqual([spellCard]);

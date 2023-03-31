@@ -96,7 +96,6 @@ const ResourceFilter: React.FC = () => {
                 data-testid={`Filters-ResourcesMatchStrategy`}
             >
                 <option>{MatchStrategy.EXACT}</option>
-                <option>{MatchStrategy.STRICT}</option>
                 <option>{MatchStrategy.LOOSE}</option>
             </select>
         </div>
