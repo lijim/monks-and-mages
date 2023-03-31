@@ -130,6 +130,7 @@ export const TypesAndRarityLine = ({
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                fontSize: '12px',
             }}
         >
             <span>{children}</span>
