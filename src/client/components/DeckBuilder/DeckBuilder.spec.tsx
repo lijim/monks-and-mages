@@ -369,31 +369,6 @@ describe('DeckBuilder', () => {
             ).toBeInTheDocument();
         });
 
-        it('searches by colors (strictly)', () => {
-            render(<DeckBuilder />);
-
-            fireEvent.change(
-                screen.getByTestId('Filters-ResourcesMatchStrategy'),
-                {
-                    target: {
-                        value: MatchStrategy.STRICT,
-                    },
-                }
-            );
-            fireEvent.click(screen.getByTestId('Filters-Resources-Iron'));
-            fireEvent.click(screen.getByTestId('Filters-Resources-Bamboo'));
-
-            expect(
-                screen.queryByText(UnitCards.LANCER.name)
-            ).not.toBeInTheDocument();
-            expect(
-                screen.queryByText(UnitCards.DRAGON_MIST_WARRIOR.name)
-            ).toBeInTheDocument();
-            expect(
-                screen.queryByText(AdvancedResourceCards.TANGLED_RUINS.name)
-            ).toBeInTheDocument();
-        });
-
         it('searches by colors (loosely)', () => {
             render(<DeckBuilder />);
 

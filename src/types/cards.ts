@@ -44,10 +44,10 @@ export type Effect = {
     passiveEffect?: PassiveEffect;
     resourceType?: Resource;
     secondaryCardName?: string;
+    sourceId?: string;
     strength?: number;
     summonType?: UnitCard;
     target?: TargetTypes;
-    sourceId?: string;
     type: EffectType;
 };
 

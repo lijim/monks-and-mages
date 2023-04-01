@@ -557,7 +557,12 @@ export const applyGameAction = ({
                 matchingCard
             ).resourcePool;
             activePlayer.effectQueue = activePlayer.effectQueue.concat(
-                cloneDeep(matchingCard.effects).reverse()
+                cloneDeep(matchingCard.effects)
+                    .reverse()
+                    .map((spellEffect) => ({
+                        ...spellEffect,
+                        sourceId: cardId,
+                    }))
             );
             cemetery.push(hand.splice(matchingCardIndex, 1)[0]);
             addSystemChat(`${activePlayer.name} cast [[${matchingCard.name}]]`);
