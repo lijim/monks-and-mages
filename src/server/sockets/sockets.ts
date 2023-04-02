@@ -291,7 +291,7 @@ export const configureIo = (server: HttpServer) => {
             });
 
             socket.on('takeGameAction', async (gameAction) => {
-                roomStore.takeGameAction({
+                await roomStore.takeGameAction({
                     socket,
                     gameAction,
                     recordGameResultToDatabase,
@@ -302,7 +302,7 @@ export const configureIo = (server: HttpServer) => {
             socket.on(
                 'resolveEffect',
                 async (effectParams: ResolveEffectParams) => {
-                    roomStore.resolveEffectForSocket({
+                    await roomStore.resolveEffectForSocket({
                         socket,
                         effectParams,
                         addGameResult,

@@ -6,7 +6,7 @@ import {
     getDefaultTargetForEffect,
     TargetTypes,
 } from '@/types/effects';
-import { RESOURCE_GLOSSARY } from '@/types/resources';
+import { RESOURCE_GLOSSARY, Resource } from '@/types/resources';
 
 const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.ALL_OPPONENTS]: 'all opponents',
@@ -240,7 +240,11 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Increase ${resourceType.toLowerCase()} resources by ${strength}${forText}`;
         }
         case EffectType.RAMP_FOR_TURN: {
-            return `Add ${strength} ${RESOURCE_GLOSSARY[resourceType].icon} this turn`;
+            let resourcesToDisplay = `${strength} ${RESOURCE_GLOSSARY[resourceType].icon}`;
+            if (resourceType === Resource.GENERIC) {
+                resourcesToDisplay = `${strength} generic mana`;
+            }
+            return `Add ${resourcesToDisplay} this turn`;
         }
         case EffectType.RAMP_FROM_HAND: {
             return `Deploy ${strength} ${resourceType} card${pluralizationEffectStrength} from your hand tapped`;

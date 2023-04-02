@@ -263,7 +263,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         room.hasStartedGame = true;
         io.to(`${PLAYER_ROOM_PREFIX}${room.roomName}`).emit('startGame');
         io.to(`${SPECTATOR_ROOM_PREFIX}${room.roomName}`).emit('startGame');
-        broadcastBoardForRoom(room.roomName);
+        await broadcastBoardForRoom(room.roomName);
     };
 
     type TakeGameActionParams = {
@@ -274,7 +274,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         ) => Promise<void>;
         socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>;
     };
-    const takeGameAction = ({
+    const takeGameAction = async ({
         socket,
         gameAction,
         addGameResult,
@@ -313,7 +313,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
 
         // TODO: add error handling when user tries to take an invalid action
         room.board = newBoardState; // apply state changes to in-memory storage of boards
-        broadcastBoardForRoom(room.roomName);
+        await broadcastBoardForRoom(room.roomName);
     };
 
     type ResolveEffectForSocketParams = {
@@ -324,7 +324,7 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         ) => Promise<void>;
         socket: ExtendedSocket<ClientToServerEvents, ServerToClientEvents>;
     };
-    const resolveEffectForSocket = ({
+    const resolveEffectForSocket = async ({
         socket,
         effectParams,
         addGameResult,
@@ -366,8 +366,10 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
         }
 
         // TODO: add error handling when user tries to take an invalid action
-        room.board = newBoardState; // apply state changes to in-memory storage of boards
-        broadcastBoardForRoom(room.roomName);
+        if (newBoardState) {
+            room.board = newBoardState; // apply state changes to in-memory storage of boards
+        }
+        await broadcastBoardForRoom(room.roomName);
     };
 
     type DisconnectFromGameParams = {

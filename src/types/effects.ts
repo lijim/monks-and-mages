@@ -14,7 +14,7 @@ export enum TargetTypes {
     UNIT = 'UNIT',
 }
 
-export const AutoResolvingTargets = [
+export const AUTO_RESOLVING_TARGETS = [
     TargetTypes.ALL_OPPONENTS,
     TargetTypes.ALL_OPPOSING_UNITS,
     TargetTypes.ALL_PLAYERS,
