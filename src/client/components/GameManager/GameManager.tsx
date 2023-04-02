@@ -21,7 +21,7 @@ import {
     shouldLastEffectFizzle,
 } from '@/client/redux/selectors';
 import {
-    AutoResolvingTargets,
+    AUTO_RESOLVING_TARGETS,
     getDefaultTargetForEffect,
 } from '@/types/effects';
 import { AUTO_RESOLVE_LINGER_DURATION } from '@/constants/gameConstants';
@@ -58,14 +58,7 @@ export const GameManager = ({ children }: Props) => {
         if (!target) target = getDefaultTargetForEffect(lastEffect.type);
         // if the target of the effect auto-resolves, e.g. (ALL OPPONENTS),
         // then resolve the effect automatically
-        if (AutoResolvingTargets.indexOf(target) > -1) {
-            setTimeout(() => {
-                socket.emit('resolveEffect', {
-                    effect: lastEffect,
-                });
-            }, AUTO_RESOLVE_LINGER_DURATION);
-        }
-        if (willLastEffectFizzle) {
+        if (AUTO_RESOLVING_TARGETS.includes(target) || willLastEffectFizzle) {
             setTimeout(() => {
                 socket.emit('resolveEffect', {
                     effect: lastEffect,

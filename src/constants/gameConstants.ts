@@ -6,7 +6,7 @@ export enum PlayerConstants {
     STARTING_DECK_SIZE_LIMITED = 40,
 }
 
-export const AUTO_RESOLVE_LINGER_DURATION = 1000;
+export const AUTO_RESOLVE_LINGER_DURATION = 1250;
 
 export const DRAFT_PACKS_BY_PLAYER_COUNT: Record<number, number> = {
     2: 9,
