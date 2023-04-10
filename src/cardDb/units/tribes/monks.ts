@@ -1,6 +1,6 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
 import { CardRarity, UnitCard } from '@/types/cards';
-import { PassiveEffect } from '@/types/effects';
+import { EffectType, PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
 const ASSASSIN: UnitCard = makeCard({
@@ -132,6 +132,70 @@ const NIGHTWOOD_RONIN: UnitCard = makeCard({
     rarity: CardRarity.MYTHIC,
 });
 
+const ELK_RIDER_SCOUT: UnitCard = makeCard({
+    artistName: 'pencil parker',
+    artistUrl: 'https://pixabay.com/users/pencilparker-7519217/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/elf-elk-archery-deer-fairy-7300192/',
+    name: 'Elk Rider Scout',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/07/04/02/04/elf-7300192_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 3,
+    attack: 2,
+    numAttacks: 2,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.QUICK, PassiveEffect.POISONED],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const MODEST_CLERIC: UnitCard = makeCard({
+    artistName: 'Kateřina Hartlová',
+    artistUrl: 'https://pixabay.com/users/khphotography-11313198/',
+    originalImagePage:
+        'https://pixabay.com/photos/middle-ages-knight-monarch-man-3947821/',
+    name: 'Modest Cleric',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/01/22/10/03/middle-ages-3947821_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'TEA',
+            strength: 1,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 1,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'LANDMARK',
+            strength: 1,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 export const MONKS = {
     ASSASSIN,
     DISCIPLINED_WARRIOR,
@@ -139,4 +203,6 @@ export const MONKS = {
     SHADOW_STRIKER,
     TIGER_GENERAL,
     NIGHTWOOD_RONIN,
+    ELK_RIDER_SCOUT,
+    MODEST_CLERIC,
 };
