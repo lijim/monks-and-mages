@@ -1183,6 +1183,56 @@ const DECAY = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const WINDS_OF_TRADE = makeCard({
+    artistName: 'Cilvarium',
+    artistUrl: 'https://pixabay.com/users/cilvarium-3547927/',
+    originalImagePage:
+        'https://pixabay.com/photos/castle-desert-future-city-machine-5896308/',
+    name: 'Winds of Trade',
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/01/07/06/19/castle-5896308_1280.jpg',
+    cost: { [Resource.IRON]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 2,
+        },
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+        },
+        {
+            type: EffectType.DISCARD_HAND,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const FORMIDABLE_STORM = makeCard({
+    artistName: 'Placidplace',
+    artistUrl: 'https://pixabay.com/users/placidplace-25572496/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/sandstorm-desert-sand-storm-egypt-7854725/',
+    name: 'Formidable Storm',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/15/14/55/sandstorm-7854725_1280.jpg',
+    cost: { [Resource.IRON]: 2, [Resource.CRYSTAL]: 2, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.ALL_UNITS,
+        },
+        {
+            type: EffectType.EXTRACT_CARD,
+            target: TargetTypes.SELF_PLAYER,
+            cardName: 'King Tut',
+            strength: 1,
+        },
+    ],
+    rarity: CardRarity.RARE,
+});
+
 const DESERT_TRIALS = makeCard({
     name: 'Desert Trials',
     // https://pixabay.com/photos/camels-desert-man-oman-salalah-4432346/
@@ -1716,6 +1766,8 @@ export const SpellCards = {
     SIGNAL_BEACON,
     DECAY,
     DESERT_TRIALS,
+    WINDS_OF_TRADE,
+    FORMIDABLE_STORM,
 
     // Cannon
     IGNITE_SPARKS,
