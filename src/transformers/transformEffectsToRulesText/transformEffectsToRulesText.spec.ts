@@ -446,6 +446,29 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    describe('Mill', () => {
+        it('displays rules for milling all players', () => {
+            const effect: Effect = {
+                type: EffectType.MILL,
+                target: TargetTypes.ALL_PLAYERS,
+                strength: 5,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Put 5 cards from each players' libraries into their graveyards`
+            );
+        });
+
+        it('displays rules for milling 1 player', () => {
+            const effect: Effect = {
+                type: EffectType.MILL,
+                target: TargetTypes.SELF_PLAYER,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Put 1 card from your library into your graveyard`
+            );
+        });
+    });
     it('displays rules for polymorphing', () => {
         const effect: Effect = {
             type: EffectType.POLYMORPH,

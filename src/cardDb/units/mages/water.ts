@@ -173,6 +173,36 @@ const WAVING_FISHERMAN: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const FRENZIED_SIREN: UnitCard = makeCard({
+    artistName: 'Sergei Tokmakov',
+    artistUrl: 'https://pixabay.com/users/sergeitokmakov-3426571/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/mermaid-underwater-sea-fantasy-4770904/',
+    name: 'Frenzied Siren',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/01/16/15/18/mermaid-4770904_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.MILL,
+            strength: 7,
+            target: TargetTypes.PLAYER,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const MOUNTAIN_SENTINEL: UnitCard = makeCard({
     artistName: 'Gioele Fazzeri',
     artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
@@ -553,6 +583,7 @@ export const WATER_MAGES = {
     TINY_MERMAID,
     RAIN_CHANNELER,
     WAVING_FISHERMAN,
+    FRENZIED_SIREN,
     MOUNTAIN_SENTINEL,
     MISBEGOTTEN_MISTWALKER,
     PELAGIC_PREDATOR,

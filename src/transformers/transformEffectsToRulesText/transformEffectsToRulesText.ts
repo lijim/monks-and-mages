@@ -41,18 +41,18 @@ const TARGET_TYPES_TO_RULES_TEXT_POSSESIVE = {
 };
 
 const TARGET_TYPES_TO_RULES_TEXT_CONTROLLER_POSSESIVE = {
-    [TargetTypes.ALL_OPPONENTS]: '',
+    [TargetTypes.ALL_OPPONENTS]: 'their',
     [TargetTypes.ALL_OPPOSING_UNITS]: "their controllers'",
-    [TargetTypes.ALL_PLAYERS]: '',
+    [TargetTypes.ALL_PLAYERS]: 'their',
     [TargetTypes.ALL_SELF_UNITS_CEMETERY]: 'your',
     [TargetTypes.ALL_SELF_UNITS]: 'your',
     [TargetTypes.ALL_UNITS]: "their controllers'",
     [TargetTypes.ANY]: "its controller's",
-    [TargetTypes.OPPONENT]: '',
+    [TargetTypes.OPPONENT]: 'their',
     [TargetTypes.OPPOSING_UNIT]: "its controller's",
     [TargetTypes.OWN_UNIT]: 'your',
-    [TargetTypes.PLAYER]: '',
-    [TargetTypes.SELF_PLAYER]: '',
+    [TargetTypes.PLAYER]: 'their',
+    [TargetTypes.SELF_PLAYER]: 'your',
     [TargetTypes.UNIT]: "its controller's",
 };
 
@@ -232,6 +232,15 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Add ${strength} ${sanitizedCardName} ${
                 strength > 1 ? 'cards' : 'card'
             } to your hand`;
+        }
+        case EffectType.MILL: {
+            return `Put ${strength} ${
+                strength > 1 ? 'cards' : 'card'
+            } from ${targetNamePossessive.replace('all', 'each')} ${
+                isTargetTypePlural(target) ? 'libraries' : 'library'
+            } into ${controllerPossessiveText} ${
+                isTargetTypePlural(target) ? 'graveyards' : 'graveyard'
+            }`;
         }
         case EffectType.POLYMORPH: {
             return `Turn ${targetName} into a [${summonType.name}]`;

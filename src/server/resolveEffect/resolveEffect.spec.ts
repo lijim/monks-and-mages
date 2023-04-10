@@ -1046,6 +1046,27 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Mill', () => {
+        it('mills from the top of the deck', () => {
+            const expectedCardNameToMill =
+                board.players[0].deck[board.players[0].deck.length - 1].name;
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.MILL,
+                        strength: 5,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].cemetery[4].name).toBe(
+                expectedCardNameToMill
+            );
+        });
+    });
+
     describe('Polymorph', () => {
         it('turns a unit into a token', () => {
             board.players[1].units.push(makeCard(UnitCards.KNIGHT_TEMPLAR));

@@ -57,6 +57,7 @@ export enum EffectType {
     GRANT_PASSIVE_EFFECT = 'Grant Passive Effect', // give unit(s) a passive effect
     HEAL = 'Heal', // to any target
     LEARN = 'Learn', // add spells / units to hand
+    MILL = 'Mill',
     POLYMORPH = 'Polymorph', // polymorph a unit into a token type
     RAMP = 'Ramp', // add resources (tapped)
     RAMP_FOR_TURN = 'Ramp for Turn',
@@ -100,6 +101,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.GRANT_PASSIVE_EFFECT]: TargetTypes.UNIT,
         [EffectType.HEAL]: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         [EffectType.LEARN]: TargetTypes.SELF_PLAYER,
+        [EffectType.MILL]: TargetTypes.PLAYER,
         [EffectType.POLYMORPH]: TargetTypes.UNIT,
         [EffectType.RAMP]: TargetTypes.SELF_PLAYER,
         [EffectType.RAMP_FOR_TURN]: TargetTypes.SELF_PLAYER,

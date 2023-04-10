@@ -458,6 +458,14 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.MILL: {
+            playerTargets.forEach((player) => {
+                player.cemetery = player.cemetery.concat(
+                    player.deck.splice(-effectStrength)
+                );
+            });
+            return clonedBoard;
+        }
         case EffectType.POLYMORPH: {
             const { summonType } = effect;
             if (!summonType) return clonedBoard;
