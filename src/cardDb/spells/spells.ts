@@ -1289,6 +1289,29 @@ const SPARK_JOY = makeCard({
     isTokenOnly: true,
 });
 
+const REINFORCE_STEEL = makeCard({
+    artistName: 'j.mt_photography',
+    artistUrl: 'https://www.pexels.com/@j-mt_photography-628996/',
+    originalImagePage:
+        'https://www.pexels.com/photo/man-forging-metal-3680094/',
+    name: 'Reinforce Steel',
+    imgSrc: 'https://images.pexels.com/photos/3680094/pexels-photo-3680094.jpeg',
+    cost: { [Resource.IRON]: 1, [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.BUFF_ATTACK,
+            target: TargetTypes.ANY,
+            strength: 3,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'SPARK_JOY',
+            strength: 1,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const FESTIVE_BAZAAR = makeCard({
     name: 'Festive Bazaar',
     imgSrc: 'https://images.pexels.com/photos/3243027/pexels-photo-3243027.jpeg',
@@ -1770,6 +1793,7 @@ export const SpellCards = {
     FORMIDABLE_STORM,
 
     // Cannon
+    REINFORCE_STEEL,
     IGNITE_SPARKS,
     SPARK_JOY,
     FESTIVE_BAZAAR,

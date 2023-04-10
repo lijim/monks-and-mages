@@ -288,32 +288,6 @@ const MERRY_RALLIER: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
-const CANNON: UnitCard = makeCard({
-    name: 'Cannon',
-    imgSrc: 'https://images.unsplash.com/flagged/photo-1573757613724-3fa205049a78',
-    cost: {
-        [Resource.FIRE]: 1,
-        [Resource.IRON]: 2,
-        [Resource.GENERIC]: 2,
-    },
-    description: '',
-    enterEffects: [
-        {
-            type: EffectType.DEAL_DAMAGE,
-            strength: 3,
-            target: TargetTypes.ANY,
-        },
-    ],
-    totalHp: 5,
-    attack: 3,
-    numAttacks: 1,
-    isRanged: true,
-    isMagical: false,
-    isSoldier: false,
-    passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
-});
-
 const INFERNALIST: UnitCard = makeCard({
     name: 'Infernalist',
     imgSrc: 'https://cdn.pixabay.com/photo/2022/01/24/02/19/fantasy-6962364_1280.jpg',
@@ -406,7 +380,6 @@ export const RANGED_UNITS = {
     FALCON_RIDER,
     EXCELLENT_EQUESTRIAN,
     MERRY_RALLIER,
-    CANNON,
     INFERNALIST,
     ELITE_ARCHER,
     MAHADEV,
