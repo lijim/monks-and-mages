@@ -103,10 +103,40 @@ const TIGER_GENERAL: UnitCard = makeCard({
     rarity: CardRarity.MYTHIC,
 });
 
+const NIGHTWOOD_RONIN: UnitCard = makeCard({
+    artistName: 'Artie Navarre',
+    artistUrl: 'https://pixabay.com/users/artie_navarre-66276/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/samurai-warrior-sword-katana-4215748/',
+    name: 'Nightwood Ronin',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/05/20/01/29/samurai-4215748_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 2,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [
+        PassiveEffect.QUICK,
+        PassiveEffect.POISONED,
+        PassiveEffect.HEARTY,
+    ],
+    rarity: CardRarity.MYTHIC,
+});
+
 export const MONKS = {
     ASSASSIN,
     DISCIPLINED_WARRIOR,
     BOUNTY_COLLECTOR,
     SHADOW_STRIKER,
     TIGER_GENERAL,
+    NIGHTWOOD_RONIN,
 };

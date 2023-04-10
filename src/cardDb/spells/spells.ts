@@ -1096,6 +1096,48 @@ const CONCENTRATED_FOCUS = makeCard({
     rarity: CardRarity.RARE,
 });
 
+// Dragons (bamboo + fire)
+const TOO_MUCH_SPICE = makeCard({
+    artistName: 'Angela',
+    artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/fire-breathing-fiction-dragon-7853170/',
+    name: 'Too Much Spice',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/14/21/10/fire-7853170_1280.jpg',
+    cost: { [Resource.FIRE]: 1, [Resource.BAMBOO]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.OPPOSING_UNIT,
+            strength: 2,
+        },
+        {
+            type: EffectType.BUFF_MAGIC,
+            target: TargetTypes.OWN_UNIT,
+            strength: 2,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const BRIDGE_TO_IMMORTALITY = makeCard({
+    artistName: 'Artie Navarre',
+    artistUrl: 'https://pixabay.com/users/artie_navarre-66276/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/bridge-of-regret-bridge-regret-3935012/',
+    name: 'Bridge to Immortality',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/01/15/23/00/bridge-of-regret-3935012_1280.jpg',
+    cost: { [Resource.FIRE]: 1, [Resource.BAMBOO]: 2 },
+    effects: [
+        {
+            type: EffectType.GRANT_PASSIVE_EFFECT,
+            target: TargetTypes.ALL_UNITS,
+            passiveEffect: PassiveEffect.HEARTY,
+        },
+    ],
+    rarity: CardRarity.RARE,
+});
+
 // Genies
 const SIGNAL_BEACON = makeCard({
     name: 'Signal Beacon',
@@ -1665,6 +1707,10 @@ export const SpellCards = {
     // Monks
     FISH_MARKET_VISIT,
     CONCENTRATED_FOCUS,
+
+    // Dragons
+    BRIDGE_TO_IMMORTALITY,
+    TOO_MUCH_SPICE,
 
     // Genies
     SIGNAL_BEACON,
