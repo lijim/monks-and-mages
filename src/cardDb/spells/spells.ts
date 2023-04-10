@@ -1604,6 +1604,28 @@ const DOUBLE_MORPH_FROG = makeCard({
 });
 
 // Pirates
+const REST_AT_THE_TAVERN = makeCard({
+    artistName: 'loulou Nash',
+    artistUrl: 'https://pixabay.com/users/thefairypath-4207961/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/pirate-pirate-village-swashbuckler-2144555/',
+    name: 'Rest at the Tavern',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/03/14/21/59/pirate-2144555_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.IRON]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+        },
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.ALL_SELF_UNITS,
+            strength: 2,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const RAISE_THE_MASTS = makeCard({
     name: 'Raise the Masts',
     imgSrc: 'https://images.pexels.com/photos/237781/pexels-photo-237781.jpeg',
@@ -1807,6 +1829,7 @@ export const SpellCards = {
     // Pirates
     RAISE_THE_MASTS,
     WRECK_SHIPS,
+    REST_AT_THE_TAVERN,
 
     // Multi-color misc.
     UNDERWORLD_MESSAGE,
