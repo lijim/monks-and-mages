@@ -274,6 +274,42 @@ const CRACKLING_OCCULTIST: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const WIZENED_INCANTER: UnitCard = makeCard({
+    artistName: 'Gordon Taylor',
+    artistUrl: 'https://pixabay.com/users/gbtaylor-2058304/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/wizard-cyberpunk-science-fiction-7806895/',
+    name: 'Wizened Incanter',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/02/22/15/32/wizard-7806895_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: Number.MAX_SAFE_INTEGER,
+        },
+        {
+            type: EffectType.DRAW,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 7,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
 const CYRUS_PURPLE_DRAGON: UnitCard = makeCard({
     name: 'Cyrus, Purple Dragon',
     imgSrc: 'https://cdn.pixabay.com/photo/2017/08/13/00/10/fantasy-2635797_1280.jpg', // https://images.unsplash.com/photo-1615962122149-ef6987cf19f4'
@@ -312,5 +348,6 @@ export const CRYSTAL_MAGES = {
     SHROOMKEEP_WIZARD,
     CRACKLING_OCCULTIST,
     FAE_DRAGON,
+    WIZENED_INCANTER,
     CYRUS_PURPLE_DRAGON,
 };

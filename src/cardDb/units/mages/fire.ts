@@ -303,6 +303,39 @@ const FLAME_PRESERVER: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const PROFICIENT_CHANNELER: UnitCard = makeCard({
+    artistName: 'Gordon Taylor',
+    artistUrl: 'https://pixabay.com/users/gbtaylor-2058304/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-sorceress-magic-light-7766005/',
+    name: 'Proficient Channeler',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/02/03/22/34/fantasy-7766005_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+        },
+    ],
+    totalHp: 3,
+    attack: 0,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
 const MIDNIGHT_HELLSPAWN: UnitCard = makeCard({
     name: 'Midnight Hellspawn',
     imgSrc: 'https://images.pexels.com/photos/35888/amazing-beautiful-breathtaking-clouds.jpg',
@@ -404,6 +437,7 @@ export const FIRE_MAGES = {
     LA_CATRINA,
     ZEALOUS_ACOLYTE,
     IMPRESSIVE_DANCER,
+    PROFICIENT_CHANNELER,
     FIRE_MAGE,
     DEMON_CALLER,
     FIRE_STARTER,

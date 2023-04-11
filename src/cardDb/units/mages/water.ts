@@ -5,8 +5,11 @@ import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
 const GIANT_JELLY: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-beach-children-jellyfish-3281842/',
     name: 'Giant Jelly',
-    // https://pixabay.com/photos/fantasy-beach-children-jellyfish-3281842/
     imgSrc: 'https://cdn.pixabay.com/photo/2018/04/01/19/15/fantasy-3281842_1280.jpg',
     cost: {
         [Resource.WATER]: 1,
@@ -234,8 +237,11 @@ const MOUNTAIN_SENTINEL: UnitCard = makeCard({
 });
 
 const MISBEGOTTEN_MISTWALKER = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-spirit-nightmare-dream-2847724/',
     name: 'Misbegotten Mistwalker',
-    // https://pixabay.com/photos/fantasy-spirit-nightmare-dream-2847724/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/10/13/14/15/fantasy-2847724_1280.jpg',
     cost: {
         [Resource.WATER]: 2,
@@ -315,8 +321,11 @@ const PELAGIC_PREDATOR = makeCard({
 });
 
 const PEACE_BRINGER = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-girl-sea-spray-gull-water-5369086/',
     name: 'Peace Bringer',
-    // https://pixabay.com/photos/fantasy-girl-sea-spray-gull-water-5369086/
     imgSrc: 'https://cdn.pixabay.com/photo/2020/07/04/10/36/fantasy-5369086_1280.jpg',
     cost: {
         [Resource.WATER]: 1,

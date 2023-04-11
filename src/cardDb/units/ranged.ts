@@ -41,8 +41,11 @@ const JAVELINEER: UnitCard = makeCard({
 });
 
 const DRYAD: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/composing-woman-fantasy-face-2391033/',
     name: 'Dryad',
-    // https://pixabay.com/illustrations/composing-woman-fantasy-face-2391033/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/06/10/22/58/composing-2391033_1280.jpg',
     cost: {
         [Resource.CRYSTAL]: 1,
@@ -170,6 +173,35 @@ const CAVALRY_ARCHER: UnitCard = makeCard({
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
     rarity: CardRarity.COMMON,
+});
+
+const POLICY_UNDERWRITER: UnitCard = makeCard({
+    artistName: 'Gordon Taylor',
+    artistUrl: 'https://pixabay.com/users/gbtaylor-2058304/',
+    originalImagePage: 'https://pixabay.com/users/gbtaylor-2058304/',
+    name: 'Policy Underwriter',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/02/26/20/23/ai-generated-7816932_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 const WINGED_SAVIOR: UnitCard = makeCard({
@@ -374,6 +406,7 @@ export const RANGED_UNITS = {
     LONGBOWMAN,
     SLY_HUNTER,
     SILENT_MARKSWOMAN,
+    POLICY_UNDERWRITER,
     CAVALRY_ARCHER,
     WINGED_SAVIOR,
     THE_MONKEY_KING,

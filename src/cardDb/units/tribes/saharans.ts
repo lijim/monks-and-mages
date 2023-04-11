@@ -128,9 +128,46 @@ const ANUBIS_GOD_OF_DEATH: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const CORRUPTED_GENIE: UnitCard = makeCard({
+    artistName: 'Gordon Taylor',
+    artistUrl: 'https://pixabay.com/users/gbtaylor-2058304/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/ai-generated-genie-magic-fantasy-7725330/',
+    name: 'Corrupted Genie',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/01/17/19/12/ai-generated-7725330_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 2,
+        [Resource.IRON]: 2,
+        [Resource.WATER]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            target: TargetTypes.ANY,
+        },
+        {
+            type: EffectType.BOUNCE,
+            strength: 1,
+            target: TargetTypes.UNIT,
+        },
+    ],
+    totalHp: 5,
+    attack: 5,
+    numAttacks: 1,
+    isLegendary: true,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
 export const SAHARANS = {
     FORTUNE_PREDICTOR,
     CAPTAIN_OF_THE_GUARD,
     CHARIOT_ARCHER,
     ANUBIS_GOD_OF_DEATH,
+    CORRUPTED_GENIE,
 };

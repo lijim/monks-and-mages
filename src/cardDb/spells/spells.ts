@@ -634,8 +634,11 @@ const SPECTRAL_GENESIS = makeCard({
 });
 
 const SURREAL_DREAM = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-clock-time-light-magic-3517206/',
     name: 'Surreal Dream',
-    // https://pixabay.com/photos/fantasy-clock-time-light-magic-3517206/
     imgSrc: 'https://cdn.pixabay.com/photo/2018/07/04/22/55/fantasy-3517206_1280.jpg',
     cost: { [Resource.CRYSTAL]: 1 },
     effects: [
@@ -1159,8 +1162,11 @@ const SIGNAL_BEACON = makeCard({
 });
 
 const DECAY = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/fantasy-people-mysticism-mystical-2964231/',
     name: 'Decay',
-    // https://pixabay.com/illustrations/fantasy-people-mysticism-mystical-2964231/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/11/20/02/00/fantasy-2964231_1280.jpg',
     cost: { [Resource.IRON]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 1 },
     effects: [
@@ -1370,6 +1376,36 @@ const BESIEGE_THE_CASTLE = makeCard({
 });
 
 // 3-color
+const SAMURAIS_TEMPEST = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-lightning-winter-samurai-3412305/',
+    name: "Samurai's Tempest",
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/05/18/22/57/fantasy-3412305_1280.jpg',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.WATER]: 1,
+    },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+        },
+        {
+            type: EffectType.HEAL,
+            strength: 2,
+        },
+        {
+            type: EffectType.BLOOM,
+            strength: 1,
+        },
+    ],
+    rarity: CardRarity.MYTHIC,
+});
+
 const UNDERWORLD_MESSAGE = makeCard({
     name: 'Underworld Message',
     imgSrc: 'https://cdn.pixabay.com/photo/2020/04/07/12/17/photo-manipulation-5013193_1280.jpg',
@@ -1852,6 +1888,7 @@ export const SpellCards = {
     REST_AT_THE_TAVERN,
 
     // Multi-color misc.
+    SAMURAIS_TEMPEST,
     UNDERWORLD_MESSAGE,
     MAGNIMUTATION,
     A_DARK_FOREST,

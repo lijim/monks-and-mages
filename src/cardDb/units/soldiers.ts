@@ -358,8 +358,11 @@ const VILLAGE_DEFENDER: UnitCard = makeCard({
 });
 
 const FROST_WALKER: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-walker-sculpture-monument-2925250/',
     name: 'Frost Walker',
-    // https://pixabay.com/photos/fantasy-walker-sculpture-monument-2925250/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/11/07/00/07/fantasy-2925250_1280.jpg',
     cost: {
         [Resource.GENERIC]: 2,
