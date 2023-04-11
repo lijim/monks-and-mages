@@ -126,6 +126,36 @@ const SHIP_COXSWAIN: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const SWAMPY_SMUGGLER: UnitCard = makeCard({
+    artistName: 'Mysticsartdesign',
+    artistUrl: 'https://pixabay.com/users/mysticsartdesign-322497/',
+    originalImagePage:
+        'https://pixabay.com/photos/pirates-swamp-smugglers-boat-ship-3277848/',
+    name: 'Swampy Smuggler',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/03/31/10/44/pirates-3277848_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            strength: 1,
+            cardName: 'OLD_WORLD_MAP',
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
 const CUTLASS_CRUSADER: UnitCard = makeCard({
     name: 'Cutlass Crusader',
     // https://pixabay.com/photos/pirate-corsair-piracy-privateers-2752397/
@@ -221,6 +251,7 @@ export const PIRATES = {
     ELDER_PIRATE,
     DARING_CORSAIR,
     SHIP_COXSWAIN,
+    SWAMPY_SMUGGLER,
     CUTLASS_CRUSADER,
     DOUBLE_DEALING_ROGUE,
     NJORD_THE_MIGHTY,

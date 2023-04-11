@@ -432,6 +432,32 @@ describe('resolve effect', () => {
                 2
             );
         });
+
+        it('decreases costs for cards', () => {
+            board.players[1].hand = [
+                makeCard(UnitCards.SQUIRE),
+                makeCard(UnitCards.LANCER),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.CURSE_HAND,
+                        strength: -2,
+                        target: TargetTypes.OPPONENT,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect((newBoard.players[1].hand[0] as UnitCard).cost.Generic).toBe(
+                0
+            );
+            expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
+                0
+            );
+        });
     });
 
     describe('Destroy resources', () => {

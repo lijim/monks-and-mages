@@ -257,8 +257,10 @@ export const resolveEffect = (
             playerTargets.forEach((player) => {
                 player.hand.forEach((card) => {
                     if (card.cardType !== CardType.RESOURCE) {
-                        card.cost.Generic =
-                            (card.cost.Generic || 0) + effectStrength;
+                        card.cost.Generic = Math.max(
+                            0,
+                            (card.cost.Generic || 0) + effectStrength
+                        );
                     }
                 });
             });

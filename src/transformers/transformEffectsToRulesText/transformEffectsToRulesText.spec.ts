@@ -217,15 +217,28 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
-    it('displays rules for cursing a hand', () => {
-        const effect: Effect = {
-            type: EffectType.CURSE_HAND,
-            strength: 5,
-            target: TargetTypes.ALL_OPPONENTS,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase cost of cards in hand by 5 (generic) for all opponents`
-        );
+    describe('curse hand', () => {
+        it('displays rules for cursing a hand', () => {
+            const effect: Effect = {
+                type: EffectType.CURSE_HAND,
+                strength: 5,
+                target: TargetTypes.ALL_OPPONENTS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase cost of cards in all opponents' hands by 5 (generic)`
+            );
+        });
+
+        it('displays rules for reducing costs from a hand', () => {
+            const effect: Effect = {
+                type: EffectType.CURSE_HAND,
+                strength: -5,
+                target: TargetTypes.SELF_PLAYER,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease cost of cards in your hand by 5 (generic)`
+            );
+        });
     });
 
     describe('destroy resource', () => {

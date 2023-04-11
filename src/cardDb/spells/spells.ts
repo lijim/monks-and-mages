@@ -1604,6 +1604,25 @@ const DOUBLE_MORPH_FROG = makeCard({
 });
 
 // Pirates
+const OLD_WORLD_MAP = makeCard({
+    artistName: 'MasterTux',
+    artistUrl: 'https://pixabay.com/users/mastertux-470906/',
+    originalImagePage:
+        'https://pixabay.com/photos/adventure-treasure-map-old-world-map-2528477/',
+    name: 'Old World Map',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/07/22/11/46/adventure-2528477_1280.jpg',
+    cost: {},
+    effects: [
+        {
+            type: EffectType.CURSE_HAND,
+            target: TargetTypes.SELF_PLAYER,
+            strength: -1,
+        },
+    ],
+    isTokenOnly: true,
+    rarity: CardRarity.UNCOMMON,
+});
+
 const REST_AT_THE_TAVERN = makeCard({
     artistName: 'loulou Nash',
     artistUrl: 'https://pixabay.com/users/thefairypath-4207961/',
@@ -1827,6 +1846,7 @@ export const SpellCards = {
     DOUBLE_MORPH_FROG,
 
     // Pirates
+    OLD_WORLD_MAP,
     RAISE_THE_MASTS,
     WRECK_SHIPS,
     REST_AT_THE_TAVERN,

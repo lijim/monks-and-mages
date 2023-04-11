@@ -149,7 +149,14 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             return `Increase attack of ${targetNamePossessive} magic units by ${strength}`;
         }
         case EffectType.CURSE_HAND: {
-            return `Increase cost of cards in hand by ${strength} (generic) for ${targetName}`;
+            if (strength < 0)
+                return `Decrease cost of cards in ${targetNamePossessive} ${
+                    isTargetTypePlural(target) ? 'hands' : 'hand'
+                } by ${-strength} (generic)`;
+
+            return `Increase cost of cards in ${targetNamePossessive} ${
+                isTargetTypePlural(target) ? 'hands' : 'hand'
+            } by ${strength} (generic)`;
         }
         case EffectType.DEAL_DAMAGE: {
             return `Deal ${strength} damage to ${targetName}`;
