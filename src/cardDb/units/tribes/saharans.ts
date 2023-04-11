@@ -125,7 +125,7 @@ const ANUBIS_GOD_OF_DEATH: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 const CORRUPTED_GENIE: UnitCard = makeCard({

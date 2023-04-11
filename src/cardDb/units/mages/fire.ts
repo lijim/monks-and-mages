@@ -249,7 +249,7 @@ const DEMON_CALLER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FIRE_STARTER: UnitCard = makeCard({
@@ -359,7 +359,7 @@ const MIDNIGHT_HELLSPAWN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const LU_ZISHEN_FLOWERY_MONK: UnitCard = makeCard({

@@ -234,7 +234,7 @@ const INCREDIBLE_DISCOVERY = makeCard({
             strength: 2,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const STRIKE_TWICE = makeCard({
@@ -301,7 +301,7 @@ const ERUPT = makeCard({
             resourceType: Resource.WATER,
         },
     ],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 // Water Magic
@@ -556,7 +556,7 @@ const SOLFATARA = makeCard({
             strength: 1,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const COLLOSAL_TSUNAMI = makeCard({
@@ -1130,7 +1130,7 @@ const BRIDGE_TO_IMMORTALITY = makeCard({
         'https://pixabay.com/illustrations/bridge-of-regret-bridge-regret-3935012/',
     name: 'Bridge to Immortality',
     imgSrc: 'https://cdn.pixabay.com/photo/2019/01/15/23/00/bridge-of-regret-3935012_1280.jpg',
-    cost: { [Resource.FIRE]: 1, [Resource.BAMBOO]: 2 },
+    cost: { [Resource.FIRE]: 1, [Resource.BAMBOO]: 1 },
     effects: [
         {
             type: EffectType.GRANT_PASSIVE_EFFECT,
@@ -1138,7 +1138,7 @@ const BRIDGE_TO_IMMORTALITY = makeCard({
             passiveEffect: PassiveEffect.HEARTY,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 // Genies
@@ -1334,7 +1334,7 @@ const FESTIVE_BAZAAR = makeCard({
             resourceType: Resource.FIRE,
         },
     ],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.RARE,
 });
 
 const FIRE_AWAY = makeCard({
@@ -1612,7 +1612,7 @@ const POLYMORPH_FROG = makeCard({
             summonType: Tokens.FROG,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const DOUBLE_MORPH_FROG = makeCard({
@@ -1636,7 +1636,7 @@ const DOUBLE_MORPH_FROG = makeCard({
             summonType: Tokens.FROG,
         },
     ],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 // Pirates

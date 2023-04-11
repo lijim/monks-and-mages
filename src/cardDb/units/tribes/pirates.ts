@@ -210,7 +210,7 @@ const DOUBLE_DEALING_ROGUE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.RARE,
 });
 
 const NJORD_THE_MIGHTY: UnitCard = makeCard({
@@ -242,7 +242,7 @@ const NJORD_THE_MIGHTY: UnitCard = makeCard({
     isSoldier: true,
     isLegendary: true,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 export const PIRATES = {

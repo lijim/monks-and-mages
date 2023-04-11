@@ -364,3 +364,15 @@ export const ALL_CARDS_AND_TOKENS: DeckList = {
     ],
     sideBoard: [],
 };
+
+export const ALL_CARDS_DICTIONARY = {
+    BAMBOO: makeResourceCard(Resource.BAMBOO),
+    CRYSTAL: makeResourceCard(Resource.CRYSTAL),
+    FIRE: makeResourceCard(Resource.FIRE),
+    IRON: makeResourceCard(Resource.IRON),
+    WATER: makeResourceCard(Resource.WATER),
+    ...AdvancedResourceCards,
+    ...SpellCards,
+    ...UnitCards,
+    ...Tokens,
+};

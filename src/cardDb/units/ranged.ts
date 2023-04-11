@@ -60,7 +60,7 @@ const DRYAD: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const LONGBOWMAN: UnitCard = makeCard({

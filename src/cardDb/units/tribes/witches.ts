@@ -57,7 +57,7 @@ const FAIRY_QUEEN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const INGREDIENT_HUNTER: UnitCard = makeCard({
@@ -113,7 +113,7 @@ const POTION_BREWER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const CASTAWAY_CONJURER: UnitCard = makeCard({
@@ -226,7 +226,7 @@ const MASTER_ENCHANTER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const BOG_WARLOCK: UnitCard = makeCard({

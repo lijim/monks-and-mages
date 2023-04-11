@@ -272,7 +272,7 @@ const ORCISH_CORPORAL: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 /* 3 total cost */

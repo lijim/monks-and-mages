@@ -186,7 +186,7 @@ const HEAVY_ARTILLERY: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 export const CANNONEERS = {

@@ -22,6 +22,7 @@ import {
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
+import { ALL_CARDS, ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
 
 export const resolveEffect = (
     board: Board,
@@ -606,8 +607,8 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.TRANSMUTE: {
-            let cardToMake: UnitCard | SpellCard;
-            const cardPool = { ...SpellCards, ...UnitCards, ...Tokens };
+            let cardToMake: UnitCard | SpellCard | ResourceCard;
+            const cardPool = ALL_CARDS_DICTIONARY;
 
             Object.values(cardPool).forEach((card) => {
                 if (card.name === secondaryCardName) {

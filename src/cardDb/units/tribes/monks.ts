@@ -145,7 +145,7 @@ const ELK_RIDER_SCOUT: UnitCard = makeCard({
     cost: {
         [Resource.IRON]: 1,
         [Resource.BAMBOO]: 1,
-        [Resource.GENERIC]: 2,
+        [Resource.GENERIC]: 4,
     },
     description: '',
     enterEffects: [],
@@ -156,7 +156,7 @@ const ELK_RIDER_SCOUT: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK, PassiveEffect.POISONED],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.MYTHIC,
 });
 
 const MODEST_CLERIC: UnitCard = makeCard({
