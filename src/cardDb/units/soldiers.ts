@@ -402,7 +402,7 @@ const DRAGON_MIST_WARRIOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 const AMPHIBIOUS_SHINOBI: UnitCard = makeCard({
@@ -448,6 +448,31 @@ const CELESTIAL_MERCENARY: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY, PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
+});
+
+const GLADIATOR: UnitCard = makeCard({
+    artistName: 'WikiImages',
+    artistUrl: 'https://pixabay.com/users/wikiimages-1897/',
+    originalImagePage:
+        'https://pixabay.com/photos/romans-gladiator-spear-hoplite-60601/',
+    name: 'Gladiator',
+    imgSrc: 'https://cdn.pixabay.com/photo/2012/10/10/10/49/romans-60601_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 5,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [PassiveEffect.QUICK],
     rarity: CardRarity.RARE,
 });
 
@@ -586,6 +611,38 @@ const KNIGHT_TEMPLAR: UnitCard = makeCard({
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
     rarity: CardRarity.COMMON,
+});
+
+const FIREBRAND_NOBLE: UnitCard = makeCard({
+    artistName: 'Gordon Taylor',
+    artistUrl: 'https://pixabay.com/users/gbtaylor-2058304/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/fire-magic-sorcerer-wizard-mage-7695518/',
+    name: 'Firebrand Noble',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/01/03/22/55/fire-7695518_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.DESTROY_RESOURCE,
+            target: TargetTypes.OPPONENT,
+            strength: 1,
+        },
+    ],
+    totalHp: 6,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 const WU_SONG_PILGRIM: UnitCard = makeCard({
@@ -775,12 +832,14 @@ export const SOLDIERS = {
     FROST_WALKER,
     CELESTIAL_MERCENARY,
     UNSTOPPABLE_BERSERKER,
+    GLADIATOR,
     // 4
     RUSTED_GUARDIAN,
     DRAGON_SLAYER,
     MAGI_RIDER,
     WARRIOR_OF_THE_LAKE,
     KNIGHT_TEMPLAR,
+    FIREBRAND_NOBLE,
     WU_SONG_PILGRIM,
     // 5
     ARMORED_CAVALRY,
