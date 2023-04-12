@@ -432,6 +432,32 @@ describe('resolve effect', () => {
                 2
             );
         });
+
+        it('decreases costs for cards', () => {
+            board.players[1].hand = [
+                makeCard(UnitCards.SQUIRE),
+                makeCard(UnitCards.LANCER),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.CURSE_HAND,
+                        strength: -2,
+                        target: TargetTypes.OPPONENT,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect((newBoard.players[1].hand[0] as UnitCard).cost.Generic).toBe(
+                0
+            );
+            expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
+                0
+            );
+        });
     });
 
     describe('Destroy resources', () => {
@@ -1042,6 +1068,27 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].hand).toHaveLength(
                 PlayerConstants.STARTING_HAND_SIZE + 2
+            );
+        });
+    });
+
+    describe('Mill', () => {
+        it('mills from the top of the deck', () => {
+            const expectedCardNameToMill =
+                board.players[0].deck[board.players[0].deck.length - 1].name;
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.MILL,
+                        strength: 5,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].cemetery[4].name).toBe(
+                expectedCardNameToMill
             );
         });
     });

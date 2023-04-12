@@ -5,8 +5,11 @@ import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
 const GIANT_JELLY: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-beach-children-jellyfish-3281842/',
     name: 'Giant Jelly',
-    // https://pixabay.com/photos/fantasy-beach-children-jellyfish-3281842/
     imgSrc: 'https://cdn.pixabay.com/photo/2018/04/01/19/15/fantasy-3281842_1280.jpg',
     cost: {
         [Resource.WATER]: 1,
@@ -173,6 +176,36 @@ const WAVING_FISHERMAN: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const FRENZIED_SIREN: UnitCard = makeCard({
+    artistName: 'Sergei Tokmakov',
+    artistUrl: 'https://pixabay.com/users/sergeitokmakov-3426571/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/mermaid-underwater-sea-fantasy-4770904/',
+    name: 'Frenzied Siren',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/01/16/15/18/mermaid-4770904_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.MILL,
+            strength: 7,
+            target: TargetTypes.PLAYER,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const MOUNTAIN_SENTINEL: UnitCard = makeCard({
     artistName: 'Gioele Fazzeri',
     artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
@@ -204,8 +237,11 @@ const MOUNTAIN_SENTINEL: UnitCard = makeCard({
 });
 
 const MISBEGOTTEN_MISTWALKER = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-spirit-nightmare-dream-2847724/',
     name: 'Misbegotten Mistwalker',
-    // https://pixabay.com/photos/fantasy-spirit-nightmare-dream-2847724/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/10/13/14/15/fantasy-2847724_1280.jpg',
     cost: {
         [Resource.WATER]: 2,
@@ -285,8 +321,11 @@ const PELAGIC_PREDATOR = makeCard({
 });
 
 const PEACE_BRINGER = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-girl-sea-spray-gull-water-5369086/',
     name: 'Peace Bringer',
-    // https://pixabay.com/photos/fantasy-girl-sea-spray-gull-water-5369086/
     imgSrc: 'https://cdn.pixabay.com/photo/2020/07/04/10/36/fantasy-5369086_1280.jpg',
     cost: {
         [Resource.WATER]: 1,
@@ -553,6 +592,7 @@ export const WATER_MAGES = {
     TINY_MERMAID,
     RAIN_CHANNELER,
     WAVING_FISHERMAN,
+    FRENZIED_SIREN,
     MOUNTAIN_SENTINEL,
     MISBEGOTTEN_MISTWALKER,
     PELAGIC_PREDATOR,

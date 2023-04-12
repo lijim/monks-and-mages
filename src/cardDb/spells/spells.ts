@@ -234,7 +234,7 @@ const INCREDIBLE_DISCOVERY = makeCard({
             strength: 2,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const STRIKE_TWICE = makeCard({
@@ -301,7 +301,7 @@ const ERUPT = makeCard({
             resourceType: Resource.WATER,
         },
     ],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 // Water Magic
@@ -556,7 +556,7 @@ const SOLFATARA = makeCard({
             strength: 1,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const COLLOSAL_TSUNAMI = makeCard({
@@ -634,8 +634,11 @@ const SPECTRAL_GENESIS = makeCard({
 });
 
 const SURREAL_DREAM = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-clock-time-light-magic-3517206/',
     name: 'Surreal Dream',
-    // https://pixabay.com/photos/fantasy-clock-time-light-magic-3517206/
     imgSrc: 'https://cdn.pixabay.com/photo/2018/07/04/22/55/fantasy-3517206_1280.jpg',
     cost: { [Resource.CRYSTAL]: 1 },
     effects: [
@@ -1096,6 +1099,48 @@ const CONCENTRATED_FOCUS = makeCard({
     rarity: CardRarity.RARE,
 });
 
+// Dragons (bamboo + fire)
+const TOO_MUCH_SPICE = makeCard({
+    artistName: 'Angela',
+    artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/fire-breathing-fiction-dragon-7853170/',
+    name: 'Too Much Spice',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/14/21/10/fire-7853170_1280.jpg',
+    cost: { [Resource.FIRE]: 1, [Resource.BAMBOO]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.OPPOSING_UNIT,
+            strength: 2,
+        },
+        {
+            type: EffectType.BUFF_MAGIC,
+            target: TargetTypes.OWN_UNIT,
+            strength: 2,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const BRIDGE_TO_IMMORTALITY = makeCard({
+    artistName: 'Artie Navarre',
+    artistUrl: 'https://pixabay.com/users/artie_navarre-66276/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/bridge-of-regret-bridge-regret-3935012/',
+    name: 'Bridge to Immortality',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/01/15/23/00/bridge-of-regret-3935012_1280.jpg',
+    cost: { [Resource.FIRE]: 1, [Resource.BAMBOO]: 1 },
+    effects: [
+        {
+            type: EffectType.GRANT_PASSIVE_EFFECT,
+            target: TargetTypes.ALL_UNITS,
+            passiveEffect: PassiveEffect.HEARTY,
+        },
+    ],
+    rarity: CardRarity.MYTHIC,
+});
+
 // Genies
 const SIGNAL_BEACON = makeCard({
     name: 'Signal Beacon',
@@ -1117,8 +1162,11 @@ const SIGNAL_BEACON = makeCard({
 });
 
 const DECAY = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/fantasy-people-mysticism-mystical-2964231/',
     name: 'Decay',
-    // https://pixabay.com/illustrations/fantasy-people-mysticism-mystical-2964231/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/11/20/02/00/fantasy-2964231_1280.jpg',
     cost: { [Resource.IRON]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 1 },
     effects: [
@@ -1135,6 +1183,56 @@ const DECAY = makeCard({
         {
             type: EffectType.DESTROY_RESOURCE,
             target: TargetTypes.ALL_PLAYERS,
+            strength: 1,
+        },
+    ],
+    rarity: CardRarity.RARE,
+});
+
+const WINDS_OF_TRADE = makeCard({
+    artistName: 'Cilvarium',
+    artistUrl: 'https://pixabay.com/users/cilvarium-3547927/',
+    originalImagePage:
+        'https://pixabay.com/photos/castle-desert-future-city-machine-5896308/',
+    name: 'Winds of Trade',
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/01/07/06/19/castle-5896308_1280.jpg',
+    cost: { [Resource.IRON]: 1, [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 2,
+        },
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+        },
+        {
+            type: EffectType.DISCARD_HAND,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const FORMIDABLE_STORM = makeCard({
+    artistName: 'Placidplace',
+    artistUrl: 'https://pixabay.com/users/placidplace-25572496/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/sandstorm-desert-sand-storm-egypt-7854725/',
+    name: 'Formidable Storm',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/15/14/55/sandstorm-7854725_1280.jpg',
+    cost: { [Resource.IRON]: 2, [Resource.CRYSTAL]: 2, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.ALL_UNITS,
+        },
+        {
+            type: EffectType.EXTRACT_CARD,
+            target: TargetTypes.SELF_PLAYER,
+            cardName: 'King Tut',
             strength: 1,
         },
     ],
@@ -1197,6 +1295,29 @@ const SPARK_JOY = makeCard({
     isTokenOnly: true,
 });
 
+const REINFORCE_STEEL = makeCard({
+    artistName: 'j.mt_photography',
+    artistUrl: 'https://www.pexels.com/@j-mt_photography-628996/',
+    originalImagePage:
+        'https://www.pexels.com/photo/man-forging-metal-3680094/',
+    name: 'Reinforce Steel',
+    imgSrc: 'https://images.pexels.com/photos/3680094/pexels-photo-3680094.jpeg',
+    cost: { [Resource.IRON]: 1, [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.BUFF_ATTACK,
+            target: TargetTypes.ANY,
+            strength: 3,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'SPARK_JOY',
+            strength: 1,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const FESTIVE_BAZAAR = makeCard({
     name: 'Festive Bazaar',
     imgSrc: 'https://images.pexels.com/photos/3243027/pexels-photo-3243027.jpeg',
@@ -1213,7 +1334,7 @@ const FESTIVE_BAZAAR = makeCard({
             resourceType: Resource.FIRE,
         },
     ],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.RARE,
 });
 
 const FIRE_AWAY = makeCard({
@@ -1255,6 +1376,36 @@ const BESIEGE_THE_CASTLE = makeCard({
 });
 
 // 3-color
+const SAMURAIS_TEMPEST = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-lightning-winter-samurai-3412305/',
+    name: "Samurai's Tempest",
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/05/18/22/57/fantasy-3412305_1280.jpg',
+    cost: {
+        [Resource.GENERIC]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.WATER]: 1,
+    },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+        },
+        {
+            type: EffectType.HEAL,
+            strength: 2,
+        },
+        {
+            type: EffectType.BLOOM,
+            strength: 1,
+        },
+    ],
+    rarity: CardRarity.MYTHIC,
+});
+
 const UNDERWORLD_MESSAGE = makeCard({
     name: 'Underworld Message',
     imgSrc: 'https://cdn.pixabay.com/photo/2020/04/07/12/17/photo-manipulation-5013193_1280.jpg',
@@ -1461,7 +1612,7 @@ const POLYMORPH_FROG = makeCard({
             summonType: Tokens.FROG,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const DOUBLE_MORPH_FROG = makeCard({
@@ -1485,10 +1636,51 @@ const DOUBLE_MORPH_FROG = makeCard({
             summonType: Tokens.FROG,
         },
     ],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 // Pirates
+const OLD_WORLD_MAP = makeCard({
+    artistName: 'MasterTux',
+    artistUrl: 'https://pixabay.com/users/mastertux-470906/',
+    originalImagePage:
+        'https://pixabay.com/photos/adventure-treasure-map-old-world-map-2528477/',
+    name: 'Old World Map',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/07/22/11/46/adventure-2528477_1280.jpg',
+    cost: {},
+    effects: [
+        {
+            type: EffectType.CURSE_HAND,
+            target: TargetTypes.SELF_PLAYER,
+            strength: -1,
+        },
+    ],
+    isTokenOnly: true,
+    rarity: CardRarity.UNCOMMON,
+});
+
+const REST_AT_THE_TAVERN = makeCard({
+    artistName: 'loulou Nash',
+    artistUrl: 'https://pixabay.com/users/thefairypath-4207961/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/pirate-pirate-village-swashbuckler-2144555/',
+    name: 'Rest at the Tavern',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/03/14/21/59/pirate-2144555_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.IRON]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+        },
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.ALL_SELF_UNITS,
+            strength: 2,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const RAISE_THE_MASTS = makeCard({
     name: 'Raise the Masts',
     imgSrc: 'https://images.pexels.com/photos/237781/pexels-photo-237781.jpeg',
@@ -1666,12 +1858,19 @@ export const SpellCards = {
     FISH_MARKET_VISIT,
     CONCENTRATED_FOCUS,
 
+    // Dragons
+    BRIDGE_TO_IMMORTALITY,
+    TOO_MUCH_SPICE,
+
     // Genies
     SIGNAL_BEACON,
     DECAY,
     DESERT_TRIALS,
+    WINDS_OF_TRADE,
+    FORMIDABLE_STORM,
 
     // Cannon
+    REINFORCE_STEEL,
     IGNITE_SPARKS,
     SPARK_JOY,
     FESTIVE_BAZAAR,
@@ -1683,10 +1882,13 @@ export const SpellCards = {
     DOUBLE_MORPH_FROG,
 
     // Pirates
+    OLD_WORLD_MAP,
     RAISE_THE_MASTS,
     WRECK_SHIPS,
+    REST_AT_THE_TAVERN,
 
     // Multi-color misc.
+    SAMURAIS_TEMPEST,
     UNDERWORLD_MESSAGE,
     MAGNIMUTATION,
     A_DARK_FOREST,

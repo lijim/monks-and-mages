@@ -57,7 +57,7 @@ const FAIRY_QUEEN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const INGREDIENT_HUNTER: UnitCard = makeCard({
@@ -107,6 +107,36 @@ const POTION_BREWER: UnitCard = makeCard({
         },
     ],
     totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const CASTAWAY_CONJURER: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/fantasy-magician-ship-wreck-sun-4382556/',
+    name: 'Castaway Conjurer',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/08/03/19/59/fantasy-4382556_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.POLYMORPH,
+            target: TargetTypes.UNIT,
+            summonType: Tokens.MANTA_RAY,
+        },
+    ],
+    totalHp: 2,
     attack: 2,
     numAttacks: 1,
     isRanged: true,
@@ -196,7 +226,7 @@ const MASTER_ENCHANTER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const BOG_WARLOCK: UnitCard = makeCard({
@@ -235,6 +265,7 @@ export const WITCHES = {
     FAIRY_QUEEN,
     INGREDIENT_HUNTER,
     MASTER_ENCHANTER,
+    CASTAWAY_CONJURER,
     POTION_BREWER,
     FOREST_SPIRIT,
     POWERFUL_CRONE,

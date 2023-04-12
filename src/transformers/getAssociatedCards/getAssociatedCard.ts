@@ -1,12 +1,12 @@
 import uniqBy from 'lodash.uniqby';
-import { SpellCards } from '@/cardDb/spells';
-import { Tokens, UnitCards } from '@/cardDb/units';
 import { makeCard } from '@/factories/cards';
 import { Card, CardType, Effect } from '@/types/cards';
+import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
 
 const getCardByName = (cardName: string) => {
+    if (!cardName) return null;
     let cardToReturn;
-    const cardPool = { ...SpellCards, ...UnitCards, ...Tokens };
+    const cardPool = ALL_CARDS_DICTIONARY;
 
     Object.entries(cardPool).forEach(([key, card]) => {
         if (key === cardName || card.name === cardName) {

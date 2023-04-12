@@ -34,8 +34,8 @@ describe('get associated card', () => {
         ).toMatchObject(SpellCards.DISTORT_REALITY);
     });
 
-    it('returns nothing for waving fisherman (self-referencing)', () => {
-        expect(getAssociatedCards(UnitCards.WAVING_FISHERMAN)).toHaveLength(0);
+    it('returns just water for waving fisherman (self-referencing)', () => {
+        expect(getAssociatedCards(UnitCards.WAVING_FISHERMAN)).toHaveLength(1);
     });
 
     it('returns a single card for Elite Weapon Master (producing two of same card)', () => {

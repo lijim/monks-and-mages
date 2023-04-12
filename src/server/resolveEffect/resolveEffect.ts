@@ -22,6 +22,7 @@ import {
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
+import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
 
 export const resolveEffect = (
     board: Board,
@@ -257,8 +258,10 @@ export const resolveEffect = (
             playerTargets.forEach((player) => {
                 player.hand.forEach((card) => {
                     if (card.cardType !== CardType.RESOURCE) {
-                        card.cost.Generic =
-                            (card.cost.Generic || 0) + effectStrength;
+                        card.cost.Generic = Math.max(
+                            0,
+                            (card.cost.Generic || 0) + effectStrength
+                        );
                     }
                 });
             });
@@ -458,6 +461,14 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.MILL: {
+            playerTargets.forEach((player) => {
+                player.cemetery = player.cemetery.concat(
+                    player.deck.splice(-effectStrength)
+                );
+            });
+            return clonedBoard;
+        }
         case EffectType.POLYMORPH: {
             const { summonType } = effect;
             if (!summonType) return clonedBoard;
@@ -596,8 +607,8 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.TRANSMUTE: {
-            let cardToMake: UnitCard | SpellCard;
-            const cardPool = { ...SpellCards, ...UnitCards, ...Tokens };
+            let cardToMake: UnitCard | SpellCard | ResourceCard;
+            const cardPool = ALL_CARDS_DICTIONARY;
 
             Object.values(cardPool).forEach((card) => {
                 if (card.name === secondaryCardName) {

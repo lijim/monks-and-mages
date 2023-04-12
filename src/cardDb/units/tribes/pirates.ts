@@ -1,6 +1,6 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
 import { CardRarity, UnitCard } from '@/types/cards';
-import { EffectType, PassiveEffect } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
@@ -123,6 +123,36 @@ const SHIP_COXSWAIN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const SWAMPY_SMUGGLER: UnitCard = makeCard({
+    artistName: 'Mysticsartdesign',
+    artistUrl: 'https://pixabay.com/users/mysticsartdesign-322497/',
+    originalImagePage:
+        'https://pixabay.com/photos/pirates-swamp-smugglers-boat-ship-3277848/',
+    name: 'Swampy Smuggler',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/03/31/10/44/pirates-3277848_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            strength: 1,
+            cardName: 'OLD_WORLD_MAP',
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
     rarity: CardRarity.RARE,
 });
 
@@ -150,7 +180,69 @@ const CUTLASS_CRUSADER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const DOUBLE_DEALING_ROGUE: UnitCard = makeCard({
+    artistName: 'Amy Art-Dreams',
+    artistUrl: 'https://pixabay.com/users/art_dreams-5864742/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/pirate-portrait-man-bandana-7543853/',
+    name: 'Double Dealing Rogue',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/10/24/16/31/pirate-7543853_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_HAND_ATTACK,
+            strength: 2,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
     rarity: CardRarity.RARE,
+});
+
+const NJORD_THE_MIGHTY: UnitCard = makeCard({
+    artistName: 'Alistair',
+    artistUrl: 'https://pixabay.com/users/zagadoo-3644042/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/ai-generated-viking-god-fantasy-7691001/',
+    name: 'Njord the Mighty',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/01/01/23/28/ai-generated-7691001_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Cold Isolation',
+            strength: 2,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 4,
+    attack: 4,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const PIRATES = {
@@ -159,5 +251,8 @@ export const PIRATES = {
     ELDER_PIRATE,
     DARING_CORSAIR,
     SHIP_COXSWAIN,
+    SWAMPY_SMUGGLER,
     CUTLASS_CRUSADER,
+    DOUBLE_DEALING_ROGUE,
+    NJORD_THE_MIGHTY,
 };

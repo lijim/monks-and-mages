@@ -73,7 +73,7 @@ const FROSTBURN_MAGE = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const HEAVENLY_FERRIER = makeCard({
@@ -98,7 +98,7 @@ const HEAVENLY_FERRIER = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ARCHANGEL = makeCard({
@@ -156,7 +156,7 @@ const WIND_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
-    rarity: CardRarity.MYTHIC,
+    rarity: CardRarity.RARE,
 });
 
 export const WIND_MAGES = {
