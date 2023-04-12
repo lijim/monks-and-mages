@@ -22,7 +22,7 @@ import {
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
-import { ALL_CARDS, ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
+import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
 
 export const resolveEffect = (
     board: Board,
