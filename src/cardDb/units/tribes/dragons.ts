@@ -196,7 +196,7 @@ const BOOK_HOARDER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const YELLOW_DRAGON: UnitCard = makeCard({
@@ -294,7 +294,7 @@ const ARTI_THE_CHANNELER: UnitCard = makeCard({
     isSoldier: false,
     isLegendary: true,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.RARE,
 });
 
 const BOLD_DRAGON: UnitCard = makeCard({
