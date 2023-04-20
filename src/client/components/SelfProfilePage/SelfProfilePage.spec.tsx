@@ -11,6 +11,10 @@ jest.mock('@auth0/auth0-react', () => ({
     }),
 }));
 
+jest.mock('react-cookie', () => ({
+    useCookies: () => [{ accessToken: '12345' }],
+}));
+
 const server = setupServer(
     rest.get('/api/levels', (_, res, ctx) => {
         return res(

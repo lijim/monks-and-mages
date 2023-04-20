@@ -21,10 +21,10 @@ export type Filters = {
 };
 
 export type SavedDeck = {
-    createdAt: number;
+    createdAt: string;
     id: string;
     name: string;
     skeleton: Skeleton;
-    updateAt: number;
+    updatedAt: string;
     userUid: string;
 };

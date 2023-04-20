@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
+import { useCookies } from 'react-cookie';
 import { CardImage } from '../CardFrame';
 import { PrimaryColorButton } from '../Button';
 import { Colors } from '@/constants/colors';
@@ -47,13 +48,18 @@ const StackedProfileStat = styled.div`
 
 export const SelfProfilePage = (): JSX.Element => {
     const loggedInPlayerInfo = useLoggedInPlayerInfo();
+    const [cookies] = useCookies();
+    const { accessToken } = cookies;
 
     const { trigger } = useSWRMutation<
         unknown,
         unknown,
-        unknown,
+        [string, string],
         ChooseAvatarParams
-    >(`/users/self/choose_avatar`, swrPatch());
+    >(
+        accessToken ? [`/users/self/choose_avatar`, accessToken] : null,
+        swrPatch
+    );
 
     const onClickAvatar = (avatar: string) => async () => {
         await trigger({
