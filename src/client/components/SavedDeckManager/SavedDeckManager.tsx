@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useSWR, { useSWRConfig } from 'swr';
 
-import cookie from 'cookiejs';
+import { useCookies } from 'react-cookie';
 import { RootState } from '@/client/redux/store';
 import { getCleanName } from '@/client/redux/selectors';
 import { SavedDeck } from '@/types/deckBuilder';
@@ -14,6 +14,7 @@ import { SavedDeckSquare } from '@/client/components/SavedDeckSquare';
 import { DeckList } from '@/types/cards';
 import { PrimaryColorButton } from '../Button';
 import { saveNewDeck } from '@/client/redux/deckBuilder';
+import { useLoggedInPlayerInfo } from '@/client/hooks';
 
 const Backdrop = styled.div`
     background: rgba(255, 255, 255, 0.8);
@@ -40,12 +41,20 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
 }) => {
     const { mutate } = useSWRConfig();
     const dispatch = useDispatch();
+    const [cookies] = useCookies();
+    const loggedInPlayerInfo = useLoggedInPlayerInfo();
 
     const [deckName, setDeckName] = useState('');
     const username = useSelector<RootState, string | undefined>(getCleanName);
+
     const { data: savedDecks } = useSWR<SavedDeck[]>(
-        `/api/saved_decks/${username}`,
-        fetcher()
+        loggedInPlayerInfo?.data.username && cookies.accessToken
+            ? [
+                  `/api/saved_decks/${loggedInPlayerInfo.data.username}`,
+                  cookies.accessToken,
+              ]
+            : null,
+        fetcher
     );
 
     const createDeck = async () => {
@@ -59,7 +68,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
                 },
                 {
                     headers: {
-                        Authorization: `Bearer ${cookie.get('accessToken')}`,
+                        Authorization: `Bearer ${cookies.accessToken}`,
                     },
                 }
             );

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
-import cookie from 'cookiejs';
+import { useCookies } from 'react-cookie';
 import { RootState } from '@/client/redux/store';
 import { PrimaryColorButton, SecondaryColorButton } from '../Button';
 import { LogoutButton } from '../LogoutButton';
@@ -40,13 +40,14 @@ interface Props {
 export const TopNavBar = ({ children }: Props) => {
     const guestName = useSelector<RootState, string>(getCleanName);
     const { user, loginWithRedirect } = useAuth0();
+    const [cookies] = useCookies();
     const loggedInPlayerInfo = useLoggedInPlayerInfo();
 
     useEffect(() => {
-        if (cookie.get('accessToken')) {
+        if (cookies.accessToken) {
             loggedInPlayerInfo?.mutate();
         }
-    }, [cookie.get('accessToken')]);
+    }, [cookies]);
 
     if (user && loggedInPlayerInfo?.data) {
         const { data, nextLevel, currentLevel } = loggedInPlayerInfo;

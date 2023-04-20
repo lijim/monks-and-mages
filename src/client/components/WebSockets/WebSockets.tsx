@@ -4,7 +4,7 @@ import { io, Socket } from 'socket.io-client';
 
 import { push } from 'redux-first-history';
 import { useAuth0 } from '@auth0/auth0-react';
-import cookie from 'cookiejs';
+import { useCookies } from 'react-cookie';
 import {
     chooseName as chooseNameReducer,
     confirmAuth0Id,
@@ -73,6 +73,7 @@ interface Props {
 export const WebSocketProvider = ({ children }: Props) => {
     const [socket, setSocket] = useState<CustomSocket>(null);
     const [ws, setWs] = useState<WebSocketValue>(null);
+    const [, setCookie] = useCookies();
 
     const { user, getAccessTokenWithPopup, getAccessTokenSilently } =
         useAuth0();
@@ -80,27 +81,21 @@ export const WebSocketProvider = ({ children }: Props) => {
     useEffect(() => {
         const authToken = async () => {
             if (!user) return;
-            if (process.env.ENVIRONMENT !== 'production') {
-                const accessToken = await getAccessTokenWithPopup({
-                    audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
-                    scope: 'read:users_app_metadata',
-                });
-                cookie.set('accessToken', accessToken);
-                socket.auth = { ...socket.auth, username: user.name };
-                socket.connect();
-                socket.emit('login', `Bearer ${accessToken}`);
-                setSocket(socket);
-            } else {
-                const accessToken = await getAccessTokenSilently({
-                    audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
-                    scope: 'read:users_app_metadata',
-                });
-                cookie.set('accessToken', accessToken);
-                socket.auth = { ...socket.auth, username: user.name };
-                socket.connect();
-                socket.emit('login', `Bearer ${accessToken}`);
-                setSocket(socket);
-            }
+            const getAccessToken =
+                process.env.ENVIRONMENT === 'production'
+                    ? getAccessTokenSilently
+                    : getAccessTokenWithPopup;
+            const accessToken = await getAccessToken({
+                audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
+                scope: 'read:users_app_metadata',
+            });
+            setCookie('accessToken', accessToken, {
+                maxAge: 86400, // 1 day
+            });
+            socket.auth = { ...socket.auth, username: user.name };
+            socket.connect();
+            socket.emit('login', `Bearer ${accessToken}`);
+            setSocket(socket);
         };
         authToken();
     }, [user]);

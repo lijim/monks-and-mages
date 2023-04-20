@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useSWRConfig } from 'swr';
 
-import cookie from 'cookiejs';
 import useSWRMutation from 'swr/mutation';
+import { useCookies } from 'react-cookie';
 import { SavedDeck } from '@/types/deckBuilder';
 import { Colors } from '@/constants/colors';
 import {
@@ -45,11 +45,11 @@ const HStack = styled.div`
     grid-template-columns: 1fr auto auto;
 `;
 
-const deleteDeckFn = async (username: string, deckId: string) =>
+const deleteDeckFn = async (username: string, deckId: string, token: string) =>
     axios.delete('/api/saved_decks', {
         data: { username, deckId },
         headers: {
-            Authorization: `Bearer ${cookie.get('accessToken')}`,
+            Authorization: `Bearer ${token}`,
         },
     });
 
@@ -63,6 +63,8 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
     savedDeck,
 }) => {
     const { name, id } = savedDeck;
+    const [cookies] = useCookies();
+    const { accessToken } = cookies;
     const username = useSelector<RootState, string | undefined>(getCleanName);
     const dispatch = useDispatch();
     const currentSavedDeckName = useSelector<RootState, string>(
@@ -81,13 +83,13 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
         unknown,
         unknown,
         { deckId: string; skeleton: Skeleton }
-    >(`/saved_decks`, swrPatch());
+    >(accessToken ? [`/saved_decks`, accessToken] : null, swrPatch);
 
     const isHighlighted = currentSavedDeckName === name;
 
     const deleteDeck = async () => {
         try {
-            await deleteDeckFn(username, id);
+            await deleteDeckFn(username, id, accessToken);
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);

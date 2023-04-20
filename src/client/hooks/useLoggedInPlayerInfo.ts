@@ -1,5 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import useSWR from 'swr';
+import { useCookies } from 'react-cookie';
 import { fetcher } from '@/apiHelpers';
 import {
     DEFAULT_AVATAR,
@@ -26,14 +27,19 @@ const getLevels = (player: UserPlayer | null, levels: Level[] | null) => {
 
 export const useLoggedInPlayerInfo = () => {
     const { user } = useAuth0();
+    const [cookies] = useCookies();
 
     const { data: levelsData } = useSWR<Level[]>(
-        user ? '/api/levels' : null,
-        fetcher()
+        user && cookies.accessToken
+            ? ['/api/levels', cookies.accessToken]
+            : null,
+        fetcher
     );
     const { data, mutate } = useSWR<UserPlayer>(
-        user ? '/api/users/self' : null,
-        fetcher()
+        user && cookies.accessToken
+            ? ['/api/users/self', cookies.accessToken]
+            : null,
+        fetcher
     );
 
     if (!data || !levelsData) {
