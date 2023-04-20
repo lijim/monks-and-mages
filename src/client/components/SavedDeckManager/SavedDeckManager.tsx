@@ -47,7 +47,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
     const [deckName, setDeckName] = useState('');
     const username = useSelector<RootState, string | undefined>(getCleanName);
 
-    const { data: savedDecks } = useSWR<SavedDeck[]>(
+    const { data: savedDecks } = useSWR<SavedDeck[], unknown, [string, string]>(
         loggedInPlayerInfo?.data.username && cookies.accessToken
             ? [
                   `/api/saved_decks/${loggedInPlayerInfo.data.username}`,

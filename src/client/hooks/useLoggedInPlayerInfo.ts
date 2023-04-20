@@ -29,13 +29,13 @@ export const useLoggedInPlayerInfo = () => {
     const { user } = useAuth0();
     const [cookies] = useCookies();
 
-    const { data: levelsData } = useSWR<Level[]>(
+    const { data: levelsData } = useSWR<Level[], unknown, [string, string]>(
         user && cookies.accessToken
             ? ['/api/levels', cookies.accessToken]
             : null,
         fetcher
     );
-    const { data, mutate } = useSWR<UserPlayer>(
+    const { data, mutate } = useSWR<UserPlayer, unknown, [string, string]>(
         user && cookies.accessToken
             ? ['/api/users/self', cookies.accessToken]
             : null,

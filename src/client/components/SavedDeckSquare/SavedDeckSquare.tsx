@@ -81,7 +81,7 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
     const { trigger } = useSWRMutation<
         SavedDeck | ErrorMessage,
         unknown,
-        unknown,
+        [string, string],
         { deckId: string; skeleton: Skeleton }
     >(accessToken ? [`/saved_decks`, accessToken] : null, swrPatch);
 

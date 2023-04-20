@@ -54,7 +54,7 @@ export const SelfProfilePage = (): JSX.Element => {
     const { trigger } = useSWRMutation<
         unknown,
         unknown,
-        unknown,
+        [string, string],
         ChooseAvatarParams
     >(
         accessToken ? [`/users/self/choose_avatar`, accessToken] : null,
