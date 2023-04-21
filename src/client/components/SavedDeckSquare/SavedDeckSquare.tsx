@@ -94,7 +94,7 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
             // eslint-disable-next-line no-console
             console.error(error);
         } finally {
-            mutate(`/api/saved_decks/${username}`);
+            mutate([`/api/saved_decks/${username}`, accessToken]);
         }
     };
 
@@ -114,7 +114,7 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
             // eslint-disable-next-line no-console
             console.error(error);
         } finally {
-            mutate(`/api/saved_decks/${username}`);
+            mutate([`/api/saved_decks/${username}`, accessToken]);
         }
     };
 
