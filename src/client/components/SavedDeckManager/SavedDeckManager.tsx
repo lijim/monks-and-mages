@@ -42,16 +42,17 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
     const { mutate } = useSWRConfig();
     const dispatch = useDispatch();
     const [cookies] = useCookies();
+    const { accessToken } = cookies;
     const loggedInPlayerInfo = useLoggedInPlayerInfo();
 
     const [deckName, setDeckName] = useState('');
     const username = useSelector<RootState, string | undefined>(getCleanName);
 
     const { data: savedDecks } = useSWR<SavedDeck[], unknown, [string, string]>(
-        loggedInPlayerInfo?.data.username && cookies.accessToken
+        loggedInPlayerInfo?.data.username && accessToken
             ? [
                   `/api/saved_decks/${loggedInPlayerInfo.data.username}`,
-                  cookies.accessToken,
+                  accessToken,
               ]
             : null,
         fetcher
@@ -68,7 +69,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
                 },
                 {
                     headers: {
-                        Authorization: `Bearer ${cookies.accessToken}`,
+                        Authorization: `Bearer ${accessToken}`,
                     },
                 }
             );
@@ -77,7 +78,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
             // eslint-disable-next-line no-console
             console.error(error);
         } finally {
-            mutate(`/api/saved_decks/${username}`);
+            mutate([`/api/saved_decks/${username}`, accessToken]);
         }
     };
 
