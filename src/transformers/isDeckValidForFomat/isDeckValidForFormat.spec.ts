@@ -140,7 +140,7 @@ describe('isDeckValidForFormat', () => {
                 )
             ).toEqual({
                 isValid: false,
-                reason: 'Every card must match the color identify of your legendary leader',
+                reason: 'Every card must match the color identify of your legendary leader - [[Archery at Sunset]] does not match',
             });
         });
     });

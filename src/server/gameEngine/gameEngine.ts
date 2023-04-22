@@ -610,7 +610,11 @@ export const applyGameAction = ({
             const { decklist, errors } = getDeckListFromSkeleton(skeleton);
             if (decklist && errors.length === 0) {
                 const { deck, hand, numCardsInDeck, numCardsInHand } =
-                    makeNewPlayer({ name: playerName, decklist });
+                    makeNewPlayer({
+                        name: playerName,
+                        decklist,
+                        format: clonedBoard.format,
+                    });
                 self.deck = deck;
                 self.hand = hand;
                 self.numCardsInDeck = numCardsInDeck;

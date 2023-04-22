@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '@/test-utils';
 
 import { PlayerBriefInfo } from './PlayerBriefInfo';
 import { makeNewPlayer } from '@/factories/player';
@@ -70,5 +70,16 @@ describe('Player Brief Info', () => {
         player.resourcePool = { [Resource.GENERIC]: 1 };
         render(<PlayerBriefInfo player={player} />);
         expect(screen.getAllByText('1')).toHaveLength(1);
+    });
+
+    it('renders the legendary leader', () => {
+        const player = makeNewPlayer({
+            name: 'Grandma Jenkins',
+            decklist: SAMPLE_DECKLIST_1,
+        });
+        player.legendaryLeader = makeCard(UnitCards.ALADDIN);
+        player.resourcePool = { [Resource.GENERIC]: 1 };
+        render(<PlayerBriefInfo player={player} />);
+        expect(screen.getByText('Aladdin')).toBeInTheDocument();
     });
 });

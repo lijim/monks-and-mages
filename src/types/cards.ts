@@ -91,6 +91,7 @@ export interface UnitCard extends UnitBase {
     hpBuff: number;
     id?: string;
     isFresh: boolean;
+    isLegendaryLeader: boolean;
     isSelected: boolean; // true if unit card has entered this past turn
     numAttacksLeft: number;
     oneCycleAttackBuff: number;
