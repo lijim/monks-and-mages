@@ -389,6 +389,34 @@ describe('Game Action', () => {
         });
     });
 
+    describe('Deploy Legendary Leader', () => {
+        it('deploys the legendary leader', () => {
+            const legendaryLeader = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            board.players[0].legendaryLeader = legendaryLeader;
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.IRON]: 5,
+            };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_LEGENDARY_LEADER,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].units[0].name).toBe(
+                'Joan of Arc, Folk Hero'
+            );
+            expect(newBoardState.players[0].legendaryLeaderExtraCost).toBe(2);
+            expect(newBoardState.players[0].legendaryLeader.cost.Generic).toBe(
+                7
+            );
+            expect(newBoardState.players[0].isLegendaryLeaderDeployed).toBe(
+                true
+            );
+        });
+    });
+
     describe('Deploy Unit', () => {
         it('deploys a unit', () => {
             const unitCard = makeCard(UnitCards.CANNON);

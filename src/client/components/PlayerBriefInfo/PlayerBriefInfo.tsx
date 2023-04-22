@@ -7,7 +7,6 @@ import { CastingCostFrame } from '../CastingCost';
 import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
 import { GameManagerContext } from '../GameManager';
 import { DEFAULT_AVATAR } from '@/types/players';
-import { CardGridItem } from '../CardGridItem';
 import { LegendaryLeaderZone } from '../LegendaryLeaderZone';
 
 interface PlayerBriefInfoProps {
@@ -101,12 +100,13 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
     return (
         <PlayerBriefContainer
             isActivePlayer={isActivePlayer}
-            onClick={() => {
-                handleClickPlayer(player);
-            }}
             displayLegendaryLeader={!!player.legendaryLeader}
         >
-            <UpperSection>
+            <UpperSection
+                onClick={() => {
+                    handleClickPlayer(player);
+                }}
+            >
                 <div>
                     <b>{numCardsInDeck}</b> <span>🂡 (Deck)</span>
                 </div>
@@ -137,8 +137,19 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
                     </div>
                 )}
             </UpperSection>
-            <MiddleSection avatarUrl={avatar}>{`${health}`}</MiddleSection>
-            <LowerSection>{name}</LowerSection>
+            <MiddleSection
+                avatarUrl={avatar}
+                onClick={() => {
+                    handleClickPlayer(player);
+                }}
+            >{`${health}`}</MiddleSection>
+            <LowerSection
+                onClick={() => {
+                    handleClickPlayer(player);
+                }}
+            >
+                {name}
+            </LowerSection>
             <LegendaryLeaderZone player={player} />
         </PlayerBriefContainer>
     );

@@ -369,6 +369,50 @@ export const applyGameAction = ({
             matchingCard.isUsed = true;
             return clonedBoard;
         }
+        case GameActionTypes.DEPLOY_LEGENDARY_LEADER: {
+            const { legendaryLeader } = activePlayer;
+
+            // check if player can afford resource costs
+            if (
+                !canPlayerPayForCard(activePlayer, legendaryLeader) ||
+                activePlayer.isLegendaryLeaderDeployed
+            ) {
+                return clonedBoard;
+            }
+
+            // pay for the card
+            activePlayer.resourcePool = payForCard(
+                activePlayer,
+                legendaryLeader
+            ).resourcePool;
+            activePlayer.isLegendaryLeaderDeployed = true;
+
+            const legendaryLeaderInstance = makeCard(legendaryLeader);
+
+            // deploy the card
+            activePlayer.units.push(legendaryLeaderInstance);
+            activePlayer.effectQueue = activePlayer.effectQueue.concat(
+                cloneDeep(legendaryLeaderInstance.enterEffects)
+                    .reverse()
+                    .map((effect) => ({
+                        ...effect,
+                        sourceId: legendaryLeaderInstance.id,
+                    }))
+            );
+
+            // announce the card
+            addSystemChat(
+                `${activePlayer.name} deployed their legendary leader, [[${legendaryLeader.name}]]`
+            );
+
+            // bump legendary leader costs
+            activePlayer.legendaryLeaderExtraCost += 2;
+            activePlayer.legendaryLeader.cost.Generic =
+                (activePlayer.legendaryLeader.originalCost.Generic || 0) +
+                activePlayer.legendaryLeaderExtraCost;
+
+            return clonedBoard;
+        }
         case GameActionTypes.DEPLOY_UNIT: {
             const { cardId } = gameAction;
             const { hand } = activePlayer;
