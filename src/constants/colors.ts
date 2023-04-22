@@ -6,7 +6,7 @@ export enum Colors {
     COMMON_GREY = '#bdc3c7',
     CRYSTAL_PURPLE = '#684B77',
     DARK_BROWN = '#4a2e15',
-    DEBUFF_RED = '#c70039',
+    DEBUFF_RED = '#ffc7d7',
     FELT_GREEN = '#247345',
     FELT_GREEN_ALT = '#36ae68',
     FIRE_ORANGE = '#f57322',

@@ -43,7 +43,7 @@ export const LegendaryLeaderZone = ({ player }: Props) => {
             <CardGridItem
                 isOnBoard={false}
                 isHighlighted={isDeployable}
-                opacity={player.isLegendaryLeaderDeployed ? 0.5 : 1}
+                opacity={player.isLegendaryLeaderDeployed ? 0.7 : 1}
                 card={player.legendaryLeader}
                 onClick={onClick}
                 zoomLevel={0.8}
