@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '@/test-utils';
 import { OtherPlayerInfo } from './OtherPlayerInfo';
 import { makeNewPlayer } from '@/factories/player';
 import { SAMPLE_DECKLIST_1 } from '@/constants/deckLists';

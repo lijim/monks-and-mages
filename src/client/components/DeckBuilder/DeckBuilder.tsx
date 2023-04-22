@@ -52,7 +52,7 @@ const DeckListBackDrop = styled.div`
 `;
 
 const ValidationMsg = styled.div`
-    color: ${Colors.DEBUFF_RED};
+    color: ${Colors.INVALID_RED};
     padding-top: 12px;
 `;
 

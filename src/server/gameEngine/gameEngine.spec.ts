@@ -389,6 +389,68 @@ describe('Game Action', () => {
         });
     });
 
+    describe('Legendary Leader', () => {
+        it('deploys the legendary leader', () => {
+            const legendaryLeader = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            board.players[0].legendaryLeader = legendaryLeader;
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.IRON]: 5,
+            };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_LEGENDARY_LEADER,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].units[0].name).toBe(
+                'Joan of Arc, Folk Hero'
+            );
+            expect(newBoardState.players[0].units[0].isLegendaryLeader).toBe(
+                true
+            );
+            expect(newBoardState.players[0].legendaryLeaderExtraCost).toBe(2);
+            expect(newBoardState.players[0].legendaryLeader.cost.Generic).toBe(
+                7
+            );
+            expect(newBoardState.players[0].isLegendaryLeaderDeployed).toBe(
+                true
+            );
+        });
+
+        it('returns the legendary leader after going to cemetery through combat', () => {
+            const attacker = makeCard(UnitCards.BOUNTY_COLLECTOR);
+            attacker.numAttacksLeft = 1;
+            const legendaryLeader = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            legendaryLeader.isLegendaryLeader = true;
+            board.players[0].units = [attacker];
+            board.players[1].units = [legendaryLeader];
+            board.players[1].legendaryLeader = makeCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            board.players[1].isLegendaryLeaderDeployed = true;
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: legendaryLeader.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].cemetery[0].name).toEqual(
+                attacker.name
+            );
+            expect(newBoardState.players[0].units).toHaveLength(0);
+            expect(newBoardState.players[1].cemetery).toHaveLength(0);
+            expect(newBoardState.players[1].units).toHaveLength(0);
+            expect(newBoardState.players[1].isLegendaryLeaderDeployed).toBe(
+                false
+            );
+        });
+    });
+
     describe('Deploy Unit', () => {
         it('deploys a unit', () => {
             const unitCard = makeCard(UnitCards.CANNON);

@@ -4,6 +4,7 @@ import { Resource } from './resources';
 export enum GameActionTypes {
     ACCEPT_MULLIGAN = 'ACCEPT_MULLIGAN',
     CAST_SPELL = 'CAST_SPELL',
+    DEPLOY_LEGENDARY_LEADER = 'DEPLOY_LEGENDARY_LEADER',
     DEPLOY_RESOURCE = 'DEPLOY_RESOURCE',
     DEPLOY_UNIT = 'DEPLOY_UNIT',
     PASS_TURN = 'PASS_TURN',
@@ -24,6 +25,9 @@ export interface CastSpell {
     playerTargets?: string[]; // player name's
     type: GameActionTypes.CAST_SPELL;
     unitTargets?: string[]; // card id's
+}
+export interface DeployLegendaryLeader {
+    type: GameActionTypes.DEPLOY_LEGENDARY_LEADER;
 }
 
 export interface DeployResource {
@@ -74,6 +78,7 @@ export interface TapResource {
 export type GameAction =
     | AcceptMulliganAction
     | CastSpell
+    | DeployLegendaryLeader
     | DeployResource
     | DeployUnit
     | PassTurnAction

@@ -23,7 +23,12 @@ import {
     makeSystemChatMessage,
 } from '@/factories';
 import { GameState } from '@/types/board';
-import { applyGameAction, applyWinState, passTurn } from '../gameEngine';
+import {
+    applyGameAction,
+    applyWinState,
+    cleanupLegendaryLeaders,
+    passTurn,
+} from '../gameEngine';
 import { GameAction } from '@/types/gameActions';
 import { resolveEffect } from '../resolveEffect';
 
@@ -367,6 +372,10 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
 
         // TODO: add error handling when user tries to take an invalid action
         if (newBoardState) {
+            cleanupLegendaryLeaders(
+                newBoardState,
+                sendChatMessageForRoom(socket)
+            );
             room.board = newBoardState; // apply state changes to in-memory storage of boards
         }
         await broadcastBoardForRoom(room.roomName);

@@ -152,6 +152,50 @@ export const processBoardToCemetery = (
     });
 };
 
+const isCardLegendaryLeader = (card: Card) =>
+    card.cardType === CardType.UNIT && card.isLegendaryLeader;
+
+/**
+ * @param board - board to mutate
+ * @param addSystemChat
+ * @returns mutated board, with legendary leaders in cemetery/hand/deck replaced
+ */
+export const cleanupLegendaryLeaders = (
+    board: Board,
+    addSystemChat: (chatMessage: string) => void
+) => {
+    const { players } = board;
+
+    if (!players?.length) return;
+    players.forEach((player) => {
+        const legendaryLeaderInCemetery = [...player.cemetery].find(
+            isCardLegendaryLeader
+        );
+        if (legendaryLeaderInCemetery) {
+            player.cemetery = player.cemetery.filter(
+                (card) => !isCardLegendaryLeader(card)
+            );
+            player.isLegendaryLeaderDeployed = false;
+            addSystemChat(
+                `The legendary leader for ${player.name}, [[${legendaryLeaderInCemetery.name}]] is going back to the legendary leader zone`
+            );
+        }
+
+        const legendaryLeaderInDeck = [...player.deck].find(
+            isCardLegendaryLeader
+        );
+        if (legendaryLeaderInDeck) {
+            player.deck = player.deck.filter(
+                (card) => !isCardLegendaryLeader(card)
+            );
+            player.isLegendaryLeaderDeployed = false;
+            addSystemChat(
+                `The legendary leader for ${player.name}, [[${legendaryLeaderInDeck.name}]] is going back to the legendary leader zone`
+            );
+        }
+    });
+};
+
 /**
  * Effectful code to pass the turn to the next player
  * @param {Object} board - board to analyze
@@ -369,6 +413,51 @@ export const applyGameAction = ({
             matchingCard.isUsed = true;
             return clonedBoard;
         }
+        case GameActionTypes.DEPLOY_LEGENDARY_LEADER: {
+            const { legendaryLeader } = activePlayer;
+
+            // check if player can afford resource costs
+            if (
+                !canPlayerPayForCard(activePlayer, legendaryLeader) ||
+                activePlayer.isLegendaryLeaderDeployed
+            ) {
+                return clonedBoard;
+            }
+
+            // pay for the card
+            activePlayer.resourcePool = payForCard(
+                activePlayer,
+                legendaryLeader
+            ).resourcePool;
+            activePlayer.isLegendaryLeaderDeployed = true;
+
+            const legendaryLeaderInstance = makeCard(legendaryLeader);
+            legendaryLeaderInstance.isLegendaryLeader = true;
+
+            // deploy the card
+            activePlayer.units.push(legendaryLeaderInstance);
+            activePlayer.effectQueue = activePlayer.effectQueue.concat(
+                cloneDeep(legendaryLeaderInstance.enterEffects)
+                    .reverse()
+                    .map((effect) => ({
+                        ...effect,
+                        sourceId: legendaryLeaderInstance.id,
+                    }))
+            );
+
+            // announce the card
+            addSystemChat(
+                `${activePlayer.name} deployed their legendary leader, [[${legendaryLeader.name}]]`
+            );
+
+            // bump legendary leader costs
+            activePlayer.legendaryLeaderExtraCost += 2;
+            activePlayer.legendaryLeader.cost.Generic =
+                (activePlayer.legendaryLeader.originalCost.Generic || 0) +
+                activePlayer.legendaryLeaderExtraCost;
+
+            return clonedBoard;
+        }
         case GameActionTypes.DEPLOY_UNIT: {
             const { cardId } = gameAction;
             const { hand } = activePlayer;
@@ -495,6 +584,7 @@ export const applyGameAction = ({
                     `[[${attacker.name}]] (${activePlayer.name}) ${attackEmoji}${attackEmoji} [[${defender.name}]] (${defendingPlayer.name})`
                 );
                 processBoardToCemetery(clonedBoard, addSystemChat);
+                cleanupLegendaryLeaders(clonedBoard, addSystemChat);
 
                 return clonedBoard;
             }
