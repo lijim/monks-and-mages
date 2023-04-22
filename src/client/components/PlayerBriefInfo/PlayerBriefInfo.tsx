@@ -7,23 +7,27 @@ import { CastingCostFrame } from '../CastingCost';
 import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
 import { GameManagerContext } from '../GameManager';
 import { DEFAULT_AVATAR } from '@/types/players';
+import { CardGridItem } from '../CardGridItem';
 
 interface PlayerBriefInfoProps {
     player: Player;
 }
 
 interface PlayerBriefContainerProps {
+    displayLegendaryLeader: boolean;
     isActivePlayer: boolean;
 }
 
 const PlayerBriefContainer = styled.div<PlayerBriefContainerProps>`
     width: 170px;
-    height: 220px;
+    height: ${({ displayLegendaryLeader }) =>
+        displayLegendaryLeader ? 420 : 220}px;
     border: 6px solid
         ${({ isActivePlayer }) =>
             isActivePlayer ? Colors.FOCUS_BLUE : Colors.DARK_BROWN};
     display: grid;
-    grid-auto-rows: auto 1fr auto;
+    grid-auto-rows: ${({ displayLegendaryLeader }) =>
+        displayLegendaryLeader ? 'auto auto auto auto' : 'auto 1fr auto'};
     cursor: pointer;
     background-color: whitesmoke;
 `;
@@ -99,6 +103,7 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
             onClick={() => {
                 handleClickPlayer(player);
             }}
+            displayLegendaryLeader={!!player.legendaryLeader}
         >
             <UpperSection>
                 <div>
@@ -133,6 +138,16 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
             </UpperSection>
             <MiddleSection avatarUrl={avatar}>{`${health}`}</MiddleSection>
             <LowerSection>{name}</LowerSection>
+            {player.legendaryLeader && (
+                <div style={{ textAlign: 'center' }}>
+                    <CardGridItem
+                        isOnBoard={false}
+                        card={player.legendaryLeader}
+                        zoomLevel={0.8}
+                        hasTooltip
+                    />
+                </div>
+            )}
         </PlayerBriefContainer>
     );
 };

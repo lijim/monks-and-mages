@@ -4,6 +4,7 @@ import { Filters, MatchStrategy, ResourceCost } from '@/types/deckBuilder';
 import { ORDERED_RESOURCES, Resource } from '@/types/resources';
 import { getTypeForUnitCard } from '../getTypeForUnitCard';
 import { transformEffectToRulesText } from '../transformEffectsToRulesText';
+import { isCardLegendary } from '../isCardLegendary';
 
 const cardMatchesText = (card: Card, text: string): boolean => {
     const nameIncludes = card.name.toLowerCase().includes(text.toLowerCase());
@@ -104,8 +105,8 @@ const cardMatchesLegendaryStatus = (
     isLegendaryFilter: boolean | null
 ): boolean => {
     if (isLegendaryFilter === null) return true;
-    const isCardLegendary = card.cardType === CardType.UNIT && card.isLegendary;
-    return isLegendaryFilter ? isCardLegendary : !isCardLegendary;
+    const isLegend = isCardLegendary(card);
+    return isLegendaryFilter ? isLegend : !isLegend;
 };
 
 /**

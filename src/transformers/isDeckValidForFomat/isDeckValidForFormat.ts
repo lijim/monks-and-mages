@@ -2,6 +2,7 @@ import { PlayerConstants } from '@/constants/gameConstants';
 import { CardType, DeckList } from '@/types/cards';
 import { Format, isFormatConstructed } from '@/types/games';
 import { getColorIdentityForCard } from '../getColorIdentityForCard';
+import { isCardLegendary } from '../isCardLegendary';
 
 export const MAX_DUPLICATES_FOR_FORMATS = {
     [Format.SINGLETON]: 1,
@@ -42,8 +43,8 @@ export const isDeckValidForFormat = (
         return { isValid, reason };
     }
 
-    const legendaries = deck.mainBoard.filter(
-        ({ card }) => card.cardType === CardType.UNIT && card.isLegendary
+    const legendaries = deck.mainBoard.filter(({ card }) =>
+        isCardLegendary(card)
     );
     if (format === Format.LEGENDARY_LEAGUE) {
         if (legendaries.length !== 1) {
@@ -63,9 +64,15 @@ export const isDeckValidForFormat = (
                 )
             )
         ) {
+            const { card: invalidCard } = deck.mainBoard.find(
+                ({ card }) =>
+                    !getColorIdentityForCard(card).every((color) =>
+                        legendaryColorIdentity.includes(color)
+                    )
+            );
             return {
                 isValid: false,
-                reason: `Every card must match the color identify of your legendary leader`,
+                reason: `Every card must match the color identify of your legendary leader - [[${invalidCard.name}]] does not match`,
             };
         }
     }

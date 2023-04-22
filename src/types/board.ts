@@ -14,6 +14,9 @@ export type Player = {
     health: number;
     isActivePlayer: boolean;
     isAlive: boolean;
+    isLegendaryLeaderDeployed: boolean;
+    legendaryLeader: UnitCard | null;
+    legendaryLeaderExtraCost: number;
     name: string;
     numCardsInDeck: number;
     numCardsInHand: number;

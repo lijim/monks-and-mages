@@ -39,6 +39,7 @@ export const makeUnitCard = (unitBase: UnitBase): UnitCard => {
         numAttacksLeft: hasQuick ? unitBase.numAttacks : 0,
         isFresh: true,
         isSelected: false,
+        isLegendaryLeader: false,
         hpBuff: 0,
         attackBuff: 0,
         oneCycleAttackBuff: 0,

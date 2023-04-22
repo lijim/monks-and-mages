@@ -6,6 +6,7 @@ export * from './getDeckListFromSkeleton';
 export * from './getImgSrcForCard';
 export * from './getSkeletonFromDeckList';
 export * from './getTypeForUnitCard';
+export * from './isCardLegendary';
 export * from './isDeckValidForFomat';
 export * from './modifyCardForTooltip';
 export * from './payForCard';

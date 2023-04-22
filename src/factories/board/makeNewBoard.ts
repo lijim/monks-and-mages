@@ -42,7 +42,7 @@ export const makeNewBoard = ({
         if (skeleton && isFormatConstructed(format)) {
             const { decklist } = getDeckListFromSkeleton(skeleton);
             if (isDeckValidForFormat(decklist)) {
-                return makeNewPlayer({ name: playerName, decklist });
+                return makeNewPlayer({ name: playerName, decklist, format });
             }
         }
 
@@ -58,7 +58,12 @@ export const makeNewBoard = ({
             );
         }
         const avatarUrl = avatarsForPlayers[playerName];
-        const player = makeNewPlayer({ name: playerName, decklist, avatarUrl });
+        const player = makeNewPlayer({
+            name: playerName,
+            decklist,
+            avatarUrl,
+            format,
+        });
 
         if (format === Format.SEALED) {
             [...Array(SEALED_PACK_QUANTITY)].forEach(() => {
