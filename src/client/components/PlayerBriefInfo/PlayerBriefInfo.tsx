@@ -8,6 +8,7 @@ import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
 import { GameManagerContext } from '../GameManager';
 import { DEFAULT_AVATAR } from '@/types/players';
 import { CardGridItem } from '../CardGridItem';
+import { LegendaryLeaderZone } from '../LegendaryLeaderZone';
 
 interface PlayerBriefInfoProps {
     player: Player;
@@ -138,16 +139,7 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
             </UpperSection>
             <MiddleSection avatarUrl={avatar}>{`${health}`}</MiddleSection>
             <LowerSection>{name}</LowerSection>
-            {player.legendaryLeader && (
-                <div style={{ textAlign: 'center' }}>
-                    <CardGridItem
-                        isOnBoard={false}
-                        card={player.legendaryLeader}
-                        zoomLevel={0.8}
-                        hasTooltip
-                    />
-                </div>
-            )}
+            <LegendaryLeaderZone player={player} />
         </PlayerBriefContainer>
     );
 };

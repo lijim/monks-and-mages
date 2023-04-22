@@ -16,7 +16,9 @@ interface CardGridItemProps {
     hasTooltip?: boolean;
     isHighlighted?: boolean;
     isOnBoard?: boolean;
-    onClick?: () => void; // if provided overrides the default one from hasOnClick
+    onClick?: () => void;
+    opacity?: number;
+    // if provided overrides the default one from hasOnClick
     zoomLevel?: number;
 }
 
@@ -131,6 +133,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
     hasOnClick,
     isHighlighted,
     isOnBoard,
+    opacity = 1,
     onClick,
     zoomLevel = 1,
 }) => {
@@ -150,7 +153,7 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
         <>
             {/* The card itself */}
             <div
-                style={{ display: 'inline-grid' }}
+                style={{ display: 'inline-grid', opacity }}
                 ref={hasTooltip && setTriggerRef}
             >
                 <CardGridSingleItem
