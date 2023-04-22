@@ -7,7 +7,7 @@ import { UnitCards } from '@/cardDb/units';
 import { Colors } from '@/constants/colors';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import { Resource } from '@/types/resources';
-import { AdvancedResourceGridItem } from '../AdvancedResourceGridItem.tsx';
+import { AdvancedResourceGridItem } from '../AdvancedResourceGridItem/index.js';
 import { SecondaryColorButton } from '../Button';
 import { ResourceCardGridItem } from '../ResourceCardGridItem';
 import { SpellGridItem } from '../SpellGridItem';

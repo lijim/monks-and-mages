@@ -6,7 +6,7 @@ import { ResourceCardGridItem } from '../ResourceCardGridItem';
 import { SpellGridItem } from '../SpellGridItem';
 import { UnitGridItem } from '../UnitGridItem';
 import { GameManagerContext } from '../GameManager';
-import { AdvancedResourceGridItem } from '../AdvancedResourceGridItem.tsx';
+import { AdvancedResourceGridItem } from '../AdvancedResourceGridItem';
 import { HandleClickOnCardParams } from '../GameManager/handleClickOnCard';
 import { getAssociatedCards, modifyCardForTooltip } from '@/transformers';
 
