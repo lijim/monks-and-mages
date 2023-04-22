@@ -115,6 +115,14 @@ export const RouterRoutes: React.FC = () => {
                 }
             />
             <Route
+                path="/customize/legendary_league"
+                element={
+                    <LobbyBackground>
+                        <DeckBuilder format={Format.LEGENDARY_LEAGUE} />
+                    </LobbyBackground>
+                }
+            />
+            <Route
                 path="/me"
                 element={
                     <LobbyBackground>

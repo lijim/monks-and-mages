@@ -6,6 +6,7 @@ import { DeckListSelections } from '@/constants/lobbyConstants';
 import { WebSocketContext } from '../WebSockets';
 import { RootState } from '@/client/redux/store';
 import { PrimaryColorButton, SecondaryColorButton } from '../Button';
+import { Format } from '@/types/games';
 
 export const DeckListSelector: React.FC = () => {
     const dispatch = useDispatch();
@@ -76,6 +77,14 @@ export const DeckListSelector: React.FC = () => {
                     fontSize="16px"
                 >
                     Custom (Singleton)
+                </PrimaryColorButton>
+                <PrimaryColorButton
+                    onClick={() => {
+                        dispatch(push('/customize/legendary_league'));
+                    }}
+                    fontSize="13px"
+                >
+                    Custom ({Format.LEGENDARY_LEAGUE})
                 </PrimaryColorButton>
             </div>
         </div>
