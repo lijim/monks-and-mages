@@ -125,9 +125,10 @@ export const DeckBuilder: React.FC<DeckBuilderProps> = ({
                         "format in files created by 'Download as a File' or " +
                         'Copy to Clipboard'
                 );
+            } else {
+                // eslint-disable-next-line no-alert
+                window.alert(`Error: ${error.message}`);
             }
-            // eslint-disable-next-line no-console
-            console.error(error);
         }
     };
 

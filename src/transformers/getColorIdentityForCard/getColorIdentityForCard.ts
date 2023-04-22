@@ -1,6 +1,6 @@
+import { uniq } from 'lodash';
 import { Card, CardType } from '@/types/cards';
 import { Resource } from '@/types/resources';
-import { uniq } from 'lodash';
 
 export const getColorIdentityForCard = (card: Card): Resource[] => {
     let resourceTypes: Resource[] = [];

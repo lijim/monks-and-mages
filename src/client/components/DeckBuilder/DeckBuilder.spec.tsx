@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { push } from 'redux-first-history';
+import { range } from 'lodash';
 import { fireEvent, render, screen, waitFor, within } from '@/test-utils';
 import { DeckBuilder } from './DeckBuilder';
 import { UnitCards } from '@/cardDb/units';
@@ -11,11 +11,49 @@ import { MatchStrategy } from '@/types/deckBuilder';
 import { mockSavedDeck } from '@/mocks/savedDecks';
 import { Format } from '@/types/games';
 import { GameActionTypes } from '@/types/gameActions';
+import { makeNewBoard } from '@/factories';
+
+jest.mock('@auth0/auth0-react', () => ({
+    __esModule: true,
+    useAuth0: () => ({
+        user: 'auth0|1234',
+    }),
+}));
+
+jest.mock('react-cookie', () => ({
+    useCookies: () => [{ accessToken: '12345' }],
+}));
 
 const server = setupServer(
     // Describe the requests to mock.
-    rest.get('/api/saved_decks/dungeonmaster1234', (_, res, ctx) => {
+    rest.get('/api/saved_decks/dungeonmaster', (_, res, ctx) => {
         return res(ctx.json([mockSavedDeck]));
+    }),
+
+    rest.get('/api/users/self', (_, res, ctx) => {
+        return res(
+            ctx.json({
+                uid: 'auth0|1234',
+                username: 'dungeonmaster',
+                createdAt: '2023-02-25T08:41:41.258Z',
+                numberOfGamesWon: 0,
+                exp: 20,
+                avatarUrl: '',
+            })
+        );
+    }),
+
+    rest.get('/api/levels', (_, res, ctx) => {
+        return res(
+            ctx.json([
+                {
+                    name: 'Angry Hen',
+                    level: 1,
+                    xpRequired: 0,
+                    image: 'https://monksandmages.com/images/units/angry-hen.webp',
+                },
+            ])
+        );
     }),
 
     rest.get('/socket.io/', (_, res, ctx) => {
@@ -37,7 +75,7 @@ describe('DeckBuilder', () => {
     beforeAll(() => {
         HTMLAnchorElement.prototype.click = jest.fn();
     });
-    it.only('adds cards from the entire card pool (constructed mode)', async () => {
+    it('adds cards from the entire card pool (constructed mode)', async () => {
         render(<DeckBuilder />);
         fireEvent.click(screen.getByText('Lancer'));
         expect(
@@ -46,8 +84,6 @@ describe('DeckBuilder', () => {
             )
         ).toBeInTheDocument();
     });
-    // it.todo('adds cards from a filtered card pool');
-    // it.todo('adds cards via a quantity selector');
     it('does not add cards past a limit of 4 (constructed)', () => {
         render(<DeckBuilder />);
         const cardPool = screen.getByTestId('CardPool');
@@ -71,7 +107,6 @@ describe('DeckBuilder', () => {
 
         expect(within(myDeck).getByText('5')).toBeInTheDocument();
     });
-    // it.todo('adds from a limited pool of cards (draft mode)');
     it('removes cards', () => {
         render(<DeckBuilder />);
         const cardPool = screen.getByTestId('CardPool');
@@ -97,7 +132,6 @@ describe('DeckBuilder', () => {
 
         expect(within(myDeck).queryAllByText('Crystal')).toHaveLength(0);
     });
-    it.todo('removes cards via a quantity selector');
 
     it('exports the decklist', () => {
         Object.assign(navigator, {
@@ -113,14 +147,15 @@ describe('DeckBuilder', () => {
         fireEvent.click(screen.getByText('Copy to Clipboard'));
 
         expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-            `[{"card":"Lancer","quantity":1}]`
+            '{"mainBoard":[{"card":"Lancer","quantity":1}],"sideBoard":[]}'
         );
     });
 
     it('imports a decklist', async () => {
         Object.assign(navigator, {
             clipboard: {
-                readText: () => `[{"card":"Lancer","quantity":1}]`,
+                readText: () =>
+                    '{"mainBoard":[{"card":"Lancer","quantity":1}],"sideBoard":[]}',
             },
         });
 
@@ -164,7 +199,8 @@ describe('DeckBuilder', () => {
     it('gives deck-specific import errors', async () => {
         Object.assign(navigator, {
             clipboard: {
-                readText: () => `[{"card":"LancerABC","quantity":1}]`,
+                readText: () =>
+                    '{"mainBoard":[{"card":"LancerABC","quantity":1}],"sideBoard":[]}',
             },
         });
 
@@ -180,7 +216,7 @@ describe('DeckBuilder', () => {
 
         await waitFor(() =>
             expect(window.alert).toHaveBeenCalledWith(
-                'Error found in decklist: Could not read "LancerABC"'
+                'Error: Could not read "LancerABC"'
             )
         );
 
@@ -193,60 +229,60 @@ describe('DeckBuilder', () => {
         Object.assign(navigator, {
             clipboard: {
                 readText: () =>
-                    `[{"card":"Iron","quantity":56},{"card":"Lancer","quantity":4}]`,
+                    `{"mainBoard":[{"card":"Iron","quantity":56},{"card":"Lancer","quantity":4}],"sideBoard":[]}`,
             },
         });
 
         navigator.clipboard.writeText = jest.fn();
-        const { webSocket, dispatch } = render(<DeckBuilder />);
+        const { webSocket } = render(<DeckBuilder />);
         const myDeck = screen.getByTestId('CurrentDeck');
 
         fireEvent.click(screen.getByText('Import from Clipboard'));
         expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
 
         fireEvent.click(screen.getByText('Submit'));
-        expect(webSocket.chooseCustomDeck).toHaveBeenCalledWith([
-            { card: 'Iron', quantity: 56 },
-            { card: 'Lancer', quantity: 4 },
-        ]);
-        expect(dispatch).toHaveBeenCalledWith(push('/'));
+        expect(webSocket.chooseCustomDeck).toHaveBeenCalledWith({
+            mainBoard: [
+                { card: 'Iron', quantity: 56 },
+                { card: 'Lancer', quantity: 4 },
+            ],
+            sideBoard: [],
+        });
     });
 
     it('submits a deck for limited mode', async () => {
-        Object.assign(navigator, {
-            clipboard: {
-                readText: () =>
-                    `[{"card":"Iron","quantity":56},{"card":"Lancer","quantity":4}]`,
+        const { webSocket } = render(<DeckBuilder format={Format.SEALED} />, {
+            preloadedState: {
+                board: makeNewBoard({
+                    playerNames: ['Tommy', 'Timmy'],
+                    startingPlayerIndex: 0,
+                    format: Format.SEALED,
+                }),
             },
         });
-
-        navigator.clipboard.writeText = jest.fn();
-        const { webSocket, dispatch } = render(
-            <DeckBuilder format={Format.SEALED} />
-        );
+        const bamboo = screen.getByText('Bamboo');
+        range(0, 40).forEach(() => {
+            fireEvent.click(bamboo);
+        });
         const myDeck = screen.getByTestId('CurrentDeck');
 
-        fireEvent.click(screen.getByText('Import from Clipboard'));
-        expect(await within(myDeck).findByText('Lancer')).toBeInTheDocument();
+        expect(await within(myDeck).findByText('Bamboo')).toBeInTheDocument();
 
         fireEvent.click(screen.getByText('Submit'));
         expect(webSocket.takeGameAction).toHaveBeenCalledWith({
             type: GameActionTypes.SUBMIT_DECK,
-            decklist: {
-                mainBoard: [
-                    { card: 'Iron', quantity: 56 },
-                    { card: 'Lancer', quantity: 4 },
-                ],
+            skeleton: {
+                mainBoard: [{ card: 'Bamboo', quantity: 40 }],
+                sideBoard: [],
             },
         });
-        expect(dispatch).toHaveBeenCalledWith(push('/'));
     });
 
     it('downloads a deck', async () => {
         Object.assign(navigator, {
             clipboard: {
                 readText: () =>
-                    `[{"card":"Iron","quantity":44},{"card":"Lancer","quantity":4}]`,
+                    `{"mainBoard":[{"card":"Iron","quantity":56},{"card":"Lancer","quantity":4}],"sideBoard":[]}`,
             },
         });
 
@@ -265,7 +301,8 @@ describe('DeckBuilder', () => {
     it('validates a deck', async () => {
         Object.assign(navigator, {
             clipboard: {
-                readText: () => `[{"card":"Lancer","quantity":1}]`,
+                readText: () =>
+                    `{"mainBoard":[{"card":"Lancer","quantity":4}],"sideBoard":[]}`,
             },
         });
 
@@ -387,9 +424,6 @@ describe('DeckBuilder', () => {
                 screen.queryByText(UnitCards.LANCER.name)
             ).toBeInTheDocument();
             expect(
-                screen.queryByText(UnitCards.DRAGON_MIST_WARRIOR.name)
-            ).toBeInTheDocument();
-            expect(
                 screen.queryByText(AdvancedResourceCards.TANGLED_RUINS.name)
             ).toBeInTheDocument();
         });
@@ -425,6 +459,32 @@ describe('DeckBuilder', () => {
             ).not.toBeInTheDocument();
             expect(
                 screen.queryByText(SpellCards.EMBER_SPEAR.name)
+            ).not.toBeInTheDocument();
+        });
+
+        it('filters by rarity', () => {
+            render(<DeckBuilder />);
+
+            fireEvent.click(screen.getByTestId('Filters-RarityType-Common'));
+            fireEvent.click(screen.getByTestId('Filters-RarityType-Uncommon'));
+
+            // expect commons + uncommons
+            expect(
+                screen.queryByText(UnitCards.LANCER.name)
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(UnitCards.LONGBOWMAN.name)
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(UnitCards.MAGICIANS_APPRENTICE.name)
+            ).toBeInTheDocument();
+
+            // don't expect rares / mythics
+            expect(
+                screen.queryByText(UnitCards.DRAGON_MIST_WARRIOR.name)
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(SpellCards.A_DARK_FOREST.name)
             ).not.toBeInTheDocument();
         });
     });

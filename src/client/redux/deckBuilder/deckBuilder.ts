@@ -41,7 +41,12 @@ export const deckBuilderSlice = createSlice({
             state.isSavedDeckAltered = false;
         },
         loadDeck(state, action: PayloadAction<Skeleton>) {
-            const { decklist } = getDeckListFromSkeleton(action.payload);
+            const { decklist, errors } = getDeckListFromSkeleton(
+                action.payload
+            );
+            if (errors.length > 0) {
+                throw new Error(errors[0]);
+            }
 
             if (decklist) {
                 state.decklist = decklist;

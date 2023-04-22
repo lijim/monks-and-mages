@@ -10,6 +10,7 @@ const initialState: Filters = {
     resourceCosts: [],
     resourceMatchStrategy: MatchStrategy.EXACT,
     unitTypes: [],
+    isLegendary: null,
 };
 
 export const deckBuilderFiltersSlice = createSlice({
@@ -72,6 +73,21 @@ export const deckBuilderFiltersSlice = createSlice({
             // select the unit type
             state.rarities.push(action.payload);
         },
+        toggleIsLegendaryFilter(state, action: PayloadAction<boolean | null>) {
+            // case 1: nothing is set yet
+            if (state.isLegendary === null) {
+                state.isLegendary = action.payload;
+                return;
+            }
+            // case 2: something is selected
+            // subcase: toggling it off because we're deactivating current filter
+            if (state.isLegendary === action.payload) {
+                state.isLegendary = null;
+                // subcase: toggling it on because we're switching to this filter
+            } else {
+                state.isLegendary = action.payload;
+            }
+        },
     },
 });
 
@@ -85,5 +101,6 @@ export const {
     selectResourceMatchStrategy,
     toggleUnitTypeFilter,
     toggleRarityFilter,
+    toggleIsLegendaryFilter,
     toggleResourceCardFilter,
 } = deckBuilderFiltersSlice.actions;
