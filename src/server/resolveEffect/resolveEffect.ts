@@ -306,6 +306,7 @@ export const resolveEffect = (
             if (unitTargets) {
                 unitTargets.forEach(({ unitCard }) => {
                     unitCard.hp = 0;
+                    unitCard.hpBuff = 0;
                 });
                 processBoardToCemetery(clonedBoard, addSystemChat);
             }
