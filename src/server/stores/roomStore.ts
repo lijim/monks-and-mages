@@ -372,11 +372,11 @@ export const createRoomStore = ({ sessionStore, io }: CreateRoomStoreArgs) => {
 
         // TODO: add error handling when user tries to take an invalid action
         if (newBoardState) {
-            const newBoardStateWithCleanup = cleanupLegendaryLeaders(
+            cleanupLegendaryLeaders(
                 newBoardState,
                 sendChatMessageForRoom(socket)
             );
-            room.board = newBoardStateWithCleanup; // apply state changes to in-memory storage of boards
+            room.board = newBoardState; // apply state changes to in-memory storage of boards
         }
         await broadcastBoardForRoom(room.roomName);
     };

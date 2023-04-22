@@ -194,8 +194,6 @@ export const cleanupLegendaryLeaders = (
             );
         }
     });
-
-    return board;
 };
 
 /**
