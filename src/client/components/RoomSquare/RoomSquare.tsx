@@ -78,6 +78,9 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
                             <option value={Format.SINGLETON}>Singleton</option>
                             <option value={Format.DRAFT}>Draft</option>
                             <option value={Format.SEALED}>Sealed</option>
+                            <option value={Format.LEGENDARY_LEAGUE}>
+                                Legendary League 🎖️
+                            </option>
                         </select>
                     ) : (
                         format

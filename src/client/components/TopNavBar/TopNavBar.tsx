@@ -111,7 +111,7 @@ export const TopNavBar = ({ children }: Props) => {
                             }}
                         >
                             Level {currentLevel.level} - {data.exp} /{' '}
-                            {nextLevel.xpRequired} XP
+                            {nextLevel && `${nextLevel.xpRequired} XP`}
                         </div>
                     </div>
                     {loggedInPlayerInfo?.data.username ? (

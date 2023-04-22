@@ -4,6 +4,7 @@ import {
     clearFreeTextFilter,
     searchFreeTextFilter,
     selectResourceMatchStrategy,
+    toggleIsLegendaryFilter,
     toggleRarityFilter,
     toggleResourceCardFilter,
     toggleResourceFilter,
@@ -195,7 +196,7 @@ const RaritiesFilter: React.FC = () => {
                             dispatch(toggleRarityFilter(rarity));
                         }}
                         style={{ cursor: 'pointer' }}
-                        data-testid={`Filters-UnitType-${rarity}`}
+                        data-testid={`Filters-RarityType-${rarity}`}
                         tabIndex={0}
                     >
                         <svg width="14" height="14">
@@ -213,6 +214,53 @@ const RaritiesFilter: React.FC = () => {
     );
 };
 
+const LEGENDARY_STATUSES = [
+    {
+        legendaryStatus: true,
+        icon: '🎖️',
+        altText: 'Legendary only',
+    },
+    {
+        legendaryStatus: false,
+        icon: '🚫',
+        altText: 'Non-legendary only',
+    },
+];
+
+const LegendaryStatusFilter: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const isLegendaryStatus = useSelector<RootState, boolean | null>(
+        (state) => state.deckBuilderFilters.isLegendary
+    );
+
+    return (
+        <div>
+            <span style={{ zoom: 2, fontSize: '72%' }}>
+                {LEGENDARY_STATUSES.map(
+                    ({ legendaryStatus, icon, altText }) => (
+                        <CastingCostFrame
+                            key={altText}
+                            hasNoMargin
+                            isMuted={isLegendaryStatus !== legendaryStatus}
+                            onClick={() => {
+                                dispatch(
+                                    toggleIsLegendaryFilter(legendaryStatus)
+                                );
+                            }}
+                            style={{ cursor: 'pointer' }}
+                            data-testid={`Filters-LegendaryStatus-${altText}`}
+                            title={altText}
+                            tabIndex={0}
+                        >
+                            {icon}
+                        </CastingCostFrame>
+                    )
+                )}
+            </span>
+        </div>
+    );
+};
+
 /**
  * Note: unit tests omitted temporarily in favor of an integration test on DeckBuilder
  * @returns Filters component for DeckBuilder
@@ -225,6 +273,7 @@ export const DeckBuilderFilters: React.FC = () => {
             <ResourceCostFilter />
             <UnitTypeFilter />
             <RaritiesFilter />
+            <LegendaryStatusFilter />
         </>
     );
 };

@@ -13,6 +13,7 @@ export type ResourceCost = '7+' | number;
 
 export type Filters = {
     freeText: string;
+    isLegendary: boolean | null;
     rarities: CardRarity[];
     resourceCosts: ResourceCost[];
     resourceMatchStrategy: MatchStrategy;

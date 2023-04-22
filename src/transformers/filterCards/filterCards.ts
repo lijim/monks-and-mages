@@ -99,6 +99,15 @@ const cardMatchesRarities = (card: Card, rarities: CardRarity[]): boolean => {
     return rarities.includes(card.rarity);
 };
 
+const cardMatchesLegendaryStatus = (
+    card: Card,
+    isLegendaryFilter: boolean | null
+): boolean => {
+    if (isLegendaryFilter === null) return true;
+    const isCardLegendary = card.cardType === CardType.UNIT && card.isLegendary;
+    return isLegendaryFilter ? isCardLegendary : !isCardLegendary;
+};
+
 /**
  * @param cards - cards to filter
  * @param filters - see @/types/Filters
@@ -113,6 +122,7 @@ export const filterCards = (
         resourceMatchStrategy,
         unitTypes,
         rarities,
+        isLegendary,
     }: Filters
 ): Card[] => {
     const cardsFilteredByFreeText = freeText
@@ -132,5 +142,8 @@ export const filterCards = (
     const cardsFilteredByRarities = cardsFilteredByResourceCosts.filter(
         (card) => cardMatchesRarities(card, rarities)
     );
-    return cardsFilteredByRarities;
+    const cardsFilteredByLegendaryStatus = cardsFilteredByRarities.filter(
+        (card) => cardMatchesLegendaryStatus(card, isLegendary)
+    );
+    return cardsFilteredByLegendaryStatus;
 };
