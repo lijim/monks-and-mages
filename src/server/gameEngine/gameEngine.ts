@@ -152,6 +152,52 @@ export const processBoardToCemetery = (
     });
 };
 
+const isCardLegendaryLeader = (card: Card) =>
+    card.cardType === CardType.UNIT && card.isLegendaryLeader;
+
+/**
+ * @param board - board to mutate
+ * @param addSystemChat
+ * @returns mutated board, with legendary leaders in cemetery/hand/deck replaced
+ */
+export const cleanupLegendaryLeaders = (
+    board: Board,
+    addSystemChat: (chatMessage: string) => void
+) => {
+    const { players } = board;
+
+    if (!players?.length) return;
+    players.forEach((player) => {
+        const legendaryLeaderInCemetery = [...player.cemetery].find(
+            isCardLegendaryLeader
+        );
+        if (legendaryLeaderInCemetery) {
+            player.cemetery = player.cemetery.filter(
+                (card) => !isCardLegendaryLeader(card)
+            );
+            player.isLegendaryLeaderDeployed = false;
+            addSystemChat(
+                `The legendary leader for ${player.name}, [[${legendaryLeaderInCemetery.name}]] is going back to the legendary leader zone`
+            );
+        }
+
+        const legendaryLeaderInDeck = [...player.deck].find(
+            isCardLegendaryLeader
+        );
+        if (legendaryLeaderInDeck) {
+            player.deck = player.deck.filter(
+                (card) => !isCardLegendaryLeader(card)
+            );
+            player.isLegendaryLeaderDeployed = false;
+            addSystemChat(
+                `The legendary leader for ${player.name}, [[${legendaryLeaderInDeck.name}]] is going back to the legendary leader zone`
+            );
+        }
+    });
+
+    return board;
+};
+
 /**
  * Effectful code to pass the turn to the next player
  * @param {Object} board - board to analyze
@@ -540,6 +586,7 @@ export const applyGameAction = ({
                     `[[${attacker.name}]] (${activePlayer.name}) ${attackEmoji}${attackEmoji} [[${defender.name}]] (${defendingPlayer.name})`
                 );
                 processBoardToCemetery(clonedBoard, addSystemChat);
+                cleanupLegendaryLeaders(clonedBoard, addSystemChat);
 
                 return clonedBoard;
             }

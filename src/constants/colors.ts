@@ -13,6 +13,7 @@ export enum Colors {
     FIRE_ORANGE_EMPHASIZED = '#dc671e',
     FOCUS_BLUE = '#0071bc',
     IRON_GREY = '#484441',
+    INVALID_RED = '#c70039',
     // for outlines, accessiblity, showing active player
     // Light grey is perfect for when you want a background white text,
     // but different color emojis to contrast against the background
