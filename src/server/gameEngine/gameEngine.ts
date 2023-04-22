@@ -388,6 +388,7 @@ export const applyGameAction = ({
             activePlayer.isLegendaryLeaderDeployed = true;
 
             const legendaryLeaderInstance = makeCard(legendaryLeader);
+            legendaryLeaderInstance.isLegendaryLeader = true;
 
             // deploy the card
             activePlayer.units.push(legendaryLeaderInstance);

@@ -407,6 +407,9 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0].name).toBe(
                 'Joan of Arc, Folk Hero'
             );
+            expect(newBoardState.players[0].units[0].isLegendaryLeader).toBe(
+                true
+            );
             expect(newBoardState.players[0].legendaryLeaderExtraCost).toBe(2);
             expect(newBoardState.players[0].legendaryLeader.cost.Generic).toBe(
                 7
