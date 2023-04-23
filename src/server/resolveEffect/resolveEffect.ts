@@ -37,6 +37,7 @@ export const resolveEffect = (
         cardName,
         secondaryCardName,
         passiveEffect,
+        sourceId,
     } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
@@ -61,6 +62,9 @@ export const resolveEffect = (
     // Determine targets to apply effects to
     let playerTargets: Player[];
     let unitTargets: { player: Player; unitCard: UnitCard }[] = [];
+    const sourceUnitCard = players
+        .flatMap((player) => player.units)
+        .find((card) => card.id === sourceId);
     const target = effect.target || getDefaultTargetForEffect(effect.type);
     let targetText;
 
@@ -177,24 +181,36 @@ export const resolveEffect = (
         }
         case EffectType.BUFF_ATTACK: {
             unitTargets.forEach(({ unitCard }) => {
+                if (unitCard.passiveEffects.includes(PassiveEffect.STEADY)) {
+                    return;
+                }
                 unitCard.attackBuff += effectStrength;
             });
             return clonedBoard;
         }
         case EffectType.BUFF_ATTACK_FOR_CYCLE: {
             unitTargets.forEach(({ unitCard }) => {
+                if (unitCard.passiveEffects.includes(PassiveEffect.STEADY)) {
+                    return;
+                }
                 unitCard.oneCycleAttackBuff += effectStrength;
             });
             return clonedBoard;
         }
         case EffectType.BUFF_ATTACK_FOR_TURN: {
             unitTargets.forEach(({ unitCard }) => {
+                if (unitCard.passiveEffects.includes(PassiveEffect.STEADY)) {
+                    return;
+                }
                 unitCard.oneTurnAttackBuff += effectStrength;
             });
             return clonedBoard;
         }
         case EffectType.BUFF_MAGIC: {
             unitTargets.forEach(({ unitCard }) => {
+                if (unitCard.passiveEffects.includes(PassiveEffect.STEADY)) {
+                    return;
+                }
                 if (!unitCard.isMagical) return;
                 unitCard.hpBuff += effectStrength;
                 unitCard.attackBuff += effectStrength;
@@ -207,6 +223,9 @@ export const resolveEffect = (
             playerTargets.forEach((player) => {
                 player.hand.forEach((card) => {
                     if (card.cardType !== CardType.UNIT) return;
+                    if (card.passiveEffects.includes(PassiveEffect.STEADY)) {
+                        return;
+                    }
                     const unit = card;
                     if (!unit.isMagical) {
                         unit.attackBuff += effectStrength;
@@ -221,6 +240,9 @@ export const resolveEffect = (
         case EffectType.BUFF_TEAM_ATTACK: {
             playerTargets.forEach((player) => {
                 player.units.forEach((unit) => {
+                    if (unit.passiveEffects.includes(PassiveEffect.STEADY)) {
+                        return;
+                    }
                     if (!unit.isMagical) {
                         unit.attackBuff += effectStrength;
                     }
@@ -234,6 +256,9 @@ export const resolveEffect = (
         case EffectType.BUFF_TEAM_HP: {
             playerTargets.forEach((player) => {
                 player.units.forEach((unit) => {
+                    if (unit.passiveEffects.includes(PassiveEffect.STEADY)) {
+                        return;
+                    }
                     unit.hpBuff += effectStrength;
                 });
             });
@@ -244,9 +269,14 @@ export const resolveEffect = (
         case EffectType.BUFF_TEAM_MAGIC: {
             playerTargets.forEach((player) => {
                 player.units.forEach((unit) => {
+                    if (unit.passiveEffects.includes(PassiveEffect.STEADY)) {
+                        return;
+                    }
                     if (unit.isMagical) {
                         unit.attackBuff += effectStrength;
                     }
+                    // give total attack a floor value of 0
+                    // to make game easier to understand
                     if (unit.attackBuff < -unit.attack) {
                         unit.attackBuff = -unit.attack;
                     }
@@ -270,6 +300,11 @@ export const resolveEffect = (
         case EffectType.DEAL_DAMAGE: {
             if (unitTargets) {
                 unitTargets.forEach(({ unitCard }) => {
+                    if (
+                        unitCard.passiveEffects.includes(PassiveEffect.ETHEREAL)
+                    ) {
+                        return;
+                    }
                     unitCard.hp -= effectStrength;
                 });
                 processBoardToCemetery(clonedBoard, addSystemChat);
@@ -300,6 +335,27 @@ export const resolveEffect = (
                 );
             });
             applyWinState(clonedBoard);
+            return clonedBoard;
+        }
+        case EffectType.DESTROY_RESOURCE_WITH_FEASTING: {
+            const { resourceType } = effect;
+            playerTargets.forEach((player) => {
+                const resourcesToDestroy = sampleSize(
+                    player.resources.filter((resource) => {
+                        if (!resourceType) return true;
+                        return resource.resourceType === resourceType;
+                    }),
+                    effectStrength
+                );
+                if (sourceUnitCard) {
+                    sourceUnitCard.attackBuff += resourcesToDestroy.length;
+                    sourceUnitCard.hpBuff += resourcesToDestroy.length;
+                }
+                player.resources = player.resources.filter(
+                    (resource) =>
+                        !resourcesToDestroy.find((r) => r === resource)
+                );
+            });
             return clonedBoard;
         }
         case EffectType.DESTROY_UNIT: {

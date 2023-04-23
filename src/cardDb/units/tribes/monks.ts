@@ -266,6 +266,42 @@ const KEEPER_OF_THE_GATE: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const THORNHELM: UnitCard = makeCard({
+    artistName: 'Thành Nguyễn',
+    artistUrl: 'https://pixabay.com/users/thanh_nguyen_slq-21384332/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/ai-generated-soldier-warrior-7877342/',
+    name: 'Thornhelm',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/26/01/46/ai-generated-7877342_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    damagePlayerEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            strength: Number.MAX_SAFE_INTEGER,
+            target: TargetTypes.SELF_PLAYER,
+        },
+        {
+            type: EffectType.DRAW,
+            strength: 4,
+        },
+    ],
+    enterEffects: [],
+    totalHp: 3,
+    attack: 4,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.MYTHIC,
+});
+
 export const MONKS = {
     ASSASSIN,
     DISCIPLINED_WARRIOR,
@@ -277,4 +313,5 @@ export const MONKS = {
     MODEST_CLERIC,
     DAWNMIST_CHARGER,
     KEEPER_OF_THE_GATE,
+    THORNHELM,
 };

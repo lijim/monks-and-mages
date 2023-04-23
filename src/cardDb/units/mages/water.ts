@@ -1,6 +1,6 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
 import { CardRarity, UnitCard } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
@@ -513,6 +513,36 @@ const CHAD_THE_AQUAPHILE: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const SEA_DRAGON: UnitCard = makeCard({
+    artistName: 'Angela (ang3law)',
+    artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/sea-monster-creature-fantasy-7930215/',
+    name: 'Sea Dragon',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/04/16/13/42/sea-7930215_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 3,
+        },
+    ],
+    totalHp: 4,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const WATER_GUARDIAN: UnitCard = makeCard({
     name: 'Water Guardian',
     imgSrc: 'https://images.unsplash.com/photo-1616123654898-ee836f578193',
@@ -604,6 +634,7 @@ export const WATER_MAGES = {
     CURSED_CHIEFTAIN,
     AQUARIAN_ADEPT,
     CHAD_THE_AQUAPHILE,
+    SEA_DRAGON,
     PENELOPE_THE_TORTOISE,
     WATER_GUARDIAN,
 };

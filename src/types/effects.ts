@@ -41,6 +41,7 @@ export enum EffectType {
     CURSE_HAND = 'Curse Hand', // adds one generic cost to cards in hand
     DEAL_DAMAGE = 'Deal Damage', // to any target
     DESTROY_RESOURCE = 'Destroy Resource',
+    DESTROY_RESOURCE_WITH_FEASTING = 'Destroy Resource With Feasting', // destroy resource, gain +1, +1 for each resource destroyed
     DESTROY_UNIT = 'Destroy Unit',
     DISCARD_HAND = 'Discard Hand', // discard X cards at random
     DRAW = 'Draw',
@@ -90,6 +91,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.CURSE_HAND]: TargetTypes.OPPONENT,
         [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
         [EffectType.DESTROY_RESOURCE]: TargetTypes.OPPONENT,
+        [EffectType.DESTROY_RESOURCE_WITH_FEASTING]: TargetTypes.PLAYER,
         [EffectType.DESTROY_UNIT]: TargetTypes.OPPOSING_UNIT,
         [EffectType.DISCARD_HAND]: TargetTypes.OPPONENT,
         [EffectType.DRAW]: TargetTypes.SELF_PLAYER,
@@ -125,7 +127,9 @@ export enum PassiveEffect {
         STRONG_VS_SOLDIER, // deal double damage to soldier units
         HEARTY, // cannot be taken down in 1 hit
     */
+    ETHEREAL = 'Ethereal (cannot be damaged outside of direct combat)',
     HEARTY = 'Hearty (Rather than going to cemetery, lose hearty and go to 1 hp)',
     POISONED = 'Poisonous (deals lethal damage)', // deals lethal dmg to enemy units
     QUICK = 'Quick (can attack right away)', // no summoning sickness
+    STEADY = "Steady (this unit's stats cannot be modified)",
 }

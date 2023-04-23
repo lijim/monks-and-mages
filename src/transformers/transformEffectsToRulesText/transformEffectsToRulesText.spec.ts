@@ -273,6 +273,16 @@ describe('transformEffectstoRulesText', () => {
                 `Destroy all of any opponent's resources`
             );
         });
+
+        it('displays rules destroying a resource (all) - with feasting', () => {
+            const effect: Effect = {
+                type: EffectType.DESTROY_RESOURCE_WITH_FEASTING,
+                strength: Number.MAX_SAFE_INTEGER,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Destroy all of any player's resources.  Gain +1/+1 for each resource destroyed this way`
+            );
+        });
     });
 
     describe('Destroy unit', () => {

@@ -390,7 +390,16 @@ describe('resolve effect', () => {
             const squire = makeCard(UnitCards.SQUIRE);
             const cannon = makeCard(UnitCards.CANNON);
             const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
-            board.players[0].units = [squire, cannon, apprentice];
+            const apprenticeWithSteady = makeCard(
+                UnitCards.MAGICIANS_APPRENTICE
+            );
+            apprenticeWithSteady.passiveEffects = [PassiveEffect.STEADY];
+            board.players[0].units = [
+                squire,
+                cannon,
+                apprentice,
+                apprenticeWithSteady,
+            ];
 
             const newBoard = resolveEffect(
                 board,
@@ -403,6 +412,7 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].units[0].attackBuff).toEqual(0);
             expect(newBoard.players[0].units[1].attackBuff).toEqual(0);
             expect(newBoard.players[0].units[2].attackBuff).toEqual(2);
+            expect(newBoard.players[0].units[3].attackBuff).toEqual(0);
         });
     });
 
@@ -504,6 +514,35 @@ describe('resolve effect', () => {
             );
 
             expect(newBoard.players[1].resources).toHaveLength(1);
+        });
+
+        it('destroys a specific resource and feasts on it', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[1].resources = [
+                makeResourceCard(Resource.BAMBOO),
+                makeResourceCard(Resource.FIRE),
+            ];
+            board.players[1].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DESTROY_RESOURCE_WITH_FEASTING,
+                        target: TargetTypes.ALL_OPPONENTS,
+                        strength: 1,
+                        resourceType: Resource.BAMBOO,
+                        sourceId: squire.id,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[1].resources[0].resourceType).toEqual(
+                Resource.FIRE
+            );
+            expect(newBoard.players[1].units[0].hpBuff).toEqual(1);
+            expect(newBoard.players[1].units[0].attackBuff).toEqual(1);
         });
     });
 
@@ -793,6 +832,23 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].units[0].hp).toEqual(
                 UnitCards.SQUIRE.hp - 2
+            );
+        });
+
+        it('does not deal damage to a unit with ethereal', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            squire.passiveEffects = [PassiveEffect.ETHEREAL];
+            board.players[0].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: { type: EffectType.DEAL_DAMAGE, strength: 2 },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].hp).toEqual(
+                UnitCards.SQUIRE.hp
             );
         });
 

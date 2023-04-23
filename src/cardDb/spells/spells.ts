@@ -1101,7 +1101,7 @@ const CONCENTRATED_FOCUS = makeCard({
 
 // Dragons (bamboo + fire)
 const TOO_MUCH_SPICE = makeCard({
-    artistName: 'Angela',
+    artistName: 'Angela (ang3law)',
     artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
     originalImagePage:
         'https://pixabay.com/illustrations/fire-breathing-fiction-dragon-7853170/',
@@ -1600,6 +1600,33 @@ const CALL_THE_HERD = makeCard({
     rarity: CardRarity.MYTHIC,
 });
 
+const DEFEND_THE_FORTRESS = makeCard({
+    artistName: 'Thành Nguyễn',
+    artistUrl: 'https://pixabay.com/users/thanh_nguyen_slq-21384332/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/art-fortress-painting-fantasy-7917495/',
+    name: 'Defend the Fortress',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/04/11/15/12/art-7917495_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.IRON]: 1,
+    },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+            target: TargetTypes.ALL_UNITS,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+            target: TargetTypes.ALL_UNITS,
+        },
+    ],
+    rarity: CardRarity.RARE,
+});
+
 // Witches
 const POLYMORPH_FROG = makeCard({
     name: 'Polymorph: Frog',
@@ -1895,6 +1922,7 @@ export const SpellCards = {
     A_MILLION_RAYS,
     QUESTION_REALITY,
     CALL_THE_HERD,
+    DEFEND_THE_FORTRESS,
 
     // Neutral
     HISTORICAL_RESEARCH,

@@ -1,6 +1,6 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
 import { CardRarity, UnitCard } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
@@ -95,6 +95,29 @@ const PYROCALLER: UnitCard = makeCard({
     isSoldier: false,
     passiveEffects: [],
     rarity: CardRarity.COMMON,
+});
+
+const BREWING_ILLUMINATOR: UnitCard = makeCard({
+    artistName: 'Angela (ang3law)',
+    artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/mage-wizard-magic-fantasy-fire-7522249/',
+    name: 'Brewing Illuminator',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/10/15/00/07/mage-7522249_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.ETHEREAL],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const MYSTICAL_FIGURE: UnitCard = makeCard({
@@ -434,6 +457,7 @@ export const FIRE_MAGES = {
     FIRE_TECHNICIAN,
     PYROCALLER,
     MYSTICAL_FIGURE,
+    BREWING_ILLUMINATOR,
     LA_CATRINA,
     ZEALOUS_ACOLYTE,
     IMPRESSIVE_DANCER,
