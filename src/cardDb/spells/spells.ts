@@ -1101,7 +1101,7 @@ const CONCENTRATED_FOCUS = makeCard({
 
 // Dragons (bamboo + fire)
 const TOO_MUCH_SPICE = makeCard({
-    artistName: 'Angela',
+    artistName: 'Angela (ang3law)',
     artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
     originalImagePage:
         'https://pixabay.com/illustrations/fire-breathing-fiction-dragon-7853170/',

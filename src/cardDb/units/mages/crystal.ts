@@ -1,6 +1,6 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
 import { CardRarity, UnitCard } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
 const THIRD_YEAR_STUDENTS: UnitCard = makeCard({
@@ -49,6 +49,28 @@ const IGNUS_FATUUS: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const SCHOLARS_PET: UnitCard = makeCard({
+    artistName: 'Angela (ang3law)',
+    artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/ai-generated-dragon-book-library-7868383/',
+    name: "Scholar's Pet",
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/21/23/46/ai-generated-7868383_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.ETHEREAL],
     rarity: CardRarity.UNCOMMON,
 });
 
@@ -340,6 +362,7 @@ const CYRUS_PURPLE_DRAGON: UnitCard = makeCard({
 export const CRYSTAL_MAGES = {
     THIRD_YEAR_STUDENTS,
     IGNUS_FATUUS,
+    SCHOLARS_PET,
     SPIRIT_TENDER,
     THE_ORACLE,
     MAGICIANS_APPRENTICE,

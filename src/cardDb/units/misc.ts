@@ -131,6 +131,28 @@ const TEA_FARMER: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const CITY_GUARD_WOLF: UnitCard = makeCard({
+    artistName: 'Angela (ang3law)',
+    artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/ai-generated-wolf-predator-canine-7938831/',
+    name: 'City Guard Wolf',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/04/20/01/53/ai-generated-7938831_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 2,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const LAKE_ZOMBIE: UnitCard = makeCard({
     name: 'Lake Zombie',
     // https://pixabay.com/photos/zombie-warrior-lake-monster-water-5934063/
@@ -867,6 +889,7 @@ export const MISC_UNITS = {
     MARKET_MAKER,
     BAMBOO_FARMER,
     TEA_FARMER,
+    CITY_GUARD_WOLF,
     LAKE_ZOMBIE,
     PASTURE_EXPLORER,
     RELAXED_ROWBOATER,
