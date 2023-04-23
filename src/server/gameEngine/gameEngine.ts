@@ -168,29 +168,24 @@ export const cleanupLegendaryLeaders = (
 
     if (!players?.length) return;
     players.forEach((player) => {
-        const legendaryLeaderInCemetery = [...player.cemetery].find(
+        if (!player.legendaryLeader || !player.isLegendaryLeaderDeployed) {
+            return;
+        }
+        // try to find legendary leader amongst own hand / units
+        const legendaryLeader = [...player.hand, ...player.units].find(
             isCardLegendaryLeader
         );
-        if (legendaryLeaderInCemetery) {
+        // if not existent, remove them from cemetery / deck, undeploy them.
+        if (!legendaryLeader) {
             player.cemetery = player.cemetery.filter(
                 (card) => !isCardLegendaryLeader(card)
             );
-            player.isLegendaryLeaderDeployed = false;
-            addSystemChat(
-                `The legendary leader for ${player.name}, [[${legendaryLeaderInCemetery.name}]] is going back to the legendary leader zone`
-            );
-        }
-
-        const legendaryLeaderInDeck = [...player.deck].find(
-            isCardLegendaryLeader
-        );
-        if (legendaryLeaderInDeck) {
             player.deck = player.deck.filter(
                 (card) => !isCardLegendaryLeader(card)
             );
             player.isLegendaryLeaderDeployed = false;
             addSystemChat(
-                `The legendary leader for ${player.name}, [[${legendaryLeaderInDeck.name}]] is going back to the legendary leader zone`
+                `The legendary leader for ${player.name}, [[${player.legendaryLeader.name}]] is going back to the legendary leader zone`
             );
         }
     });
