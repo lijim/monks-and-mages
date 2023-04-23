@@ -125,7 +125,9 @@ export enum PassiveEffect {
         STRONG_VS_SOLDIER, // deal double damage to soldier units
         HEARTY, // cannot be taken down in 1 hit
     */
+    ETHEREAL = 'Ethereal (cannot be damaged outside of direct combat)',
     HEARTY = 'Hearty (Rather than going to cemetery, lose hearty and go to 1 hp)',
     POISONED = 'Poisonous (deals lethal damage)', // deals lethal dmg to enemy units
     QUICK = 'Quick (can attack right away)', // no summoning sickness
+    STEADY = 'Steady (cannot receive buffs or nerfs to attack or HP)',
 }

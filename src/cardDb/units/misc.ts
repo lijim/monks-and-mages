@@ -183,6 +183,29 @@ const PASTURE_EXPLORER: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const CONTENT_CAMEL: UnitCard = makeCard({
+    artistName: 'Angela (ambquinn)',
+    artistUrl: 'https://pixabay.com/users/ambquinn-4464111/',
+    originalImagePage:
+        'https://pixabay.com/photos/bactrian-camel-camel-animal-head-7731688/',
+    name: 'Content Camel',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/01/20/13/00/bactrian-camel-7731688_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 3,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.COMMON,
+});
+
 const RELAXED_ROWBOATER: UnitCard = makeCard({
     name: 'Relaxed Rowboater',
     imgSrc: 'https://images.pexels.com/photos/10178456/pexels-photo-10178456.jpeg',
@@ -252,6 +275,29 @@ const ENERGY_ENHANCER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const PEGASUS: UnitCard = makeCard({
+    artistName: 'Susan Cipriano',
+    artistUrl: 'https://pixabay.com/users/susan-lu4esm-7009216/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/unicorn-clouds-fantasy-wings-horse-6257019/',
+    name: 'Pegasus',
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/05/16/02/15/unicorn-6257019_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.ETHEREAL],
     rarity: CardRarity.COMMON,
 });
 
@@ -463,6 +509,71 @@ const BANISHER_OF_MAGIC: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const DEEP_CORE_EXCAVATOR: UnitCard = makeCard({
+    artistName: 'Amy - prettysleepy1',
+    artistUrl: 'https://pixabay.com/users/prettysleepy1-2855492/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/steampunk-woman-rosie-the-riveter-7503680/',
+    name: 'Deep Core Excavator',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/10/06/22/53/steampunk-7503680_1280.jpg',
+    cost: {
+        [Resource.GENERIC]: 2,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    damagePlayerEffects: [],
+    enterEffects: [
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Iron',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const RAVENOUS_VULTURE: UnitCard = makeCard({
+    artistName: 'Amy - prettysleepy1',
+    artistUrl: 'https://pixabay.com/users/prettysleepy1-2855492/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/vulture-landscape-dramatic-mood-5291257/',
+    name: 'Ravenous Vulture',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/06/12/18/02/vulture-5291257_1280.jpg',
+    cost: {
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    damagePlayerEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+        },
+    ],
+    enterEffects: [],
+    totalHp: 3,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
 const CONFUCIUS: UnitCard = makeCard({
     name: 'Confucius',
     imgSrc: 'https://images.pexels.com/photos/6486229/pexels-photo-6486229.jpeg',
@@ -505,6 +616,29 @@ const SPELUNKER: UnitCard = makeCard({
     isSoldier: false,
     passiveEffects: [],
     rarity: CardRarity.RARE,
+});
+
+const CHARGING_CATTLE: UnitCard = makeCard({
+    artistName: 'Amy - prettysleepy1',
+    artistUrl: 'https://pixabay.com/users/prettysleepy1-2855492/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/cattle-horse-lightening-storm-bull-5877181/',
+    name: 'Charging Cattle',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/12/31/18/22/cattle-5877181_1280.jpg',
+    cost: {
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    damagePlayerEffects: [],
+    enterEffects: [],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const KING_TUT: UnitCard = makeCard({
@@ -567,6 +701,29 @@ const SNOW_LION: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const RIVER_WANDERER: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/statue-lantern-ship-fantasy-river-3000308/',
+    name: 'River Wanderer',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/12/05/20/28/statue-3000308_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.STEADY],
+    rarity: CardRarity.COMMON,
+});
+
 const TUNDRA_FROST_PACK: UnitCard = makeCard({
     artistName: '0fjd125gk87',
     artistUrl: 'https://pixabay.com/users/0fjd125gk87-51581/',
@@ -621,6 +778,29 @@ const INCONSPICUOUS_CRAB: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const PET_DEMON: UnitCard = makeCard({
+    artistName: 'Square Frog',
+    artistUrl: 'https://pixabay.com/users/squarefrog-9690118/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/demon-horror-thriller-spooky-7551771/',
+    name: 'Pet Demon',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/10/27/20/27/demon-7551771_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 2,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 5,
+    attack: 6,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
 const RULER_OF_THE_JUNGLE: UnitCard = makeCard({
     name: 'Ruler of the Jungle',
     imgSrc: 'https://images.pexels.com/photos/5762282/pexels-photo-5762282.jpeg',
@@ -663,20 +843,27 @@ export const MISC_UNITS = {
     RELAXED_ROWBOATER,
     NOVICE_ASTRONOMER,
     ENERGY_ENHANCER,
+    PEGASUS,
     QUARRY_WORKER,
     TEMPLE_DEVOTEE,
     ELITE_WEAPONS_MASTER,
     IRONSMITH,
     GARGOYLE,
     FISHING_GNOME,
+    CONTENT_CAMEL,
     TORCH_BEARER,
     BANISHER_OF_MAGIC,
+    DEEP_CORE_EXCAVATOR,
+    RAVENOUS_VULTURE,
     CONFUCIUS,
+    CHARGING_CATTLE,
     SPELUNKER,
     KING_TUT,
     GENEROUS_BUDDHA,
     SNOW_LION,
+    RIVER_WANDERER,
     TUNDRA_FROST_PACK,
     INCONSPICUOUS_CRAB,
+    PET_DEMON,
     RULER_OF_THE_JUNGLE,
 };
