@@ -37,6 +37,7 @@ export const resolveEffect = (
         cardName,
         secondaryCardName,
         passiveEffect,
+        sourceId,
     } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
@@ -61,6 +62,9 @@ export const resolveEffect = (
     // Determine targets to apply effects to
     let playerTargets: Player[];
     let unitTargets: { player: Player; unitCard: UnitCard }[] = [];
+    const sourceUnitCard = players
+        .flatMap((player) => player.units)
+        .find((card) => card.id === sourceId);
     const target = effect.target || getDefaultTargetForEffect(effect.type);
     let targetText;
 
@@ -331,6 +335,27 @@ export const resolveEffect = (
                 );
             });
             applyWinState(clonedBoard);
+            return clonedBoard;
+        }
+        case EffectType.DESTROY_RESOURCE_WITH_FEASTING: {
+            const { resourceType } = effect;
+            playerTargets.forEach((player) => {
+                const resourcesToDestroy = sampleSize(
+                    player.resources.filter((resource) => {
+                        if (!resourceType) return true;
+                        return resource.resourceType === resourceType;
+                    }),
+                    effectStrength
+                );
+                if (sourceUnitCard) {
+                    sourceUnitCard.attackBuff += resourcesToDestroy.length;
+                    sourceUnitCard.hpBuff += resourcesToDestroy.length;
+                }
+                player.resources = player.resources.filter(
+                    (resource) =>
+                        !resourcesToDestroy.find((r) => r === resource)
+                );
+            });
             return clonedBoard;
         }
         case EffectType.DESTROY_UNIT: {

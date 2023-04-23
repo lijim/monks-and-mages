@@ -753,6 +753,35 @@ const TUNDRA_FROST_PACK: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const HUNGRY_GOAT: UnitCard = makeCard({
+    artistName: '0fjd125gk87',
+    artistUrl: 'https://pixabay.com/users/0fjd125gk87-51581/',
+    originalImagePage:
+        'https://pixabay.com/photos/african-pygmy-goat-goat-livestock-7462776/',
+    name: 'Hungry Goat',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/09/18/11/23/african-pygmy-goat-7462776_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DESTROY_RESOURCE_WITH_FEASTING,
+            strength: 1,
+            target: TargetTypes.PLAYER,
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const INCONSPICUOUS_CRAB: UnitCard = makeCard({
     name: 'Inconspicuous Crab',
     imgSrc: 'https://images.pexels.com/photos/4890161/pexels-photo-4890161.jpeg',
@@ -861,6 +890,7 @@ export const MISC_UNITS = {
     KING_TUT,
     GENEROUS_BUDDHA,
     SNOW_LION,
+    HUNGRY_GOAT,
     RIVER_WANDERER,
     TUNDRA_FROST_PACK,
     INCONSPICUOUS_CRAB,

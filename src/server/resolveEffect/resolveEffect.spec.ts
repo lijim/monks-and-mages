@@ -515,6 +515,35 @@ describe('resolve effect', () => {
 
             expect(newBoard.players[1].resources).toHaveLength(1);
         });
+
+        it('destroys a specific resource and feasts on it', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[1].resources = [
+                makeResourceCard(Resource.BAMBOO),
+                makeResourceCard(Resource.FIRE),
+            ];
+            board.players[1].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DESTROY_RESOURCE_WITH_FEASTING,
+                        target: TargetTypes.ALL_OPPONENTS,
+                        strength: 1,
+                        resourceType: Resource.BAMBOO,
+                        sourceId: squire.id,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[1].resources[0].resourceType).toEqual(
+                Resource.FIRE
+            );
+            expect(newBoard.players[1].units[0].hpBuff).toEqual(1);
+            expect(newBoard.players[1].units[0].attackBuff).toEqual(1);
+        });
     });
 
     describe('Destroy Unit', () => {

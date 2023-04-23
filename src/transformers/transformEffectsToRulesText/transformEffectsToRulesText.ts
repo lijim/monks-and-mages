@@ -171,6 +171,16 @@ export const transformEffectToRulesText = (effect: Effect): string => {
                 numToDestroy === 'all' ? '' : ' at random'
             }`;
         }
+        case EffectType.DESTROY_RESOURCE_WITH_FEASTING: {
+            const numToDestroy =
+                strength === Number.MAX_SAFE_INTEGER ? 'all' : strength;
+            if (resourceType) {
+                return `Destroy ${numToDestroy} of ${targetNamePossessive} [${resourceType}] resources.  Gain +1/+1 for each resource destroyed this way`;
+            }
+            return `Destroy ${numToDestroy} of ${targetNamePossessive} resources${
+                numToDestroy === 'all' ? '' : ' at random'
+            }.  Gain +1/+1 for each resource destroyed this way`;
+        }
         case EffectType.DESTROY_UNIT: {
             return `Destroy ${targetName}`;
         }
