@@ -1482,8 +1482,9 @@ describe('resolve effect', () => {
         });
 
         it('executes the effect and returns units to hand', () => {
-            const squire = makeCard(UnitCards.SQUIRE);
-            board.players[0].units = [squire];
+            const squire1 = makeCard(UnitCards.SQUIRE);
+            const squire2 = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1, squire2];
             const newBoard = resolveEffect(
                 board,
                 {
@@ -1502,7 +1503,7 @@ describe('resolve effect', () => {
                 },
                 'Timmy'
             );
-            expect(newBoard.players[0].units).toHaveLength(0);
+            expect(newBoard.players[0].units).toHaveLength(1);
             expect(newBoard.players[0].hand).toHaveLength(
                 PlayerConstants.STARTING_HAND_SIZE + 1
             );

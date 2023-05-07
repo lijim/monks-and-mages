@@ -34,10 +34,10 @@ import { Tokens, UnitCards } from '@/cardDb/units';
 import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
 
 type PerformEffectRequirementParams = {
+    addSystemChat?: (message: string) => void;
     board: Board;
     effectRequirement: EffectRequirement;
     playerName: string;
-    addSystemChat?: (message: string) => void;
 };
 
 /**
@@ -113,8 +113,8 @@ const performEffectRequirement = ({
 
             [...unitsByCost.entries()]
                 .sort()
-                .forEach(([_, unitsWithSpecificCost]) => {
-                    if (unitsWithSpecificCost.length <= unitsLeftToReturn) {
+                .forEach(([, unitsWithSpecificCost]) => {
+                    if (unitsLeftToReturn <= unitsWithSpecificCost.length) {
                         const sample = sampleSize(
                             unitsWithSpecificCost,
                             unitsLeftToReturn
@@ -124,6 +124,7 @@ const performEffectRequirement = ({
                     }
                 });
 
+            unitsToReturn.forEach((unit) => resetUnitCard(unit));
             activePlayer.hand = [...activePlayer.hand, ...unitsToReturn];
             activePlayer.units = activePlayer.units.filter(
                 (unit) => !unitsToReturn.includes(unit)
@@ -152,7 +153,7 @@ export const resolveEffect = (
     verifyEffect = false,
     addChatMessage?: (message: string) => void
 ): Board | null => {
-    let clonedBoard = cloneDeep(board);
+    const clonedBoard = cloneDeep(board);
     const {
         strength: effectStrength = 0,
         cardName,
@@ -284,7 +285,7 @@ export const resolveEffect = (
      */
 
     if (requirements) {
-        let tempBoard = cloneDeep(clonedBoard);
+        const tempBoard = cloneDeep(clonedBoard);
         // first try on a dry run to make sure requirements can be fulfilled
         try {
             requirements.forEach((requirement) => {
@@ -308,6 +309,7 @@ export const resolveEffect = (
                     board: clonedBoard,
                     playerName,
                     effectRequirement: requirement,
+                    addSystemChat,
                 });
             });
         } catch (error) {
