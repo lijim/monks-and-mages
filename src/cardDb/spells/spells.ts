@@ -912,6 +912,30 @@ const THROW_SHURIKEN = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const BESTOW_KNIGHTHOOD = makeCard({
+    artistName: 'WikiImages',
+    artistUrl: 'https://pixabay.com/users/wikiimages-1897/',
+    originalImagePage:
+        'https://pixabay.com/photos/accolade-knight-middle-ages-award-63001/',
+    name: 'Bestow Knighthood',
+    imgSrc: 'https://cdn.pixabay.com/photo/2012/10/26/01/17/accolade-63001_1280.jpg',
+    cost: { [Resource.IRON]: 1 },
+    effects: [
+        {
+            type: EffectType.BUFF_ATTACK,
+            target: TargetTypes.UNIT,
+            strength: 3,
+            requirements: [
+                {
+                    type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
+                    strength: 1,
+                },
+            ],
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const BANDIT_AMBUSH = makeCard({
     name: 'Bandit Ambush',
     imgSrc: 'https://images.unsplash.com/photo-1627732922021-e73df99d192e',
@@ -1943,6 +1967,7 @@ export const SpellCards = {
 
     // Iron
     THROW_SHURIKEN,
+    BESTOW_KNIGHTHOOD,
     BANDIT_AMBUSH,
     PERSECUTE,
     MAJOR_EARTHQUAKE,
