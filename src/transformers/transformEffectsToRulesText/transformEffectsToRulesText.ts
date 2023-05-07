@@ -299,6 +299,11 @@ export const transformEffectToRulesText = (effect: Effect): string => {
         case EffectType.TUCK: {
             return `Put ${targetName} on top of ${controllerPossessiveText} library`;
         }
+        case EffectType.TUCK_BOTTOM_AND_DRAW: {
+            return `${titleize(
+                targetName
+            )} goes to the bottom of ${controllerPossessiveText} library.  For each unit returned this way, the unit's controller draw a card`;
+        }
         default: {
             return '';
         }

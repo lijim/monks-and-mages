@@ -703,6 +703,15 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.TUCK_BOTTOM_AND_DRAW: {
+            unitTargets.forEach(({ player, unitCard }) => {
+                player.units = player.units.filter((card) => card !== unitCard);
+                player.deck = [unitCard, ...player.deck];
+                resetUnitCard(unitCard);
+                player.hand = [...player.hand, player.deck.pop()];
+            });
+            return clonedBoard;
+        }
         default:
             return clonedBoard;
     }

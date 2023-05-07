@@ -651,5 +651,14 @@ describe('transformEffectstoRulesText', () => {
                 `Put any opposing unit on top of its controller's library`
             );
         });
+
+        it('displays rules for tucking units to bottom and drawing', () => {
+            const effect: Effect = {
+                type: EffectType.TUCK_BOTTOM_AND_DRAW,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Any unit goes to the bottom of its controller's library.  For each unit returned this way, the unit's controller draw a card`
+            );
+        });
     });
 });

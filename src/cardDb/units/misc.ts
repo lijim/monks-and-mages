@@ -830,6 +830,34 @@ const INCONSPICUOUS_CRAB: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const RUFOUS_HUMMINGBIRD: UnitCard = makeCard({
+    artistName: 'Daniel Roberts',
+    artistUrl: 'https://pixabay.com/users/blendertimer-9538909/',
+    originalImagePage:
+        'https://pixabay.com/photos/hummingbird-rufous-bird-ornithology-7181235/',
+    name: 'Rufous Hummingbird',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/05/08/04/26/hummingbird-7181235_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.FIRE,
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
 const PET_DEMON: UnitCard = makeCard({
     artistName: 'Square Frog',
     artistUrl: 'https://pixabay.com/users/squarefrog-9690118/',
@@ -918,6 +946,7 @@ export const MISC_UNITS = {
     RIVER_WANDERER,
     TUNDRA_FROST_PACK,
     INCONSPICUOUS_CRAB,
+    RUFOUS_HUMMINGBIRD,
     PET_DEMON,
     RULER_OF_THE_JUNGLE,
 };

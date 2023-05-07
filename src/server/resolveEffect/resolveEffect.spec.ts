@@ -1411,5 +1411,22 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].deck.splice(-1)[0].name).toBe('Squire');
         });
+
+        it('puts a card on the bottom of the deck and makes the owner draw', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.TUCK_BOTTOM_AND_DRAW,
+                    },
+                    unitCardIds: [squire.id],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].deck[0].name).toBe('Squire');
+            expect(newBoard.players[0].hand).toHaveLength(8);
+        });
     });
 });

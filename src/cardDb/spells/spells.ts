@@ -366,6 +366,22 @@ const STIR = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const WHALE_BREACH = makeCard({
+    artistName: 'Kristendawn',
+    artistUrl: 'https://pixabay.com/users/kristendawn-5971956/',
+    originalImagePage:
+        'https://pixabay.com/photos/whale-breaching-marine-life-ocean-2580660/',
+    name: 'Whale Breach',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/08/04/16/59/whale-2580660_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.TUCK_BOTTOM_AND_DRAW,
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const GENEROUS_GEYSER = makeCard({
     name: 'Generous Geyser',
     imgSrc: 'https://images.unsplash.com/photo-1567604130959-7ea7ab2a7807?',
@@ -1830,6 +1846,7 @@ export const SpellCards = {
     COLD_ISOLATION,
     OASIS_RITUAL,
     STIR,
+    WHALE_BREACH,
     GENEROUS_GEYSER,
     MIDNIGHT_ROW,
     CONSTANT_REFILL,
