@@ -359,6 +359,36 @@ const CYRUS_PURPLE_DRAGON: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const DUST_TRACER: UnitCard = makeCard({
+    artistName: 'Merlin Lightpainting',
+    artistUrl: 'https://pixabay.com/users/merlinlightpainting-19833603/',
+    originalImagePage:
+        'https://pixabay.com/photos/woman-face-eyes-dust-light-6127890/',
+    name: 'Dust Tracer',
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/03/27/09/23/woman-6127890_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 2,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.ALL_PLAYERS,
+            strength: 2,
+        },
+    ],
+    totalHp: 3,
+    attack: 4,
+    numAttacks: 1,
+    isLegendary: false,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 export const CRYSTAL_MAGES = {
     THIRD_YEAR_STUDENTS,
     IGNUS_FATUUS,
@@ -373,4 +403,5 @@ export const CRYSTAL_MAGES = {
     FAE_DRAGON,
     WIZENED_INCANTER,
     CYRUS_PURPLE_DRAGON,
+    DUST_TRACER,
 };

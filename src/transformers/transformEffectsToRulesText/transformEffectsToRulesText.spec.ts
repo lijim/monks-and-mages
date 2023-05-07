@@ -1,5 +1,5 @@
 import { Tokens } from '@/cardDb/units';
-import { Effect } from '@/types/cards';
+import { CardType, Effect, EffectRequirementsType } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { transformEffectToRulesText } from './transformEffectsToRulesText';
@@ -649,6 +649,38 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Put any opposing unit on top of its controller's library`
+            );
+        });
+
+        it('displays rules for tucking units to bottom and drawing', () => {
+            const effect: Effect = {
+                type: EffectType.TUCK_BOTTOM_AND_DRAW,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Any unit goes to the bottom of its controller's library.  For each unit returned this way, the unit's controller draw a card`
+            );
+        });
+    });
+
+    describe('Effect Requirements', () => {
+        it('displays rules for multiple requirements', () => {
+            const effect: Effect = {
+                type: EffectType.DEAL_DAMAGE,
+                strength: 3,
+                requirements: [
+                    {
+                        type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
+                        strength: 4,
+                    },
+                    {
+                        type: EffectRequirementsType.DISCARD_CARD,
+                        strength: 2,
+                        cardType: CardType.RESOURCE,
+                    },
+                ],
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Deal 3 damage to any target. Do this only if you return your 4 lowest costed units to your hand (chosen at random) and you discard 2 [Resource] cards at random`
             );
         });
     });

@@ -1,6 +1,10 @@
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
-import { Effect } from '@/types/cards';
+import {
+    Effect,
+    EffectRequirement,
+    EffectRequirementsType,
+} from '@/types/cards';
 import {
     EffectType,
     getDefaultTargetForEffect,
@@ -70,7 +74,58 @@ const titleize = (str: string): string => {
     return str[0].toUpperCase() + str.substring(1);
 };
 
-export const transformEffectToRulesText = (effect: Effect): string => {
+const getRequirementText = (effectRequirement: EffectRequirement) => {
+    const { resourceType, cardType, strength } = effectRequirement;
+    switch (effectRequirement.type) {
+        case EffectRequirementsType.DISCARD_CARD: {
+            if (resourceType) {
+                return `you discard ${strength} [${resourceType}] card${
+                    strength > 1 ? 's' : ''
+                } at random`;
+            }
+            if (cardType) {
+                return `you discard ${strength} [${cardType}] card${
+                    strength > 1 ? 's' : ''
+                } at random`;
+            }
+            return `you discard ${strength} [${cardType}] card${
+                strength > 1 ? 's' : ''
+            } at random`;
+        }
+        case EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND: {
+            return `you return your ${strength} lowest costed unit${
+                strength > 1 ? 's' : ''
+            } to your hand (chosen at random)`;
+        }
+        default: {
+            return '';
+        }
+    }
+};
+
+const getRequirementsText = (effectRequirements: EffectRequirement[]) => {
+    const requirementsTexts = effectRequirements.map((requirement) =>
+        getRequirementText(requirement)
+    );
+    if (requirementsTexts.length === 1) {
+        return `Do this only if ${requirementsTexts[0]}`;
+    }
+    const nonLastRequirementTexts = requirementsTexts.slice(
+        0,
+        requirementsTexts.length - 1
+    );
+    const lastRequirementText = requirementsTexts.at(
+        requirementsTexts.length - 1
+    );
+    return `Do this only if ${nonLastRequirementTexts.join(
+        ', '
+    )} and ${lastRequirementText}`;
+};
+
+export const transformEffectToRulesText = (
+    effect: Effect,
+    withoutRequirements?: boolean
+): string => {
     const {
         cardName,
         secondaryCardName,
@@ -99,208 +154,222 @@ export const transformEffectToRulesText = (effect: Effect): string => {
             target || getDefaultTargetForEffect(type)
         ];
 
-    switch (effect.type) {
-        case EffectType.BLOOM: {
-            return `You may play ${strength} additional resource${pluralizationEffectStrength} this turn`;
-        }
-        case EffectType.BOUNCE: {
-            return `Return ${targetName} back to ${controllerPossessiveText} hand`;
-        }
-        case EffectType.BUFF_ATTACK: {
-            if (strength < 0)
-                return `Decrease attack of ${targetName} by ${-strength}`;
-            return `Increase attack of ${targetName} by ${strength}`;
-        }
-        case EffectType.BUFF_ATTACK_FOR_CYCLE: {
-            if (strength < 0)
-                return `Decrease attack of ${targetName} by ${-strength} until ${controllerPossessiveText} next turn`;
-            return `Increase attack of ${targetName} by ${strength} until ${controllerPossessiveText} next turn`;
-        }
-        case EffectType.BUFF_ATTACK_FOR_TURN: {
-            if (strength < 0)
-                return `Decrease attack of ${targetName} by ${-strength} until end of turn`;
-            return `Increase attack of ${targetName} by ${strength} until end of turn`;
-        }
-        case EffectType.BUFF_HAND_ATTACK: {
-            return `Increase attack of non-magical units in your hand by ${strength}`;
-        }
-        case EffectType.BUFF_MAGIC: {
-            if (strength < 0)
-                return `Decrease attack/HP of ${targetName} by ${-strength} if ${
+    const getEffectRulesSummary = () => {
+        switch (effect.type) {
+            case EffectType.BLOOM: {
+                return `You may play ${strength} additional resource${pluralizationEffectStrength} this turn`;
+            }
+            case EffectType.BOUNCE: {
+                return `Return ${targetName} back to ${controllerPossessiveText} hand`;
+            }
+            case EffectType.BUFF_ATTACK: {
+                if (strength < 0)
+                    return `Decrease attack of ${targetName} by ${-strength}`;
+                return `Increase attack of ${targetName} by ${strength}`;
+            }
+            case EffectType.BUFF_ATTACK_FOR_CYCLE: {
+                if (strength < 0)
+                    return `Decrease attack of ${targetName} by ${-strength} until ${controllerPossessiveText} next turn`;
+                return `Increase attack of ${targetName} by ${strength} until ${controllerPossessiveText} next turn`;
+            }
+            case EffectType.BUFF_ATTACK_FOR_TURN: {
+                if (strength < 0)
+                    return `Decrease attack of ${targetName} by ${-strength} until end of turn`;
+                return `Increase attack of ${targetName} by ${strength} until end of turn`;
+            }
+            case EffectType.BUFF_HAND_ATTACK: {
+                return `Increase attack of non-magical units in your hand by ${strength}`;
+            }
+            case EffectType.BUFF_MAGIC: {
+                if (strength < 0)
+                    return `Decrease attack/HP of ${targetName} by ${-strength} if ${
+                        isTargetTypePlural(target) ? 'they are' : 'it is'
+                    } magical`;
+                return `Increase attack/HP of ${targetName} by ${strength} if ${
                     isTargetTypePlural(target) ? 'they are' : 'it is'
                 } magical`;
-            return `Increase attack/HP of ${targetName} by ${strength} if ${
-                isTargetTypePlural(target) ? 'they are' : 'it is'
-            } magical`;
-        }
-        case EffectType.BUFF_TEAM_ATTACK: {
-            if (strength < 0)
-                return `Decrease attack of ${targetNamePossessive} non-magic units by ${-strength}`;
-            return `Increase attack of ${targetNamePossessive} non-magic units by ${strength}`;
-        }
-        case EffectType.BUFF_TEAM_HP: {
-            if (strength < 0)
-                return `Decrease HP of ${targetNamePossessive} units by ${-strength}`;
-            return `Increase HP of ${targetNamePossessive} units by ${strength}`;
-        }
-        case EffectType.BUFF_TEAM_MAGIC: {
-            if (strength < 0)
-                return `Decrease attack of ${targetNamePossessive} magic units by ${-strength}`;
-            return `Increase attack of ${targetNamePossessive} magic units by ${strength}`;
-        }
-        case EffectType.CURSE_HAND: {
-            if (strength < 0)
-                return `Decrease cost of cards in ${targetNamePossessive} ${
+            }
+            case EffectType.BUFF_TEAM_ATTACK: {
+                if (strength < 0)
+                    return `Decrease attack of ${targetNamePossessive} non-magic units by ${-strength}`;
+                return `Increase attack of ${targetNamePossessive} non-magic units by ${strength}`;
+            }
+            case EffectType.BUFF_TEAM_HP: {
+                if (strength < 0)
+                    return `Decrease HP of ${targetNamePossessive} units by ${-strength}`;
+                return `Increase HP of ${targetNamePossessive} units by ${strength}`;
+            }
+            case EffectType.BUFF_TEAM_MAGIC: {
+                if (strength < 0)
+                    return `Decrease attack of ${targetNamePossessive} magic units by ${-strength}`;
+                return `Increase attack of ${targetNamePossessive} magic units by ${strength}`;
+            }
+            case EffectType.CURSE_HAND: {
+                if (strength < 0)
+                    return `Decrease cost of cards in ${targetNamePossessive} ${
+                        isTargetTypePlural(target) ? 'hands' : 'hand'
+                    } by ${-strength} (generic)`;
+
+                return `Increase cost of cards in ${targetNamePossessive} ${
                     isTargetTypePlural(target) ? 'hands' : 'hand'
-                } by ${-strength} (generic)`;
-
-            return `Increase cost of cards in ${targetNamePossessive} ${
-                isTargetTypePlural(target) ? 'hands' : 'hand'
-            } by ${strength} (generic)`;
-        }
-        case EffectType.DEAL_DAMAGE: {
-            return `Deal ${strength} damage to ${targetName}`;
-        }
-        case EffectType.DESTROY_RESOURCE: {
-            const numToDestroy =
-                strength === Number.MAX_SAFE_INTEGER ? 'all' : strength;
-            if (resourceType) {
-                return `Destroy ${numToDestroy} of ${targetNamePossessive} [${resourceType}] resources`;
+                } by ${strength} (generic)`;
             }
-            return `Destroy ${numToDestroy} of ${targetNamePossessive} resources${
-                numToDestroy === 'all' ? '' : ' at random'
-            }`;
-        }
-        case EffectType.DESTROY_RESOURCE_WITH_FEASTING: {
-            const numToDestroy =
-                strength === Number.MAX_SAFE_INTEGER ? 'all' : strength;
-            if (resourceType) {
-                return `Destroy ${numToDestroy} of ${targetNamePossessive} [${resourceType}] resources.  Gain +1/+1 for each resource destroyed this way`;
+            case EffectType.DEAL_DAMAGE: {
+                return `Deal ${strength} damage to ${targetName}`;
             }
-            return `Destroy ${numToDestroy} of ${targetNamePossessive} resources${
-                numToDestroy === 'all' ? '' : ' at random'
-            }.  Gain +1/+1 for each resource destroyed this way`;
-        }
-        case EffectType.DESTROY_UNIT: {
-            return `Destroy ${targetName}`;
-        }
-        case EffectType.DISCARD_HAND: {
-            if (strength === Number.MAX_SAFE_INTEGER) {
-                return `Make ${targetName} discard all cards`;
-            }
-            return `Make ${targetName} discard ${strength} card${pluralizationEffectStrength} at random`;
-        }
-        case EffectType.DRAW: {
-            if (!target || target === TargetTypes.SELF_PLAYER) {
-                return `Draw ${strength} card${pluralizationEffectStrength}`;
-            }
-            return `${titleize(targetName)} draw${
-                isTargetTypePlural(target) ? '' : 's'
-            } ${strength} card${pluralizationEffectStrength}`;
-        }
-        case EffectType.DRAW_MILL_WIN: {
-            if (strength) {
-                return `Draw ${strength} cards - if your deck is empty, win the game`;
-            }
-            return 'If your deck is empty, win the game';
-        }
-        case EffectType.DRAW_PER_UNIT: {
-            if (!target) {
-                return `Draw a card for every unit owned on board`;
-            }
-            return `${titleize(targetName)} draw${
-                isTargetTypePlural(target) ? '' : 's'
-            } a card for every unit owned on board`;
-        }
-        case EffectType.DRAW_UNTIL: {
-            if (!target) {
-                return `If you have less than ${strength} cards, draw until you have ${strength}`;
-            }
-            return `If under ${strength} cards in hand, ${targetName} draw${
-                isTargetTypePlural(target) ? '' : 's'
-            } cards until having ${strength} in hand`;
-        }
-        case EffectType.EXTRACT_CARD: {
-            if (!target) {
-                return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from your deck`;
-            }
-            return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
-        }
-        case EffectType.FLICKER: {
-            return `Remove ${targetName} from the game, then return ${
-                isTargetTypePlural(target) ? 'them' : 'it'
-            } to the board`;
-        }
-
-        case EffectType.GRANT_PASSIVE_EFFECT: {
-            return `Give ${targetName} [${passiveEffect}]`;
-        }
-        case EffectType.HEAL: {
-            return `Restore ${strength} HP to ${targetName}`;
-        }
-        case EffectType.LEARN: {
-            let sanitizedCardName = '';
-            const cardPool = { ...SpellCards, ...UnitCards, ...Tokens };
-            Object.entries(cardPool).forEach(([key, card]) => {
-                if (key === cardName) {
-                    sanitizedCardName = card.name;
+            case EffectType.DESTROY_RESOURCE: {
+                const numToDestroy =
+                    strength === Number.MAX_SAFE_INTEGER ? 'all' : strength;
+                if (resourceType) {
+                    return `Destroy ${numToDestroy} of ${targetNamePossessive} [${resourceType}] resources`;
                 }
-            });
-            return `Add ${strength} ${sanitizedCardName} ${
-                strength > 1 ? 'cards' : 'card'
-            } to your hand`;
-        }
-        case EffectType.MILL: {
-            return `Put ${strength} ${
-                strength > 1 ? 'cards' : 'card'
-            } from ${targetNamePossessive.replace('all', 'each')} ${
-                isTargetTypePlural(target) ? 'libraries' : 'library'
-            } into ${controllerPossessiveText} ${
-                isTargetTypePlural(target) ? 'graveyards' : 'graveyard'
-            }`;
-        }
-        case EffectType.POLYMORPH: {
-            return `Turn ${targetName} into a [${summonType.name}]`;
-        }
-        case EffectType.RAMP: {
-            return `Increase ${resourceType.toLowerCase()} resources by ${strength}${forText}`;
-        }
-        case EffectType.RAMP_FOR_TURN: {
-            let resourcesToDisplay = `${strength} ${RESOURCE_GLOSSARY[resourceType].icon}`;
-            if (resourceType === Resource.GENERIC) {
-                resourcesToDisplay = `${strength} generic mana`;
+                return `Destroy ${numToDestroy} of ${targetNamePossessive} resources${
+                    numToDestroy === 'all' ? '' : ' at random'
+                }`;
             }
-            return `Add ${resourcesToDisplay} this turn`;
+            case EffectType.DESTROY_RESOURCE_WITH_FEASTING: {
+                const numToDestroy =
+                    strength === Number.MAX_SAFE_INTEGER ? 'all' : strength;
+                if (resourceType) {
+                    return `Destroy ${numToDestroy} of ${targetNamePossessive} [${resourceType}] resources.  Gain +1/+1 for each resource destroyed this way`;
+                }
+                return `Destroy ${numToDestroy} of ${targetNamePossessive} resources${
+                    numToDestroy === 'all' ? '' : ' at random'
+                }.  Gain +1/+1 for each resource destroyed this way`;
+            }
+            case EffectType.DESTROY_UNIT: {
+                return `Destroy ${targetName}`;
+            }
+            case EffectType.DISCARD_HAND: {
+                if (strength === Number.MAX_SAFE_INTEGER) {
+                    return `Make ${targetName} discard all cards`;
+                }
+                return `Make ${targetName} discard ${strength} card${pluralizationEffectStrength} at random`;
+            }
+            case EffectType.DRAW: {
+                if (!target || target === TargetTypes.SELF_PLAYER) {
+                    return `Draw ${strength} card${pluralizationEffectStrength}`;
+                }
+                return `${titleize(targetName)} draw${
+                    isTargetTypePlural(target) ? '' : 's'
+                } ${strength} card${pluralizationEffectStrength}`;
+            }
+            case EffectType.DRAW_MILL_WIN: {
+                if (strength) {
+                    return `Draw ${strength} cards - if your deck is empty, win the game`;
+                }
+                return 'If your deck is empty, win the game';
+            }
+            case EffectType.DRAW_PER_UNIT: {
+                if (!target) {
+                    return `Draw a card for every unit owned on board`;
+                }
+                return `${titleize(targetName)} draw${
+                    isTargetTypePlural(target) ? '' : 's'
+                } a card for every unit owned on board`;
+            }
+            case EffectType.DRAW_UNTIL: {
+                if (!target) {
+                    return `If you have less than ${strength} cards, draw until you have ${strength}`;
+                }
+                return `If under ${strength} cards in hand, ${targetName} draw${
+                    isTargetTypePlural(target) ? '' : 's'
+                } cards until having ${strength} in hand`;
+            }
+            case EffectType.EXTRACT_CARD: {
+                if (!target) {
+                    return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from your deck`;
+                }
+                return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
+            }
+            case EffectType.FLICKER: {
+                return `Remove ${targetName} from the game, then return ${
+                    isTargetTypePlural(target) ? 'them' : 'it'
+                } to the board`;
+            }
+
+            case EffectType.GRANT_PASSIVE_EFFECT: {
+                return `Give ${targetName} [${passiveEffect}]`;
+            }
+            case EffectType.HEAL: {
+                return `Restore ${strength} HP to ${targetName}`;
+            }
+            case EffectType.LEARN: {
+                let sanitizedCardName = '';
+                const cardPool = { ...SpellCards, ...UnitCards, ...Tokens };
+                Object.entries(cardPool).forEach(([key, card]) => {
+                    if (key === cardName) {
+                        sanitizedCardName = card.name;
+                    }
+                });
+                return `Add ${strength} ${sanitizedCardName} ${
+                    strength > 1 ? 'cards' : 'card'
+                } to your hand`;
+            }
+            case EffectType.MILL: {
+                return `Put ${strength} ${
+                    strength > 1 ? 'cards' : 'card'
+                } from ${targetNamePossessive.replace('all', 'each')} ${
+                    isTargetTypePlural(target) ? 'libraries' : 'library'
+                } into ${controllerPossessiveText} ${
+                    isTargetTypePlural(target) ? 'graveyards' : 'graveyard'
+                }`;
+            }
+            case EffectType.POLYMORPH: {
+                return `Turn ${targetName} into a [${summonType.name}]`;
+            }
+            case EffectType.RAMP: {
+                return `Increase ${resourceType.toLowerCase()} resources by ${strength}${forText}`;
+            }
+            case EffectType.RAMP_FOR_TURN: {
+                let resourcesToDisplay = `${strength} ${RESOURCE_GLOSSARY[resourceType].icon}`;
+                if (resourceType === Resource.GENERIC) {
+                    resourcesToDisplay = `${strength} generic mana`;
+                }
+                return `Add ${resourcesToDisplay} this turn`;
+            }
+            case EffectType.RAMP_FROM_HAND: {
+                return `Deploy ${strength} ${resourceType} card${pluralizationEffectStrength} from your hand tapped`;
+            }
+            case EffectType.RETURN_FROM_CEMETERY: {
+                return `Return ${strength} ${cardName} card${pluralizationEffectStrength} from your cemetery`;
+            }
+            case EffectType.REVIVE: {
+                return `Revive ${targetName}`;
+            }
+            case EffectType.SHUFFLE_FROM_HAND: {
+                return `Shuffle ${
+                    strength || 'all'
+                } [${cardName}] card${pluralizationEffectStrength} in hand into ${targetNamePossessive} deck${
+                    isTargetTypePlural(target) ? '' : 's'
+                }`;
+            }
+            case EffectType.SUMMON_UNITS: {
+                return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙${forText}`;
+            }
+            case EffectType.TRANSMUTE: {
+                return `Turn ${
+                    strength || 'all'
+                } [${cardName}] card${pluralizationEffectStrength} in hand into [${secondaryCardName}]${forText}`;
+            }
+            case EffectType.TUCK: {
+                return `Put ${targetName} on top of ${controllerPossessiveText} library`;
+            }
+            case EffectType.TUCK_BOTTOM_AND_DRAW: {
+                return `${titleize(
+                    targetName
+                )} goes to the bottom of ${controllerPossessiveText} library.  For each unit returned this way, the unit's controller draw a card`;
+            }
+            default: {
+                return '';
+            }
         }
-        case EffectType.RAMP_FROM_HAND: {
-            return `Deploy ${strength} ${resourceType} card${pluralizationEffectStrength} from your hand tapped`;
-        }
-        case EffectType.RETURN_FROM_CEMETERY: {
-            return `Return ${strength} ${cardName} card${pluralizationEffectStrength} from your cemetery`;
-        }
-        case EffectType.REVIVE: {
-            return `Revive ${targetName}`;
-        }
-        case EffectType.SHUFFLE_FROM_HAND: {
-            return `Shuffle ${
-                strength || 'all'
-            } [${cardName}] card${pluralizationEffectStrength} in hand into ${targetNamePossessive} deck${
-                isTargetTypePlural(target) ? '' : 's'
-            }`;
-        }
-        case EffectType.SUMMON_UNITS: {
-            return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙${forText}`;
-        }
-        case EffectType.TRANSMUTE: {
-            return `Turn ${
-                strength || 'all'
-            } [${cardName}] card${pluralizationEffectStrength} in hand into [${secondaryCardName}]${forText}`;
-        }
-        case EffectType.TUCK: {
-            return `Put ${targetName} on top of ${controllerPossessiveText} library`;
-        }
-        default: {
-            return '';
-        }
+    };
+
+    const rulesSummary = getEffectRulesSummary();
+
+    if (!effect.requirements || withoutRequirements) {
+        return rulesSummary;
     }
+    return `${rulesSummary}. ${getRequirementsText(effect.requirements)}`;
 };

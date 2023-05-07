@@ -1,6 +1,12 @@
 import cloneDeep from 'lodash.clonedeep';
 
-import { CardRarity, CardType, SpellBase, SpellCard } from '@/types/cards';
+import {
+    CardRarity,
+    CardType,
+    EffectRequirementsType,
+    SpellBase,
+    SpellCard,
+} from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../units';
@@ -366,6 +372,45 @@ const STIR = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const WHALE_BREACH = makeCard({
+    artistName: 'Kristendawn',
+    artistUrl: 'https://pixabay.com/users/kristendawn-5971956/',
+    originalImagePage:
+        'https://pixabay.com/photos/whale-breaching-marine-life-ocean-2580660/',
+    name: 'Whale Breach',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/08/04/16/59/whale-2580660_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.TUCK_BOTTOM_AND_DRAW,
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
+const LIFTOFF = makeCard({
+    artistName: 'Pexels',
+    artistUrl: 'https://pixabay.com/users/pexels-2286921/',
+    originalImagePage:
+        'https://pixabay.com/photos/bird-duck-wings-blur-bokeh-lake-1867066/',
+    name: 'Liftoff',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/11/29/03/28/bird-1867066_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+            requirements: [
+                {
+                    type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
+                    strength: 1,
+                },
+            ],
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const GENEROUS_GEYSER = makeCard({
     name: 'Generous Geyser',
     imgSrc: 'https://images.unsplash.com/photo-1567604130959-7ea7ab2a7807?',
@@ -670,6 +715,30 @@ const DISTORT_REALITY = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const GALACTIC_HOWL = makeCard({
+    artistName: 'Kristendawn',
+    artistUrl: 'https://pixabay.com/users/kristendawn-5971956/',
+    originalImagePage:
+        'https://pixabay.com/photos/galaxy-nebula-stars-digital-art-2728187/',
+    name: 'Galactic Howl',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/09/08/09/27/galaxy-2728187_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            requirements: [
+                {
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    strength: 1,
+                    cardType: CardType.RESOURCE,
+                },
+            ],
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const ZEN_STANCE = makeCard({
     name: 'Zen Stance',
     // https://pixabay.com/illustrations/meditation-spiritual-yoga-1384758/
@@ -866,6 +935,30 @@ const THROW_SHURIKEN = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const BESTOW_KNIGHTHOOD = makeCard({
+    artistName: 'WikiImages',
+    artistUrl: 'https://pixabay.com/users/wikiimages-1897/',
+    originalImagePage:
+        'https://pixabay.com/photos/accolade-knight-middle-ages-award-63001/',
+    name: 'Bestow Knighthood',
+    imgSrc: 'https://cdn.pixabay.com/photo/2012/10/26/01/17/accolade-63001_1280.jpg',
+    cost: { [Resource.IRON]: 1 },
+    effects: [
+        {
+            type: EffectType.BUFF_ATTACK,
+            target: TargetTypes.UNIT,
+            strength: 3,
+            requirements: [
+                {
+                    type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
+                    strength: 1,
+                },
+            ],
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const BANDIT_AMBUSH = makeCard({
     name: 'Bandit Ambush',
     imgSrc: 'https://images.unsplash.com/photo-1627732922021-e73df99d192e',
@@ -1032,6 +1125,36 @@ const SPRING_IN_BLOOM = makeCard({
         },
     ],
     rarity: CardRarity.RARE,
+});
+
+const GENTLE_ENCOURAGEMENT = makeCard({
+    artistName: '0fjd125gk87',
+    artistUrl: 'https://pixabay.com/users/0fjd125gk87-51581/',
+    originalImagePage:
+        'https://pixabay.com/photos/elephant-watering-hole-baby-elephant-2380009/',
+    name: 'Gentle Encouragement',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/06/07/10/47/elephant-2380009_1280.jpg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            summonType: Tokens.ELEPHANT,
+            strength: 1,
+            requirements: [
+                {
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    cardType: CardType.SPELL,
+                    strength: 2,
+                },
+                {
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    cardType: CardType.RESOURCE,
+                    strength: 1,
+                },
+            ],
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const RAIN_OF_ARROWS = makeCard({
@@ -1830,6 +1953,8 @@ export const SpellCards = {
     COLD_ISOLATION,
     OASIS_RITUAL,
     STIR,
+    LIFTOFF,
+    WHALE_BREACH,
     GENEROUS_GEYSER,
     MIDNIGHT_ROW,
     CONSTANT_REFILL,
@@ -1855,6 +1980,7 @@ export const SpellCards = {
     SURREAL_DREAM,
     ZEN_STANCE,
     BEAM_ME_UP,
+    GALACTIC_HOWL,
     PRAY_TO_ORION,
     CATS_OUT_OF_THE_BAG,
     STARRY_ILLUSION,
@@ -1865,6 +1991,7 @@ export const SpellCards = {
 
     // Iron
     THROW_SHURIKEN,
+    BESTOW_KNIGHTHOOD,
     BANDIT_AMBUSH,
     PERSECUTE,
     MAJOR_EARTHQUAKE,
@@ -1873,6 +2000,7 @@ export const SpellCards = {
     TEA,
     POISON_MUSHROOM,
     ARCHERY_AT_SUNSET,
+    GENTLE_ENCOURAGEMENT,
     FEED_TEAM,
     FARMERS_MARKET,
     WILD_ROSE_HARVEST,
