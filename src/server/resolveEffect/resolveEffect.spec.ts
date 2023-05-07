@@ -6,7 +6,7 @@ import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { resolveEffect } from './resolveEffect';
 import { makeCard, makeResourceCard, makeUnitCard } from '@/factories/cards';
 import { Tokens, UnitCards } from '@/mocks/units';
-import { UnitCard } from '@/types/cards';
+import { EffectRequirementsType, UnitCard } from '@/types/cards';
 import { Resource } from '@/types/resources';
 
 describe('resolve effect', () => {
@@ -1427,6 +1427,88 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].deck[0].name).toBe('Squire');
             expect(newBoard.players[0].hand).toHaveLength(8);
+        });
+    });
+
+    describe('Effect requirements', () => {
+        it('does not execute the effect if the conditions cannot be met (hand discard)', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE,
+                        requirements: [
+                            {
+                                type: EffectRequirementsType.DISCARD_CARD,
+                                strength: 8,
+                            },
+                        ],
+                        strength: 7,
+                        target: TargetTypes.ALL_OPPONENTS,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH
+            );
+        });
+
+        it('does not execute the effect if the conditions cannot be met (returning units to hand)', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE,
+                        requirements: [
+                            {
+                                type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
+                                strength: 2,
+                            },
+                        ],
+                        strength: 7,
+                        target: TargetTypes.ALL_OPPONENTS,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH
+            );
+        });
+
+        it('executes the effect and returns units to hand', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE,
+                        requirements: [
+                            {
+                                type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
+                                strength: 1,
+                            },
+                        ],
+                        strength: 7,
+                        target: TargetTypes.ALL_OPPONENTS,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units).toHaveLength(0);
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 1
+            );
+            expect(newBoard.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH - 7
+            );
         });
     });
 });

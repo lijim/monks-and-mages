@@ -204,6 +204,29 @@ const GOLEM_DRAGON: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const ELEPHANT: UnitCard = makeCard({
+    artistName: 'Sasin Tipchai',
+    artistUrl: 'https://pixabay.com/users/sasint-3639875/',
+    originalImagePage:
+        'https://pixabay.com/photos/elephant-trunk-tusks-forest-jungle-1822636/',
+    name: 'Elephant',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/11/14/04/45/elephant-1822636_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 4,
+    attack: 4,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
 const OCTOPUS: UnitCard = makeCard({
     name: 'Octopus',
     imgSrc: 'https://images.unsplash.com/photo-1616616839508-635cbd138f73',
@@ -232,6 +255,7 @@ export const Tokens = {
     LION,
     MANTA_RAY,
     MANATEE,
+    ELEPHANT,
     OCTOPUS,
     PIRATE_PARROT,
     SHARK,

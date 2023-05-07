@@ -1,6 +1,12 @@
 import cloneDeep from 'lodash.clonedeep';
 
-import { CardRarity, CardType, SpellBase, SpellCard } from '@/types/cards';
+import {
+    CardRarity,
+    CardType,
+    EffectRequirementsType,
+    SpellBase,
+    SpellCard,
+} from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../units';
@@ -686,6 +692,30 @@ const DISTORT_REALITY = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const GALACTIC_HOWL = makeCard({
+    artistName: 'Kristendawn',
+    artistUrl: 'https://pixabay.com/users/kristendawn-5971956/',
+    originalImagePage:
+        'https://pixabay.com/photos/galaxy-nebula-stars-digital-art-2728187/',
+    name: 'Galactic Howl',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/09/08/09/27/galaxy-2728187_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 3,
+            requirements: [
+                {
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    strength: 1,
+                    cardType: CardType.RESOURCE,
+                },
+            ],
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const ZEN_STANCE = makeCard({
     name: 'Zen Stance',
     // https://pixabay.com/illustrations/meditation-spiritual-yoga-1384758/
@@ -1048,6 +1078,36 @@ const SPRING_IN_BLOOM = makeCard({
         },
     ],
     rarity: CardRarity.RARE,
+});
+
+const GENTLE_ENCOURAGEMENT = makeCard({
+    artistName: '0fjd125gk87',
+    artistUrl: 'https://pixabay.com/users/0fjd125gk87-51581/',
+    originalImagePage:
+        'https://pixabay.com/photos/elephant-watering-hole-baby-elephant-2380009/',
+    name: 'Gentle Encouragement',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/06/07/10/47/elephant-2380009_1280.jpg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            summonType: Tokens.ELEPHANT,
+            strength: 1,
+            requirements: [
+                {
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    cardType: CardType.SPELL,
+                    strength: 2,
+                },
+                {
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    cardType: CardType.RESOURCE,
+                    strength: 1,
+                },
+            ],
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const RAIN_OF_ARROWS = makeCard({
@@ -1872,6 +1932,7 @@ export const SpellCards = {
     SURREAL_DREAM,
     ZEN_STANCE,
     BEAM_ME_UP,
+    GALACTIC_HOWL,
     PRAY_TO_ORION,
     CATS_OUT_OF_THE_BAG,
     STARRY_ILLUSION,
@@ -1890,6 +1951,7 @@ export const SpellCards = {
     TEA,
     POISON_MUSHROOM,
     ARCHERY_AT_SUNSET,
+    GENTLE_ENCOURAGEMENT,
     FEED_TEAM,
     FARMERS_MARKET,
     WILD_ROSE_HARVEST,

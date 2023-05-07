@@ -69,6 +69,7 @@ export enum EffectType {
     SUMMON_UNITS = 'Summon Units', // summon units from cemeteries
     TRANSMUTE = 'Transmute', // turn [all/N of] [X] from hand into [Y]
     TUCK = 'Tuck', // put on top of the deck
+    TUCK_BOTTOM_AND_DRAW = 'Tuck to bottom and draw', // put on bottom of deck - that player draws for each put on bottom this way
 }
 
 /**
@@ -114,6 +115,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.SUMMON_UNITS]: TargetTypes.SELF_PLAYER,
         [EffectType.TRANSMUTE]: TargetTypes.SELF_PLAYER,
         [EffectType.TUCK]: TargetTypes.OPPOSING_UNIT,
+        [EffectType.TUCK_BOTTOM_AND_DRAW]: TargetTypes.UNIT,
     }[effectType];
 };
 

@@ -4,6 +4,7 @@ import difference from 'lodash.difference';
 import sampleSize from 'lodash.samplesize';
 
 import shuffle from 'lodash.shuffle';
+import { sum } from 'lodash';
 import { ResolveEffectParams } from '@/types';
 import { Board, Player } from '@/types/board';
 import {
@@ -12,7 +13,15 @@ import {
     PassiveEffect,
     TargetTypes,
 } from '@/types/effects';
-import { CardType, ResourceCard, SpellCard, UnitCard } from '@/types/cards';
+import {
+    Card,
+    CardType,
+    EffectRequirement,
+    EffectRequirementsType,
+    ResourceCard,
+    SpellCard,
+    UnitCard,
+} from '@/types/cards';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import {
     applyWinState,
@@ -24,6 +33,103 @@ import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
 import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
 
+type PerformEffectRequirementParams = {
+    board: Board;
+    effectRequirement: EffectRequirement;
+    playerName: string;
+};
+
+/**
+ * Effectful code that mutates and performs an effect requirement given a board state
+ * @returns {Object} - the board state object, with mutations from the effect requirement
+ */
+const performEffectRequirement = ({
+    board,
+    playerName,
+    effectRequirement,
+}: PerformEffectRequirementParams) => {
+    const activePlayer = board.players.find(
+        (player) => player.name === playerName
+    );
+    const { type, resourceType, cardType, strength = 1 } = effectRequirement;
+    switch (type) {
+        case EffectRequirementsType.DISCARD_CARD: {
+            let cardsToDiscard: Card[] = [];
+            if (resourceType) {
+                cardsToDiscard = sampleSize(
+                    activePlayer.hand.filter(
+                        (card) =>
+                            card.cardType === CardType.RESOURCE &&
+                            card.name === resourceType
+                    ),
+                    strength
+                );
+            } else if (cardType) {
+                cardsToDiscard = sampleSize(
+                    activePlayer.hand.filter(
+                        (card) => card.cardType === cardType
+                    ),
+                    strength
+                );
+            } else {
+                cardsToDiscard = sampleSize(activePlayer.hand, strength);
+            }
+
+            if (cardsToDiscard.length < strength) {
+                throw new Error('not enough cards to discard');
+            }
+
+            activePlayer.hand = activePlayer.hand.filter(
+                (card) => !cardsToDiscard.includes(card)
+            );
+            break;
+        }
+        case EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND: {
+            if (activePlayer.units.length < strength) {
+                throw new Error('not enough units to return to hand');
+            }
+            const unitsByCost: Map<number, UnitCard[]> = new Map();
+
+            activePlayer.units.forEach((unit) => {
+                const totalCost = sum(Object.values(unit.originalCost));
+                if (unitsByCost.has(totalCost)) {
+                    unitsByCost.get(totalCost).push(unit);
+                } else {
+                    unitsByCost.set(totalCost, [unit]);
+                }
+            });
+
+            let unitsToReturn: UnitCard[] = [];
+            let unitsLeftToReturn = strength;
+
+            [...unitsByCost.entries()]
+                .sort()
+                .forEach(([_, unitsWithSpecificCost]) => {
+                    if (unitsWithSpecificCost.length <= unitsLeftToReturn) {
+                        const sample = sampleSize(
+                            unitsWithSpecificCost,
+                            unitsLeftToReturn
+                        );
+                        unitsToReturn = [...unitsToReturn, ...sample];
+                        unitsLeftToReturn -= sample.length;
+                    }
+                });
+
+            activePlayer.hand = [...activePlayer.hand, ...unitsToReturn];
+            activePlayer.units = activePlayer.units.filter(
+                (unit) => !unitsToReturn.includes(unit)
+            );
+
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+
+    return board;
+};
+
 export const resolveEffect = (
     board: Board,
     { effect, playerNames, unitCardIds }: ResolveEffectParams,
@@ -31,13 +137,14 @@ export const resolveEffect = (
     verifyEffect = false,
     addChatMessage?: (message: string) => void
 ): Board | null => {
-    const clonedBoard = cloneDeep(board);
+    let clonedBoard = cloneDeep(board);
     const {
         strength: effectStrength = 0,
         cardName,
         secondaryCardName,
         passiveEffect,
         sourceId,
+        requirements,
     } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
@@ -154,8 +261,45 @@ export const resolveEffect = (
     /**
      * Chat messages
      */
-    const rulesText = transformEffectToRulesText(effect).toLowerCase();
+    const rulesText = transformEffectToRulesText(effect, true).toLowerCase();
     const addSystemChat = (message: string) => addChatMessage?.(message);
+
+    /**
+     * Determine if effect can go through or not based on requirements
+     */
+
+    if (requirements) {
+        let tempBoard = cloneDeep(clonedBoard);
+        // first try on a dry run to make sure requirements can be fulfilled
+        try {
+            requirements.forEach((requirement) => {
+                performEffectRequirement({
+                    board: tempBoard,
+                    playerName,
+                    effectRequirement: requirement,
+                });
+            });
+        } catch (error) {
+            addSystemChat(
+                `${activePlayer.name} could not resolve "${rulesText}" because ${error.message}`
+            );
+            return clonedBoard;
+        }
+
+        // then actually fulfill them if no errors were caught (as we need to mutate the clonedBoard)
+        try {
+            requirements.forEach((requirement) => {
+                performEffectRequirement({
+                    board: clonedBoard,
+                    playerName,
+                    effectRequirement: requirement,
+                });
+            });
+        } catch (error) {
+            // just a failsafe - normally should not happen to catch errors here
+        }
+    }
+
     addSystemChat(
         `${activePlayer.name} resolved "${rulesText}"${
             targetText && target !== TargetTypes.SELF_PLAYER

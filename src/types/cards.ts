@@ -42,6 +42,7 @@ export interface ResourceCard extends CardBase {
 export type Effect = {
     cardName?: string;
     passiveEffect?: PassiveEffect;
+    requirements?: EffectRequirement[];
     resourceType?: Resource;
     secondaryCardName?: string;
     sourceId?: string;
@@ -50,6 +51,18 @@ export type Effect = {
     target?: TargetTypes;
     type: EffectType;
 };
+
+export type EffectRequirement = {
+    cardType?: CardType;
+    resourceType?: Resource;
+    strength?: number;
+    type: EffectRequirementsType;
+};
+
+export enum EffectRequirementsType {
+    DISCARD_CARD = 'Discard card',
+    RETURN_LOWEST_COST_UNIT_TO_HAND = 'Return lowest cost unit to hand',
+}
 
 /**
  * Unit Base is the construct needed to construct a unit card.
