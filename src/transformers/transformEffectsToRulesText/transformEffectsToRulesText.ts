@@ -95,7 +95,7 @@ const getRequirementText = (effectRequirement: EffectRequirement) => {
         case EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND: {
             return `you return your ${strength} lowest costed unit${
                 strength > 1 ? 's' : ''
-            } to your hand`;
+            } to your hand (chosen at random)`;
         }
         default: {
             return '';
