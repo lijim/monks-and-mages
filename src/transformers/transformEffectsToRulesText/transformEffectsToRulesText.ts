@@ -93,9 +93,9 @@ const getRequirementText = (effectRequirement: EffectRequirement) => {
             }`;
         }
         case EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND: {
-            return `you return your ${strength} unit${
+            return `you return your ${strength} lowest costed unit${
                 strength > 1 ? 's' : ''
-            } lowest costed units to your hand`;
+            } to your hand`;
         }
         default: {
             return '';

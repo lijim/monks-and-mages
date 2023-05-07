@@ -680,7 +680,7 @@ describe('transformEffectstoRulesText', () => {
                 ],
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Deal 3 damage to any target. Do this only if you return your 4 units lowest costed units to your hand and you discard 2 [Resource] cards`
+                `Deal 3 damage to any target. Do this only if you return your 4 lowest costed units to your hand and you discard 2 [Resource] cards`
             );
         });
     });
