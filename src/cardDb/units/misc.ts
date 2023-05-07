@@ -1,5 +1,10 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { CardRarity, UnitCard } from '@/types/cards';
+import {
+    CardRarity,
+    CardType,
+    EffectRequirementsType,
+    UnitCard,
+} from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from './tokens';
@@ -145,6 +150,41 @@ const CITY_GUARD_WOLF: UnitCard = makeCard({
     enterEffects: [],
     totalHp: 1,
     attack: 1,
+    numAttacks: 2,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const SPELLCULLER: UnitCard = makeCard({
+    artistName: 'Gismi',
+    artistUrl: 'https://pixabay.com/users/gismi-34352013/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/fantasy-dark-moon-night-death-7921049/',
+    name: 'Spellculler',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/04/12/19/32/fantasy-7921049_1280.jpg',
+    cost: {
+        [Resource.IRON]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+            requirements: [
+                {
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    strength: 1,
+                    cardType: CardType.SPELL,
+                },
+            ],
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
     numAttacks: 2,
     isRanged: false,
     isMagical: false,
@@ -858,6 +898,42 @@ const RUFOUS_HUMMINGBIRD: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const GRIFFIN_FRIEND: UnitCard = makeCard({
+    artistName: 'Prawny',
+    artistUrl: 'https://pixabay.com/users/prawny-162579/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/vintage-book-illustration-1794782/',
+    name: 'Griffin Friend',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/11/03/15/52/vintage-1794782_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.CURSE_HAND,
+            strength: 1,
+            target: TargetTypes.ALL_OPPONENTS,
+            requirements: [
+                {
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    cardType: CardType.RESOURCE,
+                    strength: 1,
+                },
+            ],
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const PET_DEMON: UnitCard = makeCard({
     artistName: 'Square Frog',
     artistUrl: 'https://pixabay.com/users/squarefrog-9690118/',
@@ -929,6 +1005,7 @@ export const MISC_UNITS = {
     TEMPLE_DEVOTEE,
     ELITE_WEAPONS_MASTER,
     IRONSMITH,
+    SPELLCULLER,
     GARGOYLE,
     FISHING_GNOME,
     CONTENT_CAMEL,
@@ -947,6 +1024,7 @@ export const MISC_UNITS = {
     TUNDRA_FROST_PACK,
     INCONSPICUOUS_CRAB,
     RUFOUS_HUMMINGBIRD,
+    GRIFFIN_FRIEND,
     PET_DEMON,
     RULER_OF_THE_JUNGLE,
 };

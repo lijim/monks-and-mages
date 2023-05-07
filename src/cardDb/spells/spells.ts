@@ -388,6 +388,29 @@ const WHALE_BREACH = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const LIFTOFF = makeCard({
+    artistName: 'Pexels',
+    artistUrl: 'https://pixabay.com/users/pexels-2286921/',
+    originalImagePage:
+        'https://pixabay.com/photos/bird-duck-wings-blur-bokeh-lake-1867066/',
+    name: 'Liftoff',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/11/29/03/28/bird-1867066_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+            requirements: [
+                {
+                    type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
+                    strength: 1,
+                },
+            ],
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const GENEROUS_GEYSER = makeCard({
     name: 'Generous Geyser',
     imgSrc: 'https://images.unsplash.com/photo-1567604130959-7ea7ab2a7807?',
@@ -1930,6 +1953,7 @@ export const SpellCards = {
     COLD_ISOLATION,
     OASIS_RITUAL,
     STIR,
+    LIFTOFF,
     WHALE_BREACH,
     GENEROUS_GEYSER,
     MIDNIGHT_ROW,

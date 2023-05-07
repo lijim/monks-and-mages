@@ -21,4 +21,26 @@ const OLD_TROLL: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
-export const MISC_MAGES = { OLD_TROLL };
+const MOSS_TROLL: UnitCard = makeCard({
+    artistName: 'Efraimstochter',
+    artistUrl: 'https://pixabay.com/users/efraimstochter-12351/',
+    originalImagePage: 'https://pixabay.com/photos/trolls-gnome-troll-785555/',
+    name: 'Moss Troll',
+    imgSrc: 'https://cdn.pixabay.com/photo/2015/05/26/21/32/control-785555_1280.jpg',
+    cost: {
+        [Resource.GENERIC]: 2,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+export const MISC_MAGES = { OLD_TROLL, MOSS_TROLL };

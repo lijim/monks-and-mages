@@ -81,16 +81,16 @@ const getRequirementText = (effectRequirement: EffectRequirement) => {
             if (resourceType) {
                 return `you discard ${strength} [${resourceType}] card${
                     strength > 1 ? 's' : ''
-                }`;
+                } at random`;
             }
             if (cardType) {
                 return `you discard ${strength} [${cardType}] card${
                     strength > 1 ? 's' : ''
-                }`;
+                } at random`;
             }
             return `you discard ${strength} [${cardType}] card${
                 strength > 1 ? 's' : ''
-            }`;
+            } at random`;
         }
         case EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND: {
             return `you return your ${strength} lowest costed unit${
