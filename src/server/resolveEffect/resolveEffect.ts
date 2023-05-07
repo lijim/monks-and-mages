@@ -37,6 +37,7 @@ type PerformEffectRequirementParams = {
     board: Board;
     effectRequirement: EffectRequirement;
     playerName: string;
+    addSystemChat?: (message: string) => void;
 };
 
 /**
@@ -47,6 +48,7 @@ const performEffectRequirement = ({
     board,
     playerName,
     effectRequirement,
+    addSystemChat,
 }: PerformEffectRequirementParams) => {
     const activePlayer = board.players.find(
         (player) => player.name === playerName
@@ -76,17 +78,24 @@ const performEffectRequirement = ({
             }
 
             if (cardsToDiscard.length < strength) {
-                throw new Error('not enough cards to discard');
+                throw new Error('there were not enough cards to discard');
             }
 
             activePlayer.hand = activePlayer.hand.filter(
                 (card) => !cardsToDiscard.includes(card)
             );
+            addSystemChat?.(
+                `${activePlayer} discarded: ${cardsToDiscard
+                    .map((card) => `[[${card.name}]]`)
+                    .join(', ')}`
+            );
             break;
         }
         case EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND: {
             if (activePlayer.units.length < strength) {
-                throw new Error('not enough units to return to hand');
+                throw new Error(
+                    'there were not enough units to return to hand'
+                );
             }
             const unitsByCost: Map<number, UnitCard[]> = new Map();
 
@@ -118,6 +127,12 @@ const performEffectRequirement = ({
             activePlayer.hand = [...activePlayer.hand, ...unitsToReturn];
             activePlayer.units = activePlayer.units.filter(
                 (unit) => !unitsToReturn.includes(unit)
+            );
+
+            addSystemChat?.(
+                `${activePlayer} returned to hand: ${unitsToReturn
+                    .map((card) => `[[${card.name}]]`)
+                    .join(', ')}`
             );
 
             break;
