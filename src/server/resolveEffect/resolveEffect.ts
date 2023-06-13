@@ -635,7 +635,7 @@ export const resolveEffect = (
             applyWinState(clonedBoard);
             return clonedBoard;
         }
-        case EffectType.DESTROY_RESOURCE_WITH_FEASTING: {
+        case EffectType.DESTROY_RESOURCE_TO_GAIN_STATS: {
             const { resourceType } = effect;
             playerTargets.forEach((player) => {
                 const resourcesToDestroy = sampleSize(

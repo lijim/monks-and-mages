@@ -287,7 +287,7 @@ describe('transformEffectstoRulesText', () => {
 
         it('displays rules destroying a resource (all) - with feasting', () => {
             const effect: Effect = {
-                type: EffectType.DESTROY_RESOURCE_WITH_FEASTING,
+                type: EffectType.DESTROY_RESOURCE_TO_GAIN_STATS,
                 strength: Number.MAX_SAFE_INTEGER,
             };
             expect(transformEffectToRulesText(effect)).toEqual(

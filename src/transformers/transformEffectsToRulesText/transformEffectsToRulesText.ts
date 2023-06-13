@@ -309,7 +309,7 @@ export const transformEffectToRulesText = (
                     numToDestroy === 'all' ? '' : ' at random'
                 }`;
             }
-            case EffectType.DESTROY_RESOURCE_WITH_FEASTING: {
+            case EffectType.DESTROY_RESOURCE_TO_GAIN_STATS: {
                 const numToDestroy =
                     strength === Number.MAX_SAFE_INTEGER ? 'all' : strength;
                 if (resourceType) {
