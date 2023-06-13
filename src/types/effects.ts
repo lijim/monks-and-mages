@@ -76,6 +76,7 @@ export enum EffectType {
      */
     FLICKER = 'Flicker',
     GAIN_ATTACK = 'Gain attack', // buff the unit's attack
+    GAIN_ATTACK_UNTIL = 'Gain attack until a threshold', // buff the unit's attack if it's under X to X
     GAIN_MAGICAL_HAND_AND_BOARD = 'Gain magical for hand and board units', // unit becomes magical
     GAIN_STATS = 'Gain stats', // buff the unit's attack + hp
     GAIN_STATS_AND_EFFECTS = 'Gain stats and effects', // buff the unit's attack + hp and gain passive effects
@@ -156,6 +157,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.EXTRACT_SPELL_CARDS]: TargetTypes.SELF_PLAYER,
         [EffectType.FLICKER]: TargetTypes.OWN_UNIT,
         [EffectType.GAIN_ATTACK]: TargetTypes.SELF_PLAYER,
+        [EffectType.GAIN_ATTACK_UNTIL]: TargetTypes.ALL_SELF_UNITS,
         [EffectType.GAIN_MAGICAL_HAND_AND_BOARD]: TargetTypes.SELF_PLAYER,
         [EffectType.GAIN_STATS]: TargetTypes.SELF_PLAYER,
         [EffectType.GAIN_STATS_AND_EFFECTS]: TargetTypes.SELF_PLAYER,
