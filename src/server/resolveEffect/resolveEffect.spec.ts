@@ -414,6 +414,28 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].units[2].attackBuff).toEqual(2);
             expect(newBoard.players[0].units[3].attackBuff).toEqual(0);
         });
+
+        it('buffs attack and hp of generic units on your board', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
+            board.players[0].units = [squire, apprentice];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_TEAM_GENERIC_UNITS,
+                        strength: 2,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(2);
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(2);
+            expect(newBoard.players[0].units[1].attackBuff).toEqual(0);
+            expect(newBoard.players[0].units[1].hpBuff).toEqual(0);
+        });
     });
 
     describe('Curse Hand', () => {
@@ -1509,6 +1531,60 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[1].health).toEqual(
                 PlayerConstants.STARTING_HEALTH - 7
+            );
+        });
+
+        it('checks a passive effect (pass)', () => {
+            const squire1 = makeCard(UnitCards.SQUIRE);
+            const squire2 = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1, squire2];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE,
+                        requirements: [
+                            {
+                                type: EffectRequirementsType.ARE_AT_LIFE_AT_OR_ABOVE_THRESHOLD,
+                                strength: 15,
+                            },
+                        ],
+                        strength: 7,
+                        target: TargetTypes.ALL_OPPONENTS,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH - 7
+            );
+        });
+
+        it('checks a passive effect (fail)', () => {
+            const squire1 = makeCard(UnitCards.SQUIRE);
+            const squire2 = makeCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1, squire2];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE,
+                        requirements: [
+                            {
+                                type: EffectRequirementsType.ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD,
+                                strength: 15,
+                            },
+                        ],
+                        strength: 7,
+                        target: TargetTypes.ALL_OPPONENTS,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH
             );
         });
     });

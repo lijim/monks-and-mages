@@ -163,6 +163,17 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
+    describe('buffing generic units', () => {
+        const effect: Effect = {
+            type: EffectType.BUFF_TEAM_GENERIC_UNITS,
+            strength: 5,
+            target: TargetTypes.SELF_PLAYER,
+        };
+        expect(transformEffectToRulesText(effect)).toEqual(
+            `Increase attack and HP of your units without any text by 5`
+        );
+    });
+
     it('displays rules for buffing your hand (attack)', () => {
         const effect: Effect = {
             type: EffectType.BUFF_HAND_ATTACK,
@@ -663,7 +674,7 @@ describe('transformEffectstoRulesText', () => {
     });
 
     describe('Effect Requirements', () => {
-        it('displays rules for multiple requirements', () => {
+        it('displays rules for active requirements', () => {
             const effect: Effect = {
                 type: EffectType.DEAL_DAMAGE,
                 strength: 3,
@@ -681,6 +692,44 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Deal 3 damage to any target. Do this only if you return your 4 lowest costed units to your hand (chosen at random) and you discard 2 [Resource] cards at random`
+            );
+        });
+
+        it('displays rules for passive requirements', () => {
+            const effect: Effect = {
+                type: EffectType.DEAL_DAMAGE,
+                strength: 3,
+                requirements: [
+                    {
+                        type: EffectRequirementsType.ARE_HOLDING_A_SPECIFIC_CARDNAME,
+                        strength: 1,
+                        cardName: 'Tea',
+                    },
+                ],
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `If you are holding a [[Tea]] card, deal 3 damage to any target`
+            );
+        });
+
+        it('displays rules for mixing active + passive requirements', () => {
+            const effect: Effect = {
+                type: EffectType.DEAL_DAMAGE,
+                strength: 3,
+                requirements: [
+                    {
+                        type: EffectRequirementsType.CONTROL_A_GENERIC_PRODUCING_RESOURCE,
+                        strength: 1,
+                    },
+                    {
+                        type: EffectRequirementsType.DISCARD_CARD,
+                        strength: 2,
+                        cardType: CardType.RESOURCE,
+                    },
+                ],
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Deal 3 damage to any target. Do this only if you control a resource card that produces generic mana and you discard 2 [Resource] cards at random`
             );
         });
     });

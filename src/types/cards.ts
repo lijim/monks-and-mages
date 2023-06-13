@@ -45,6 +45,7 @@ export type Effect = {
     requirements?: EffectRequirement[];
     resourceType?: Resource;
     secondaryCardName?: string;
+    secondaryStrength?: number;
     sourceId?: string;
     strength?: number;
     summonType?: UnitCard;
@@ -53,6 +54,7 @@ export type Effect = {
 };
 
 export type EffectRequirement = {
+    cardName?: string;
     cardType?: CardType;
     resourceType?: Resource;
     strength?: number;
@@ -60,7 +62,17 @@ export type EffectRequirement = {
 };
 
 export enum EffectRequirementsType {
+    ARE_AT_LIFE_AT_OR_ABOVE_THRESHOLD = 'Are at a life total at or above a threshold number',
+    ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD = 'Are at a life total below or equal to a threshold number',
+    ARE_HOLDING_A_SPECIFIC_CARDNAME = 'Are holding a specific cardname',
+    CONTROL_A_LEGENDARY_LEADER = 'Control a specific card',
+    CONTROL_A_GENERIC_PRODUCING_RESOURCE = 'Control a generic producing resource',
+    CONTROL_RANGED_AND_MAGICAL = 'Control a ranged unit and a magical unit',
     DISCARD_CARD = 'Discard card',
+    HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY = 'Have at least a certain threshold of cards in cemetery',
+    HAVE_MINIMUM_ATTACK_ON_A_UNIT = 'Have at least [strength] attack on a unit',
+    HAVE_NO_CARDS_IN_HAND = 'Have no cards in hand',
+    HAVE_NO_UNIT_CARDS_IN_DECK = 'Have no unit cards in deck',
     RETURN_LOWEST_COST_UNIT_TO_HAND = 'Return lowest cost unit to hand',
 }
 

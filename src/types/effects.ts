@@ -35,9 +35,13 @@ export enum EffectType {
     BUFF_ATTACK_FOR_TURN = 'Buff attack for turn', // increase/decrease attack of a single unit
     BUFF_HAND_ATTACK = 'Buff hand attack', // buffs all creatures in hand
     BUFF_MAGIC = 'Buff magic unit',
-    BUFF_TEAM_ATTACK = 'Buff team attack', // increases all attack for non-magic units
-    BUFF_TEAM_HP = 'Buff team hp', // increases maxHp and hp for whole team
-    BUFF_TEAM_MAGIC = 'Buff team magic', // increases attack for magic-units
+    BUFF_TEAM_ATTACK = 'Buff team attack',
+    // increases attack for magic-units
+    BUFF_TEAM_GENERIC_UNITS = 'Buff team generic units',
+    // increases all attack for non-magic units
+    BUFF_TEAM_HP = 'Buff team hp',
+    // increases maxHp and hp for whole team
+    BUFF_TEAM_MAGIC = 'Buff team magic', // increase hp and attack for units with no effects text
     CURSE_HAND = 'Curse Hand', // adds one generic cost to cards in hand
     DEAL_DAMAGE = 'Deal Damage', // to any target
     DESTROY_RESOURCE = 'Destroy Resource',
@@ -89,6 +93,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.BUFF_TEAM_ATTACK]: TargetTypes.SELF_PLAYER,
         [EffectType.BUFF_TEAM_HP]: TargetTypes.SELF_PLAYER,
         [EffectType.BUFF_TEAM_MAGIC]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_TEAM_GENERIC_UNITS]: TargetTypes.SELF_PLAYER,
         [EffectType.CURSE_HAND]: TargetTypes.OPPONENT,
         [EffectType.DEAL_DAMAGE]: TargetTypes.ANY,
         [EffectType.DESTROY_RESOURCE]: TargetTypes.OPPONENT,

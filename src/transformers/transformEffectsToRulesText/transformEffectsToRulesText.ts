@@ -60,6 +60,12 @@ const TARGET_TYPES_TO_RULES_TEXT_CONTROLLER_POSSESIVE = {
     [TargetTypes.UNIT]: "its controller's",
 };
 
+// requirements
+const ACTIVE_REQUIREMENT_TYPES: EffectRequirementsType[] = [
+    EffectRequirementsType.DISCARD_CARD,
+    EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
+];
+
 const PLURAL_TARGET_TYPES = [
     TargetTypes.ALL_OPPONENTS,
     TargetTypes.ALL_OPPOSING_UNITS,
@@ -71,12 +77,21 @@ const isTargetTypePlural = (targetType: TargetTypes): boolean =>
     PLURAL_TARGET_TYPES.indexOf(targetType) > -1;
 
 const titleize = (str: string): string => {
-    return str[0].toUpperCase() + str.substring(1);
+    return str[0].toLocaleUpperCase() + str.substring(1);
+};
+const unTitleize = (str: string): string => {
+    return str[0].toLocaleLowerCase() + str.substring(1);
 };
 
 const getRequirementText = (effectRequirement: EffectRequirement) => {
-    const { resourceType, cardType, strength } = effectRequirement;
+    const {
+        resourceType,
+        cardType,
+        cardName,
+        strength = 1,
+    } = effectRequirement;
     switch (effectRequirement.type) {
+        // Active requirements - have to do something active to have the effect go through
         case EffectRequirementsType.DISCARD_CARD: {
             if (resourceType) {
                 return `you discard ${strength} [${resourceType}] card${
@@ -97,29 +112,93 @@ const getRequirementText = (effectRequirement: EffectRequirement) => {
                 strength > 1 ? 's' : ''
             } to your hand (chosen at random)`;
         }
+
+        // Passive requirements - just have to be satisfying them to have the effect go through
+        case EffectRequirementsType.ARE_AT_LIFE_AT_OR_ABOVE_THRESHOLD: {
+            return `you are at a life total of ${strength} or higher`;
+        }
+        case EffectRequirementsType.ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD: {
+            return `you are at a life total of ${strength} or lower`;
+        }
+        case EffectRequirementsType.ARE_HOLDING_A_SPECIFIC_CARDNAME: {
+            if (strength === 0) {
+                return `you are holding no [[${cardName}]] cards`;
+            }
+            if (strength === 1) {
+                return `you are holding a [[${cardName}]] card`;
+            }
+            return `you are holding at least [[${cardName}]] cards`;
+        }
+        case EffectRequirementsType.CONTROL_A_GENERIC_PRODUCING_RESOURCE: {
+            if (strength === 0) {
+                return `you control no resource cards that produce generic mana`;
+            }
+            if (strength === 1) {
+                return `you control a resource card that produces generic mana`;
+            }
+            return `you control at least ${strength} resource cards that produce generic mana`;
+        }
+        case EffectRequirementsType.CONTROL_A_LEGENDARY_LEADER: {
+            return `you control a legendary leader`;
+        }
+        case EffectRequirementsType.CONTROL_RANGED_AND_MAGICAL: {
+            return `you control a ranged unit and a magical unit`;
+        }
+        case EffectRequirementsType.HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY: {
+            return `you have at least ${strength} card${
+                strength > 1 ? 's' : ''
+            } in your cemetery`;
+        }
+        case EffectRequirementsType.HAVE_MINIMUM_ATTACK_ON_A_UNIT: {
+            return `you have a unit with at least ${strength} attack`;
+        }
+        case EffectRequirementsType.HAVE_NO_CARDS_IN_HAND: {
+            return `you have no cards in hand`;
+        }
+        case EffectRequirementsType.HAVE_NO_UNIT_CARDS_IN_DECK: {
+            return `you have no unit cards in your deck`;
+        }
         default: {
             return '';
         }
     }
 };
 
-const getRequirementsText = (effectRequirements: EffectRequirement[]) => {
+const combineRequirementsText = (requirementTexts: string[]) => {
+    if (requirementTexts.length === 1) {
+        return requirementTexts[0];
+    }
+
+    const nonLastRequirements = requirementTexts.slice(
+        0,
+        requirementTexts.length - 1
+    );
+    const lastRequirement = requirementTexts.at(requirementTexts.length - 1);
+    return `${nonLastRequirements.join(', ')} and ${lastRequirement}`;
+};
+
+const getRequirementsRulesText = (
+    effectRequirements: EffectRequirement[],
+    rulesSummary: string
+) => {
     const requirementsTexts = effectRequirements.map((requirement) =>
         getRequirementText(requirement)
     );
-    if (requirementsTexts.length === 1) {
-        return `Do this only if ${requirementsTexts[0]}`;
+
+    const everyRequirementIsAPassiveCheck = effectRequirements.every(
+        (requirement) => !ACTIVE_REQUIREMENT_TYPES.includes(requirement.type)
+    );
+    // e.g. 'If you have more than 4 cards, draw 3 cards'
+    if (everyRequirementIsAPassiveCheck) {
+        return `If ${combineRequirementsText(requirementsTexts)}, ${unTitleize(
+            rulesSummary
+        )}`;
     }
-    const nonLastRequirementTexts = requirementsTexts.slice(
-        0,
-        requirementsTexts.length - 1
-    );
-    const lastRequirementText = requirementsTexts.at(
-        requirementsTexts.length - 1
-    );
-    return `Do this only if ${nonLastRequirementTexts.join(
-        ', '
-    )} and ${lastRequirementText}`;
+
+    // e.g. 'Draw 3 cards.  Do this only if you '
+    return `${rulesSummary}. Do this only if ${combineRequirementsText(
+        requirementsTexts
+    )}`;
 };
 
 export const transformEffectToRulesText = (
@@ -203,6 +282,9 @@ export const transformEffectToRulesText = (
                 if (strength < 0)
                     return `Decrease attack of ${targetNamePossessive} magic units by ${-strength}`;
                 return `Increase attack of ${targetNamePossessive} magic units by ${strength}`;
+            }
+            case EffectType.BUFF_TEAM_GENERIC_UNITS: {
+                return `Increase attack and HP of ${targetNamePossessive} units without any text by ${strength}`;
             }
             case EffectType.CURSE_HAND: {
                 if (strength < 0)
@@ -371,5 +453,6 @@ export const transformEffectToRulesText = (
     if (!effect.requirements || withoutRequirements) {
         return rulesSummary;
     }
-    return `${rulesSummary}. ${getRequirementsText(effect.requirements)}`;
+
+    return getRequirementsRulesText(effect.requirements, rulesSummary);
 };
