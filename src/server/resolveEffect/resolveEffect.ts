@@ -156,6 +156,7 @@ const performEffectRequirement = ({
                     `their life total (${activePlayer.health}) was higher than ${strength}`
                 );
             }
+            break;
         }
         case EffectRequirementsType.ARE_HOLDING_A_SPECIFIC_CARDNAME: {
             const { cardName } = effectRequirement;
