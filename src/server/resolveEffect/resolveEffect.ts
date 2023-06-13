@@ -32,6 +32,7 @@ import { transformEffectToRulesText } from '@/transformers/transformEffectsToRul
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
 import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
+import { Resource } from '@/types/resources';
 
 type PerformEffectRequirementParams = {
     addSystemChat?: (message: string) => void;
@@ -55,6 +56,7 @@ const performEffectRequirement = ({
     );
     const { type, resourceType, cardType, strength = 1 } = effectRequirement;
     switch (type) {
+        // Active requirements - have to do something active to have the effect go through
         case EffectRequirementsType.DISCARD_CARD: {
             let cardsToDiscard: Card[] = [];
             if (resourceType) {
@@ -138,6 +140,127 @@ const performEffectRequirement = ({
 
             break;
         }
+
+        // Passive requirements - just have to be satisfying them to have the effect go through
+        case EffectRequirementsType.ARE_AT_LIFE_AT_OR_ABOVE_THRESHOLD: {
+            if (activePlayer.health < strength) {
+                throw new Error(
+                    `their life total (${activePlayer.health}) was lower than ${strength}`
+                );
+            }
+            break;
+        }
+        case EffectRequirementsType.ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD: {
+            if (activePlayer.health > strength) {
+                throw new Error(
+                    `their life total (${activePlayer.health}) was higher than ${strength}`
+                );
+            }
+            break;
+        }
+        case EffectRequirementsType.ARE_HOLDING_A_SPECIFIC_CARDNAME: {
+            const { cardName } = effectRequirement;
+
+            const numMatchingCardNames = activePlayer.hand.map(
+                (card) => card.name === cardName
+            ).length;
+
+            if (strength === 0 && numMatchingCardNames > 0) {
+                throw new Error(`they are holding at least 1 [[${cardName}]]`);
+            }
+            if (strength === 1 && numMatchingCardNames < 1) {
+                throw new Error(`they are not holding a [[${cardName}]] card`);
+            }
+            if (strength > 1 && numMatchingCardNames < strength) {
+                throw new Error(
+                    `they are not holding at least ${strength} [[${cardName}]] cards`
+                );
+            }
+            break;
+        }
+        case EffectRequirementsType.CONTROL_A_GENERIC_PRODUCING_RESOURCE: {
+            const numGenericProducingResources = activePlayer.resources.map(
+                (card) =>
+                    card.resourceType === Resource.GENERIC ||
+                    card.secondaryResourceType === Resource.GENERIC
+            ).length;
+
+            if (strength === 0 && numGenericProducingResources > 0) {
+                return `they control a resource cards that produces generic mana`;
+            }
+            if (strength === 1 && numGenericProducingResources < 1) {
+                return `they don't control a resource card that produces generic mana`;
+            }
+
+            if (strength > 1 && numGenericProducingResources < strength) {
+                throw new Error(
+                    `they don't control at least ${strength} resource cards that produce generic mana`
+                );
+            }
+            break;
+        }
+        case EffectRequirementsType.CONTROL_A_LEGENDARY_LEADER: {
+            if (!activePlayer.isLegendaryLeaderDeployed) {
+                throw new Error(`they don't control a legendary leader`);
+            }
+            break;
+        }
+        case EffectRequirementsType.CONTROL_RANGED_AND_MAGICAL: {
+            const numRangedUnits = activePlayer.units.map(
+                (card) => card.isRanged && !card.isMagical
+            ).length;
+            const numMagicalUnits = activePlayer.units.map(
+                (card) => card.isMagical
+            ).length;
+            if (numRangedUnits < 1 || numMagicalUnits < 1) {
+                throw new Error(
+                    `they don't control a ranged unit and a magical unit`
+                );
+            }
+            break;
+        }
+        case EffectRequirementsType.HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY: {
+            const numCemeteryCards = activePlayer.cemetery.length;
+            if (numCemeteryCards < strength) {
+                throw new Error(
+                    `they don't have ${strength} cards in the cemetery`
+                );
+            }
+            break;
+        }
+        case EffectRequirementsType.HAVE_MINIMUM_ATTACK_ON_A_UNIT: {
+            const hasUnitWithMinimumAttack = activePlayer.units.some(
+                (card) =>
+                    card.attack +
+                        card.attackBuff +
+                        card.oneTurnAttackBuff +
+                        card.oneCycleAttackBuff >=
+                    strength
+            );
+
+            if (!hasUnitWithMinimumAttack) {
+                throw new Error(
+                    `they don't have a unit with at least ${strength} attack`
+                );
+            }
+            break;
+        }
+        case EffectRequirementsType.HAVE_NO_CARDS_IN_HAND: {
+            if (activePlayer.hand.length > 0) {
+                throw new Error(`they don't have an empty hand`);
+            }
+            break;
+        }
+        case EffectRequirementsType.HAVE_NO_UNIT_CARDS_IN_DECK: {
+            const numUnitCardsInDeck = activePlayer.deck.filter(
+                (card) => card.cardType === CardType.UNIT
+            ).length;
+            if (numUnitCardsInDeck > 0) {
+                throw new Error(`they have at least 1 unit card in their deck`);
+            }
+            break;
+        }
+
         default: {
             break;
         }
@@ -421,6 +544,20 @@ export const resolveEffect = (
                         return;
                     }
                     unit.hpBuff += effectStrength;
+                });
+            });
+            // in case debuffing causes units to go to cemtery
+            processBoardToCemetery(clonedBoard, addSystemChat);
+            return clonedBoard;
+        }
+        case EffectType.BUFF_TEAM_GENERIC_UNITS: {
+            playerTargets.forEach((player) => {
+                player.units.forEach((unit) => {
+                    if (unit.passiveEffects.length > 0) return;
+                    if (unit.enterEffects.length > 0) return;
+                    if (unit.damagePlayerEffects?.length > 0) return;
+                    unit.hpBuff += effectStrength;
+                    unit.attackBuff += effectStrength;
                 });
             });
             // in case debuffing causes units to go to cemtery
