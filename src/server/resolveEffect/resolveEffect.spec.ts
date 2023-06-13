@@ -549,7 +549,7 @@ describe('resolve effect', () => {
                 board,
                 {
                     effect: {
-                        type: EffectType.DESTROY_RESOURCE_WITH_FEASTING,
+                        type: EffectType.DESTROY_RESOURCE_TO_GAIN_STATS,
                         target: TargetTypes.ALL_OPPONENTS,
                         strength: 1,
                         resourceType: Resource.BAMBOO,

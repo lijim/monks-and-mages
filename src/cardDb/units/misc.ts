@@ -829,7 +829,7 @@ const HUNGRY_GOAT: UnitCard = makeCard({
     description: '',
     enterEffects: [
         {
-            type: EffectType.DESTROY_RESOURCE_WITH_FEASTING,
+            type: EffectType.DESTROY_RESOURCE_TO_GAIN_STATS,
             strength: 1,
             resourceType: Resource.BAMBOO,
             target: TargetTypes.PLAYER,
