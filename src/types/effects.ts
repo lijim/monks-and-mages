@@ -33,10 +33,11 @@ export enum EffectType {
     BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK = 'Bounce units under threshold attack',
     BUFF_ATTACK = 'Buff attack', // increase/decrease attack of a single unit
     BUFF_ATTACK_FOR_CYCLE = 'Buff attack for cycle', // increase/decrease attack of a single unit
-    BUFF_ATTACK_FOR_TURN = 'Buff attack for turn', // increase/decrease attack of a single unit
-    BUFF_HAND_ATTACK = 'Buff hand attack',
+    BUFF_ATTACK_FOR_TURN = 'Buff attack for turn',
     // give unit(s) a passive effect
     BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE = 'Buff hand attack with failsafe lifechange',
+    // increase/decrease attack of a single unit
+    BUFF_HAND_NON_MAGIC_ATTACK = 'Buff hand non-magic attack',
     // buffs all creatures in hand
     BUFF_MAGIC = 'Buff magic unit',
     BUFF_TEAM_ATTACK = 'Buff team attack',
@@ -127,7 +128,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.BUFF_ATTACK]: TargetTypes.UNIT,
         [EffectType.BUFF_ATTACK_FOR_CYCLE]: TargetTypes.UNIT,
         [EffectType.BUFF_ATTACK_FOR_TURN]: TargetTypes.UNIT,
-        [EffectType.BUFF_HAND_ATTACK]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_HAND_NON_MAGIC_ATTACK]: TargetTypes.SELF_PLAYER,
         [EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE]:
             TargetTypes.ALL_OPPONENTS,
         [EffectType.BUFF_MAGIC]: TargetTypes.UNIT,

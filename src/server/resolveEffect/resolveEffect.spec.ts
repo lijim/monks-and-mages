@@ -209,7 +209,10 @@ describe('resolve effect', () => {
             const newBoard = resolveEffect(
                 board,
                 {
-                    effect: { type: EffectType.BUFF_HAND_ATTACK, strength: 2 },
+                    effect: {
+                        type: EffectType.BUFF_HAND_NON_MAGIC_ATTACK,
+                        strength: 2,
+                    },
                 },
                 'Timmy'
             );

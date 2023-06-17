@@ -503,7 +503,7 @@ export const resolveEffect = (
             processBoardToCemetery(clonedBoard, addSystemChat);
             return clonedBoard;
         }
-        case EffectType.BUFF_HAND_ATTACK: {
+        case EffectType.BUFF_HAND_NON_MAGIC_ATTACK: {
             playerTargets.forEach((player) => {
                 player.hand.forEach((card) => {
                     if (card.cardType !== CardType.UNIT) return;

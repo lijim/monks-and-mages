@@ -198,7 +198,7 @@ const DOUBLE_DEALING_ROGUE: UnitCard = makeCard({
     description: '',
     enterEffects: [
         {
-            type: EffectType.BUFF_HAND_ATTACK,
+            type: EffectType.BUFF_HAND_NON_MAGIC_ATTACK,
             strength: 2,
             target: TargetTypes.SELF_PLAYER,
         },

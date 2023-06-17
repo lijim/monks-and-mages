@@ -52,7 +52,7 @@ const SLAG_FIELDS = makeAdvancedResourceCard({
     imgSrc: 'https://images.pexels.com/photos/955662/pexels-photo-955662.jpeg',
     enterEffects: [
         {
-            type: EffectType.BUFF_HAND_ATTACK,
+            type: EffectType.BUFF_HAND_NON_MAGIC_ATTACK,
             strength: 1,
         },
     ],

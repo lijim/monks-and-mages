@@ -970,7 +970,7 @@ const BANDIT_AMBUSH = makeCard({
             strength: 2,
         },
         {
-            type: EffectType.BUFF_HAND_ATTACK,
+            type: EffectType.BUFF_HAND_NON_MAGIC_ATTACK,
             target: TargetTypes.SELF_PLAYER,
             strength: 1,
         },
@@ -1209,7 +1209,7 @@ const FISH_MARKET_VISIT = makeCard({
     cost: { [Resource.BAMBOO]: 1, [Resource.IRON]: 1 },
     effects: [
         { type: EffectType.BUFF_TEAM_HP, strength: 1 },
-        { type: EffectType.BUFF_HAND_ATTACK, strength: 2 },
+        { type: EffectType.BUFF_HAND_NON_MAGIC_ATTACK, strength: 2 },
     ],
     rarity: CardRarity.UNCOMMON,
 });
@@ -1218,7 +1218,7 @@ const CONCENTRATED_FOCUS = makeCard({
     name: 'Concentrated Focus',
     imgSrc: 'https://images.pexels.com/photos/11331536/pexels-photo-11331536.jpeg',
     cost: { [Resource.BAMBOO]: 1, [Resource.IRON]: 1 },
-    effects: [{ type: EffectType.BUFF_HAND_ATTACK, strength: 3 }],
+    effects: [{ type: EffectType.BUFF_HAND_NON_MAGIC_ATTACK, strength: 3 }],
     rarity: CardRarity.RARE,
 });
 
