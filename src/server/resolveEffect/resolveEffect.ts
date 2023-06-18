@@ -26,6 +26,7 @@ import { makeCard, makeResourceCard } from '@/factories/cards';
 import {
     applyWinState,
     processBoardToCemetery,
+    resetCard,
     resetUnitCard,
 } from '../gameEngine';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
@@ -677,7 +678,13 @@ export const resolveEffect = (
                     Math.min(hand.length, effectStrength)
                 );
                 player.hand = difference(hand, cardsToDiscard);
-                player.cemetery = player.cemetery.concat(cardsToDiscard);
+
+                const cardsToDiscardWithResets = cardsToDiscard.map((card) =>
+                    resetCard(card)
+                );
+                player.cemetery = player.cemetery.concat(
+                    cardsToDiscardWithResets
+                );
                 addSystemChat(
                     `${player.name} discarded ${cardsToDiscard
                         .map((card) => `[[${card.name}]]`)

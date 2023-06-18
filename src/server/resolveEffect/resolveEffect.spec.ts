@@ -6,8 +6,14 @@ import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { resolveEffect } from './resolveEffect';
 import { makeCard, makeResourceCard, makeUnitCard } from '@/factories/cards';
 import { Tokens, UnitCards } from '@/mocks/units';
-import { EffectRequirementsType, UnitCard } from '@/types/cards';
+import {
+    CardType,
+    EffectRequirementsType,
+    SpellCard,
+    UnitCard,
+} from '@/types/cards';
 import { Resource } from '@/types/resources';
+import { SpellCards } from '@/mocks/spells';
 
 describe('resolve effect', () => {
     let board: Board;
@@ -971,6 +977,32 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].hand).toHaveLength(0);
             expect(newBoard.players[0].cemetery).toHaveLength(
                 PlayerConstants.STARTING_HAND_SIZE
+            );
+        });
+
+        it('resets costs', () => {
+            board.players[0].hand = [
+                { ...makeUnitCard(UnitCards.ASSASSIN), cost: {} },
+                { ...makeCard(SpellCards.A_GENTLE_GUST), cost: {} },
+            ];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DISCARD_HAND,
+                        strength: Number.MAX_SAFE_INTEGER,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(0);
+            expect((newBoard.players[0].cemetery[0] as UnitCard).cost).toEqual(
+                UnitCards.ASSASSIN.cost
+            );
+            expect((newBoard.players[0].cemetery[1] as SpellCard).cost).toEqual(
+                SpellCards.A_GENTLE_GUST.cost
             );
         });
 

@@ -3,7 +3,13 @@ import shuffle from 'lodash.shuffle';
 
 import { Board, GameState, Player } from '@/types/board';
 import { GameAction, GameActionTypes } from '@/types/gameActions';
-import { Card, CardType, ResourceCard, UnitCard } from '@/types/cards';
+import {
+    Card,
+    CardType,
+    ResourceCard,
+    SpellCard,
+    UnitCard,
+} from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
@@ -101,6 +107,22 @@ export const resetUnitCard = (unitCard: UnitCard) => {
     unitCard.numAttacks = unitCard.originalAttributes?.numAttacks || 1;
     unitCard.numAttacksLeft = hasQuick ? unitCard.numAttacks : 0;
     unitCard.cost = cloneDeep(unitCard.originalAttributes?.cost || {});
+    return unitCard;
+};
+
+export const resetSpellCard = (spellCard: SpellCard) => {
+    spellCard.cost = cloneDeep(spellCard.originalAttributes?.cost || {});
+    return spellCard;
+};
+
+export const resetCard = (card: Card) => {
+    if (card.cardType === CardType.UNIT) {
+        return resetUnitCard(card);
+    }
+    if (card.cardType === CardType.SPELL) {
+        return resetSpellCard(card);
+    }
+    return card;
 };
 
 /**
