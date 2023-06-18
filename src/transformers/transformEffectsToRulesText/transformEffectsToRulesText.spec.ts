@@ -485,16 +485,52 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
-    it('displays rules for extracting cards from a deck', () => {
-        const effect: Effect = {
-            type: EffectType.EXTRACT_CARD,
-            strength: 2,
-            cardName: 'Iron',
-            target: TargetTypes.OPPONENT,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Extract 2 Iron cards from any opponent's deck`
-        );
+    describe('Extracting cards', () => {
+        it('displays rules for extracting cards from a deck', () => {
+            const effect: Effect = {
+                type: EffectType.EXTRACT_CARD,
+                strength: 2,
+                cardName: 'Iron',
+                target: TargetTypes.OPPONENT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Extract 2 Iron cards from any opponent's deck`
+            );
+        });
+
+        it('displays rules for extracting cards from a deck', () => {
+            const effect: Effect = {
+                type: EffectType.EXTRACT_UNIT_AND_SET_COST,
+                strength: 2,
+                cost: {
+                    Generic: 1,
+                    Bamboo: 2,
+                },
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Extract 2 unit cards from your deck and set their costs to 1🎋🎋`
+            );
+        });
+
+        it('displays rules for extracting soldier cards from a deck', () => {
+            const effect: Effect = {
+                type: EffectType.EXTRACT_SOLDIER_CARDS,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Extract 2 soldier cards from your deck`
+            );
+        });
+
+        it('displays rules for extracting spell cards from a deck', () => {
+            const effect: Effect = {
+                type: EffectType.EXTRACT_SPELL_CARDS,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Extract 2 spell cards from your deck`
+            );
+        });
     });
 
     describe('Flicker', () => {
@@ -517,12 +553,78 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
+    describe('Gaining stats and effects', () => {
+        it('displays rules for gaining attack', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_ATTACK,
+                target: TargetTypes.ALL_SELF_UNITS,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `All your units gain 3 attack`
+            );
+        });
+
+        it('displays rules for gaining attack until a threshold amount', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_ATTACK_UNTIL,
+                target: TargetTypes.ALL_UNITS,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `All units gain attack until they are at least 3 attack`
+            );
+        });
+
+        it('displays rules for gaining magical for units on both hand and board', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_MAGICAL_HAND_AND_BOARD,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Your units in hand and board become magical units`
+            );
+        });
+
+        it('displays rules for gaining stats', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_STATS,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Gain 3 attack and HP`
+            );
+        });
+
+        it('displays rules for gaining stats and passive effects', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_STATS_AND_EFFECTS,
+                strength: 3,
+                passiveEffects: [
+                    PassiveEffect.HEARTY,
+                    PassiveEffect.SNOW_BLINDED,
+                ],
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Gain 3 attack/HP, [Hearty (Rather than going to cemetery, lose hearty and go to 1 hp)], and [Snow Blinded (Only able to attack players)]`
+            );
+        });
+
+        it('displays rules for gaining stats equal to cost', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_STATS_EQUAL_TO_COST,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Gain attack/HP equal to the total cost of this card`
+            );
+        });
+    });
+
     describe('Granting passive effects', () => {
         it('displays rules for granting effects', () => {
             const effect: Effect = {
                 type: EffectType.GRANT_PASSIVE_EFFECT,
                 target: TargetTypes.ALL_SELF_UNITS,
-                passiveEffect: PassiveEffect.POISONED,
+                passiveEffects: [PassiveEffect.POISONED],
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Give all your units [Poisonous (deals lethal damage)]`

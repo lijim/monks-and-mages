@@ -1080,7 +1080,7 @@ describe('resolve effect', () => {
                     effect: {
                         type: EffectType.GRANT_PASSIVE_EFFECT,
                         target: TargetTypes.ALL_UNITS,
-                        passiveEffect: PassiveEffect.QUICK,
+                        passiveEffects: [PassiveEffect.QUICK],
                     },
                 },
                 'Timmy'

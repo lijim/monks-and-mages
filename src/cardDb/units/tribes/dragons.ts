@@ -125,7 +125,7 @@ const LEAPING_DRAGON: UnitCard = makeCard({
     enterEffects: [
         {
             type: EffectType.GRANT_PASSIVE_EFFECT,
-            passiveEffect: PassiveEffect.QUICK,
+            passiveEffects: [PassiveEffect.QUICK],
             target: TargetTypes.UNIT,
         },
     ],

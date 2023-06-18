@@ -281,7 +281,7 @@ export const resolveEffect = (
         strength: effectStrength = 0,
         cardName,
         secondaryCardName,
-        passiveEffect,
+        passiveEffects,
         sourceId,
         requirements,
     } = effect;
@@ -771,18 +771,20 @@ export const resolveEffect = (
         }
         case EffectType.GRANT_PASSIVE_EFFECT: {
             unitTargets.forEach(({ unitCard }) => {
-                if (!unitCard.passiveEffects.includes(passiveEffect)) {
-                    unitCard.passiveEffects.push(passiveEffect);
+                passiveEffects.forEach((passiveEffect) => {
+                    if (!unitCard.passiveEffects.includes(passiveEffect)) {
+                        unitCard.passiveEffects.push(passiveEffect);
 
-                    // handle adding attacks to units getting 'quick'
-                    if (
-                        passiveEffect === PassiveEffect.QUICK &&
-                        unitCard.isFresh
-                    ) {
-                        unitCard.numAttacksLeft = unitCard.numAttacks;
-                        unitCard.isFresh = false;
+                        // handle adding attacks to units getting 'quick'
+                        if (
+                            passiveEffect === PassiveEffect.QUICK &&
+                            unitCard.isFresh
+                        ) {
+                            unitCard.numAttacksLeft = unitCard.numAttacks;
+                            unitCard.isFresh = false;
+                        }
                     }
-                }
+                });
             });
             return clonedBoard;
         }

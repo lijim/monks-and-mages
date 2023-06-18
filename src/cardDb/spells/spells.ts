@@ -84,7 +84,7 @@ const FURY_OF_THE_OWL = makeCard({
     effects: [
         {
             type: EffectType.GRANT_PASSIVE_EFFECT,
-            passiveEffect: PassiveEffect.QUICK,
+            passiveEffects: [PassiveEffect.QUICK],
             target: TargetTypes.UNIT,
         },
     ],
@@ -1258,7 +1258,7 @@ const BRIDGE_TO_IMMORTALITY = makeCard({
         {
             type: EffectType.GRANT_PASSIVE_EFFECT,
             target: TargetTypes.ALL_UNITS,
-            passiveEffect: PassiveEffect.HEARTY,
+            passiveEffects: [PassiveEffect.HEARTY],
         },
     ],
     rarity: CardRarity.MYTHIC,

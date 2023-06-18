@@ -1,3 +1,4 @@
+import { repeat } from 'lodash';
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
 import {
@@ -10,7 +11,12 @@ import {
     getDefaultTargetForEffect,
     TargetTypes,
 } from '@/types/effects';
-import { RESOURCE_GLOSSARY, Resource } from '@/types/resources';
+import {
+    ORDERED_RESOURCES,
+    RESOURCE_GLOSSARY,
+    Resource,
+} from '@/types/resources';
+import { joinPhrases } from '../joinPhrases/joinPhrases';
 
 const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.ALL_OPPONENTS]: 'all opponents',
@@ -94,6 +100,23 @@ const titleize = (str: string): string => {
 };
 const unTitleize = (str: string): string => {
     return str[0].toLocaleLowerCase() + str.substring(1);
+};
+
+const formatCardCost = (cost: Effect['cost']) => {
+    const costs: string[] = [];
+    ORDERED_RESOURCES.forEach((resource) => {
+        if (!(resource in cost)) {
+            return;
+        }
+        const number = cost[resource];
+        const castingSymbol = RESOURCE_GLOSSARY[resource].icon;
+        if (resource === Resource.GENERIC) {
+            costs.push(`${number}`);
+        } else {
+            costs.push(repeat(castingSymbol, number));
+        }
+    });
+    return costs.join('');
 };
 
 const getRequirementText = (effectRequirement: EffectRequirement) => {
@@ -227,7 +250,8 @@ export const transformEffectToRulesText = (
         resourceType,
         summonType,
         type,
-        passiveEffect,
+        passiveEffects = [],
+        cost,
     } = effect;
     const targetName =
         TARGET_TYPES_TO_RULES_TEXT[target || getDefaultTargetForEffect(type)];
@@ -246,6 +270,10 @@ export const transformEffectToRulesText = (
         TARGET_TYPES_TO_RULES_TEXT_CONTROLLER_POSSESIVE[
             target || getDefaultTargetForEffect(type)
         ];
+
+    const passiveEffectsText = joinPhrases(
+        passiveEffects.map((passiveEffect) => `[${passiveEffect}]`)
+    );
 
     const getEffectRulesSummary = () => {
         switch (effect.type) {
@@ -438,9 +466,6 @@ export const transformEffectToRulesText = (
                     isTargetTypePlural(target) ? '' : 's'
                 } cards until they have X cards, where X is the greatest amount of cards in hand amongst all opponents`;
             }
-            case EffectType.EXTRACT_AND_SET_COST: {
-                // TODO
-            }
             case EffectType.EXTRACT_CARD: {
                 if (!target) {
                     return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from your deck`;
@@ -448,10 +473,15 @@ export const transformEffectToRulesText = (
                 return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
             }
             case EffectType.EXTRACT_SOLDIER_CARDS: {
-                // TODO
+                return `Extract ${strength} soldier card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
             }
             case EffectType.EXTRACT_SPELL_CARDS: {
-                // TODO
+                return `Extract ${strength} spell card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
+            }
+            case EffectType.EXTRACT_UNIT_AND_SET_COST: {
+                return `Extract ${strength} unit card${pluralizationEffectStrength} from ${targetNamePossessive} deck and set ${
+                    strength > 1 ? 'their costs' : 'its cost'
+                } to ${formatCardCost(cost)}`;
             }
             case EffectType.FLICKER: {
                 return `Remove ${targetName} from the game, then return ${
@@ -459,25 +489,70 @@ export const transformEffectToRulesText = (
                 } to the board`;
             }
             case EffectType.GAIN_ATTACK: {
-                // TODO
+                if (!target) {
+                    return `Gain ${strength} attack`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'gain' : 'gains'
+                } ${strength} attack`;
             }
             case EffectType.GAIN_ATTACK_UNTIL: {
-                // TODO
+                if (!target) {
+                    return `Gain attack until this unit has at least ${strength} attack`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'gain' : 'gains'
+                } attack until ${
+                    isTargetTypePlural(target) ? 'they are' : 'it is'
+                } at least ${strength} attack`;
             }
             case EffectType.GAIN_MAGICAL_HAND_AND_BOARD: {
-                // TODO - make sure to account for plurals
+                return `${titleize(
+                    targetNamePossessive
+                )} units in hand and board become magical units`;
             }
             case EffectType.GAIN_STATS: {
-                // TODO
+                if (!target) {
+                    return `Gain ${strength} attack and HP`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'gain' : 'gains'
+                } ${strength} attack and HP`;
             }
             case EffectType.GAIN_STATS_AND_EFFECTS: {
-                // TODO
+                let statsOrEffectsToGain: string[] = [];
+
+                if (strength > 0) {
+                    statsOrEffectsToGain.push(`${strength} attack/HP`);
+                }
+                statsOrEffectsToGain = [
+                    ...statsOrEffectsToGain,
+                    ...passiveEffects.map(
+                        (passiveEffect) => `[${passiveEffect}]`
+                    ),
+                ];
+
+                if (!target) {
+                    return `Gain ${joinPhrases(statsOrEffectsToGain)}`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'gain' : 'gains'
+                } ${joinPhrases(statsOrEffectsToGain)}`;
             }
             case EffectType.GAIN_STATS_EQUAL_TO_COST: {
-                // TODO
+                if (!target) {
+                    return `Gain attack/HP equal to the total cost of this card`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'each gain' : 'gains'
+                } attack/HP equal to ${
+                    isTargetTypePlural(target)
+                        ? 'their respective total costs'
+                        : 'its total cost'
+                }`;
             }
             case EffectType.GRANT_PASSIVE_EFFECT: {
-                return `Give ${targetName} [${passiveEffect}]`;
+                return `Give ${targetName} ${passiveEffectsText}`;
             }
             case EffectType.HEAL: {
                 return `Restore ${strength} HP to ${targetName}`;

@@ -66,10 +66,10 @@ export enum EffectType {
     DRAW_PER_UNIT = 'Draw per unit',
     DRAW_UNTIL = 'Draw until',
     DRAW_UNTIL_MATCHING_OPPONENTS = 'Draw until matching opponents',
-    EXTRACT_AND_SET_COST = 'Extract cards and set their costs',
     EXTRACT_CARD = 'Extract card', // extract X of {cardName} card from deck
     EXTRACT_SOLDIER_CARDS = 'Extract soldier cards',
     EXTRACT_SPELL_CARDS = 'Extract spell cards',
+    EXTRACT_UNIT_AND_SET_COST = 'Extract cards and set their costs',
     /**
      * Flicker own card (needs to be own - don't want to do opposing units yet
      * b/c it would involve too much new code - we'd have to control for opposing active player
@@ -152,7 +152,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW_UNTIL]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW_UNTIL_MATCHING_OPPONENTS]: TargetTypes.SELF_PLAYER,
-        [EffectType.EXTRACT_AND_SET_COST]: TargetTypes.SELF_PLAYER,
+        [EffectType.EXTRACT_UNIT_AND_SET_COST]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_CARD]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_SOLDIER_CARDS]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_SPELL_CARDS]: TargetTypes.SELF_PLAYER,
