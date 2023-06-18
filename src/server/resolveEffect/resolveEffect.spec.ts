@@ -6,12 +6,7 @@ import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { resolveEffect } from './resolveEffect';
 import { makeCard, makeResourceCard, makeUnitCard } from '@/factories/cards';
 import { Tokens, UnitCards } from '@/mocks/units';
-import {
-    CardType,
-    EffectRequirementsType,
-    SpellCard,
-    UnitCard,
-} from '@/types/cards';
+import { EffectRequirementsType, UnitCard } from '@/types/cards';
 import { Resource } from '@/types/resources';
 import { SpellCards } from '@/mocks/spells';
 

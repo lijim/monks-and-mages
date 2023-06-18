@@ -678,9 +678,6 @@ export const transformEffectToRulesText = (
                     strength || 'all'
                 } [${cardName}] card${pluralizationEffectStrength} in hand into [${secondaryCardName}]${forText}`;
             }
-            case EffectType.TRANSFORM_RESOURCE: {
-                // TODO
-            }
             case EffectType.TUCK: {
                 return `Put ${targetName} on top of ${controllerPossessiveText} library`;
             }
