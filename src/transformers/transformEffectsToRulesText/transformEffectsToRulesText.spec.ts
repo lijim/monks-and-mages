@@ -774,6 +774,19 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
+    describe('Reducing costs', () => {
+        it('displays rules for reducing costs with a minimum floor', () => {
+            const effect: Effect = {
+                type: EffectType.REDUCE_CARDS_COSTING_OVER_AMOUNT,
+                strength: 3,
+                secondaryStrength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease cost of cards in your hand by 3 (generic).  Cards reduced this way cannot be reduced below 2 total cost`
+            );
+        });
+    });
+
     it('displays rules for returning from cemetery', () => {
         const effect: Effect = {
             type: EffectType.RETURN_FROM_CEMETERY,

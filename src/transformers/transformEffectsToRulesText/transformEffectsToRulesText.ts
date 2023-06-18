@@ -605,7 +605,9 @@ export const transformEffectToRulesText = (
                 return `Deploy ${strength} ${resourceType} card${pluralizationEffectStrength} from your hand tapped`;
             }
             case EffectType.REDUCE_CARDS_COSTING_OVER_AMOUNT: {
-                // TODO
+                return `Decrease cost of cards in ${targetNamePossessive} ${
+                    isTargetTypePlural(target) ? 'hands' : 'hand'
+                } by ${strength} (generic).  Cards reduced this way cannot be reduced below ${secondaryStrength} total cost`;
             }
             case EffectType.REDUCE_LEGENDARY_LEADER_COST: {
                 // TODO
