@@ -57,7 +57,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         numAttacksLeft,
         oneCycleAttackBuff,
         oneTurnAttackBuff,
-        originalCost,
+        originalAttributes: { cost: originalCost },
         passiveEffects,
         totalHp,
     } = card;

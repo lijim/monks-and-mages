@@ -457,7 +457,7 @@ const IRONSMITH: UnitCard = makeCard({
     description: '',
     enterEffects: [
         {
-            type: EffectType.BUFF_HAND_ATTACK,
+            type: EffectType.BUFF_HAND_NON_MAGIC_ATTACK,
             strength: 1,
             target: TargetTypes.SELF_PLAYER,
         },

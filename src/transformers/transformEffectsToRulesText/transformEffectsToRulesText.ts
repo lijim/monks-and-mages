@@ -1,3 +1,4 @@
+import { repeat } from 'lodash';
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
 import {
@@ -10,7 +11,12 @@ import {
     getDefaultTargetForEffect,
     TargetTypes,
 } from '@/types/effects';
-import { RESOURCE_GLOSSARY, Resource } from '@/types/resources';
+import {
+    ORDERED_RESOURCES,
+    RESOURCE_GLOSSARY,
+    Resource,
+} from '@/types/resources';
+import { joinPhrases } from '../joinPhrases/joinPhrases';
 
 const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.ALL_OPPONENTS]: 'all opponents',
@@ -26,6 +32,24 @@ const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.PLAYER]: 'any player',
     [TargetTypes.SELF_PLAYER]: 'yourself',
     [TargetTypes.UNIT]: 'any unit',
+};
+
+const TARGET_TYPES_TO_CONTROLLED_BY = {
+    ...TARGET_TYPES_TO_RULES_TEXT,
+    [TargetTypes.SELF_PLAYER]: 'you',
+    [TargetTypes.ALL_OPPONENTS]: 'an opponent',
+};
+
+const TARGET_TYPES_TO_RULES_TEXT_NON_SOLDIERS = {
+    ...TARGET_TYPES_TO_RULES_TEXT,
+    [TargetTypes.ALL_OPPOSING_UNITS]: 'all opposing non-soldier units',
+    [TargetTypes.ALL_SELF_UNITS_CEMETERY]:
+        'all non-soldier units in your cemetery',
+    [TargetTypes.ALL_SELF_UNITS]: 'all your non-soldier units',
+    [TargetTypes.ALL_UNITS]: 'all non-soldier units',
+    [TargetTypes.OPPOSING_UNIT]: 'any opposing non-soldier unit',
+    [TargetTypes.OWN_UNIT]: 'any non-soldier unit controlled by you',
+    [TargetTypes.UNIT]: 'any non-soldier unit',
 };
 
 const TARGET_TYPES_TO_RULES_TEXT_POSSESIVE = {
@@ -72,6 +96,7 @@ const PLURAL_TARGET_TYPES = [
     TargetTypes.ALL_PLAYERS,
     TargetTypes.ALL_SELF_UNITS,
     TargetTypes.ALL_SELF_UNITS_CEMETERY,
+    TargetTypes.ALL_UNITS,
 ];
 const isTargetTypePlural = (targetType: TargetTypes): boolean =>
     PLURAL_TARGET_TYPES.indexOf(targetType) > -1;
@@ -81,6 +106,23 @@ const titleize = (str: string): string => {
 };
 const unTitleize = (str: string): string => {
     return str[0].toLocaleLowerCase() + str.substring(1);
+};
+
+const formatCardCost = (cost: Effect['cost']) => {
+    const costs: string[] = [];
+    ORDERED_RESOURCES.forEach((resource) => {
+        if (!(resource in cost)) {
+            return;
+        }
+        const number = cost[resource];
+        const castingSymbol = RESOURCE_GLOSSARY[resource].icon;
+        if (resource === Resource.GENERIC) {
+            costs.push(`${number}`);
+        } else {
+            costs.push(repeat(castingSymbol, number));
+        }
+    });
+    return costs.join('');
 };
 
 const getRequirementText = (effectRequirement: EffectRequirement) => {
@@ -209,18 +251,19 @@ export const transformEffectToRulesText = (
         cardName,
         secondaryCardName,
         strength,
+        secondaryStrength,
         target,
         resourceType,
         summonType,
         type,
-        passiveEffect,
+        passiveEffects = [],
+        cost,
     } = effect;
-    const targetName =
-        TARGET_TYPES_TO_RULES_TEXT[target || getDefaultTargetForEffect(type)];
+    const targetOrDefault = target || getDefaultTargetForEffect(type);
+    const targetName = TARGET_TYPES_TO_RULES_TEXT[targetOrDefault];
+    const controlledBySubject = TARGET_TYPES_TO_CONTROLLED_BY[targetOrDefault];
     const targetNamePossessive =
-        TARGET_TYPES_TO_RULES_TEXT_POSSESIVE[
-            target || getDefaultTargetForEffect(type)
-        ];
+        TARGET_TYPES_TO_RULES_TEXT_POSSESIVE[targetOrDefault];
     const pluralizationEffectStrength = strength > 1 ? 's' : '';
 
     let forText = '';
@@ -229,9 +272,11 @@ export const transformEffectToRulesText = (
     }
 
     const controllerPossessiveText =
-        TARGET_TYPES_TO_RULES_TEXT_CONTROLLER_POSSESIVE[
-            target || getDefaultTargetForEffect(type)
-        ];
+        TARGET_TYPES_TO_RULES_TEXT_CONTROLLER_POSSESIVE[targetOrDefault];
+
+    const passiveEffectsText = joinPhrases(
+        passiveEffects.map((passiveEffect) => `[${passiveEffect}]`)
+    );
 
     const getEffectRulesSummary = () => {
         switch (effect.type) {
@@ -240,6 +285,9 @@ export const transformEffectToRulesText = (
             }
             case EffectType.BOUNCE: {
                 return `Return ${targetName} back to ${controllerPossessiveText} hand`;
+            }
+            case EffectType.BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK: {
+                return `Return ${targetName} with ${strength} attack or lower back to ${controllerPossessiveText} hand`;
             }
             case EffectType.BUFF_ATTACK: {
                 if (strength < 0)
@@ -256,8 +304,22 @@ export const transformEffectToRulesText = (
                     return `Decrease attack of ${targetName} by ${-strength} until end of turn`;
                 return `Increase attack of ${targetName} by ${strength} until end of turn`;
             }
-            case EffectType.BUFF_HAND_ATTACK: {
+            case EffectType.BUFF_HAND_NON_MAGIC_ATTACK: {
                 return `Increase attack of non-magical units in your hand by ${strength}`;
+            }
+            case EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE: {
+                const mainText = `${
+                    strength > 0 ? 'Increase' : 'Decrease'
+                } attack of units in ${targetNamePossessive} hand by ${Math.abs(
+                    strength
+                )}.`;
+                const failSafeText =
+                    secondaryStrength !== 0
+                        ? ` If no units are changed this way, ${
+                              secondaryStrength > 0 ? 'gain' : 'lose'
+                          } ${secondaryStrength} life`
+                        : '';
+                return `${mainText}${failSafeText}`;
             }
             case EffectType.BUFF_MAGIC: {
                 if (strength < 0)
@@ -278,13 +340,20 @@ export const transformEffectToRulesText = (
                     return `Decrease HP of ${targetNamePossessive} units by ${-strength}`;
                 return `Increase HP of ${targetNamePossessive} units by ${strength}`;
             }
+            case EffectType.BUFF_TEAM_GENERIC_UNITS: {
+                return `Increase attack and HP of ${targetNamePossessive} units without any text by ${strength}`;
+            }
             case EffectType.BUFF_TEAM_MAGIC: {
                 if (strength < 0)
                     return `Decrease attack of ${targetNamePossessive} magic units by ${-strength}`;
                 return `Increase attack of ${targetNamePossessive} magic units by ${strength}`;
             }
-            case EffectType.BUFF_TEAM_GENERIC_UNITS: {
-                return `Increase attack and HP of ${targetNamePossessive} units without any text by ${strength}`;
+            case EffectType.BUFF_TEAM_LEGENDARY_UNITS: {
+                return `${
+                    strength > 0 ? 'Increase' : 'Decrease'
+                } attack and HP of ${targetNamePossessive} legendary units by ${Math.abs(
+                    strength
+                )}`;
             }
             case EffectType.CURSE_HAND: {
                 if (strength < 0)
@@ -296,8 +365,42 @@ export const transformEffectToRulesText = (
                     isTargetTypePlural(target) ? 'hands' : 'hand'
                 } by ${strength} (generic)`;
             }
+            case EffectType.CURSE_HAND_RESOURCE_TYPE: {
+                if (strength < 0)
+                    return `Decrease cost of ${
+                        RESOURCE_GLOSSARY[resourceType].explicitColorName
+                    } cards in ${targetNamePossessive} ${
+                        isTargetTypePlural(target) ? 'hands' : 'hand'
+                    } by ${-strength} (generic)`;
+
+                return `Increase cost of ${
+                    RESOURCE_GLOSSARY[resourceType].explicitColorName
+                } cards in ${targetNamePossessive} ${
+                    isTargetTypePlural(target) ? 'hands' : 'hand'
+                } by ${strength} (generic)`;
+            }
+            case EffectType.CURSE_HAND_SPELLS: {
+                if (strength < 0)
+                    return `Decrease cost of spell cards in ${targetNamePossessive} ${
+                        isTargetTypePlural(target) ? 'hands' : 'hand'
+                    } by ${-strength} (generic)`;
+
+                return `Increase cost of spell cards in ${targetNamePossessive} ${
+                    isTargetTypePlural(target) ? 'hands' : 'hand'
+                } by ${strength} (generic)`;
+            }
             case EffectType.DEAL_DAMAGE: {
                 return `Deal ${strength} damage to ${targetName}`;
+            }
+            case EffectType.DEAL_DAMAGE_TO_NON_SOLDIERS: {
+                return `Deal ${strength} damage to ${TARGET_TYPES_TO_RULES_TEXT_NON_SOLDIERS[target]}`;
+            }
+            case EffectType.DEPLOY_LEGENDARY_LEADER: {
+                return `Deploy ${targetNamePossessive} ${
+                    isTargetTypePlural(target)
+                        ? 'legendary leaders'
+                        : 'legendary leader'
+                } onto the board. Don't trigger any enter the board effects`;
             }
             case EffectType.DESTROY_RESOURCE: {
                 const numToDestroy =
@@ -358,20 +461,101 @@ export const transformEffectToRulesText = (
                     isTargetTypePlural(target) ? '' : 's'
                 } cards until having ${strength} in hand`;
             }
+            case EffectType.DRAW_UNTIL_MATCHING_OPPONENTS: {
+                if (!target) {
+                    return `Draw until you have X cards in hand, where X is the greatest amount of cards in hand amongst all opponents`;
+                }
+                return `${titleize(targetName)} draw${
+                    isTargetTypePlural(target) ? '' : 's'
+                } cards until they have X cards, where X is the greatest amount of cards in hand amongst all opponents`;
+            }
             case EffectType.EXTRACT_CARD: {
                 if (!target) {
                     return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from your deck`;
                 }
                 return `Extract ${strength} ${cardName} card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
             }
+            case EffectType.EXTRACT_SOLDIER_CARDS: {
+                return `Extract ${strength} soldier card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
+            }
+            case EffectType.EXTRACT_SPELL_CARDS: {
+                return `Extract ${strength} spell card${pluralizationEffectStrength} from ${targetNamePossessive} deck`;
+            }
+            case EffectType.EXTRACT_UNIT_AND_SET_COST: {
+                return `Extract ${strength} unit card${pluralizationEffectStrength} from ${targetNamePossessive} deck and set ${
+                    strength > 1 ? 'their costs' : 'its cost'
+                } to ${formatCardCost(cost)}`;
+            }
             case EffectType.FLICKER: {
                 return `Remove ${targetName} from the game, then return ${
                     isTargetTypePlural(target) ? 'them' : 'it'
                 } to the board`;
             }
+            case EffectType.GAIN_ATTACK: {
+                if (!target) {
+                    return `Gain ${strength} attack`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'gain' : 'gains'
+                } ${strength} attack`;
+            }
+            case EffectType.GAIN_ATTACK_UNTIL: {
+                if (!target) {
+                    return `Gain attack until this unit has at least ${strength} attack`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'gain' : 'gains'
+                } attack until ${
+                    isTargetTypePlural(target) ? 'they are' : 'it is'
+                } at least ${strength} attack`;
+            }
+            case EffectType.GAIN_MAGICAL_HAND_AND_BOARD: {
+                return `${titleize(
+                    targetNamePossessive
+                )} units in hand and board become magical units`;
+            }
+            case EffectType.GAIN_STATS: {
+                if (!target) {
+                    return `Gain ${strength} attack and HP`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'gain' : 'gains'
+                } ${strength} attack and HP`;
+            }
+            case EffectType.GAIN_STATS_AND_EFFECTS: {
+                let statsOrEffectsToGain: string[] = [];
 
+                if (strength > 0) {
+                    statsOrEffectsToGain.push(`${strength} attack/HP`);
+                }
+                statsOrEffectsToGain = [
+                    ...statsOrEffectsToGain,
+                    ...passiveEffects.map(
+                        (passiveEffect) => `[${passiveEffect}]`
+                    ),
+                ];
+
+                if (!target) {
+                    return `Gain ${joinPhrases(statsOrEffectsToGain)}`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'gain' : 'gains'
+                } ${joinPhrases(statsOrEffectsToGain)}`;
+            }
+            case EffectType.GAIN_STATS_EQUAL_TO_COST: {
+                if (!target) {
+                    return `Gain attack/HP equal to the total cost of this card`;
+                }
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target) ? 'each gain' : 'gains'
+                } attack/HP equal to ${
+                    isTargetTypePlural(target)
+                        ? 'their respective total costs'
+                        : 'its total cost'
+                }`;
+            }
             case EffectType.GRANT_PASSIVE_EFFECT: {
-                return `Give ${targetName} [${passiveEffect}]`;
+                return `Give ${targetName} ${passiveEffectsText}`;
             }
             case EffectType.HEAL: {
                 return `Restore ${strength} HP to ${targetName}`;
@@ -388,6 +572,11 @@ export const transformEffectToRulesText = (
                     strength > 1 ? 'cards' : 'card'
                 } to your hand`;
             }
+            case EffectType.LOSE_MAGICAL_AND_RANGED: {
+                return `${titleize(
+                    targetNamePossessive
+                )} units lose magical/ranged`;
+            }
             case EffectType.MILL: {
                 return `Put ${strength} ${
                     strength > 1 ? 'cards' : 'card'
@@ -396,6 +585,11 @@ export const transformEffectToRulesText = (
                 } into ${controllerPossessiveText} ${
                     isTargetTypePlural(target) ? 'graveyards' : 'graveyard'
                 }`;
+            }
+            case EffectType.MODIFY_ATTACKS_PER_TURN: {
+                return `Set ${targetName} to have ${strength} attack${
+                    strength === 1 ? '' : 's'
+                } per turn`;
             }
             case EffectType.POLYMORPH: {
                 return `Turn ${targetName} into a [${summonType.name}]`;
@@ -413,11 +607,39 @@ export const transformEffectToRulesText = (
             case EffectType.RAMP_FROM_HAND: {
                 return `Deploy ${strength} ${resourceType} card${pluralizationEffectStrength} from your hand tapped`;
             }
+            case EffectType.REDUCE_CARDS_COSTING_OVER_AMOUNT: {
+                return `Decrease cost of cards in ${targetNamePossessive} ${
+                    isTargetTypePlural(target) ? 'hands' : 'hand'
+                } by ${strength} (generic).  Cards reduced this way cannot be reduced below ${secondaryStrength} total cost`;
+            }
+            case EffectType.REDUCE_LEGENDARY_LEADER_COST: {
+                return `Decrease cost of ${targetNamePossessive} ${
+                    isTargetTypePlural(target)
+                        ? 'legendary leaders'
+                        : 'legendary leader'
+                } by ${strength} (generic).  Cards reduced this way cannot be reduced below their original costs`;
+            }
             case EffectType.RETURN_FROM_CEMETERY: {
                 return `Return ${strength} ${cardName} card${pluralizationEffectStrength} from your cemetery`;
             }
+            case EffectType.RETURN_RESOURCES_FROM_CEMETERY: {
+                return `Return ${strength} resource card${pluralizationEffectStrength} at random from your cemetery`;
+            }
+            case EffectType.RETURN_SPELLS_AND_RESOURCES_FROM_CEMETERY: {
+                return `Return ${strength} resource card${pluralizationEffectStrength} and ${strength} spell card${pluralizationEffectStrength} at random from your cemetery`;
+            }
+            case EffectType.RETURN_SPELLS_FROM_CEMETERY: {
+                return `Return ${strength} spell card${pluralizationEffectStrength} at random from your cemetery`;
+            }
             case EffectType.REVIVE: {
                 return `Revive ${targetName}`;
+            }
+            case EffectType.SHUFFLE_CEMETERY_INTO_DECK: {
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target)
+                        ? `shuffle cards in ${controllerPossessiveText} cemetery into ${controllerPossessiveText} decks`
+                        : `shuffles cards in ${controllerPossessiveText} cemetery into ${controllerPossessiveText} deck`
+                }`;
             }
             case EffectType.SHUFFLE_FROM_HAND: {
                 return `Shuffle ${
@@ -426,8 +648,30 @@ export const transformEffectToRulesText = (
                     isTargetTypePlural(target) ? '' : 's'
                 }`;
             }
+            case EffectType.SHUFFLE_HAND_INTO_DECK: {
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target)
+                        ? `shuffle cards in ${controllerPossessiveText} hand into ${controllerPossessiveText} decks`
+                        : `shuffles cards in ${controllerPossessiveText} hand into ${controllerPossessiveText} deck`
+                }`;
+            }
             case EffectType.SUMMON_UNITS: {
                 return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙${forText}`;
+            }
+            case EffectType.SWAP_CARDS: {
+                if (strength === 1) {
+                    return `Swap a card at random with ${targetName}.  If a player in this exchange has zero cards, don't swap any cards`;
+                }
+                return `Swap ${strength} cards at random with ${targetName}.  If a player has fewer cards, swap up to ${strength} cards instead`;
+            }
+            case EffectType.TRANSFORM_RESOURCE: {
+                return `Turn ${strength || 'all'} ${
+                    cardName
+                        ? `[${cardName}]`
+                        : `non-[${secondaryCardName}] resource`
+                } cards controlled by ${controlledBySubject} into [${secondaryCardName}]${
+                    strength === undefined ? '' : ' at random'
+                }`;
             }
             case EffectType.TRANSMUTE: {
                 return `Turn ${

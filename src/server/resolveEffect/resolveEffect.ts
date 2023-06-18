@@ -26,6 +26,7 @@ import { makeCard, makeResourceCard } from '@/factories/cards';
 import {
     applyWinState,
     processBoardToCemetery,
+    resetCard,
     resetUnitCard,
 } from '../gameEngine';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
@@ -102,7 +103,9 @@ const performEffectRequirement = ({
             const unitsByCost: Map<number, UnitCard[]> = new Map();
 
             activePlayer.units.forEach((unit) => {
-                const totalCost = sum(Object.values(unit.originalCost));
+                const totalCost = sum(
+                    Object.values(unit.originalAttributes.cost)
+                );
                 if (unitsByCost.has(totalCost)) {
                     unitsByCost.get(totalCost).push(unit);
                 } else {
@@ -281,7 +284,7 @@ export const resolveEffect = (
         strength: effectStrength = 0,
         cardName,
         secondaryCardName,
-        passiveEffect,
+        passiveEffects,
         sourceId,
         requirements,
     } = effect;
@@ -503,7 +506,7 @@ export const resolveEffect = (
             processBoardToCemetery(clonedBoard, addSystemChat);
             return clonedBoard;
         }
-        case EffectType.BUFF_HAND_ATTACK: {
+        case EffectType.BUFF_HAND_NON_MAGIC_ATTACK: {
             playerTargets.forEach((player) => {
                 player.hand.forEach((card) => {
                     if (card.cardType !== CardType.UNIT) return;
@@ -675,7 +678,13 @@ export const resolveEffect = (
                     Math.min(hand.length, effectStrength)
                 );
                 player.hand = difference(hand, cardsToDiscard);
-                player.cemetery = player.cemetery.concat(cardsToDiscard);
+
+                const cardsToDiscardWithResets = cardsToDiscard.map((card) =>
+                    resetCard(card)
+                );
+                player.cemetery = player.cemetery.concat(
+                    cardsToDiscardWithResets
+                );
                 addSystemChat(
                     `${player.name} discarded ${cardsToDiscard
                         .map((card) => `[[${card.name}]]`)
@@ -771,18 +780,20 @@ export const resolveEffect = (
         }
         case EffectType.GRANT_PASSIVE_EFFECT: {
             unitTargets.forEach(({ unitCard }) => {
-                if (!unitCard.passiveEffects.includes(passiveEffect)) {
-                    unitCard.passiveEffects.push(passiveEffect);
+                passiveEffects.forEach((passiveEffect) => {
+                    if (!unitCard.passiveEffects.includes(passiveEffect)) {
+                        unitCard.passiveEffects.push(passiveEffect);
 
-                    // handle adding attacks to units getting 'quick'
-                    if (
-                        passiveEffect === PassiveEffect.QUICK &&
-                        unitCard.isFresh
-                    ) {
-                        unitCard.numAttacksLeft = unitCard.numAttacks;
-                        unitCard.isFresh = false;
+                        // handle adding attacks to units getting 'quick'
+                        if (
+                            passiveEffect === PassiveEffect.QUICK &&
+                            unitCard.isFresh
+                        ) {
+                            unitCard.numAttacksLeft = unitCard.numAttacks;
+                            unitCard.isFresh = false;
+                        }
                     }
-                }
+                });
             });
             return clonedBoard;
         }

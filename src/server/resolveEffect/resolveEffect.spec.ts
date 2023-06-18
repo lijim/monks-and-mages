@@ -8,6 +8,7 @@ import { makeCard, makeResourceCard, makeUnitCard } from '@/factories/cards';
 import { Tokens, UnitCards } from '@/mocks/units';
 import { EffectRequirementsType, UnitCard } from '@/types/cards';
 import { Resource } from '@/types/resources';
+import { SpellCards } from '@/mocks/spells';
 
 describe('resolve effect', () => {
     let board: Board;
@@ -209,7 +210,10 @@ describe('resolve effect', () => {
             const newBoard = resolveEffect(
                 board,
                 {
-                    effect: { type: EffectType.BUFF_HAND_ATTACK, strength: 2 },
+                    effect: {
+                        type: EffectType.BUFF_HAND_NON_MAGIC_ATTACK,
+                        strength: 2,
+                    },
                 },
                 'Timmy'
             );
@@ -971,6 +975,42 @@ describe('resolve effect', () => {
             );
         });
 
+        it('resets costs', () => {
+            board.players[0].hand = [
+                { ...makeUnitCard(UnitCards.ASSASSIN), cost: {} },
+                { ...makeCard(SpellCards.A_GENTLE_GUST), cost: {} },
+            ];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DISCARD_HAND,
+                        strength: Number.MAX_SAFE_INTEGER,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(0);
+            // cards are discarded in random order b/c of lodash's sampleSize, so we can't rely on order
+            // e.g. expeting newBoard.players[0].cemetery[0] to always be UnitCards.ASSASSIN
+            expect(
+                (
+                    newBoard.players[0].cemetery.find(
+                        (card) => card.name === UnitCards.ASSASSIN.name
+                    ) as UnitCard
+                ).cost
+            ).toEqual(UnitCards.ASSASSIN.cost);
+            expect(
+                (
+                    newBoard.players[0].cemetery.find(
+                        (card) => card.name === SpellCards.A_GENTLE_GUST.name
+                    ) as UnitCard
+                ).cost
+            ).toEqual(SpellCards.A_GENTLE_GUST.cost);
+        });
+
         it('broadcasts what was discarded', () => {
             const mockAddSystemChat = jest.fn();
             board.players[0].hand = [
@@ -1077,7 +1117,7 @@ describe('resolve effect', () => {
                     effect: {
                         type: EffectType.GRANT_PASSIVE_EFFECT,
                         target: TargetTypes.ALL_UNITS,
-                        passiveEffect: PassiveEffect.QUICK,
+                        passiveEffects: [PassiveEffect.QUICK],
                     },
                 },
                 'Timmy'

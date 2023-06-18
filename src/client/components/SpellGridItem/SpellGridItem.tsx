@@ -29,7 +29,12 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
     onClick,
     zoomLevel,
 }) => {
-    const { cost, name, effects, originalCost } = card;
+    const {
+        cost,
+        name,
+        effects,
+        originalAttributes: { cost: originalCost },
+    } = card;
     const { primaryColor, secondaryColor } = getColorsForCard(card);
 
     return (

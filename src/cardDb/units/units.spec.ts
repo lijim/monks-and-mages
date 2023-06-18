@@ -24,7 +24,7 @@ describe('Unit Cards', () => {
             isRanged: true,
             isMagical: true,
             isSoldier: false,
-            passiveEffects: [],
+            passiveEffects: [PassiveEffect.ETHEREAL],
             rarity: CardRarity.COMMON,
         };
         const unitCard = makeCard(unitBase);
@@ -34,7 +34,10 @@ describe('Unit Cards', () => {
         expect(unitCard.numAttacksLeft).toBe(0);
         expect(unitCard.hp).toBe(10);
         expect(unitCard.hpBuff).toBe(0);
-        expect(unitCard.originalCost).toEqual(unitBase.cost);
+        expect(unitCard.originalAttributes.cost).toEqual(unitBase.cost);
+        expect(unitCard.originalAttributes.passiveEffects).toEqual(
+            unitBase.passiveEffects
+        );
         expect(unitCard.cardType).toBe(CardType.UNIT);
         expect(unitCard.isSelected).toBe(false);
     });

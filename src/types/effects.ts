@@ -33,10 +33,11 @@ export enum EffectType {
     BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK = 'Bounce units under threshold attack',
     BUFF_ATTACK = 'Buff attack', // increase/decrease attack of a single unit
     BUFF_ATTACK_FOR_CYCLE = 'Buff attack for cycle', // increase/decrease attack of a single unit
-    BUFF_ATTACK_FOR_TURN = 'Buff attack for turn', // increase/decrease attack of a single unit
-    BUFF_HAND_ATTACK = 'Buff hand attack',
+    BUFF_ATTACK_FOR_TURN = 'Buff attack for turn',
     // give unit(s) a passive effect
     BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE = 'Buff hand attack with failsafe lifechange',
+    // increase/decrease attack of a single unit
+    BUFF_HAND_NON_MAGIC_ATTACK = 'Buff hand non-magic attack',
     // buffs all creatures in hand
     BUFF_MAGIC = 'Buff magic unit',
     BUFF_TEAM_ATTACK = 'Buff team attack',
@@ -65,10 +66,10 @@ export enum EffectType {
     DRAW_PER_UNIT = 'Draw per unit',
     DRAW_UNTIL = 'Draw until',
     DRAW_UNTIL_MATCHING_OPPONENTS = 'Draw until matching opponents',
-    EXTRACT_AND_SET_COST = 'Extract cards and set their costs',
     EXTRACT_CARD = 'Extract card', // extract X of {cardName} card from deck
     EXTRACT_SOLDIER_CARDS = 'Extract soldier cards',
     EXTRACT_SPELL_CARDS = 'Extract spell cards',
+    EXTRACT_UNIT_AND_SET_COST = 'Extract cards and set their costs',
     /**
      * Flicker own card (needs to be own - don't want to do opposing units yet
      * b/c it would involve too much new code - we'd have to control for opposing active player
@@ -127,7 +128,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.BUFF_ATTACK]: TargetTypes.UNIT,
         [EffectType.BUFF_ATTACK_FOR_CYCLE]: TargetTypes.UNIT,
         [EffectType.BUFF_ATTACK_FOR_TURN]: TargetTypes.UNIT,
-        [EffectType.BUFF_HAND_ATTACK]: TargetTypes.SELF_PLAYER,
+        [EffectType.BUFF_HAND_NON_MAGIC_ATTACK]: TargetTypes.SELF_PLAYER,
         [EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE]:
             TargetTypes.ALL_OPPONENTS,
         [EffectType.BUFF_MAGIC]: TargetTypes.UNIT,
@@ -151,7 +152,7 @@ export const getDefaultTargetForEffect = (
         [EffectType.DRAW_PER_UNIT]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW_UNTIL]: TargetTypes.SELF_PLAYER,
         [EffectType.DRAW_UNTIL_MATCHING_OPPONENTS]: TargetTypes.SELF_PLAYER,
-        [EffectType.EXTRACT_AND_SET_COST]: TargetTypes.SELF_PLAYER,
+        [EffectType.EXTRACT_UNIT_AND_SET_COST]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_CARD]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_SOLDIER_CARDS]: TargetTypes.SELF_PLAYER,
         [EffectType.EXTRACT_SPELL_CARDS]: TargetTypes.SELF_PLAYER,

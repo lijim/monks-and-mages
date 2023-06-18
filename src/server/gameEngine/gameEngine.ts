@@ -3,7 +3,13 @@ import shuffle from 'lodash.shuffle';
 
 import { Board, GameState, Player } from '@/types/board';
 import { GameAction, GameActionTypes } from '@/types/gameActions';
-import { Card, CardType, ResourceCard, UnitCard } from '@/types/cards';
+import {
+    Card,
+    CardType,
+    ResourceCard,
+    SpellCard,
+    UnitCard,
+} from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
@@ -85,7 +91,9 @@ export function applyWinState(board: Board): Board {
 }
 
 export const resetUnitCard = (unitCard: UnitCard) => {
-    unitCard.passiveEffects = cloneDeep(unitCard.originalPassiveEffects);
+    unitCard.passiveEffects = cloneDeep(
+        unitCard.originalAttributes?.passiveEffects || []
+    );
     const hasQuick = unitCard.passiveEffects.includes(PassiveEffect.QUICK);
 
     unitCard.hp = unitCard.totalHp;
@@ -94,8 +102,27 @@ export const resetUnitCard = (unitCard: UnitCard) => {
     unitCard.oneCycleAttackBuff = 0;
     unitCard.oneTurnAttackBuff = 0;
     unitCard.isFresh = true;
+    unitCard.isMagical = unitCard.originalAttributes?.isMagical || false;
+    unitCard.isRanged = unitCard.originalAttributes?.isRanged || false;
+    unitCard.numAttacks = unitCard.originalAttributes?.numAttacks || 1;
     unitCard.numAttacksLeft = hasQuick ? unitCard.numAttacks : 0;
-    unitCard.cost = cloneDeep(unitCard.originalCost);
+    unitCard.cost = cloneDeep(unitCard.originalAttributes?.cost || {});
+    return unitCard;
+};
+
+export const resetSpellCard = (spellCard: SpellCard) => {
+    spellCard.cost = cloneDeep(spellCard.originalAttributes?.cost || {});
+    return spellCard;
+};
+
+export const resetCard = (card: Card) => {
+    if (card.cardType === CardType.UNIT) {
+        return resetUnitCard(card);
+    }
+    if (card.cardType === CardType.SPELL) {
+        return resetSpellCard(card);
+    }
+    return card;
 };
 
 /**
@@ -453,8 +480,8 @@ export const applyGameAction = ({
             // bump legendary leader costs
             activePlayer.legendaryLeaderExtraCost += 2;
             activePlayer.legendaryLeader.cost.Generic =
-                (activePlayer.legendaryLeader.originalCost.Generic || 0) +
-                activePlayer.legendaryLeaderExtraCost;
+                (activePlayer.legendaryLeader.originalAttributes.cost.Generic ||
+                    0) + activePlayer.legendaryLeaderExtraCost;
 
             return clonedBoard;
         }

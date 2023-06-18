@@ -42,7 +42,7 @@ export interface ResourceCard extends CardBase {
 export type Effect = {
     cardName?: string;
     cost?: PartialRecord<Resource, number>;
-    passiveEffect?: PassiveEffect;
+    passiveEffects?: PassiveEffect[];
     requirements?: EffectRequirement[];
     resourceType?: Resource;
     secondaryCardName?: string;
@@ -96,9 +96,7 @@ export interface UnitBase extends CardBase {
     name: string;
     // how much damage is inflicted per attack
     numAttacks: number;
-    originalCost?: PartialRecord<Resource, number>;
     originalImagePage?: string;
-    originalPassiveEffects?: PassiveEffect[];
     // all units except magic must attack soldiers first 🛡️
     passiveEffects: PassiveEffect[];
     totalHp: number; // max HP
@@ -123,6 +121,13 @@ export interface UnitCard extends UnitBase {
     oneCycleAttackBuff: number;
     // number of attack left this turn - starts at 0
     oneTurnAttackBuff: number;
+    originalAttributes?: {
+        cost: PartialRecord<Resource, number>;
+        isMagical: boolean;
+        isRanged: boolean;
+        numAttacks: number;
+        passiveEffects: PassiveEffect[];
+    };
 }
 
 export type UnitType = 'Magical' | 'Soldier' | 'Ranged' | 'None';
@@ -131,7 +136,9 @@ export interface SpellBase extends CardBase {
     cost: PartialRecord<Resource, number>;
     effects: Effect[];
     name: string;
-    originalCost?: PartialRecord<Resource, number>;
+    originalAttributes?: {
+        cost: PartialRecord<Resource, number>;
+    };
     originalImagePage?: string;
 }
 

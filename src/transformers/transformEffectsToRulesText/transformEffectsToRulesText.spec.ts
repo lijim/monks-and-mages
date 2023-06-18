@@ -5,7 +5,7 @@ import { Resource } from '@/types/resources';
 import { transformEffectToRulesText } from './transformEffectsToRulesText';
 
 describe('transformEffectstoRulesText', () => {
-    describe('bloom effect', () => {
+    describe('Bloom effect', () => {
         const effect: Effect = {
             type: EffectType.BLOOM,
             strength: 3,
@@ -15,7 +15,7 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
-    describe('bounce', () => {
+    describe('Bounce', () => {
         it('displays rules for bouncing units (any unit, plural)', () => {
             const effect: Effect = {
                 type: EffectType.BOUNCE,
@@ -43,6 +43,17 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Return all opposing units back to their controllers' hand`
+            );
+        });
+
+        it('displays rules for bouncing units under a threshold', () => {
+            const effect: Effect = {
+                type: EffectType.BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK,
+                target: TargetTypes.ALL_OPPOSING_UNITS,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return all opposing units with 2 attack or lower back to their controllers' hand`
             );
         });
     });
@@ -163,7 +174,7 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
-    describe('buffing generic units', () => {
+    describe('Buffing generic units', () => {
         const effect: Effect = {
             type: EffectType.BUFF_TEAM_GENERIC_UNITS,
             strength: 5,
@@ -174,61 +185,86 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
-    it('displays rules for buffing your hand (attack)', () => {
-        const effect: Effect = {
-            type: EffectType.BUFF_HAND_ATTACK,
-            target: TargetTypes.SELF_PLAYER,
-            strength: 5,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase attack of non-magical units in your hand by 5`
-        );
+    describe('other buffing effects', () => {
+        it('displays rules for buffing your hand (attack)', () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_HAND_NON_MAGIC_ATTACK,
+                target: TargetTypes.SELF_PLAYER,
+                strength: 5,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase attack of non-magical units in your hand by 5`
+            );
+        });
+
+        it("displays rules for debuffing your opponents' hand with a failsafe", () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE,
+                target: TargetTypes.ALL_OPPONENTS,
+                strength: -3,
+                secondaryStrength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease attack of units in all opponents' hand by 3. If no units are changed this way, gain 3 life`
+            );
+        });
+
+        it('displays rules for buffing your team attack', () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_TEAM_ATTACK,
+                strength: 5,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase attack of your non-magic units by 5`
+            );
+        });
+
+        it("displays rules for debuffing your opponents' attack", () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_TEAM_ATTACK,
+                strength: -2,
+                target: TargetTypes.ALL_OPPONENTS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease attack of all opponents' non-magic units by 2`
+            );
+        });
+
+        it("displays rules for buffing your team's hp", () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_TEAM_HP,
+                target: TargetTypes.SELF_PLAYER,
+                strength: 5,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase HP of your units by 5`
+            );
+        });
+
+        it("displays rules for buffing your team's magic", () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_TEAM_MAGIC,
+                target: TargetTypes.SELF_PLAYER,
+                strength: 5,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase attack of your magic units by 5`
+            );
+        });
+
+        it("displays rules for buffing your team's legendary unit", () => {
+            const effect: Effect = {
+                type: EffectType.BUFF_TEAM_LEGENDARY_UNITS,
+                target: TargetTypes.SELF_PLAYER,
+                strength: 5,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase attack and HP of your legendary units by 5`
+            );
+        });
     });
 
-    it('displays rules for buffing your team attack', () => {
-        const effect: Effect = {
-            type: EffectType.BUFF_TEAM_ATTACK,
-            strength: 5,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase attack of your non-magic units by 5`
-        );
-    });
-
-    it("displays rules for debuffing your opponents' attack", () => {
-        const effect: Effect = {
-            type: EffectType.BUFF_TEAM_ATTACK,
-            strength: -2,
-            target: TargetTypes.ALL_OPPONENTS,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Decrease attack of all opponents' non-magic units by 2`
-        );
-    });
-
-    it('displays rules for buffing your team hp', () => {
-        const effect: Effect = {
-            type: EffectType.BUFF_TEAM_HP,
-            target: TargetTypes.SELF_PLAYER,
-            strength: 5,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase HP of your units by 5`
-        );
-    });
-
-    it('displays rules for buffing your team magic', () => {
-        const effect: Effect = {
-            type: EffectType.BUFF_TEAM_MAGIC,
-            target: TargetTypes.SELF_PLAYER,
-            strength: 5,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Increase attack of your magic units by 5`
-        );
-    });
-
-    describe('curse hand', () => {
+    describe('Curse hand', () => {
         it('displays rules for cursing a hand', () => {
             const effect: Effect = {
                 type: EffectType.CURSE_HAND,
@@ -250,9 +286,32 @@ describe('transformEffectstoRulesText', () => {
                 `Decrease cost of cards in your hand by 5 (generic)`
             );
         });
+
+        it('displays rules for increasing costs from a hand (for specific resource types)', () => {
+            const effect: Effect = {
+                type: EffectType.CURSE_HAND_RESOURCE_TYPE,
+                strength: 5,
+                resourceType: Resource.CRYSTAL,
+                target: TargetTypes.SELF_PLAYER,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase cost of purple cards in your hand by 5 (generic)`
+            );
+        });
+
+        it('displays rules for increasing costs from a hand (for specific resource types)', () => {
+            const effect: Effect = {
+                type: EffectType.CURSE_HAND_SPELLS,
+                strength: 5,
+                target: TargetTypes.SELF_PLAYER,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Increase cost of spell cards in your hand by 5 (generic)`
+            );
+        });
     });
 
-    describe('destroy resource', () => {
+    describe('Destroy resource', () => {
         it('displays rules destroying a resource', () => {
             const effect: Effect = {
                 type: EffectType.DESTROY_RESOURCE,
@@ -307,15 +366,40 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
-    it('displays rules for dealing damage', () => {
-        const effect: Effect = {
-            type: EffectType.DEAL_DAMAGE,
-            strength: 7,
-            target: TargetTypes.ALL_UNITS,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Deal 7 damage to all units`
-        );
+    describe('Dealing damage', () => {
+        it('displays rules for dealing damage', () => {
+            const effect: Effect = {
+                type: EffectType.DEAL_DAMAGE,
+                strength: 7,
+                target: TargetTypes.ALL_UNITS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Deal 7 damage to all units`
+            );
+        });
+
+        it('displays rules for dealing damage to non-soldier units', () => {
+            const effect: Effect = {
+                type: EffectType.DEAL_DAMAGE_TO_NON_SOLDIERS,
+                strength: 7,
+                target: TargetTypes.ALL_UNITS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Deal 7 damage to all non-soldier units`
+            );
+        });
+    });
+
+    describe('Deploy legendary leaders', () => {
+        it('displays rules for forcing players to deploy legendary leaders', () => {
+            const effect: Effect = {
+                type: EffectType.DEPLOY_LEGENDARY_LEADER,
+                target: TargetTypes.ALL_PLAYERS,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Deploy all players' legendary leaders onto the board. Don't trigger any enter the board effects`
+            );
+        });
     });
 
     it('displays rules for forcing hand discard', () => {
@@ -390,31 +474,66 @@ describe('transformEffectstoRulesText', () => {
             );
         });
 
-        it('displays rules for drawing cards (until a limit) - all players', () => {
+        it('displays rules for drawing cards (until equal to greatest for opponents) - all players', () => {
             const effect: Effect = {
-                type: EffectType.DRAW_UNTIL,
+                type: EffectType.DRAW_UNTIL_MATCHING_OPPONENTS,
                 target: TargetTypes.ALL_PLAYERS,
-                strength: 3,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `If under 3 cards in hand, all players draw cards until having 3 in hand`
+                `All players draw cards until they have X cards, where X is the greatest amount of cards in hand amongst all opponents`
             );
         });
     });
 
-    it('displays rules for extracting cards from a deck', () => {
-        const effect: Effect = {
-            type: EffectType.EXTRACT_CARD,
-            strength: 2,
-            cardName: 'Iron',
-            target: TargetTypes.OPPONENT,
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Extract 2 Iron cards from any opponent's deck`
-        );
+    describe('Extracting cards', () => {
+        it('displays rules for extracting cards from a deck', () => {
+            const effect: Effect = {
+                type: EffectType.EXTRACT_CARD,
+                strength: 2,
+                cardName: 'Iron',
+                target: TargetTypes.OPPONENT,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Extract 2 Iron cards from any opponent's deck`
+            );
+        });
+
+        it('displays rules for extracting cards from a deck', () => {
+            const effect: Effect = {
+                type: EffectType.EXTRACT_UNIT_AND_SET_COST,
+                strength: 2,
+                cost: {
+                    Generic: 1,
+                    Bamboo: 2,
+                },
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Extract 2 unit cards from your deck and set their costs to 1🎋🎋`
+            );
+        });
+
+        it('displays rules for extracting soldier cards from a deck', () => {
+            const effect: Effect = {
+                type: EffectType.EXTRACT_SOLDIER_CARDS,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Extract 2 soldier cards from your deck`
+            );
+        });
+
+        it('displays rules for extracting spell cards from a deck', () => {
+            const effect: Effect = {
+                type: EffectType.EXTRACT_SPELL_CARDS,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Extract 2 spell cards from your deck`
+            );
+        });
     });
 
-    describe('flicker', () => {
+    describe('Flicker', () => {
         it('displays rules for flickering a single unit', () => {
             const effect: Effect = {
                 type: EffectType.FLICKER,
@@ -434,12 +553,78 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
+    describe('Gaining stats and effects', () => {
+        it('displays rules for gaining attack', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_ATTACK,
+                target: TargetTypes.ALL_SELF_UNITS,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `All your units gain 3 attack`
+            );
+        });
+
+        it('displays rules for gaining attack until a threshold amount', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_ATTACK_UNTIL,
+                target: TargetTypes.ALL_UNITS,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `All units gain attack until they are at least 3 attack`
+            );
+        });
+
+        it('displays rules for gaining magical for units on both hand and board', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_MAGICAL_HAND_AND_BOARD,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Your units in hand and board become magical units`
+            );
+        });
+
+        it('displays rules for gaining stats', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_STATS,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Gain 3 attack and HP`
+            );
+        });
+
+        it('displays rules for gaining stats and passive effects', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_STATS_AND_EFFECTS,
+                strength: 3,
+                passiveEffects: [
+                    PassiveEffect.HEARTY,
+                    PassiveEffect.SNOW_BLINDED,
+                ],
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Gain 3 attack/HP, [Hearty (Rather than going to cemetery, lose hearty and go to 1 hp)], and [Snow Blinded (Only able to attack players)]`
+            );
+        });
+
+        it('displays rules for gaining stats equal to cost', () => {
+            const effect: Effect = {
+                type: EffectType.GAIN_STATS_EQUAL_TO_COST,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Gain attack/HP equal to the total cost of this card`
+            );
+        });
+    });
+
     describe('Granting passive effects', () => {
         it('displays rules for granting effects', () => {
             const effect: Effect = {
                 type: EffectType.GRANT_PASSIVE_EFFECT,
                 target: TargetTypes.ALL_SELF_UNITS,
-                passiveEffect: PassiveEffect.POISONED,
+                passiveEffects: [PassiveEffect.POISONED],
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Give all your units [Poisonous (deals lethal damage)]`
@@ -480,6 +665,17 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    describe('Losing properties', () => {
+        it('displays rules for losing magical and ranged', () => {
+            const effect: Effect = {
+                type: EffectType.LOSE_MAGICAL_AND_RANGED,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `All opposing units' units lose magical/ranged`
+            );
+        });
+    });
+
     describe('Mill', () => {
         it('displays rules for milling all players', () => {
             const effect: Effect = {
@@ -512,6 +708,19 @@ describe('transformEffectstoRulesText', () => {
         expect(transformEffectToRulesText(effect)).toEqual(
             `Turn all units into a [Frog]`
         );
+    });
+
+    describe('Modifying attacks per turn', () => {
+        it('displays rules for setting attacks per turn', () => {
+            const effect: Effect = {
+                type: EffectType.MODIFY_ATTACKS_PER_TURN,
+                target: TargetTypes.ALL_UNITS,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Set all units to have 1 attack per turn`
+            );
+        });
     });
 
     describe('Ramp', () => {
@@ -565,15 +774,70 @@ describe('transformEffectstoRulesText', () => {
         });
     });
 
-    it('displays rules for returning from cemetery', () => {
-        const effect: Effect = {
-            type: EffectType.RETURN_FROM_CEMETERY,
-            strength: 3,
-            cardName: 'Ember Spear',
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Return 3 Ember Spear cards from your cemetery`
-        );
+    describe('Reducing costs', () => {
+        it('displays rules for reducing costs with a minimum floor', () => {
+            const effect: Effect = {
+                type: EffectType.REDUCE_CARDS_COSTING_OVER_AMOUNT,
+                strength: 3,
+                secondaryStrength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease cost of cards in your hand by 3 (generic).  Cards reduced this way cannot be reduced below 2 total cost`
+            );
+        });
+
+        it('displays rules for reducing costs for legendary leader', () => {
+            const effect: Effect = {
+                type: EffectType.REDUCE_LEGENDARY_LEADER_COST,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease cost of your legendary leader by 3 (generic).  Cards reduced this way cannot be reduced below their original costs`
+            );
+        });
+    });
+
+    describe('returning cards from cemetery', () => {
+        it('displays rules for returning specific cards from cemetery', () => {
+            const effect: Effect = {
+                type: EffectType.RETURN_FROM_CEMETERY,
+                strength: 3,
+                cardName: 'Ember Spear',
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return 3 Ember Spear cards from your cemetery`
+            );
+        });
+
+        it('displays rules for returning resource cards from cemetery', () => {
+            const effect: Effect = {
+                type: EffectType.RETURN_RESOURCES_FROM_CEMETERY,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return 3 resource cards at random from your cemetery`
+            );
+        });
+
+        it('displays rules for returning spell+resource cards from cemetery', () => {
+            const effect: Effect = {
+                type: EffectType.RETURN_SPELLS_AND_RESOURCES_FROM_CEMETERY,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return 1 resource card and 1 spell card at random from your cemetery`
+            );
+        });
+
+        it('displays rules for returning spell cards from cemetery', () => {
+            const effect: Effect = {
+                type: EffectType.RETURN_SPELLS_FROM_CEMETERY,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return 2 spell cards at random from your cemetery`
+            );
+        });
     });
 
     it('displays rules for reviving', () => {
@@ -586,8 +850,8 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
-    describe('Shuffle from hand', () => {
-        it("displays rules for shuffling into a player's deck", () => {
+    describe('Shuffling cards', () => {
+        it("displays rules for shuffling cards into a player's deck", () => {
             const effect: Effect = {
                 type: EffectType.SHUFFLE_FROM_HAND,
                 strength: 2,
@@ -596,6 +860,24 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Shuffle 2 [Tea] cards in hand into any opponent's decks`
+            );
+        });
+
+        it('displays rules for shuffling cards from a cemetery into a deck', () => {
+            const effect: Effect = {
+                type: EffectType.SHUFFLE_CEMETERY_INTO_DECK,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Any player shuffles cards in their cemetery into their deck`
+            );
+        });
+
+        it('displays rules for shuffling cards from a hand into a deck', () => {
+            const effect: Effect = {
+                type: EffectType.SHUFFLE_HAND_INTO_DECK,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Any player shuffles cards in their hand into their deck`
             );
         });
     });
@@ -621,6 +903,58 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Summon 2 Demons - 1 ⚔️ 1 💙 for any opponent`
+            );
+        });
+    });
+
+    describe('Swapping cards', () => {
+        it('displays rules for swapping cards', () => {
+            const effect: Effect = {
+                type: EffectType.SWAP_CARDS,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Swap 2 cards at random with any opponent.  If a player has fewer cards, swap up to 2 cards instead`
+            );
+        });
+    });
+
+    describe('Summon units', () => {
+        it('displays rules for summoning units (opponents)', () => {
+            const effect: Effect = {
+                type: EffectType.SUMMON_UNITS,
+                strength: 2,
+                target: TargetTypes.OPPONENT,
+                summonType: Tokens.DEMON,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Summon 2 Demons - 1 ⚔️ 1 💙 for any opponent`
+            );
+        });
+    });
+
+    describe('Transforming resources', () => {
+        it('displays rules for transforming resource cards (any)', () => {
+            const effect: Effect = {
+                type: EffectType.TRANSFORM_RESOURCE,
+                strength: 1,
+                target: TargetTypes.SELF_PLAYER,
+                secondaryCardName: 'Water',
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Turn 1 non-[Water] resource cards controlled by you into [Water] at random`
+            );
+        });
+
+        it('displays rules for transforming resource cards (specific ones)', () => {
+            const effect: Effect = {
+                type: EffectType.TRANSFORM_RESOURCE,
+                target: TargetTypes.ALL_OPPONENTS,
+                cardName: 'Bamboo',
+                secondaryCardName: 'Water',
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Turn all [Bamboo] cards controlled by an opponent into [Water]`
             );
         });
     });
