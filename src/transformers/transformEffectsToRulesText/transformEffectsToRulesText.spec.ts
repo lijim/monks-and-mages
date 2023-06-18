@@ -785,17 +785,59 @@ describe('transformEffectstoRulesText', () => {
                 `Decrease cost of cards in your hand by 3 (generic).  Cards reduced this way cannot be reduced below 2 total cost`
             );
         });
+
+        it('displays rules for reducing costs for legendary leader', () => {
+            const effect: Effect = {
+                type: EffectType.REDUCE_LEGENDARY_LEADER_COST,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Decrease cost of your legendary leader by 3 (generic).  Cards reduced this way cannot be reduced below their original costs`
+            );
+        });
     });
 
-    it('displays rules for returning from cemetery', () => {
-        const effect: Effect = {
-            type: EffectType.RETURN_FROM_CEMETERY,
-            strength: 3,
-            cardName: 'Ember Spear',
-        };
-        expect(transformEffectToRulesText(effect)).toEqual(
-            `Return 3 Ember Spear cards from your cemetery`
-        );
+    describe('returning cards from cemetery', () => {
+        it('displays rules for returning specific cards from cemetery', () => {
+            const effect: Effect = {
+                type: EffectType.RETURN_FROM_CEMETERY,
+                strength: 3,
+                cardName: 'Ember Spear',
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return 3 Ember Spear cards from your cemetery`
+            );
+        });
+
+        it('displays rules for returning resource cards from cemetery', () => {
+            const effect: Effect = {
+                type: EffectType.RETURN_RESOURCES_FROM_CEMETERY,
+                strength: 3,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return 3 resource cards at random from your cemetery`
+            );
+        });
+
+        it('displays rules for returning spell+resource cards from cemetery', () => {
+            const effect: Effect = {
+                type: EffectType.RETURN_SPELLS_AND_RESOURCES_FROM_CEMETERY,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return 1 resource card and 1 spell card at random from your cemetery`
+            );
+        });
+
+        it('displays rules for returning spell cards from cemetery', () => {
+            const effect: Effect = {
+                type: EffectType.RETURN_SPELLS_FROM_CEMETERY,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Return 2 spell cards at random from your cemetery`
+            );
+        });
     });
 
     it('displays rules for reviving', () => {
@@ -808,8 +850,8 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
-    describe('Shuffle from hand', () => {
-        it("displays rules for shuffling into a player's deck", () => {
+    describe('Shuffling cards', () => {
+        it("displays rules for shuffling cards into a player's deck", () => {
             const effect: Effect = {
                 type: EffectType.SHUFFLE_FROM_HAND,
                 strength: 2,
@@ -818,6 +860,24 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Shuffle 2 [Tea] cards in hand into any opponent's decks`
+            );
+        });
+
+        it('displays rules for shuffling cards from a cemetery into a deck', () => {
+            const effect: Effect = {
+                type: EffectType.SHUFFLE_CEMETERY_INTO_DECK,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Any player shuffles cards in their cemetery into their deck`
+            );
+        });
+
+        it('displays rules for shuffling cards from a hand into a deck', () => {
+            const effect: Effect = {
+                type: EffectType.SHUFFLE_HAND_INTO_DECK,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Any player shuffles cards in their hand into their deck`
             );
         });
     });
@@ -843,6 +903,58 @@ describe('transformEffectstoRulesText', () => {
             };
             expect(transformEffectToRulesText(effect)).toEqual(
                 `Summon 2 Demons - 1 ⚔️ 1 💙 for any opponent`
+            );
+        });
+    });
+
+    describe('Swapping cards', () => {
+        it('displays rules for swapping cards', () => {
+            const effect: Effect = {
+                type: EffectType.SWAP_CARDS,
+                strength: 2,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Swap 2 cards at random with any opponent.  If a player has fewer cards, swap up to 2 cards instead`
+            );
+        });
+    });
+
+    describe('Summon units', () => {
+        it('displays rules for summoning units (opponents)', () => {
+            const effect: Effect = {
+                type: EffectType.SUMMON_UNITS,
+                strength: 2,
+                target: TargetTypes.OPPONENT,
+                summonType: Tokens.DEMON,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Summon 2 Demons - 1 ⚔️ 1 💙 for any opponent`
+            );
+        });
+    });
+
+    describe('Transforming resources', () => {
+        it('displays rules for transforming resource cards (any)', () => {
+            const effect: Effect = {
+                type: EffectType.TRANSFORM_RESOURCE,
+                strength: 1,
+                target: TargetTypes.SELF_PLAYER,
+                secondaryCardName: 'Water',
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Turn 1 non-[Water] resource cards controlled by you into [Water] at random`
+            );
+        });
+
+        it('displays rules for transforming resource cards (specific ones)', () => {
+            const effect: Effect = {
+                type: EffectType.TRANSFORM_RESOURCE,
+                target: TargetTypes.ALL_OPPONENTS,
+                cardName: 'Bamboo',
+                secondaryCardName: 'Water',
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Turn all [Bamboo] cards controlled by an opponent into [Water]`
             );
         });
     });

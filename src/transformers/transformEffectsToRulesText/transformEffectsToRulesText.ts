@@ -34,6 +34,12 @@ const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.UNIT]: 'any unit',
 };
 
+const TARGET_TYPES_TO_CONTROLLED_BY = {
+    ...TARGET_TYPES_TO_RULES_TEXT,
+    [TargetTypes.SELF_PLAYER]: 'you',
+    [TargetTypes.ALL_OPPONENTS]: 'an opponent',
+};
+
 const TARGET_TYPES_TO_RULES_TEXT_NON_SOLDIERS = {
     ...TARGET_TYPES_TO_RULES_TEXT,
     [TargetTypes.ALL_OPPOSING_UNITS]: 'all opposing non-soldier units',
@@ -253,12 +259,11 @@ export const transformEffectToRulesText = (
         passiveEffects = [],
         cost,
     } = effect;
-    const targetName =
-        TARGET_TYPES_TO_RULES_TEXT[target || getDefaultTargetForEffect(type)];
+    const targetOrDefault = target || getDefaultTargetForEffect(type);
+    const targetName = TARGET_TYPES_TO_RULES_TEXT[targetOrDefault];
+    const controlledBySubject = TARGET_TYPES_TO_CONTROLLED_BY[targetOrDefault];
     const targetNamePossessive =
-        TARGET_TYPES_TO_RULES_TEXT_POSSESIVE[
-            target || getDefaultTargetForEffect(type)
-        ];
+        TARGET_TYPES_TO_RULES_TEXT_POSSESIVE[targetOrDefault];
     const pluralizationEffectStrength = strength > 1 ? 's' : '';
 
     let forText = '';
@@ -267,9 +272,7 @@ export const transformEffectToRulesText = (
     }
 
     const controllerPossessiveText =
-        TARGET_TYPES_TO_RULES_TEXT_CONTROLLER_POSSESIVE[
-            target || getDefaultTargetForEffect(type)
-        ];
+        TARGET_TYPES_TO_RULES_TEXT_CONTROLLER_POSSESIVE[targetOrDefault];
 
     const passiveEffectsText = joinPhrases(
         passiveEffects.map((passiveEffect) => `[${passiveEffect}]`)
@@ -610,25 +613,33 @@ export const transformEffectToRulesText = (
                 } by ${strength} (generic).  Cards reduced this way cannot be reduced below ${secondaryStrength} total cost`;
             }
             case EffectType.REDUCE_LEGENDARY_LEADER_COST: {
-                // TODO
+                return `Decrease cost of ${targetNamePossessive} ${
+                    isTargetTypePlural(target)
+                        ? 'legendary leaders'
+                        : 'legendary leader'
+                } by ${strength} (generic).  Cards reduced this way cannot be reduced below their original costs`;
             }
             case EffectType.RETURN_FROM_CEMETERY: {
                 return `Return ${strength} ${cardName} card${pluralizationEffectStrength} from your cemetery`;
             }
             case EffectType.RETURN_RESOURCES_FROM_CEMETERY: {
-                // TODO
+                return `Return ${strength} resource card${pluralizationEffectStrength} at random from your cemetery`;
             }
             case EffectType.RETURN_SPELLS_AND_RESOURCES_FROM_CEMETERY: {
-                // TODO
+                return `Return ${strength} resource card${pluralizationEffectStrength} and ${strength} spell card${pluralizationEffectStrength} at random from your cemetery`;
             }
             case EffectType.RETURN_SPELLS_FROM_CEMETERY: {
-                // TODO
+                return `Return ${strength} spell card${pluralizationEffectStrength} at random from your cemetery`;
             }
             case EffectType.REVIVE: {
                 return `Revive ${targetName}`;
             }
             case EffectType.SHUFFLE_CEMETERY_INTO_DECK: {
-                // TODO
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target)
+                        ? `shuffle cards in ${controllerPossessiveText} cemetery into ${controllerPossessiveText} decks`
+                        : `shuffles cards in ${controllerPossessiveText} cemetery into ${controllerPossessiveText} deck`
+                }`;
             }
             case EffectType.SHUFFLE_FROM_HAND: {
                 return `Shuffle ${
@@ -638,13 +649,29 @@ export const transformEffectToRulesText = (
                 }`;
             }
             case EffectType.SHUFFLE_HAND_INTO_DECK: {
-                // TODO
+                return `${titleize(targetName)} ${
+                    isTargetTypePlural(target)
+                        ? `shuffle cards in ${controllerPossessiveText} hand into ${controllerPossessiveText} decks`
+                        : `shuffles cards in ${controllerPossessiveText} hand into ${controllerPossessiveText} deck`
+                }`;
             }
             case EffectType.SUMMON_UNITS: {
                 return `Summon ${strength} ${summonType.name}${pluralizationEffectStrength} - ${summonType.attack} ⚔️ ${summonType.totalHp} 💙${forText}`;
             }
             case EffectType.SWAP_CARDS: {
-                // TODO
+                if (strength === 1) {
+                    return `Swap a card at random with ${targetName}.  If a player in this exchange has zero cards, don't swap any cards`;
+                }
+                return `Swap ${strength} cards at random with ${targetName}.  If a player has fewer cards, swap up to ${strength} cards instead`;
+            }
+            case EffectType.TRANSFORM_RESOURCE: {
+                return `Turn ${strength || 'all'} ${
+                    cardName
+                        ? `[${cardName}]`
+                        : `non-[${secondaryCardName}] resource`
+                } cards controlled by ${controlledBySubject} into [${secondaryCardName}]${
+                    strength === undefined ? '' : ' at random'
+                }`;
             }
             case EffectType.TRANSMUTE: {
                 return `Turn ${
