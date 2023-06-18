@@ -15,7 +15,7 @@ export const makeCard = (spellBase: SpellBase): SpellCard => ({
     ...spellBase,
     cardType: CardType.SPELL,
     isSelected: false,
-    originalCost: cloneDeep(spellBase.cost),
+    originalAttributes: { cost: cloneDeep(spellBase.cost) },
 });
 
 // Fire Magic

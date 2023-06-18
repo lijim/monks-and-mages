@@ -102,7 +102,9 @@ const performEffectRequirement = ({
             const unitsByCost: Map<number, UnitCard[]> = new Map();
 
             activePlayer.units.forEach((unit) => {
-                const totalCost = sum(Object.values(unit.originalCost));
+                const totalCost = sum(
+                    Object.values(unit.originalAttributes.cost)
+                );
                 if (unitsByCost.has(totalCost)) {
                     unitsByCost.get(totalCost).push(unit);
                 } else {

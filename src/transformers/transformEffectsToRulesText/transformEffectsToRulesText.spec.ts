@@ -665,6 +665,17 @@ describe('transformEffectstoRulesText', () => {
         );
     });
 
+    describe('Losing properties', () => {
+        it('displays rules for losing magical and ranged', () => {
+            const effect: Effect = {
+                type: EffectType.LOSE_MAGICAL_AND_RANGED,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `All opposing units' units lose magical/ranged`
+            );
+        });
+    });
+
     describe('Mill', () => {
         it('displays rules for milling all players', () => {
             const effect: Effect = {
@@ -697,6 +708,19 @@ describe('transformEffectstoRulesText', () => {
         expect(transformEffectToRulesText(effect)).toEqual(
             `Turn all units into a [Frog]`
         );
+    });
+
+    describe('Modifying attacks per turn', () => {
+        it('displays rules for setting attacks per turn', () => {
+            const effect: Effect = {
+                type: EffectType.MODIFY_ATTACKS_PER_TURN,
+                target: TargetTypes.ALL_UNITS,
+                strength: 1,
+            };
+            expect(transformEffectToRulesText(effect)).toEqual(
+                `Set all units to have 1 attack per turn`
+            );
+        });
     });
 
     describe('Ramp', () => {

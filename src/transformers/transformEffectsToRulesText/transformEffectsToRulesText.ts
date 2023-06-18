@@ -570,6 +570,9 @@ export const transformEffectToRulesText = (
                 } to your hand`;
             }
             case EffectType.LOSE_MAGICAL_AND_RANGED: {
+                return `${titleize(
+                    targetNamePossessive
+                )} units lose magical/ranged`;
             }
             case EffectType.MILL: {
                 return `Put ${strength} ${
@@ -581,7 +584,9 @@ export const transformEffectToRulesText = (
                 }`;
             }
             case EffectType.MODIFY_ATTACKS_PER_TURN: {
-                // TODO
+                return `Set ${targetName} to have ${strength} attack${
+                    strength === 1 ? '' : 's'
+                } per turn`;
             }
             case EffectType.POLYMORPH: {
                 return `Turn ${targetName} into a [${summonType.name}]`;
