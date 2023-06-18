@@ -998,12 +998,22 @@ describe('resolve effect', () => {
                 'Timmy'
             );
             expect(newBoard.players[0].hand).toHaveLength(0);
-            expect((newBoard.players[0].cemetery[0] as UnitCard).cost).toEqual(
-                UnitCards.ASSASSIN.cost
-            );
-            expect((newBoard.players[0].cemetery[1] as SpellCard).cost).toEqual(
-                SpellCards.A_GENTLE_GUST.cost
-            );
+            // cards are discarded in random order b/c of lodash's sampleSize, so we can't rely on order
+            // e.g. expeting newBoard.players[0].cemetery[0] to always be UnitCards.ASSASSIN
+            expect(
+                (
+                    newBoard.players[0].cemetery.find(
+                        (card) => card.name === UnitCards.ASSASSIN.name
+                    ) as UnitCard
+                ).cost
+            ).toEqual(UnitCards.ASSASSIN.cost);
+            expect(
+                (
+                    newBoard.players[0].cemetery.find(
+                        (card) => card.name === SpellCards.A_GENTLE_GUST.name
+                    ) as UnitCard
+                ).cost
+            ).toEqual(SpellCards.A_GENTLE_GUST.cost);
         });
 
         it('broadcasts what was discarded', () => {
