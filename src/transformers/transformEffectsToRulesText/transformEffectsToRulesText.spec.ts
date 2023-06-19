@@ -938,11 +938,11 @@ describe('transformEffectstoRulesText', () => {
             const effect: Effect = {
                 type: EffectType.TRANSFORM_RESOURCE,
                 strength: 1,
-                target: TargetTypes.SELF_PLAYER,
+                target: TargetTypes.OPPONENT,
                 secondaryCardName: 'Water',
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Turn 1 non-[Water] resource cards controlled by you into [Water] at random`
+                `For any opponent, turn 1 of their non-[Water] resource cards into [Water] at random`
             );
         });
 
@@ -954,7 +954,7 @@ describe('transformEffectstoRulesText', () => {
                 secondaryCardName: 'Water',
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Turn all [Bamboo] cards controlled by an opponent into [Water]`
+                `For each opponent, turn all of their [Bamboo] cards into [Water]`
             );
         });
     });

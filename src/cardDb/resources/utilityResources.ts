@@ -216,7 +216,7 @@ const TREACHEROUS_DESERT = makeAdvancedResourceCard({
     rarity: CardRarity.COMMON,
 });
 
-export const UTILITY_LANDS = {
+export const UTILITY_RESOURCES = {
     BAMBOO_FOOTBRIDGE,
     COASTAL_CASTLE,
     STARGAZERS_POINT,
