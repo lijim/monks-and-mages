@@ -24,7 +24,12 @@ import { transformEffectToRulesText } from '@/transformers/transformEffectsToRul
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
 import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
-import { getTotalAttackForUnit } from '@/transformers';
+import {
+    findCardByIdOnBoard,
+    getTotalAttackForUnit,
+    getTotalCostForCard,
+    grantPassiveEffectForUnit,
+} from '@/transformers';
 import { assertUnreachable } from '@/types/assertUnreachable';
 import { performEffectRequirement } from '../performEffectRequirement';
 import { LEGENDARY_LEADER_INCREMENTAL_TAX } from '@/constants/gameConstants';
@@ -72,9 +77,10 @@ export const resolveEffect = (
     // Determine targets to apply effects to
     let playerTargets: Player[];
     let unitTargets: { player: Player; unitCard: UnitCard }[] = [];
-    const sourceUnitCard = players
-        .flatMap((player) => player.units)
-        .find((card) => card.id === sourceId);
+    const effectSourceCard = findCardByIdOnBoard({
+        board: clonedBoard,
+        id: sourceId,
+    });
     const target = effect.target || getDefaultTargetForEffect(effect.type);
     let targetText;
 
@@ -378,6 +384,7 @@ export const resolveEffect = (
                     unit.hpBuff += effectStrength;
                 });
             });
+            processBoardToCemetery(clonedBoard, addSystemChat);
             return clonedBoard;
         }
         case EffectType.BUFF_TEAM_MAGIC: {
@@ -529,15 +536,19 @@ export const resolveEffect = (
                     }),
                     effectStrength
                 );
-                if (sourceUnitCard) {
-                    sourceUnitCard.attackBuff += resourcesToDestroy.length;
-                    sourceUnitCard.hpBuff += resourcesToDestroy.length;
+                if (
+                    effectSourceCard &&
+                    effectSourceCard.cardType === CardType.UNIT
+                ) {
+                    effectSourceCard.attackBuff += resourcesToDestroy.length;
+                    effectSourceCard.hpBuff += resourcesToDestroy.length;
                 }
                 player.resources = player.resources.filter(
                     (resource) =>
                         !resourcesToDestroy.find((r) => r === resource)
                 );
             });
+            processBoardToCemetery(clonedBoard, addSystemChat);
             return clonedBoard;
         }
         case EffectType.DESTROY_UNIT: {
@@ -735,21 +746,82 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.GAIN_ATTACK: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                effectSourceCard.attackBuff += effectStrength;
+            }
+            return clonedBoard;
+        }
+        case EffectType.GAIN_ATTACK_UNTIL: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                const attackBefore = getTotalAttackForUnit(effectSourceCard);
+                effectSourceCard.attackBuff = Math.max(
+                    0,
+                    effectStrength - attackBefore
+                );
+            }
+            return clonedBoard;
+        }
+        case EffectType.GAIN_MAGICAL_HAND_AND_BOARD: {
+            playerTargets.forEach((player) => {
+                [...player.hand, ...player.units].forEach((card) => {
+                    if (card.cardType === CardType.UNIT) {
+                        card.isMagical = true;
+                        card.isRanged = true;
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.GAIN_STATS: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                effectSourceCard.attackBuff += effectStrength;
+                effectSourceCard.hpBuff += effectStrength;
+            }
+            processBoardToCemetery(clonedBoard, addSystemChat);
+            return clonedBoard;
+        }
+        case EffectType.GAIN_STATS_AND_EFFECTS: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                effectSourceCard.attackBuff += effectStrength;
+                effectSourceCard.hpBuff += effectStrength;
+                passiveEffects.forEach((passiveEffect) => {
+                    grantPassiveEffectForUnit({
+                        unitCard: effectSourceCard,
+                        passiveEffect,
+                    });
+                });
+            }
+            processBoardToCemetery(clonedBoard, addSystemChat);
+            return clonedBoard;
+        }
+        case EffectType.GAIN_STATS_EQUAL_TO_COST: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                const totalCostForCard = getTotalCostForCard(effectSourceCard);
+                effectSourceCard.attackBuff += totalCostForCard;
+                effectSourceCard.hpBuff += totalCostForCard;
+            }
+            return clonedBoard;
+        }
         case EffectType.GRANT_PASSIVE_EFFECT: {
             unitTargets.forEach(({ unitCard }) => {
                 passiveEffects.forEach((passiveEffect) => {
-                    if (!unitCard.passiveEffects.includes(passiveEffect)) {
-                        unitCard.passiveEffects.push(passiveEffect);
-
-                        // handle adding attacks to units getting 'quick'
-                        if (
-                            passiveEffect === PassiveEffect.QUICK &&
-                            unitCard.isFresh
-                        ) {
-                            unitCard.numAttacksLeft = unitCard.numAttacks;
-                            unitCard.isFresh = false;
-                        }
-                    }
+                    grantPassiveEffectForUnit({ unitCard, passiveEffect });
                 });
             });
             return clonedBoard;

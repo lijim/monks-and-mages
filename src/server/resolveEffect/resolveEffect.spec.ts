@@ -1398,6 +1398,128 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Gain stats / effects', () => {
+        it('gains attack', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_ATTACK,
+                        sourceId: squire1.id,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(3);
+        });
+
+        it('gains attack until a threshold', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            squire1.oneTurnAttackBuff = -1;
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_ATTACK_UNTIL,
+                        sourceId: squire1.id,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(
+                3 - (UnitCards.SQUIRE.attack - 1)
+            );
+        });
+
+        it('gains magical for units in hand and on board', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            const squire2 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+            board.players[0].hand = [squire2];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_MAGICAL_HAND_AND_BOARD,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].isMagical).toEqual(true);
+            expect((newBoard.players[0].hand[0] as UnitCard).isRanged).toEqual(
+                true
+            );
+        });
+
+        it('gains stats', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_STATS,
+                        sourceId: squire1.id,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(3);
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(3);
+        });
+
+        it('gains stats and effects', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_STATS_AND_EFFECTS,
+                        sourceId: squire1.id,
+                        passiveEffects: [PassiveEffect.ETHEREAL],
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(3);
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(3);
+            expect(newBoard.players[0].units[0].passiveEffects).toEqual([
+                PassiveEffect.ETHEREAL,
+            ]);
+        });
+
+        it('gains stats equal to cost', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_STATS_EQUAL_TO_COST,
+                        sourceId: squire1.id,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(2);
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(2);
+        });
+    });
+
     describe('Grant effects', () => {
         it('grants quick', () => {
             const squire1 = makeUnitCard(UnitCards.SQUIRE);
