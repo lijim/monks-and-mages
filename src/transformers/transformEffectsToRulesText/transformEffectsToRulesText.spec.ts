@@ -684,7 +684,7 @@ describe('transformEffectstoRulesText', () => {
                 strength: 5,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Put 5 cards from each players' libraries into their graveyards`
+                `Put 5 cards from each players' libraries into their cemeteries`
             );
         });
 
@@ -695,7 +695,7 @@ describe('transformEffectstoRulesText', () => {
                 strength: 1,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Put 1 card from your library into your graveyard`
+                `Put 1 card from your library into your cemetery`
             );
         });
     });

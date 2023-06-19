@@ -1843,7 +1843,7 @@ describe('resolve effect', () => {
     });
 
     describe('Return from cemetery', () => {
-        it('returns from cemetery', () => {
+        it('returns specific cards from cemetery', () => {
             board.players[0].cemetery.push(makeCard(UnitCards.KNIGHT_TEMPLAR));
             const newBoard = resolveEffect(
                 board,
@@ -1858,6 +1858,72 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].hand).toHaveLength(
                 PlayerConstants.STARTING_HAND_SIZE + 1
+            );
+        });
+
+        it('returns spell cards from cemetery, but not the original spell', () => {
+            const originalSourceCard = makeCard(SpellCards.SUMMON_SHARKS);
+            board.players[0].cemetery.push(
+                makeCard(SpellCards.SUMMON_SHARKS),
+                originalSourceCard,
+                makeUnitCard(UnitCards.LANCER)
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RETURN_SPELLS_FROM_CEMETERY,
+                        strength: 2,
+                        // imagine that summon sharks was the card that caused us to return 2 spell cards
+                        sourceId: originalSourceCard.id,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 1
+            );
+        });
+
+        it('returns resource cards from cemetery', () => {
+            board.players[0].cemetery.push(
+                makeResourceCard(Resource.BAMBOO),
+                makeResourceCard(Resource.BAMBOO),
+                makeUnitCard(UnitCards.LANCER)
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RETURN_RESOURCES_FROM_CEMETERY,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 2
+            );
+        });
+
+        it('returns spell and resource cards from cemetery', () => {
+            board.players[0].cemetery.push(
+                makeResourceCard(Resource.BAMBOO),
+                makeResourceCard(Resource.BAMBOO),
+                makeCard(SpellCards.A_THOUSAND_WINDS)
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RETURN_SPELLS_AND_RESOURCES_FROM_CEMETERY,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 3
             );
         });
     });

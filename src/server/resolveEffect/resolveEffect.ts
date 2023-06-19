@@ -968,7 +968,7 @@ export const resolveEffect = (
                             effectStrength,
                             maxToReduceBy
                         );
-                        console.log(maxToReduceBy, effectStrength);
+
                         card.cost.Generic = Math.max(
                             0,
                             (card.cost.Generic || 0) - amountToReduceBy
@@ -1008,15 +1008,71 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.RETURN_RESOURCES_FROM_CEMETERY: {
-            // TODO
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.cemetery.filter(
+                    (card) =>
+                        card.id !== sourceId &&
+                        card.cardType === CardType.RESOURCE
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.cemetery = player.cemetery.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
             return clonedBoard;
         }
         case EffectType.RETURN_SPELLS_AND_RESOURCES_FROM_CEMETERY: {
-            // TODO
+            playerTargets.forEach((player) => {
+                const resourcesToExtractPopulation = player.cemetery.filter(
+                    (card) =>
+                        card.id !== sourceId &&
+                        card.cardType === CardType.RESOURCE
+                );
+                const resourcesToExtractSample = sampleSize(
+                    resourcesToExtractPopulation,
+                    effectStrength
+                );
+                const spellsToExtractPopulation = player.cemetery.filter(
+                    (card) =>
+                        card.id !== sourceId && card.cardType === CardType.SPELL
+                );
+                const spellsToExtractSample = sampleSize(
+                    spellsToExtractPopulation,
+                    effectStrength
+                );
+                const cardsToExtractSample = [
+                    ...spellsToExtractSample,
+                    ...resourcesToExtractSample,
+                ];
+                player.cemetery = player.cemetery.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
             return clonedBoard;
         }
         case EffectType.RETURN_SPELLS_FROM_CEMETERY: {
-            // TODO - make sure can't return itself
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.cemetery.filter(
+                    (card) =>
+                        card.id !== sourceId && card.cardType === CardType.SPELL
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.cemetery = player.cemetery.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
             return clonedBoard;
         }
         case EffectType.REVIVE: {

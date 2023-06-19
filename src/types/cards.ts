@@ -42,6 +42,9 @@ export interface ResourceCard extends CardBase {
 export type Effect = {
     cardName?: string;
     cost?: PartialRecord<Resource, number>;
+    // includesExtraRulesText can be things like "can't return itself, etc." that may
+    // need to be situationally added on
+    includesExtraRulesText?: boolean;
     passiveEffects?: PassiveEffect[];
     requirements?: EffectRequirement[];
     resourceType?: Resource;
