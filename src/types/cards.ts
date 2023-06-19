@@ -99,11 +99,12 @@ export interface UnitBase extends CardBase {
     name: string;
     // how much damage is inflicted per attack
     numAttacks: number;
+    // max HP
+    omitReminderText?: boolean;
     originalImagePage?: string;
     // all units except magic must attack soldiers first 🛡️
     passiveEffects: PassiveEffect[];
-    totalHp: number; // max HP
-    omitReminderText?: boolean;
+    totalHp: number;
 }
 
 /**
