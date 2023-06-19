@@ -35,7 +35,7 @@ import { Tokens, UnitCards } from '@/cardDb/units';
 import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
 import { Resource } from '@/types/resources';
 import { getTotalAttackForUnit } from '@/transformers';
-// import { assertUnreachable } from '@/types/assertUnreachable';
+import { assertUnreachable } from '@/types/assertUnreachable';
 
 type PerformEffectRequirementParams = {
     addSystemChat?: (message: string) => void;
@@ -289,6 +289,8 @@ export const resolveEffect = (
         passiveEffects,
         sourceId,
         requirements,
+        secondaryStrength,
+        resourceType,
     } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
@@ -514,9 +516,41 @@ export const resolveEffect = (
                 if (!unitCard.isMagical) return;
                 unitCard.hpBuff += effectStrength;
                 unitCard.attackBuff += effectStrength;
+                // give total attack a floor value of 0
+                // to make game easier to understand
+                if (unitCard.attackBuff < -unitCard.attack) {
+                    unitCard.attackBuff = -unitCard.attack;
+                }
             });
             // in case debuffing causes units to go to cemtery
             processBoardToCemetery(clonedBoard, addSystemChat);
+            return clonedBoard;
+        }
+        case EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE: {
+            let hasACardBeenBuffed = false;
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (card.cardType !== CardType.UNIT) return;
+                    if (card.passiveEffects.includes(PassiveEffect.STEADY)) {
+                        return;
+                    }
+                    const unit = card;
+                    const attackBuffBefore = unit.attackBuff;
+                    unit.attackBuff += effectStrength;
+                    // give total attack a floor value of 0
+                    // to make game easier to understand
+                    if (unit.attackBuff < -unit.attack) {
+                        unit.attackBuff = -unit.attack;
+                    }
+                    if (attackBuffBefore !== unit.attackBuff) {
+                        hasACardBeenBuffed = true;
+                    }
+                });
+            });
+            if (!hasACardBeenBuffed) {
+                activePlayer.health += secondaryStrength;
+            }
+            applyWinState(clonedBoard);
             return clonedBoard;
         }
         case EffectType.BUFF_HAND_NON_MAGIC_ATTACK: {
@@ -530,9 +564,6 @@ export const resolveEffect = (
                     if (!unit.isMagical) {
                         unit.attackBuff += effectStrength;
                     }
-                    if (unit.attackBuff < -unit.attack) {
-                        unit.attackBuff = -unit.attack;
-                    }
                 });
             });
             return clonedBoard;
@@ -545,9 +576,6 @@ export const resolveEffect = (
                     }
                     if (!unit.isMagical) {
                         unit.attackBuff += effectStrength;
-                    }
-                    if (unit.attackBuff < -unit.attack) {
-                        unit.attackBuff = -unit.attack;
                     }
                 });
             });
@@ -580,6 +608,21 @@ export const resolveEffect = (
             processBoardToCemetery(clonedBoard, addSystemChat);
             return clonedBoard;
         }
+        case EffectType.BUFF_TEAM_LEGENDARY_UNITS: {
+            playerTargets.forEach((player) => {
+                player.units.forEach((unit) => {
+                    if (
+                        unit.passiveEffects.includes(PassiveEffect.STEADY) ||
+                        !unit.isLegendary
+                    ) {
+                        return;
+                    }
+                    unit.attackBuff += effectStrength;
+                    unit.hpBuff += effectStrength;
+                });
+            });
+            return clonedBoard;
+        }
         case EffectType.BUFF_TEAM_MAGIC: {
             playerTargets.forEach((player) => {
                 player.units.forEach((unit) => {
@@ -589,11 +632,6 @@ export const resolveEffect = (
                     if (unit.isMagical) {
                         unit.attackBuff += effectStrength;
                     }
-                    // give total attack a floor value of 0
-                    // to make game easier to understand
-                    if (unit.attackBuff < -unit.attack) {
-                        unit.attackBuff = -unit.attack;
-                    }
                 });
             });
             return clonedBoard;
@@ -602,6 +640,35 @@ export const resolveEffect = (
             playerTargets.forEach((player) => {
                 player.hand.forEach((card) => {
                     if (card.cardType !== CardType.RESOURCE) {
+                        card.cost.Generic = Math.max(
+                            0,
+                            (card.cost.Generic || 0) + effectStrength
+                        );
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.CURSE_HAND_RESOURCE_TYPE: {
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (
+                        card.cardType !== CardType.RESOURCE &&
+                        card.cost[resourceType] > 0
+                    ) {
+                        card.cost.Generic = Math.max(
+                            0,
+                            (card.cost.Generic || 0) + effectStrength
+                        );
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.CURSE_HAND_SPELLS: {
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (card.cardType === CardType.SPELL) {
                         card.cost.Generic = Math.max(
                             0,
                             (card.cost.Generic || 0) + effectStrength
@@ -633,8 +700,32 @@ export const resolveEffect = (
             applyWinState(clonedBoard);
             return clonedBoard;
         }
+        case EffectType.DEAL_DAMAGE_TO_NON_SOLDIERS: {
+            if (unitTargets) {
+                unitTargets.forEach(({ unitCard }) => {
+                    if (
+                        unitCard.passiveEffects.includes(
+                            PassiveEffect.ETHEREAL
+                        ) ||
+                        unitCard.isSoldier
+                    ) {
+                        return;
+                    }
+                    unitCard.hp -= effectStrength;
+                });
+                processBoardToCemetery(clonedBoard, addSystemChat);
+            }
+
+            playerTargets.forEach((player) => {
+                player.health -= effectStrength;
+                if (player.health <= 0) {
+                    player.isAlive = false;
+                }
+            });
+            applyWinState(clonedBoard);
+            return clonedBoard;
+        }
         case EffectType.DESTROY_RESOURCE: {
-            const { resourceType } = effect;
             playerTargets.forEach((player) => {
                 const resourcesToDestroy = sampleSize(
                     player.resources.filter((resource) => {
@@ -652,7 +743,6 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.DESTROY_RESOURCE_TO_GAIN_STATS: {
-            const { resourceType } = effect;
             playerTargets.forEach((player) => {
                 const resourcesToDestroy = sampleSize(
                     player.resources.filter((resource) => {
@@ -862,7 +952,6 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.RAMP: {
-            const { resourceType } = effect;
             if (!resourceType) return clonedBoard;
             playerTargets.forEach((player) => {
                 for (let i = 0; i < Math.min(50, effectStrength); i += 1) {
@@ -874,7 +963,6 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.RAMP_FOR_TURN: {
-            const { resourceType } = effect;
             if (!resourceType) return clonedBoard;
             playerTargets.forEach((player) => {
                 player.resourcePool[resourceType] =
@@ -883,7 +971,6 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.RAMP_FROM_HAND: {
-            const { resourceType } = effect;
             if (!resourceType) return clonedBoard;
             playerTargets.forEach((player) => {
                 const cardsToExtractPopulation: ResourceCard[] = [];

@@ -249,6 +249,32 @@ describe('resolve effect', () => {
                 attackBuff: 0,
             });
         });
+
+        it('buffs attack of units on your hand with a failsafe life change', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            squire.passiveEffects = [PassiveEffect.STEADY];
+            board.players[0].hand = [squire];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE,
+                        strength: 2,
+                        secondaryStrength: 3,
+                        target: TargetTypes.SELF_PLAYER,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand[0]).toMatchObject({
+                attackBuff: 0,
+            });
+            expect(newBoard.players[0].health).toEqual(
+                PlayerConstants.STARTING_HEALTH + 3
+            );
+        });
     });
 
     describe('Bloom effect', () => {
@@ -369,7 +395,7 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].units[2].attackBuff).toEqual(0);
         });
 
-        it('does not debuff past 0 attack', () => {
+        it('can debuff below 0 attack', () => {
             const squire = makeCard(UnitCards.SQUIRE);
             const cannon = makeCard(UnitCards.CANNON);
             const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
@@ -387,7 +413,7 @@ describe('resolve effect', () => {
                 'Timmy'
             );
 
-            expect(newBoard.players[1].units[0].attackBuff).toEqual(-2);
+            expect(newBoard.players[1].units[0].attackBuff).toEqual(-3);
             expect(newBoard.players[1].units[1].attackBuff).toEqual(-3);
             expect(newBoard.players[1].units[2].attackBuff).toEqual(0);
         });
@@ -408,6 +434,29 @@ describe('resolve effect', () => {
 
             expect(newBoard.players[0].units[0].hpBuff).toEqual(2);
             expect(newBoard.players[0].units[1].hpBuff).toEqual(2);
+            expect(newBoard.players[0].units[2].hpBuff).toEqual(2);
+        });
+
+        it('buffs attack/hp of legendary units on your board', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const cannon = makeCard(UnitCards.CANNON);
+            const joanOfArc = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            board.players[0].units = [squire, cannon, joanOfArc];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_TEAM_LEGENDARY_UNITS,
+                        strength: 2,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(0);
+            expect(newBoard.players[0].units[1].hpBuff).toEqual(0);
+            expect(newBoard.players[0].units[2].attackBuff).toEqual(2);
             expect(newBoard.players[0].units[2].hpBuff).toEqual(2);
         });
 
@@ -513,6 +562,59 @@ describe('resolve effect', () => {
             );
             expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
                 0
+            );
+        });
+
+        it('increases costs for cards costing a specific resource type', () => {
+            board.players[1].hand = [
+                makeCard(UnitCards.SQUIRE),
+                makeCard(UnitCards.FIRE_MAGE),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.CURSE_HAND_RESOURCE_TYPE,
+                        resourceType: Resource.FIRE,
+                        strength: 2,
+                        target: TargetTypes.OPPONENT,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect((newBoard.players[1].hand[0] as UnitCard).cost.Generic).toBe(
+                UnitCards.SQUIRE.cost.Generic
+            );
+            expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
+                UnitCards.FIRE_MAGE.cost.Generic + 2
+            );
+        });
+
+        it('increases costs for spells', () => {
+            board.players[1].hand = [
+                makeCard(UnitCards.SQUIRE),
+                makeCard(SpellCards.EMBER_SPEAR),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.CURSE_HAND_SPELLS,
+                        strength: 2,
+                        target: TargetTypes.OPPONENT,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect((newBoard.players[1].hand[0] as UnitCard).cost.Generic).toBe(
+                UnitCards.SQUIRE.cost.Generic
+            );
+            expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
+                (SpellCards.EMBER_SPEAR.cost.Generic || 0) + 2
             );
         });
     });
@@ -957,6 +1059,31 @@ describe('resolve effect', () => {
                 'Timmy'
             );
             expect(newBoard.players[1].isAlive).toBe(false);
+        });
+
+        it('deals damage to non-soldiers', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const magiciansApprentice = makeCard(
+                UnitCards.MAGICIANS_APPRENTICE
+            );
+            board.players[0].units = [squire, magiciansApprentice];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE_TO_NON_SOLDIERS,
+                        strength: 2,
+                        target: TargetTypes.ALL_UNITS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].hp).toEqual(
+                UnitCards.SQUIRE.hp
+            );
+            expect(newBoard.players[0].cemetery[0].name).toEqual(
+                UnitCards.MAGICIANS_APPRENTICE.name
+            );
         });
     });
 

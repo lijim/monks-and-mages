@@ -14,7 +14,7 @@ import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
 import { PlayerConstants } from '@/constants/gameConstants';
-import { getDeckListFromSkeleton } from '@/transformers';
+import { getDeckListFromSkeleton, getTotalAttackForUnit } from '@/transformers';
 import { makeCard, makeNewPlayer } from '@/factories';
 import { SpellCards } from '@/cardDb/spells';
 
@@ -276,15 +276,6 @@ export function passTurn(board: Board): Board {
     return board;
 }
 
-const getTotalAttack = (card: UnitCard) => {
-    return (
-        card.attack +
-        card.attackBuff +
-        card.oneCycleAttackBuff +
-        card.oneTurnAttackBuff
-    );
-};
-
 type ApplyGameActionParams = {
     addChatMessage?: (chatMessage: string) => void;
     board: Board;
@@ -541,7 +532,7 @@ export const applyGameAction = ({
             if (!attacker?.numAttacksLeft) {
                 return clonedBoard;
             }
-            const attackTotal = Math.max(0, getTotalAttack(attacker));
+            const attackTotal = Math.max(0, getTotalAttackForUnit(attacker));
 
             let attackEmoji = '';
             if (attacker.isMagical) attackEmoji = '🪄';
@@ -567,12 +558,12 @@ export const applyGameAction = ({
                     defender.passiveEffects.some(
                         (passiveEffect) =>
                             passiveEffect === PassiveEffect.POISONED
-                    ) && getTotalAttack(defender) > 0;
+                    ) && getTotalAttackForUnit(defender) > 0;
                 const attackerHasPoisonous =
                     attacker.passiveEffects.some(
                         (passiveEffect) =>
                             passiveEffect === PassiveEffect.POISONED
-                    ) && getTotalAttack(attacker) > 0;
+                    ) && getTotalAttackForUnit(attacker) > 0;
 
                 // Soldiers prevent attacks vs. non-soldiers (unless magical)
                 const defendingPlayerHasSoldier = defendingPlayer.units.some(
@@ -591,7 +582,7 @@ export const applyGameAction = ({
                 const { hp } = attacker;
                 const { hp: defenderHp } = defender;
                 const defenderAttackTotal = Math.max(
-                    getTotalAttack(defender),
+                    getTotalAttackForUnit(defender),
                     0
                 );
                 if (
