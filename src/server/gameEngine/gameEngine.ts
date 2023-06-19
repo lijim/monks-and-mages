@@ -13,7 +13,10 @@ import {
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { payForCard } from '@/transformers/payForCard';
 import { PassiveEffect } from '@/types/effects';
-import { PlayerConstants } from '@/constants/gameConstants';
+import {
+    LEGENDARY_LEADER_INCREMENTAL_TAX,
+    PlayerConstants,
+} from '@/constants/gameConstants';
 import { getDeckListFromSkeleton, getTotalAttackForUnit } from '@/transformers';
 import { makeCard, makeNewPlayer } from '@/factories';
 import { SpellCards } from '@/cardDb/spells';
@@ -469,7 +472,8 @@ export const applyGameAction = ({
             );
 
             // bump legendary leader costs
-            activePlayer.legendaryLeaderExtraCost += 2;
+            activePlayer.legendaryLeaderExtraCost +=
+                LEGENDARY_LEADER_INCREMENTAL_TAX;
             activePlayer.legendaryLeader.cost.Generic =
                 (activePlayer.legendaryLeader.originalAttributes.cost.Generic ||
                     0) + activePlayer.legendaryLeaderExtraCost;

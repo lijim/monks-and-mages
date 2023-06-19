@@ -17,4 +17,6 @@ export const DRAFT_PACKS_BY_PLAYER_COUNT: Record<number, number> = {
 export const DRAFT_PILE_QUANTITY = 4;
 export const DRAFT_PILE_STARTING_SIZE = 3;
 
+export const LEGENDARY_LEADER_INCREMENTAL_TAX = 2;
+
 export const SEALED_PACK_QUANTITY = 7;

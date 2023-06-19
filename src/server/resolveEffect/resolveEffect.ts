@@ -25,8 +25,9 @@ import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
 import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
 import { getTotalAttackForUnit } from '@/transformers';
-// import { assertUnreachable } from '@/types/assertUnreachable';
+import { assertUnreachable } from '@/types/assertUnreachable';
 import { performEffectRequirement } from '../performEffectRequirement';
+import { LEGENDARY_LEADER_INCREMENTAL_TAX } from '@/constants/gameConstants';
 
 export const resolveEffect = (
     board: Board,
@@ -478,6 +479,27 @@ export const resolveEffect = (
             });
             applyWinState(clonedBoard);
             return clonedBoard;
+        }
+        case EffectType.DEPLOY_LEGENDARY_LEADER: {
+            playerTargets.forEach((player) => {
+                const { legendaryLeader } = player;
+
+                if (player.isLegendaryLeaderDeployed || !legendaryLeader) {
+                    return;
+                }
+                const legendaryLeaderInstance = makeCard(legendaryLeader);
+                legendaryLeaderInstance.isLegendaryLeader = true;
+
+                // deploy the card
+                player.units.push(legendaryLeaderInstance);
+                player.legendaryLeaderExtraCost +=
+                    LEGENDARY_LEADER_INCREMENTAL_TAX;
+                player.legendaryLeader.cost.Generic =
+                    (player.legendaryLeader.originalAttributes.cost.Generic ||
+                        0) + player.legendaryLeaderExtraCost;
+
+                player.isLegendaryLeaderDeployed = true;
+            });
         }
         case EffectType.DESTROY_RESOURCE: {
             playerTargets.forEach((player) => {

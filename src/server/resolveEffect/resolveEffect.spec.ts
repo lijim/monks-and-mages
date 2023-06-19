@@ -1,5 +1,8 @@
 import cloneDeep from 'lodash.clonedeep';
-import { PlayerConstants } from '@/constants/gameConstants';
+import {
+    LEGENDARY_LEADER_INCREMENTAL_TAX,
+    PlayerConstants,
+} from '@/constants/gameConstants';
 import { makeNewBoard } from '@/factories/board';
 import { Board, GameState } from '@/types/board';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
@@ -615,6 +618,36 @@ describe('resolve effect', () => {
             );
             expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
                 (SpellCards.EMBER_SPEAR.cost.Generic || 0) + 2
+            );
+        });
+    });
+
+    describe('Deploy legendary leaders', () => {
+        it('deploys legendary leaders for targetted players', () => {
+            board.players[0].legendaryLeader = makeUnitCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            board.players[1].legendaryLeader = makeUnitCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEPLOY_LEGENDARY_LEADER,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].isLegendaryLeaderDeployed).toBe(true);
+            expect(newBoard.players[0].units[0].name).toBe(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO.name
+            );
+            expect(newBoard.players[0].legendaryLeader.cost.Generic).toBe(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO.cost.Generic +
+                    LEGENDARY_LEADER_INCREMENTAL_TAX
             );
         });
     });
