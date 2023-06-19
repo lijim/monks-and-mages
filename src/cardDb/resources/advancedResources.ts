@@ -1,7 +1,7 @@
 import { makeAdvancedResourceCard } from '@/factories/cards';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
-import { UTILITY_LANDS } from './utilityLands';
+import { UTILITY_RESOURCES } from './utilityResources';
 import { CardRarity } from '@/types/cards';
 
 // Duals - self ping duals
@@ -418,6 +418,6 @@ export const AdvancedResourceCards = {
     CITY_CANALS,
     PREFECTURE_CAPITAL,
     // Utility - mono
-    ...UTILITY_LANDS,
+    ...UTILITY_RESOURCES,
 };
 export { makeAdvancedResourceCard } from '@/factories/cards';
