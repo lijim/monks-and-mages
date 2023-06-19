@@ -1280,6 +1280,78 @@ describe('resolve effect', () => {
                 PlayerConstants.STARTING_HAND_SIZE + 3
             );
         });
+
+        it('extracts soldier cards from a deck', () => {
+            board.players[0].deck = [
+                makeUnitCard(UnitCards.SQUIRE),
+                makeUnitCard(UnitCards.SQUIRE),
+                makeUnitCard(UnitCards.SQUIRE),
+            ];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.EXTRACT_SOLDIER_CARDS,
+                        strength: 4,
+                        target: TargetTypes.SELF_PLAYER,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 3
+            );
+        });
+
+        it('extracts spell cards from a deck', () => {
+            board.players[0].deck = [
+                makeCard(SpellCards.EMBER_SPEAR),
+                makeCard(SpellCards.EMBER_SPEAR),
+            ];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.EXTRACT_SPELL_CARDS,
+                        strength: 1,
+                        target: TargetTypes.SELF_PLAYER,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 1
+            );
+        });
+
+        it('extracts unit cards from a deck and sets their costs', () => {
+            board.players[0].deck = [
+                makeCard(SpellCards.EMBER_SPEAR),
+                makeCard(SpellCards.EMBER_SPEAR),
+                makeUnitCard(UnitCards.SQUIRE),
+                makeUnitCard(UnitCards.SQUIRE),
+            ];
+            board.players[0].hand = [];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.EXTRACT_UNIT_AND_SET_COST,
+                        strength: 2,
+                        target: TargetTypes.SELF_PLAYER,
+                        cost: { [Resource.BAMBOO]: 2 },
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(2);
+            expect((newBoard.players[0].hand[0] as UnitCard).cost).toEqual({
+                [Resource.BAMBOO]: 2,
+            });
+        });
     });
 
     describe('Flicker', () => {

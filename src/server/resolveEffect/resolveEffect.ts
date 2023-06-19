@@ -47,6 +47,7 @@ export const resolveEffect = (
         requirements,
         secondaryStrength,
         resourceType,
+        cost,
     } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
@@ -662,6 +663,61 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.EXTRACT_SOLDIER_CARDS: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.deck.filter(
+                    (card) => card.cardType === CardType.UNIT && card.isSoldier
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.deck = player.deck.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
+        case EffectType.EXTRACT_SPELL_CARDS: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.deck.filter(
+                    (card) => card.cardType === CardType.SPELL
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.deck = player.deck.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
+        case EffectType.EXTRACT_UNIT_AND_SET_COST: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.deck.filter(
+                    (card) => card.cardType === CardType.UNIT
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                cardsToExtractSample.forEach((card) => {
+                    (card as UnitCard).cost = cost;
+                });
+                player.deck = player.deck.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
+
         case EffectType.FLICKER: {
             unitTargets.forEach(({ unitCard }) => {
                 resetUnitCard(unitCard);
