@@ -14,5 +14,6 @@ export * from './isCardLegendary';
 export * from './isDeckValidForFomat';
 export * from './modifyCardForTooltip';
 export * from './payForCard';
+export * from './recalculateLegendaryLeaderCost';
 export * from './splitDeckListToPiles';
 export * from './transformEffectsToRulesText';

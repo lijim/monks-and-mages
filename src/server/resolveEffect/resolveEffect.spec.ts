@@ -1817,6 +1817,31 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Reduce legendary leader costs', () => {
+        it('reduces legendary leader costs but below zero generic cost', () => {
+            board.players[0].legendaryLeader = makeUnitCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            board.players[1].legendaryLeader = makeUnitCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.REDUCE_LEGENDARY_LEADER_COST,
+                        strength: 100,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].legendaryLeader.cost.Generic).toBe(0);
+            expect(newBoard.players[1].legendaryLeaderExtraCost).toBe(-5);
+        });
+    });
+
     describe('Return from cemetery', () => {
         it('returns from cemetery', () => {
             board.players[0].cemetery.push(makeCard(UnitCards.KNIGHT_TEMPLAR));

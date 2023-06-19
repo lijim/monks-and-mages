@@ -30,6 +30,7 @@ import {
     getTotalAttackForUnit,
     getTotalCostForCard,
     grantPassiveEffectForUnit,
+    recalculateLegendaryLeaderCost,
 } from '@/transformers';
 import { assertUnreachable } from '@/types/assertUnreachable';
 import { performEffectRequirement } from '../performEffectRequirement';
@@ -503,9 +504,7 @@ export const resolveEffect = (
                 player.units.push(legendaryLeaderInstance);
                 player.legendaryLeaderExtraCost +=
                     LEGENDARY_LEADER_INCREMENTAL_TAX;
-                player.legendaryLeader.cost.Generic =
-                    (player.legendaryLeader.originalAttributes.cost.Generic ||
-                        0) + player.legendaryLeaderExtraCost;
+                recalculateLegendaryLeaderCost(player);
 
                 player.isLegendaryLeaderDeployed = true;
             });
@@ -980,7 +979,15 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.REDUCE_LEGENDARY_LEADER_COST: {
-            // TODO
+            playerTargets.forEach((player) => {
+                // reduce extra costs but not to exceed zero
+                player.legendaryLeaderExtraCost -= effectStrength;
+                const genericCost = player.legendaryLeader.cost.Generic || 0;
+                if (player.legendaryLeaderExtraCost < -genericCost) {
+                    player.legendaryLeaderExtraCost = -genericCost;
+                }
+                recalculateLegendaryLeaderCost(player);
+            });
             return clonedBoard;
         }
         case EffectType.RETURN_FROM_CEMETERY: {
