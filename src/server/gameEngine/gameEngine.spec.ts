@@ -1259,6 +1259,24 @@ describe('Game Action', () => {
                 expect(newBoardState.players[0].units[0].hp).toEqual(1);
             });
         });
+
+        describe('Snow Blinded', () => {
+            it('disallows player attcks', () => {
+                const attacker = makeCard(UnitCards.BOUNTY_COLLECTOR);
+                attacker.passiveEffects.push(PassiveEffect.SNOW_BLINDED);
+                board.players[0].units = [attacker];
+                const newBoardState = applyGameAction({
+                    board,
+                    gameAction: {
+                        type: GameActionTypes.PERFORM_ATTACK,
+                        cardId: attacker.id,
+                        playerTarget: 'Tommy',
+                    },
+                    playerName: 'Timmy',
+                });
+                expect(newBoardState).toEqual(board);
+            });
+        });
     });
 
     describe('Draft mode', () => {

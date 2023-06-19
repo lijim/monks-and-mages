@@ -891,6 +891,35 @@ const RIVER_WANDERER: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const WINTER_SPRITE: UnitCard = makeCard({
+    artistName: 'Artie Navarre',
+    artistUrl: 'https://pixabay.com/users/artie_navarre-66276/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/narcissus-ghost-reflection-woman-6754880/',
+    name: 'Winter Sprite',
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/10/30/16/27/narcissus-6754880_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.GRANT_PASSIVE_EFFECT,
+            target: TargetTypes.OPPOSING_UNIT,
+            passiveEffects: [PassiveEffect.SNOW_BLINDED],
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const TUNDRA_FROST_PACK: UnitCard = makeCard({
     artistName: '0fjd125gk87',
     artistUrl: 'https://pixabay.com/users/0fjd125gk87-51581/',
@@ -1254,6 +1283,7 @@ export const MISC_UNITS = {
     SNOW_LION,
     HUNGRY_GOAT,
     RIVER_WANDERER,
+    WINTER_SPRITE,
     TUNDRA_FROST_PACK,
     CURIOUS_CATFISH,
     ALGAE_HARVESTER,

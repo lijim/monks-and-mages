@@ -207,7 +207,7 @@ export enum PassiveEffect {
     HEARTY = 'Hearty (Rather than going to cemetery, lose hearty and go to 1 hp)',
     POISONED = 'Poisonous (deals lethal damage)', // deals lethal dmg to enemy units
     QUICK = 'Quick (can attack right away)',
-    SNOW_BLINDED = 'Snow Blinded (Only able to attack players)',
+    SNOW_BLINDED = `Snow Blinded (Can't attack players)`,
     // no summoning sickness
     STEADY = "Steady (this unit's stats cannot be modified)",
 }

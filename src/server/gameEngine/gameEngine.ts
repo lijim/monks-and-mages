@@ -538,6 +538,13 @@ export const applyGameAction = ({
             if (!attacker?.numAttacksLeft) {
                 return clonedBoard;
             }
+            if (
+                attacker.passiveEffects.includes(PassiveEffect.SNOW_BLINDED) &&
+                playerTarget
+            ) {
+                // Snow blinded units can't attack players
+                return clonedBoard;
+            }
             const attackTotal = Math.max(0, getTotalAttackForUnit(attacker));
 
             let attackEmoji = '';
