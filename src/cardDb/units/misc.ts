@@ -102,7 +102,7 @@ const THE_MAD_HATTER_AND_FRIENDS: UnitCard = makeCard({
     isSoldier: false,
     isLegendary: true,
     passiveEffects: [],
-    rarity: CardRarity.COMMON,
+    rarity: CardRarity.RARE,
 });
 
 const ALERT_FELINE: UnitCard = makeCard({
@@ -383,7 +383,7 @@ const GURU_RIPONCHE: UnitCard = makeCard({
     isSoldier: false,
     isLegendary: true,
     passiveEffects: [],
-    rarity: CardRarity.COMMON,
+    rarity: CardRarity.RARE,
 });
 
 const ENERGY_ENHANCER: UnitCard = makeCard({
