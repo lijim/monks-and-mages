@@ -1164,7 +1164,43 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.SWAP_CARDS: {
-            // TODO
+            // This effect presumes another player
+            if (
+                !playerTargets?.length ||
+                playerTargets[0].name === activePlayer.name
+            ) {
+                return clonedBoard;
+            }
+            const playerToSwapWith = playerTargets[0];
+            const numCardsToSwap = Math.min(
+                playerToSwapWith.hand.length,
+                activePlayer.hand.length,
+                effectStrength
+            );
+            const cardsToSwapFromOtherPlayer = sampleSize(
+                playerToSwapWith.hand,
+                numCardsToSwap
+            );
+
+            const cardsToSwapFromSelf = sampleSize(
+                activePlayer.hand,
+                numCardsToSwap
+            );
+            const cardsRetainedBySelf = activePlayer.hand.filter(
+                (card) => !cardsToSwapFromSelf.includes(card)
+            );
+            const cardsRetainedByOtherPlayer = playerToSwapWith.hand.filter(
+                (card) => !cardsToSwapFromOtherPlayer.includes(card)
+            );
+
+            activePlayer.hand = [
+                ...cardsRetainedBySelf,
+                ...cardsToSwapFromOtherPlayer,
+            ];
+            playerToSwapWith.hand = [
+                ...cardsRetainedByOtherPlayer,
+                ...cardsToSwapFromSelf,
+            ];
             return clonedBoard;
         }
         case EffectType.TRANSMUTE: {

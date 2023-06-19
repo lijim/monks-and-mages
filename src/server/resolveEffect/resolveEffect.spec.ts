@@ -2061,6 +2061,34 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Swapping cards in hand', () => {
+        it('swaps cards with another player, but not more than they have', () => {
+            board.players[0].hand = [makeUnitCard(UnitCards.CANNON)];
+            board.players[1].hand = [
+                makeUnitCard(UnitCards.FIRE_MAGE),
+                makeUnitCard(UnitCards.BOUNTY_COLLECTOR),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.SWAP_CARDS,
+                        strength: 2,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+            expect(
+                newBoard.players[1].hand.find(
+                    (card) => card.name === UnitCards.CANNON.name
+                )
+            ).toBeTruthy();
+            expect(newBoard.players[0].hand).toHaveLength(1);
+            expect(newBoard.players[1].hand).toHaveLength(2);
+        });
+    });
+
     describe('Transmute', () => {
         it('turns one card into another', () => {
             board.players[0].hand = [makeCard(UnitCards.SQUIRE)];
