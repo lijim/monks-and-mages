@@ -1113,8 +1113,8 @@ export const resolveEffect = (
                 player.deck = shuffle(
                     player.deck.concat(cardsToShuffleBackIntoDeck)
                 );
-                return clonedBoard;
             });
+            return clonedBoard;
         }
         case EffectType.SHUFFLE_FROM_HAND: {
             if (!playerTargets?.length) return clonedBoard;
