@@ -1203,6 +1203,44 @@ export const resolveEffect = (
             ];
             return clonedBoard;
         }
+        case EffectType.TRANSFORM_RESOURCE: {
+            let cardToMake: UnitCard | SpellCard | ResourceCard;
+            const cardPool = ALL_CARDS_DICTIONARY;
+
+            Object.values(cardPool).forEach((card) => {
+                if (card.name === secondaryCardName) {
+                    cardToMake = card;
+                }
+            });
+
+            if (!cardToMake) return clonedBoard;
+
+            playerTargets.forEach((player) => {
+                let cardsToSample: ResourceCard[] = [];
+                if (cardName) {
+                    cardsToSample = player.resources.filter(
+                        (card) => card.name === cardName
+                    );
+                } else {
+                    cardsToSample = player.resources.filter(
+                        (card) => card.name !== secondaryCardName
+                    );
+                }
+
+                const cardsToReplace = sampleSize(
+                    cardsToSample,
+                    effectStrength || cardsToSample.length
+                );
+                player.resources.forEach((resource, index) => {
+                    if (cardsToReplace.includes(resource)) {
+                        player.resources[index] = makeCard(
+                            cardToMake
+                        ) as ResourceCard;
+                    }
+                });
+            });
+            return clonedBoard;
+        }
         case EffectType.TRANSMUTE: {
             let cardToMake: UnitCard | SpellCard | ResourceCard;
             const cardPool = ALL_CARDS_DICTIONARY;
@@ -1223,20 +1261,13 @@ export const resolveEffect = (
                     cardsToSample,
                     effectStrength || cardsToSample.length
                 );
-                for (
-                    let handIndex = 0;
-                    handIndex < player.hand.length;
-                    handIndex += 1
-                ) {
-                    if (cardsToReplace.includes(player.hand[handIndex])) {
-                        player.hand[handIndex] = makeCard(cardToMake);
+
+                player.hand.forEach((card, index) => {
+                    if (cardsToReplace.includes(card)) {
+                        player.hand[index] = makeCard(cardToMake);
                     }
-                }
+                });
             });
-            return clonedBoard;
-        }
-        case EffectType.TRANSFORM_RESOURCE: {
-            // TODO
             return clonedBoard;
         }
         case EffectType.TUCK: {

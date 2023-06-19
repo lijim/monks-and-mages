@@ -2089,6 +2089,55 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Transform resources', () => {
+        it('transforms non-water resources into water', () => {
+            board.players[0].resources = [
+                makeResourceCard(Resource.CRYSTAL),
+                makeResourceCard(Resource.WATER),
+                makeResourceCard(Resource.FIRE),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.TRANSFORM_RESOURCE,
+                        strength: 1,
+                        secondaryCardName: 'Water',
+                    },
+                },
+                'Timmy'
+            );
+            expect(
+                newBoard.players[0].resources.filter(
+                    (resource) => resource.name === Resource.WATER
+                )
+            ).toHaveLength(2);
+        });
+
+        it('transforms water resources into treacherous deserts', () => {
+            board.players[0].resources = [
+                makeResourceCard(Resource.CRYSTAL),
+                makeResourceCard(Resource.WATER),
+                makeResourceCard(Resource.FIRE),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.TRANSFORM_RESOURCE,
+                        strength: 1,
+                        cardName: 'Water',
+                        secondaryCardName: 'Treacherous Desert',
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].resources[1].name).toBe(
+                'Treacherous Desert'
+            );
+        });
+    });
+
     describe('Transmute', () => {
         it('turns one card into another', () => {
             board.players[0].hand = [makeCard(UnitCards.SQUIRE)];

@@ -12,6 +12,7 @@ export const findCardByIdOnBoard = ({ board, id }: Params) => {
             ...player.hand,
             ...player.deck,
             ...player.units,
+            ...player.resources,
         ])
         .find((card) => card.id === id);
 };
