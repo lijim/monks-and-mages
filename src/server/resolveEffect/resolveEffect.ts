@@ -28,6 +28,7 @@ import { getTotalAttackForUnit } from '@/transformers';
 import { assertUnreachable } from '@/types/assertUnreachable';
 import { performEffectRequirement } from '../performEffectRequirement';
 import { LEGENDARY_LEADER_INCREMENTAL_TAX } from '@/constants/gameConstants';
+import { max } from 'lodash';
 
 export const resolveEffect = (
     board: Board,
@@ -612,6 +613,27 @@ export const resolveEffect = (
                 const cardsToDraw = Math.max(
                     0,
                     effectStrength - player.hand.length
+                );
+                const { hand, deck } = player;
+                if (cardsToDraw > deck.length) {
+                    player.isAlive = false;
+                }
+                if (cardsToDraw)
+                    player.hand = hand.concat(deck.splice(-cardsToDraw));
+            });
+            applyWinState(clonedBoard);
+            return clonedBoard;
+        }
+        case EffectType.DRAW_UNTIL_MATCHING_OPPONENTS: {
+            const maxAmongstOpponents = max(
+                otherPlayers
+                    .filter((player) => player.isAlive)
+                    .map((player) => player.hand.length)
+            );
+            playerTargets.forEach((player) => {
+                const cardsToDraw = Math.max(
+                    0,
+                    maxAmongstOpponents - player.hand.length
                 );
                 const { hand, deck } = player;
                 if (cardsToDraw > deck.length) {

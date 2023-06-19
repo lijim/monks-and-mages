@@ -946,6 +946,47 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Draw until matching the most amongst opponents', () => {
+        it('makes the player draw cards to match the most amongst opponents', () => {
+            board.players[0].hand = [];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DRAW_UNTIL_MATCHING_OPPONENTS,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].isAlive).toEqual(true);
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE
+            );
+        });
+
+        it('makes the player draw out of cards and lose', () => {
+            board.players[0].hand = [];
+            board.players[0].deck = [];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DRAW_UNTIL_MATCHING_OPPONENTS,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].isAlive).toEqual(false);
+            expect(newBoard.gameState).toEqual(GameState.WIN);
+        });
+    });
+
     describe('Deal Damage', () => {
         it('passes the turn to the next player if dealing lethal to self', () => {
             const boardWith4Players = makeNewBoard({
