@@ -103,6 +103,7 @@ export interface UnitBase extends CardBase {
     // all units except magic must attack soldiers first 🛡️
     passiveEffects: PassiveEffect[];
     totalHp: number; // max HP
+    omitReminderText?: boolean;
 }
 
 /**

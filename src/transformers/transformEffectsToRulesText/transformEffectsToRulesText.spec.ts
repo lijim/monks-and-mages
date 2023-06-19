@@ -202,10 +202,10 @@ describe('transformEffectstoRulesText', () => {
                 type: EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE,
                 target: TargetTypes.ALL_OPPONENTS,
                 strength: -3,
-                secondaryStrength: 3,
+                secondaryStrength: -3,
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Decrease attack of units in all opponents' hand by 3. If no units are changed this way, gain 3 life`
+                `Decrease attack of units in all opponents' hand by 3. If they have no cards afected this way, they lose 3 life`
             );
         });
 
@@ -605,7 +605,7 @@ describe('transformEffectstoRulesText', () => {
                 ],
             };
             expect(transformEffectToRulesText(effect)).toEqual(
-                `Gain 3 attack/HP, [Hearty (Rather than going to cemetery, lose hearty and go to 1 hp)], and [Snow Blinded (Only able to attack players)]`
+                `Gain 3 attack/HP, Hearty, and Snow Blinded`
             );
         });
 

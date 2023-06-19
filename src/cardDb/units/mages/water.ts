@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { CardRarity, UnitCard } from '@/types/cards';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
@@ -24,6 +24,42 @@ const GIANT_JELLY: UnitCard = makeCard({
     isSoldier: false,
     passiveEffects: [],
     rarity: CardRarity.COMMON,
+});
+
+const AITHOUSA: UnitCard = makeCard({
+    artistName: 'Arthur Rackham',
+    artistUrl: 'https://pixabay.com/users/prawny-162579/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/vintage-arthur-rackham-victorian-1722361/',
+    name: 'Aithousa',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/10/07/18/43/vintage-1722361_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.GAIN_STATS_AND_EFFECTS,
+            strength: 2,
+            passiveEffects: [PassiveEffect.ETHEREAL],
+            requirements: [
+                {
+                    type: EffectRequirementsType.ARE_AT_LIFE_AT_OR_ABOVE_THRESHOLD,
+                    strength: 22,
+                },
+            ],
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    omitReminderText: true,
+    rarity: CardRarity.RARE,
 });
 
 const FROST_WYRM: UnitCard = makeCard({
@@ -615,6 +651,7 @@ const PENELOPE_THE_TORTOISE: UnitCard = makeCard({
 });
 
 export const WATER_MAGES = {
+    AITHOUSA,
     GIANT_JELLY,
     FROST_WYRM,
     MEDITATION_EXPERT,
