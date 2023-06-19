@@ -17,6 +17,7 @@ import {
     Resource,
 } from '@/types/resources';
 import { joinPhrases } from '../joinPhrases/joinPhrases';
+import { assertUnreachable } from '@/types/assertUnreachable';
 
 const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.ALL_OPPONENTS]: 'all opponents',
@@ -258,6 +259,7 @@ export const transformEffectToRulesText = (
         type,
         passiveEffects = [],
         cost,
+        includesExtraRulesText = false,
     } = effect;
     const targetOrDefault = target || getDefaultTargetForEffect(type);
     const targetName = TARGET_TYPES_TO_RULES_TEXT[targetOrDefault];
@@ -583,7 +585,7 @@ export const transformEffectToRulesText = (
                 } from ${targetNamePossessive.replace('all', 'each')} ${
                     isTargetTypePlural(target) ? 'libraries' : 'library'
                 } into ${controllerPossessiveText} ${
-                    isTargetTypePlural(target) ? 'graveyards' : 'graveyard'
+                    isTargetTypePlural(target) ? 'cemeteries' : 'cemetery'
                 }`;
             }
             case EffectType.MODIFY_ATTACKS_PER_TURN: {
@@ -629,7 +631,11 @@ export const transformEffectToRulesText = (
                 return `Return ${strength} resource card${pluralizationEffectStrength} and ${strength} spell card${pluralizationEffectStrength} at random from your cemetery`;
             }
             case EffectType.RETURN_SPELLS_FROM_CEMETERY: {
-                return `Return ${strength} spell card${pluralizationEffectStrength} at random from your cemetery`;
+                return `Return ${strength} spell card${pluralizationEffectStrength} at random from your cemetery${
+                    includesExtraRulesText
+                        ? '.  This card cannot return itself from cemetery'
+                        : ''
+                }`;
             }
             case EffectType.REVIVE: {
                 return `Revive ${targetName}`;
@@ -687,6 +693,7 @@ export const transformEffectToRulesText = (
                 )} goes to the bottom of ${controllerPossessiveText} library.  For each unit returned this way, the unit's controller draw a card`;
             }
             default: {
+                assertUnreachable(effect.type);
                 return '';
             }
         }

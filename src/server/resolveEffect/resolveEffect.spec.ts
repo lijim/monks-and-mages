@@ -1,12 +1,15 @@
 import cloneDeep from 'lodash.clonedeep';
-import { PlayerConstants } from '@/constants/gameConstants';
+import {
+    LEGENDARY_LEADER_INCREMENTAL_TAX,
+    PlayerConstants,
+} from '@/constants/gameConstants';
 import { makeNewBoard } from '@/factories/board';
 import { Board, GameState } from '@/types/board';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { resolveEffect } from './resolveEffect';
 import { makeCard, makeResourceCard, makeUnitCard } from '@/factories/cards';
 import { Tokens, UnitCards } from '@/mocks/units';
-import { EffectRequirementsType, UnitCard } from '@/types/cards';
+import { UnitCard } from '@/types/cards';
 import { Resource } from '@/types/resources';
 import { SpellCards } from '@/mocks/spells';
 
@@ -198,6 +201,27 @@ describe('resolve effect', () => {
             expect(lastCardInHand.hpBuff).toEqual(0);
             expect(lastCardInHand.cost.Generic).toEqual(1);
         });
+
+        it('bounces units under an attack threshold', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const squire2 = makeCard(UnitCards.SQUIRE);
+            squire2.oneCycleAttackBuff = 1;
+            board.players[0].units = [squire, squire2];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK,
+                        target: TargetTypes.ALL_SELF_UNITS,
+                        strength: 2,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units).toHaveLength(1);
+        });
     });
 
     describe('Buff hand attack', () => {
@@ -227,6 +251,32 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].hand[2]).toMatchObject({
                 attackBuff: 0,
             });
+        });
+
+        it('buffs attack of units on your hand with a failsafe life change', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            squire.passiveEffects = [PassiveEffect.STEADY];
+            board.players[0].hand = [squire];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE,
+                        strength: 2,
+                        secondaryStrength: 3,
+                        target: TargetTypes.SELF_PLAYER,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand[0]).toMatchObject({
+                attackBuff: 0,
+            });
+            expect(newBoard.players[0].health).toEqual(
+                PlayerConstants.STARTING_HEALTH + 3
+            );
         });
     });
 
@@ -348,7 +398,7 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].units[2].attackBuff).toEqual(0);
         });
 
-        it('does not debuff past 0 attack', () => {
+        it('can debuff below 0 attack', () => {
             const squire = makeCard(UnitCards.SQUIRE);
             const cannon = makeCard(UnitCards.CANNON);
             const apprentice = makeCard(UnitCards.MAGICIANS_APPRENTICE);
@@ -366,7 +416,7 @@ describe('resolve effect', () => {
                 'Timmy'
             );
 
-            expect(newBoard.players[1].units[0].attackBuff).toEqual(-2);
+            expect(newBoard.players[1].units[0].attackBuff).toEqual(-3);
             expect(newBoard.players[1].units[1].attackBuff).toEqual(-3);
             expect(newBoard.players[1].units[2].attackBuff).toEqual(0);
         });
@@ -387,6 +437,29 @@ describe('resolve effect', () => {
 
             expect(newBoard.players[0].units[0].hpBuff).toEqual(2);
             expect(newBoard.players[0].units[1].hpBuff).toEqual(2);
+            expect(newBoard.players[0].units[2].hpBuff).toEqual(2);
+        });
+
+        it('buffs attack/hp of legendary units on your board', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const cannon = makeCard(UnitCards.CANNON);
+            const joanOfArc = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            board.players[0].units = [squire, cannon, joanOfArc];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BUFF_TEAM_LEGENDARY_UNITS,
+                        strength: 2,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(0);
+            expect(newBoard.players[0].units[1].hpBuff).toEqual(0);
+            expect(newBoard.players[0].units[2].attackBuff).toEqual(2);
             expect(newBoard.players[0].units[2].hpBuff).toEqual(2);
         });
 
@@ -492,6 +565,89 @@ describe('resolve effect', () => {
             );
             expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
                 0
+            );
+        });
+
+        it('increases costs for cards costing a specific resource type', () => {
+            board.players[1].hand = [
+                makeCard(UnitCards.SQUIRE),
+                makeCard(UnitCards.FIRE_MAGE),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.CURSE_HAND_RESOURCE_TYPE,
+                        resourceType: Resource.FIRE,
+                        strength: 2,
+                        target: TargetTypes.OPPONENT,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect((newBoard.players[1].hand[0] as UnitCard).cost.Generic).toBe(
+                UnitCards.SQUIRE.cost.Generic
+            );
+            expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
+                UnitCards.FIRE_MAGE.cost.Generic + 2
+            );
+        });
+
+        it('increases costs for spells', () => {
+            board.players[1].hand = [
+                makeCard(UnitCards.SQUIRE),
+                makeCard(SpellCards.EMBER_SPEAR),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.CURSE_HAND_SPELLS,
+                        strength: 2,
+                        target: TargetTypes.OPPONENT,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+
+            expect((newBoard.players[1].hand[0] as UnitCard).cost.Generic).toBe(
+                UnitCards.SQUIRE.cost.Generic
+            );
+            expect((newBoard.players[1].hand[1] as UnitCard).cost.Generic).toBe(
+                (SpellCards.EMBER_SPEAR.cost.Generic || 0) + 2
+            );
+        });
+    });
+
+    describe('Deploy legendary leaders', () => {
+        it('deploys legendary leaders for targetted players', () => {
+            board.players[0].legendaryLeader = makeUnitCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            board.players[1].legendaryLeader = makeUnitCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEPLOY_LEGENDARY_LEADER,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].isLegendaryLeaderDeployed).toBe(true);
+            expect(newBoard.players[0].units[0].name).toBe(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO.name
+            );
+            expect(newBoard.players[0].legendaryLeader.cost.Generic).toBe(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO.cost.Generic +
+                    LEGENDARY_LEADER_INCREMENTAL_TAX
             );
         });
     });
@@ -790,6 +946,47 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Draw until matching the most amongst opponents', () => {
+        it('makes the player draw cards to match the most amongst opponents', () => {
+            board.players[0].hand = [];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DRAW_UNTIL_MATCHING_OPPONENTS,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].isAlive).toEqual(true);
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE
+            );
+        });
+
+        it('makes the player draw out of cards and lose', () => {
+            board.players[0].hand = [];
+            board.players[0].deck = [];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DRAW_UNTIL_MATCHING_OPPONENTS,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].isAlive).toEqual(false);
+            expect(newBoard.gameState).toEqual(GameState.WIN);
+        });
+    });
+
     describe('Deal Damage', () => {
         it('passes the turn to the next player if dealing lethal to self', () => {
             const boardWith4Players = makeNewBoard({
@@ -937,6 +1134,31 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[1].isAlive).toBe(false);
         });
+
+        it('deals damage to non-soldiers', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const magiciansApprentice = makeCard(
+                UnitCards.MAGICIANS_APPRENTICE
+            );
+            board.players[0].units = [squire, magiciansApprentice];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.DEAL_DAMAGE_TO_NON_SOLDIERS,
+                        strength: 2,
+                        target: TargetTypes.ALL_UNITS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].hp).toEqual(
+                UnitCards.SQUIRE.hp
+            );
+            expect(newBoard.players[0].cemetery[0].name).toEqual(
+                UnitCards.MAGICIANS_APPRENTICE.name
+            );
+        });
     });
 
     describe('Discard', () => {
@@ -1058,6 +1280,78 @@ describe('resolve effect', () => {
                 PlayerConstants.STARTING_HAND_SIZE + 3
             );
         });
+
+        it('extracts soldier cards from a deck', () => {
+            board.players[0].deck = [
+                makeUnitCard(UnitCards.SQUIRE),
+                makeUnitCard(UnitCards.SQUIRE),
+                makeUnitCard(UnitCards.SQUIRE),
+            ];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.EXTRACT_SOLDIER_CARDS,
+                        strength: 4,
+                        target: TargetTypes.SELF_PLAYER,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 3
+            );
+        });
+
+        it('extracts spell cards from a deck', () => {
+            board.players[0].deck = [
+                makeCard(SpellCards.EMBER_SPEAR),
+                makeCard(SpellCards.EMBER_SPEAR),
+            ];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.EXTRACT_SPELL_CARDS,
+                        strength: 1,
+                        target: TargetTypes.SELF_PLAYER,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 1
+            );
+        });
+
+        it('extracts unit cards from a deck and sets their costs', () => {
+            board.players[0].deck = [
+                makeCard(SpellCards.EMBER_SPEAR),
+                makeCard(SpellCards.EMBER_SPEAR),
+                makeUnitCard(UnitCards.SQUIRE),
+                makeUnitCard(UnitCards.SQUIRE),
+            ];
+            board.players[0].hand = [];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.EXTRACT_UNIT_AND_SET_COST,
+                        strength: 2,
+                        target: TargetTypes.SELF_PLAYER,
+                        cost: { [Resource.BAMBOO]: 2 },
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(2);
+            expect((newBoard.players[0].hand[0] as UnitCard).cost).toEqual({
+                [Resource.BAMBOO]: 2,
+            });
+        });
     });
 
     describe('Flicker', () => {
@@ -1101,6 +1395,128 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].effectQueue).toMatchObject(
                 unitCard.enterEffects.reverse()
             );
+        });
+    });
+
+    describe('Gain stats / effects', () => {
+        it('gains attack', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_ATTACK,
+                        sourceId: squire1.id,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(3);
+        });
+
+        it('gains attack until a threshold', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            squire1.oneTurnAttackBuff = -1;
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_ATTACK_UNTIL,
+                        sourceId: squire1.id,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(
+                3 - (UnitCards.SQUIRE.attack - 1)
+            );
+        });
+
+        it('gains magical for units in hand and on board', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            const squire2 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+            board.players[0].hand = [squire2];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_MAGICAL_HAND_AND_BOARD,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].isMagical).toEqual(true);
+            expect((newBoard.players[0].hand[0] as UnitCard).isRanged).toEqual(
+                true
+            );
+        });
+
+        it('gains stats', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_STATS,
+                        sourceId: squire1.id,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(3);
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(3);
+        });
+
+        it('gains stats and effects', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_STATS_AND_EFFECTS,
+                        sourceId: squire1.id,
+                        passiveEffects: [PassiveEffect.ETHEREAL],
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(3);
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(3);
+            expect(newBoard.players[0].units[0].passiveEffects).toEqual([
+                PassiveEffect.ETHEREAL,
+            ]);
+        });
+
+        it('gains stats equal to cost', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            board.players[0].units = [squire1];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_STATS_EQUAL_TO_COST,
+                        sourceId: squire1.id,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(2);
+            expect(newBoard.players[0].units[0].hpBuff).toEqual(2);
         });
     });
 
@@ -1190,6 +1606,23 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Losing magical / ranged', () => {
+        it('makes units lose magical / ranged', () => {
+            board.players[1].units = [makeUnitCard(UnitCards.FIRE_MAGE)];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.LOSE_MAGICAL_AND_RANGED,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].units[0].isMagical).toBe(false);
+            expect(newBoard.players[1].units[0].isRanged).toBe(false);
+        });
+    });
+
     describe('Mill', () => {
         it('mills from the top of the deck', () => {
             const expectedCardNameToMill =
@@ -1208,6 +1641,28 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].cemetery[4].name).toBe(
                 expectedCardNameToMill
             );
+        });
+    });
+
+    describe('Modify attacks per turn', () => {
+        it('changes attacks per turn and removes attacks', () => {
+            const squire = makeUnitCard(UnitCards.SQUIRE);
+            board.players[1].units = [squire];
+            squire.numAttacksLeft = 1;
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.MODIFY_ATTACKS_PER_TURN,
+                        strength: 0,
+                        target: TargetTypes.ALL_OPPOSING_UNITS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].units[0].numAttacks).toBe(0);
+            expect(newBoard.players[1].units[0].numAttacksLeft).toBe(0);
         });
     });
 
@@ -1334,8 +1789,61 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Reduce card costs, but not past a threshold', () => {
+        it('reduces card costs and respects the minimum cost', () => {
+            board.players[0].hand = [
+                makeCard(UnitCards.CANNON),
+                makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.REDUCE_CARDS_COSTING_OVER_AMOUNT,
+                        strength: 2,
+                        secondaryStrength: 4,
+                        target: TargetTypes.SELF_PLAYER,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect((newBoard.players[0].hand[0] as UnitCard).cost.Generic).toBe(
+                1
+            );
+            expect((newBoard.players[0].hand[1] as UnitCard).cost.Generic).toBe(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO.cost.Generic - 2
+            );
+        });
+    });
+
+    describe('Reduce legendary leader costs', () => {
+        it('reduces legendary leader costs but below zero generic cost', () => {
+            board.players[0].legendaryLeader = makeUnitCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            board.players[1].legendaryLeader = makeUnitCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.REDUCE_LEGENDARY_LEADER_COST,
+                        strength: 100,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].legendaryLeader.cost.Generic).toBe(0);
+            expect(newBoard.players[1].legendaryLeaderExtraCost).toBe(-5);
+        });
+    });
+
     describe('Return from cemetery', () => {
-        it('returns from cemetery', () => {
+        it('returns specific cards from cemetery', () => {
             board.players[0].cemetery.push(makeCard(UnitCards.KNIGHT_TEMPLAR));
             const newBoard = resolveEffect(
                 board,
@@ -1350,6 +1858,72 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].hand).toHaveLength(
                 PlayerConstants.STARTING_HAND_SIZE + 1
+            );
+        });
+
+        it('returns spell cards from cemetery, but not the original spell', () => {
+            const originalSourceCard = makeCard(SpellCards.SUMMON_SHARKS);
+            board.players[0].cemetery.push(
+                makeCard(SpellCards.SUMMON_SHARKS),
+                originalSourceCard,
+                makeUnitCard(UnitCards.LANCER)
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RETURN_SPELLS_FROM_CEMETERY,
+                        strength: 2,
+                        // imagine that summon sharks was the card that caused us to return 2 spell cards
+                        sourceId: originalSourceCard.id,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 1
+            );
+        });
+
+        it('returns resource cards from cemetery', () => {
+            board.players[0].cemetery.push(
+                makeResourceCard(Resource.BAMBOO),
+                makeResourceCard(Resource.BAMBOO),
+                makeUnitCard(UnitCards.LANCER)
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RETURN_RESOURCES_FROM_CEMETERY,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 2
+            );
+        });
+
+        it('returns spell and resource cards from cemetery', () => {
+            board.players[0].cemetery.push(
+                makeResourceCard(Resource.BAMBOO),
+                makeResourceCard(Resource.BAMBOO),
+                makeCard(SpellCards.A_THOUSAND_WINDS)
+            );
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.RETURN_SPELLS_AND_RESOURCES_FROM_CEMETERY,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].hand).toHaveLength(
+                PlayerConstants.STARTING_HAND_SIZE + 3
             );
         });
     });
@@ -1393,7 +1967,7 @@ describe('resolve effect', () => {
         });
     });
 
-    describe('Shuffle from hand', () => {
+    describe('Shuffle from hand into a players deck', () => {
         it('shuffles X cards from hand into a players deck', () => {
             board.players[0].hand = [
                 makeCard(UnitCards.CANNON),
@@ -1421,6 +1995,54 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Shuffling different areas into deck', () => {
+        it('shuffles cards from cemetery into deck', () => {
+            board.players[0].cemetery = [
+                makeUnitCard(UnitCards.ASSASSIN),
+                makeUnitCard(UnitCards.ASSASSIN),
+                makeUnitCard(UnitCards.ASSASSIN),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.SHUFFLE_CEMETERY_INTO_DECK,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].deck).toHaveLength(
+                PlayerConstants.STARTING_DECK_SIZE -
+                    PlayerConstants.STARTING_HAND_SIZE +
+                    3
+            );
+            expect(newBoard.players[1].deck).toHaveLength(
+                PlayerConstants.STARTING_DECK_SIZE -
+                    PlayerConstants.STARTING_HAND_SIZE
+            );
+        });
+
+        it('shuffles cards from hand into deck', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.SHUFFLE_HAND_INTO_DECK,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand).toHaveLength(0);
+            expect(newBoard.players[1].deck).toHaveLength(
+                PlayerConstants.STARTING_DECK_SIZE
+            );
+        });
+    });
+
     describe('Summon Unit', () => {
         it('summons 2 demons', () => {
             const newBoard = resolveEffect(
@@ -1436,6 +2058,83 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].units).toHaveLength(2);
             expect(newBoard.players[0].units[0].name).toBe(Tokens.DEMON.name);
+        });
+    });
+
+    describe('Swapping cards in hand', () => {
+        it('swaps cards with another player, but not more than they have', () => {
+            board.players[0].hand = [makeUnitCard(UnitCards.CANNON)];
+            board.players[1].hand = [
+                makeUnitCard(UnitCards.FIRE_MAGE),
+                makeUnitCard(UnitCards.BOUNTY_COLLECTOR),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.SWAP_CARDS,
+                        strength: 2,
+                    },
+                    playerNames: ['Tommy'],
+                },
+                'Timmy'
+            );
+            expect(
+                newBoard.players[1].hand.find(
+                    (card) => card.name === UnitCards.CANNON.name
+                )
+            ).toBeTruthy();
+            expect(newBoard.players[0].hand).toHaveLength(1);
+            expect(newBoard.players[1].hand).toHaveLength(2);
+        });
+    });
+
+    describe('Transform resources', () => {
+        it('transforms non-water resources into water', () => {
+            board.players[0].resources = [
+                makeResourceCard(Resource.CRYSTAL),
+                makeResourceCard(Resource.WATER),
+                makeResourceCard(Resource.FIRE),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.TRANSFORM_RESOURCE,
+                        strength: 1,
+                        secondaryCardName: 'Water',
+                    },
+                },
+                'Timmy'
+            );
+            expect(
+                newBoard.players[0].resources.filter(
+                    (resource) => resource.name === Resource.WATER
+                )
+            ).toHaveLength(2);
+        });
+
+        it('transforms water resources into treacherous deserts', () => {
+            board.players[0].resources = [
+                makeResourceCard(Resource.CRYSTAL),
+                makeResourceCard(Resource.WATER),
+                makeResourceCard(Resource.FIRE),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.TRANSFORM_RESOURCE,
+                        strength: 1,
+                        cardName: 'Water',
+                        secondaryCardName: 'Treacherous Desert',
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].resources[1].name).toBe(
+                'Treacherous Desert'
+            );
         });
     });
 
@@ -1489,143 +2188,6 @@ describe('resolve effect', () => {
             );
             expect(newBoard.players[0].deck[0].name).toBe('Squire');
             expect(newBoard.players[0].hand).toHaveLength(8);
-        });
-    });
-
-    describe('Effect requirements', () => {
-        it('does not execute the effect if the conditions cannot be met (hand discard)', () => {
-            const newBoard = resolveEffect(
-                board,
-                {
-                    effect: {
-                        type: EffectType.DEAL_DAMAGE,
-                        requirements: [
-                            {
-                                type: EffectRequirementsType.DISCARD_CARD,
-                                strength: 8,
-                            },
-                        ],
-                        strength: 7,
-                        target: TargetTypes.ALL_OPPONENTS,
-                    },
-                    playerNames: ['Tommy'],
-                },
-                'Timmy'
-            );
-            expect(newBoard.players[1].health).toEqual(
-                PlayerConstants.STARTING_HEALTH
-            );
-        });
-
-        it('does not execute the effect if the conditions cannot be met (returning units to hand)', () => {
-            const squire = makeCard(UnitCards.SQUIRE);
-            board.players[0].units = [squire];
-            const newBoard = resolveEffect(
-                board,
-                {
-                    effect: {
-                        type: EffectType.DEAL_DAMAGE,
-                        requirements: [
-                            {
-                                type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
-                                strength: 2,
-                            },
-                        ],
-                        strength: 7,
-                        target: TargetTypes.ALL_OPPONENTS,
-                    },
-                    playerNames: ['Tommy'],
-                },
-                'Timmy'
-            );
-            expect(newBoard.players[1].health).toEqual(
-                PlayerConstants.STARTING_HEALTH
-            );
-        });
-
-        it('executes the effect and returns units to hand', () => {
-            const squire1 = makeCard(UnitCards.SQUIRE);
-            const squire2 = makeCard(UnitCards.SQUIRE);
-            board.players[0].units = [squire1, squire2];
-            const newBoard = resolveEffect(
-                board,
-                {
-                    effect: {
-                        type: EffectType.DEAL_DAMAGE,
-                        requirements: [
-                            {
-                                type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
-                                strength: 1,
-                            },
-                        ],
-                        strength: 7,
-                        target: TargetTypes.ALL_OPPONENTS,
-                    },
-                    playerNames: ['Tommy'],
-                },
-                'Timmy'
-            );
-            expect(newBoard.players[0].units).toHaveLength(1);
-            expect(newBoard.players[0].hand).toHaveLength(
-                PlayerConstants.STARTING_HAND_SIZE + 1
-            );
-            expect(newBoard.players[1].health).toEqual(
-                PlayerConstants.STARTING_HEALTH - 7
-            );
-        });
-
-        it('checks a passive effect (pass)', () => {
-            const squire1 = makeCard(UnitCards.SQUIRE);
-            const squire2 = makeCard(UnitCards.SQUIRE);
-            board.players[0].units = [squire1, squire2];
-            const newBoard = resolveEffect(
-                board,
-                {
-                    effect: {
-                        type: EffectType.DEAL_DAMAGE,
-                        requirements: [
-                            {
-                                type: EffectRequirementsType.ARE_AT_LIFE_AT_OR_ABOVE_THRESHOLD,
-                                strength: 15,
-                            },
-                        ],
-                        strength: 7,
-                        target: TargetTypes.ALL_OPPONENTS,
-                    },
-                    playerNames: ['Tommy'],
-                },
-                'Timmy'
-            );
-            expect(newBoard.players[1].health).toEqual(
-                PlayerConstants.STARTING_HEALTH - 7
-            );
-        });
-
-        it('checks a passive effect (fail)', () => {
-            const squire1 = makeCard(UnitCards.SQUIRE);
-            const squire2 = makeCard(UnitCards.SQUIRE);
-            board.players[0].units = [squire1, squire2];
-            const newBoard = resolveEffect(
-                board,
-                {
-                    effect: {
-                        type: EffectType.DEAL_DAMAGE,
-                        requirements: [
-                            {
-                                type: EffectRequirementsType.ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD,
-                                strength: 15,
-                            },
-                        ],
-                        strength: 7,
-                        target: TargetTypes.ALL_OPPONENTS,
-                    },
-                    playerNames: ['Tommy'],
-                },
-                'Timmy'
-            );
-            expect(newBoard.players[1].health).toEqual(
-                PlayerConstants.STARTING_HEALTH
-            );
         });
     });
 });

@@ -4,7 +4,7 @@ import difference from 'lodash.difference';
 import sampleSize from 'lodash.samplesize';
 
 import shuffle from 'lodash.shuffle';
-import { sum } from 'lodash';
+import { max } from 'lodash';
 import { ResolveEffectParams } from '@/types';
 import { Board, Player } from '@/types/board';
 import {
@@ -13,15 +13,7 @@ import {
     PassiveEffect,
     TargetTypes,
 } from '@/types/effects';
-import {
-    Card,
-    CardType,
-    EffectRequirement,
-    EffectRequirementsType,
-    ResourceCard,
-    SpellCard,
-    UnitCard,
-} from '@/types/cards';
+import { CardType, ResourceCard, SpellCard, UnitCard } from '@/types/cards';
 import { makeCard, makeResourceCard } from '@/factories/cards';
 import {
     applyWinState,
@@ -33,244 +25,16 @@ import { transformEffectToRulesText } from '@/transformers/transformEffectsToRul
 import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
 import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
-import { Resource } from '@/types/resources';
-
-type PerformEffectRequirementParams = {
-    addSystemChat?: (message: string) => void;
-    board: Board;
-    effectRequirement: EffectRequirement;
-    playerName: string;
-};
-
-/**
- * Effectful code that mutates and performs an effect requirement given a board state
- * @returns {Object} - the board state object, with mutations from the effect requirement
- */
-const performEffectRequirement = ({
-    board,
-    playerName,
-    effectRequirement,
-    addSystemChat,
-}: PerformEffectRequirementParams) => {
-    const activePlayer = board.players.find(
-        (player) => player.name === playerName
-    );
-    const { type, resourceType, cardType, strength = 1 } = effectRequirement;
-    switch (type) {
-        // Active requirements - have to do something active to have the effect go through
-        case EffectRequirementsType.DISCARD_CARD: {
-            let cardsToDiscard: Card[] = [];
-            if (resourceType) {
-                cardsToDiscard = sampleSize(
-                    activePlayer.hand.filter(
-                        (card) =>
-                            card.cardType === CardType.RESOURCE &&
-                            card.name === resourceType
-                    ),
-                    strength
-                );
-            } else if (cardType) {
-                cardsToDiscard = sampleSize(
-                    activePlayer.hand.filter(
-                        (card) => card.cardType === cardType
-                    ),
-                    strength
-                );
-            } else {
-                cardsToDiscard = sampleSize(activePlayer.hand, strength);
-            }
-
-            if (cardsToDiscard.length < strength) {
-                throw new Error('there were not enough cards to discard');
-            }
-
-            activePlayer.hand = activePlayer.hand.filter(
-                (card) => !cardsToDiscard.includes(card)
-            );
-            addSystemChat?.(
-                `${activePlayer} discarded: ${cardsToDiscard
-                    .map((card) => `[[${card.name}]]`)
-                    .join(', ')}`
-            );
-            break;
-        }
-        case EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND: {
-            if (activePlayer.units.length < strength) {
-                throw new Error(
-                    'there were not enough units to return to hand'
-                );
-            }
-            const unitsByCost: Map<number, UnitCard[]> = new Map();
-
-            activePlayer.units.forEach((unit) => {
-                const totalCost = sum(
-                    Object.values(unit.originalAttributes.cost)
-                );
-                if (unitsByCost.has(totalCost)) {
-                    unitsByCost.get(totalCost).push(unit);
-                } else {
-                    unitsByCost.set(totalCost, [unit]);
-                }
-            });
-
-            let unitsToReturn: UnitCard[] = [];
-            let unitsLeftToReturn = strength;
-
-            [...unitsByCost.entries()]
-                .sort()
-                .forEach(([, unitsWithSpecificCost]) => {
-                    if (unitsLeftToReturn <= unitsWithSpecificCost.length) {
-                        const sample = sampleSize(
-                            unitsWithSpecificCost,
-                            unitsLeftToReturn
-                        );
-                        unitsToReturn = [...unitsToReturn, ...sample];
-                        unitsLeftToReturn -= sample.length;
-                    }
-                });
-
-            unitsToReturn.forEach((unit) => resetUnitCard(unit));
-            activePlayer.hand = [...activePlayer.hand, ...unitsToReturn];
-            activePlayer.units = activePlayer.units.filter(
-                (unit) => !unitsToReturn.includes(unit)
-            );
-
-            addSystemChat?.(
-                `${activePlayer} returned to hand: ${unitsToReturn
-                    .map((card) => `[[${card.name}]]`)
-                    .join(', ')}`
-            );
-
-            break;
-        }
-
-        // Passive requirements - just have to be satisfying them to have the effect go through
-        case EffectRequirementsType.ARE_AT_LIFE_AT_OR_ABOVE_THRESHOLD: {
-            if (activePlayer.health < strength) {
-                throw new Error(
-                    `their life total (${activePlayer.health}) was lower than ${strength}`
-                );
-            }
-            break;
-        }
-        case EffectRequirementsType.ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD: {
-            if (activePlayer.health > strength) {
-                throw new Error(
-                    `their life total (${activePlayer.health}) was higher than ${strength}`
-                );
-            }
-            break;
-        }
-        case EffectRequirementsType.ARE_HOLDING_A_SPECIFIC_CARDNAME: {
-            const { cardName } = effectRequirement;
-
-            const numMatchingCardNames = activePlayer.hand.map(
-                (card) => card.name === cardName
-            ).length;
-
-            if (strength === 0 && numMatchingCardNames > 0) {
-                throw new Error(`they are holding at least 1 [[${cardName}]]`);
-            }
-            if (strength === 1 && numMatchingCardNames < 1) {
-                throw new Error(`they are not holding a [[${cardName}]] card`);
-            }
-            if (strength > 1 && numMatchingCardNames < strength) {
-                throw new Error(
-                    `they are not holding at least ${strength} [[${cardName}]] cards`
-                );
-            }
-            break;
-        }
-        case EffectRequirementsType.CONTROL_A_GENERIC_PRODUCING_RESOURCE: {
-            const numGenericProducingResources = activePlayer.resources.map(
-                (card) =>
-                    card.resourceType === Resource.GENERIC ||
-                    card.secondaryResourceType === Resource.GENERIC
-            ).length;
-
-            if (strength === 0 && numGenericProducingResources > 0) {
-                return `they control a resource cards that produces generic mana`;
-            }
-            if (strength === 1 && numGenericProducingResources < 1) {
-                return `they don't control a resource card that produces generic mana`;
-            }
-
-            if (strength > 1 && numGenericProducingResources < strength) {
-                throw new Error(
-                    `they don't control at least ${strength} resource cards that produce generic mana`
-                );
-            }
-            break;
-        }
-        case EffectRequirementsType.CONTROL_A_LEGENDARY_LEADER: {
-            if (!activePlayer.isLegendaryLeaderDeployed) {
-                throw new Error(`they don't control a legendary leader`);
-            }
-            break;
-        }
-        case EffectRequirementsType.CONTROL_RANGED_AND_MAGICAL: {
-            const numRangedUnits = activePlayer.units.map(
-                (card) => card.isRanged && !card.isMagical
-            ).length;
-            const numMagicalUnits = activePlayer.units.map(
-                (card) => card.isMagical
-            ).length;
-            if (numRangedUnits < 1 || numMagicalUnits < 1) {
-                throw new Error(
-                    `they don't control a ranged unit and a magical unit`
-                );
-            }
-            break;
-        }
-        case EffectRequirementsType.HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY: {
-            const numCemeteryCards = activePlayer.cemetery.length;
-            if (numCemeteryCards < strength) {
-                throw new Error(
-                    `they don't have ${strength} cards in the cemetery`
-                );
-            }
-            break;
-        }
-        case EffectRequirementsType.HAVE_MINIMUM_ATTACK_ON_A_UNIT: {
-            const hasUnitWithMinimumAttack = activePlayer.units.some(
-                (card) =>
-                    card.attack +
-                        card.attackBuff +
-                        card.oneTurnAttackBuff +
-                        card.oneCycleAttackBuff >=
-                    strength
-            );
-
-            if (!hasUnitWithMinimumAttack) {
-                throw new Error(
-                    `they don't have a unit with at least ${strength} attack`
-                );
-            }
-            break;
-        }
-        case EffectRequirementsType.HAVE_NO_CARDS_IN_HAND: {
-            if (activePlayer.hand.length > 0) {
-                throw new Error(`they don't have an empty hand`);
-            }
-            break;
-        }
-        case EffectRequirementsType.HAVE_NO_UNIT_CARDS_IN_DECK: {
-            const numUnitCardsInDeck = activePlayer.deck.filter(
-                (card) => card.cardType === CardType.UNIT
-            ).length;
-            if (numUnitCardsInDeck > 0) {
-                throw new Error(`they have at least 1 unit card in their deck`);
-            }
-            break;
-        }
-
-        default: {
-            break;
-        }
-    }
-
-    return board;
-};
+import {
+    findCardByIdOnBoard,
+    getTotalAttackForUnit,
+    getTotalCostForCard,
+    grantPassiveEffectForUnit,
+    recalculateLegendaryLeaderCost,
+} from '@/transformers';
+import { assertUnreachable } from '@/types/assertUnreachable';
+import { performEffectRequirement } from '../performEffectRequirement';
+import { LEGENDARY_LEADER_INCREMENTAL_TAX } from '@/constants/gameConstants';
 
 export const resolveEffect = (
     board: Board,
@@ -287,6 +51,9 @@ export const resolveEffect = (
         passiveEffects,
         sourceId,
         requirements,
+        secondaryStrength,
+        resourceType,
+        cost,
     } = effect;
     const { players } = clonedBoard;
     const activePlayer = players.find((player) => player.isActivePlayer);
@@ -311,9 +78,10 @@ export const resolveEffect = (
     // Determine targets to apply effects to
     let playerTargets: Player[];
     let unitTargets: { player: Player; unitCard: UnitCard }[] = [];
-    const sourceUnitCard = players
-        .flatMap((player) => player.units)
-        .find((card) => card.id === sourceId);
+    const effectSourceCard = findCardByIdOnBoard({
+        board: clonedBoard,
+        id: sourceId,
+    });
     const target = effect.target || getDefaultTargetForEffect(effect.type);
     let targetText;
 
@@ -460,6 +228,17 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK: {
+            unitTargets.forEach(({ player, unitCard }) => {
+                if (getTotalAttackForUnit(unitCard) > effectStrength) {
+                    return;
+                }
+                player.units = player.units.filter((card) => card !== unitCard);
+                player.hand.push(unitCard);
+                resetUnitCard(unitCard);
+            });
+            return clonedBoard;
+        }
         case EffectType.BLOOM: {
             playerTargets.forEach((player) => {
                 player.resourcesLeftToDeploy += effectStrength;
@@ -501,9 +280,41 @@ export const resolveEffect = (
                 if (!unitCard.isMagical) return;
                 unitCard.hpBuff += effectStrength;
                 unitCard.attackBuff += effectStrength;
+                // give total attack a floor value of 0
+                // to make game easier to understand
+                if (unitCard.attackBuff < -unitCard.attack) {
+                    unitCard.attackBuff = -unitCard.attack;
+                }
             });
             // in case debuffing causes units to go to cemtery
             processBoardToCemetery(clonedBoard, addSystemChat);
+            return clonedBoard;
+        }
+        case EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE: {
+            let hasACardBeenBuffed = false;
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (card.cardType !== CardType.UNIT) return;
+                    if (card.passiveEffects.includes(PassiveEffect.STEADY)) {
+                        return;
+                    }
+                    const unit = card;
+                    const attackBuffBefore = unit.attackBuff;
+                    unit.attackBuff += effectStrength;
+                    // give total attack a floor value of 0
+                    // to make game easier to understand
+                    if (unit.attackBuff < -unit.attack) {
+                        unit.attackBuff = -unit.attack;
+                    }
+                    if (attackBuffBefore !== unit.attackBuff) {
+                        hasACardBeenBuffed = true;
+                    }
+                });
+            });
+            if (!hasACardBeenBuffed) {
+                activePlayer.health += secondaryStrength;
+            }
+            applyWinState(clonedBoard);
             return clonedBoard;
         }
         case EffectType.BUFF_HAND_NON_MAGIC_ATTACK: {
@@ -517,9 +328,6 @@ export const resolveEffect = (
                     if (!unit.isMagical) {
                         unit.attackBuff += effectStrength;
                     }
-                    if (unit.attackBuff < -unit.attack) {
-                        unit.attackBuff = -unit.attack;
-                    }
                 });
             });
             return clonedBoard;
@@ -532,9 +340,6 @@ export const resolveEffect = (
                     }
                     if (!unit.isMagical) {
                         unit.attackBuff += effectStrength;
-                    }
-                    if (unit.attackBuff < -unit.attack) {
-                        unit.attackBuff = -unit.attack;
                     }
                 });
             });
@@ -567,6 +372,22 @@ export const resolveEffect = (
             processBoardToCemetery(clonedBoard, addSystemChat);
             return clonedBoard;
         }
+        case EffectType.BUFF_TEAM_LEGENDARY_UNITS: {
+            playerTargets.forEach((player) => {
+                player.units.forEach((unit) => {
+                    if (
+                        unit.passiveEffects.includes(PassiveEffect.STEADY) ||
+                        !unit.isLegendary
+                    ) {
+                        return;
+                    }
+                    unit.attackBuff += effectStrength;
+                    unit.hpBuff += effectStrength;
+                });
+            });
+            processBoardToCemetery(clonedBoard, addSystemChat);
+            return clonedBoard;
+        }
         case EffectType.BUFF_TEAM_MAGIC: {
             playerTargets.forEach((player) => {
                 player.units.forEach((unit) => {
@@ -576,11 +397,6 @@ export const resolveEffect = (
                     if (unit.isMagical) {
                         unit.attackBuff += effectStrength;
                     }
-                    // give total attack a floor value of 0
-                    // to make game easier to understand
-                    if (unit.attackBuff < -unit.attack) {
-                        unit.attackBuff = -unit.attack;
-                    }
                 });
             });
             return clonedBoard;
@@ -589,6 +405,35 @@ export const resolveEffect = (
             playerTargets.forEach((player) => {
                 player.hand.forEach((card) => {
                     if (card.cardType !== CardType.RESOURCE) {
+                        card.cost.Generic = Math.max(
+                            0,
+                            (card.cost.Generic || 0) + effectStrength
+                        );
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.CURSE_HAND_RESOURCE_TYPE: {
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (
+                        card.cardType !== CardType.RESOURCE &&
+                        card.cost[resourceType] > 0
+                    ) {
+                        card.cost.Generic = Math.max(
+                            0,
+                            (card.cost.Generic || 0) + effectStrength
+                        );
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.CURSE_HAND_SPELLS: {
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (card.cardType === CardType.SPELL) {
                         card.cost.Generic = Math.max(
                             0,
                             (card.cost.Generic || 0) + effectStrength
@@ -620,8 +465,52 @@ export const resolveEffect = (
             applyWinState(clonedBoard);
             return clonedBoard;
         }
+        case EffectType.DEAL_DAMAGE_TO_NON_SOLDIERS: {
+            if (unitTargets) {
+                unitTargets.forEach(({ unitCard }) => {
+                    if (
+                        unitCard.passiveEffects.includes(
+                            PassiveEffect.ETHEREAL
+                        ) ||
+                        unitCard.isSoldier
+                    ) {
+                        return;
+                    }
+                    unitCard.hp -= effectStrength;
+                });
+                processBoardToCemetery(clonedBoard, addSystemChat);
+            }
+
+            playerTargets.forEach((player) => {
+                player.health -= effectStrength;
+                if (player.health <= 0) {
+                    player.isAlive = false;
+                }
+            });
+            applyWinState(clonedBoard);
+            return clonedBoard;
+        }
+        case EffectType.DEPLOY_LEGENDARY_LEADER: {
+            playerTargets.forEach((player) => {
+                const { legendaryLeader } = player;
+
+                if (player.isLegendaryLeaderDeployed || !legendaryLeader) {
+                    return;
+                }
+                const legendaryLeaderInstance = makeCard(legendaryLeader);
+                legendaryLeaderInstance.isLegendaryLeader = true;
+
+                // deploy the card
+                player.units.push(legendaryLeaderInstance);
+                player.legendaryLeaderExtraCost +=
+                    LEGENDARY_LEADER_INCREMENTAL_TAX;
+                recalculateLegendaryLeaderCost(player);
+
+                player.isLegendaryLeaderDeployed = true;
+            });
+            return clonedBoard;
+        }
         case EffectType.DESTROY_RESOURCE: {
-            const { resourceType } = effect;
             playerTargets.forEach((player) => {
                 const resourcesToDestroy = sampleSize(
                     player.resources.filter((resource) => {
@@ -639,7 +528,6 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.DESTROY_RESOURCE_TO_GAIN_STATS: {
-            const { resourceType } = effect;
             playerTargets.forEach((player) => {
                 const resourcesToDestroy = sampleSize(
                     player.resources.filter((resource) => {
@@ -648,15 +536,19 @@ export const resolveEffect = (
                     }),
                     effectStrength
                 );
-                if (sourceUnitCard) {
-                    sourceUnitCard.attackBuff += resourcesToDestroy.length;
-                    sourceUnitCard.hpBuff += resourcesToDestroy.length;
+                if (
+                    effectSourceCard &&
+                    effectSourceCard.cardType === CardType.UNIT
+                ) {
+                    effectSourceCard.attackBuff += resourcesToDestroy.length;
+                    effectSourceCard.hpBuff += resourcesToDestroy.length;
                 }
                 player.resources = player.resources.filter(
                     (resource) =>
                         !resourcesToDestroy.find((r) => r === resource)
                 );
             });
+            processBoardToCemetery(clonedBoard, addSystemChat);
             return clonedBoard;
         }
         case EffectType.DESTROY_UNIT: {
@@ -744,6 +636,27 @@ export const resolveEffect = (
             applyWinState(clonedBoard);
             return clonedBoard;
         }
+        case EffectType.DRAW_UNTIL_MATCHING_OPPONENTS: {
+            const maxAmongstOpponents = max(
+                otherPlayers
+                    .filter((player) => player.isAlive)
+                    .map((player) => player.hand.length)
+            );
+            playerTargets.forEach((player) => {
+                const cardsToDraw = Math.max(
+                    0,
+                    maxAmongstOpponents - player.hand.length
+                );
+                const { hand, deck } = player;
+                if (cardsToDraw > deck.length) {
+                    player.isAlive = false;
+                }
+                if (cardsToDraw)
+                    player.hand = hand.concat(deck.splice(-cardsToDraw));
+            });
+            applyWinState(clonedBoard);
+            return clonedBoard;
+        }
         case EffectType.EXTRACT_CARD: {
             playerTargets.forEach((player) => {
                 const cardsToExtractPopulation = player.deck.filter(
@@ -761,6 +674,61 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.EXTRACT_SOLDIER_CARDS: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.deck.filter(
+                    (card) => card.cardType === CardType.UNIT && card.isSoldier
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.deck = player.deck.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
+        case EffectType.EXTRACT_SPELL_CARDS: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.deck.filter(
+                    (card) => card.cardType === CardType.SPELL
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.deck = player.deck.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
+        case EffectType.EXTRACT_UNIT_AND_SET_COST: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.deck.filter(
+                    (card) => card.cardType === CardType.UNIT
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                cardsToExtractSample.forEach((card) => {
+                    (card as UnitCard).cost = cost;
+                });
+                player.deck = player.deck.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
+
         case EffectType.FLICKER: {
             unitTargets.forEach(({ unitCard }) => {
                 resetUnitCard(unitCard);
@@ -778,21 +746,82 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.GAIN_ATTACK: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                effectSourceCard.attackBuff += effectStrength;
+            }
+            return clonedBoard;
+        }
+        case EffectType.GAIN_ATTACK_UNTIL: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                const attackBefore = getTotalAttackForUnit(effectSourceCard);
+                effectSourceCard.attackBuff = Math.max(
+                    0,
+                    effectStrength - attackBefore
+                );
+            }
+            return clonedBoard;
+        }
+        case EffectType.GAIN_MAGICAL_HAND_AND_BOARD: {
+            playerTargets.forEach((player) => {
+                [...player.hand, ...player.units].forEach((card) => {
+                    if (card.cardType === CardType.UNIT) {
+                        card.isMagical = true;
+                        card.isRanged = true;
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.GAIN_STATS: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                effectSourceCard.attackBuff += effectStrength;
+                effectSourceCard.hpBuff += effectStrength;
+            }
+            processBoardToCemetery(clonedBoard, addSystemChat);
+            return clonedBoard;
+        }
+        case EffectType.GAIN_STATS_AND_EFFECTS: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                effectSourceCard.attackBuff += effectStrength;
+                effectSourceCard.hpBuff += effectStrength;
+                passiveEffects.forEach((passiveEffect) => {
+                    grantPassiveEffectForUnit({
+                        unitCard: effectSourceCard,
+                        passiveEffect,
+                    });
+                });
+            }
+            processBoardToCemetery(clonedBoard, addSystemChat);
+            return clonedBoard;
+        }
+        case EffectType.GAIN_STATS_EQUAL_TO_COST: {
+            if (
+                effectSourceCard &&
+                effectSourceCard.cardType === CardType.UNIT
+            ) {
+                const totalCostForCard = getTotalCostForCard(effectSourceCard);
+                effectSourceCard.attackBuff += totalCostForCard;
+                effectSourceCard.hpBuff += totalCostForCard;
+            }
+            return clonedBoard;
+        }
         case EffectType.GRANT_PASSIVE_EFFECT: {
             unitTargets.forEach(({ unitCard }) => {
                 passiveEffects.forEach((passiveEffect) => {
-                    if (!unitCard.passiveEffects.includes(passiveEffect)) {
-                        unitCard.passiveEffects.push(passiveEffect);
-
-                        // handle adding attacks to units getting 'quick'
-                        if (
-                            passiveEffect === PassiveEffect.QUICK &&
-                            unitCard.isFresh
-                        ) {
-                            unitCard.numAttacksLeft = unitCard.numAttacks;
-                            unitCard.isFresh = false;
-                        }
-                    }
+                    grantPassiveEffectForUnit({ unitCard, passiveEffect });
                 });
             });
             return clonedBoard;
@@ -827,10 +856,27 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.LOSE_MAGICAL_AND_RANGED: {
+            unitTargets.forEach(({ unitCard }) => {
+                unitCard.isMagical = false;
+                unitCard.isRanged = false;
+            });
+            return clonedBoard;
+        }
         case EffectType.MILL: {
             playerTargets.forEach((player) => {
                 player.cemetery = player.cemetery.concat(
                     player.deck.splice(-effectStrength)
+                );
+            });
+            return clonedBoard;
+        }
+        case EffectType.MODIFY_ATTACKS_PER_TURN: {
+            unitTargets.forEach(({ unitCard }) => {
+                unitCard.numAttacks = effectStrength;
+                unitCard.numAttacksLeft = Math.min(
+                    unitCard.numAttacksLeft,
+                    effectStrength
                 );
             });
             return clonedBoard;
@@ -849,7 +895,6 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.RAMP: {
-            const { resourceType } = effect;
             if (!resourceType) return clonedBoard;
             playerTargets.forEach((player) => {
                 for (let i = 0; i < Math.min(50, effectStrength); i += 1) {
@@ -861,7 +906,6 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.RAMP_FOR_TURN: {
-            const { resourceType } = effect;
             if (!resourceType) return clonedBoard;
             playerTargets.forEach((player) => {
                 player.resourcePool[resourceType] =
@@ -870,7 +914,6 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.RAMP_FROM_HAND: {
-            const { resourceType } = effect;
             if (!resourceType) return clonedBoard;
             playerTargets.forEach((player) => {
                 const cardsToExtractPopulation: ResourceCard[] = [];
@@ -903,10 +946,122 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.REDUCE_CARDS_COSTING_OVER_AMOUNT: {
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (card.cardType !== CardType.RESOURCE) {
+                        const totalCostForCard = getTotalCostForCard(card);
+                        const maxToReduceBy = Math.max(
+                            0,
+                            totalCostForCard - secondaryStrength
+                        );
+                        /**
+                         * Calculates how much to reduce the card by in consideration with
+                         * effect strength and 'amount to reduce to at max' (secondary strength)
+                         *
+                         * For instance: card costs 4 and a bamboo.  effect wants to reduce
+                         * the cost by 3, but can't go below 4 total.  maxToReduceBy is calculated
+                         * to be 1.  amountToReduceBy is the lower of 3 and 1, or 1, reducing
+                         * the cost of the card to 3 and a bamboo (4 total)
+                         */
+                        const amountToReduceBy = Math.min(
+                            effectStrength,
+                            maxToReduceBy
+                        );
+
+                        card.cost.Generic = Math.max(
+                            0,
+                            (card.cost.Generic || 0) - amountToReduceBy
+                        );
+                    }
+                });
+            });
+            return clonedBoard;
+        }
+        case EffectType.REDUCE_LEGENDARY_LEADER_COST: {
+            playerTargets.forEach((player) => {
+                // reduce extra costs but not to exceed zero
+                player.legendaryLeaderExtraCost -= effectStrength;
+                const genericCost = player.legendaryLeader.cost.Generic || 0;
+                if (player.legendaryLeaderExtraCost < -genericCost) {
+                    player.legendaryLeaderExtraCost = -genericCost;
+                }
+                recalculateLegendaryLeaderCost(player);
+            });
+            return clonedBoard;
+        }
         case EffectType.RETURN_FROM_CEMETERY: {
             playerTargets.forEach((player) => {
                 const cardsToExtractPopulation = player.cemetery.filter(
                     (card) => card.name === cardName
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.cemetery = player.cemetery.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
+        case EffectType.RETURN_RESOURCES_FROM_CEMETERY: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.cemetery.filter(
+                    (card) =>
+                        card.id !== sourceId &&
+                        card.cardType === CardType.RESOURCE
+                );
+                const cardsToExtractSample = sampleSize(
+                    cardsToExtractPopulation,
+                    effectStrength
+                );
+                player.cemetery = player.cemetery.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
+        case EffectType.RETURN_SPELLS_AND_RESOURCES_FROM_CEMETERY: {
+            playerTargets.forEach((player) => {
+                const resourcesToExtractPopulation = player.cemetery.filter(
+                    (card) =>
+                        card.id !== sourceId &&
+                        card.cardType === CardType.RESOURCE
+                );
+                const resourcesToExtractSample = sampleSize(
+                    resourcesToExtractPopulation,
+                    effectStrength
+                );
+                const spellsToExtractPopulation = player.cemetery.filter(
+                    (card) =>
+                        card.id !== sourceId && card.cardType === CardType.SPELL
+                );
+                const spellsToExtractSample = sampleSize(
+                    spellsToExtractPopulation,
+                    effectStrength
+                );
+                const cardsToExtractSample = [
+                    ...spellsToExtractSample,
+                    ...resourcesToExtractSample,
+                ];
+                player.cemetery = player.cemetery.filter(
+                    (card) => cardsToExtractSample.indexOf(card) === -1
+                );
+                activePlayer.hand =
+                    activePlayer.hand.concat(cardsToExtractSample);
+            });
+            return clonedBoard;
+        }
+        case EffectType.RETURN_SPELLS_FROM_CEMETERY: {
+            playerTargets.forEach((player) => {
+                const cardsToExtractPopulation = player.cemetery.filter(
+                    (card) =>
+                        card.id !== sourceId && card.cardType === CardType.SPELL
                 );
                 const cardsToExtractSample = sampleSize(
                     cardsToExtractPopulation,
@@ -943,6 +1098,24 @@ export const resolveEffect = (
                 activePlayer.effectQueue.concat(effectsToAdd);
             return clonedBoard;
         }
+        case EffectType.SHUFFLE_CEMETERY_INTO_DECK: {
+            playerTargets.forEach((player) => {
+                const cardsToSample = player.cemetery;
+                const cardsToShuffleBackIntoDeck = sampleSize(
+                    cardsToSample,
+                    effectStrength || cardsToSample.length
+                );
+
+                player.cemetery = player.cemetery.filter(
+                    (card) => !cardsToShuffleBackIntoDeck.includes(card)
+                );
+                // add and shuffle cards
+                player.deck = shuffle(
+                    player.deck.concat(cardsToShuffleBackIntoDeck)
+                );
+            });
+            return clonedBoard;
+        }
         case EffectType.SHUFFLE_FROM_HAND: {
             if (!playerTargets?.length) return clonedBoard;
             const cardsToSample = activePlayer.hand.filter(
@@ -962,6 +1135,24 @@ export const resolveEffect = (
             );
             return clonedBoard;
         }
+        case EffectType.SHUFFLE_HAND_INTO_DECK: {
+            playerTargets.forEach((player) => {
+                const cardsToSample = player.hand;
+                const cardsToShuffleBackIntoDeck = sampleSize(
+                    cardsToSample,
+                    effectStrength || cardsToSample.length
+                );
+
+                player.hand = player.hand.filter(
+                    (card) => !cardsToShuffleBackIntoDeck.includes(card)
+                );
+                // add and shuffle cards
+                player.deck = shuffle(
+                    player.deck.concat(cardsToShuffleBackIntoDeck)
+                );
+            });
+            return clonedBoard;
+        }
         case EffectType.SUMMON_UNITS: {
             const { summonType } = effect;
             if (!summonType) return clonedBoard;
@@ -969,6 +1160,84 @@ export const resolveEffect = (
                 for (let i = 0; i < Math.min(50, effectStrength); i += 1) {
                     player.units.push(makeCard(summonType));
                 }
+            });
+            return clonedBoard;
+        }
+        case EffectType.SWAP_CARDS: {
+            // This effect presumes another player
+            if (
+                !playerTargets?.length ||
+                playerTargets[0].name === activePlayer.name
+            ) {
+                return clonedBoard;
+            }
+            const playerToSwapWith = playerTargets[0];
+            const numCardsToSwap = Math.min(
+                playerToSwapWith.hand.length,
+                activePlayer.hand.length,
+                effectStrength
+            );
+            const cardsToSwapFromOtherPlayer = sampleSize(
+                playerToSwapWith.hand,
+                numCardsToSwap
+            );
+
+            const cardsToSwapFromSelf = sampleSize(
+                activePlayer.hand,
+                numCardsToSwap
+            );
+            const cardsRetainedBySelf = activePlayer.hand.filter(
+                (card) => !cardsToSwapFromSelf.includes(card)
+            );
+            const cardsRetainedByOtherPlayer = playerToSwapWith.hand.filter(
+                (card) => !cardsToSwapFromOtherPlayer.includes(card)
+            );
+
+            activePlayer.hand = [
+                ...cardsRetainedBySelf,
+                ...cardsToSwapFromOtherPlayer,
+            ];
+            playerToSwapWith.hand = [
+                ...cardsRetainedByOtherPlayer,
+                ...cardsToSwapFromSelf,
+            ];
+            return clonedBoard;
+        }
+        case EffectType.TRANSFORM_RESOURCE: {
+            let cardToMake: UnitCard | SpellCard | ResourceCard;
+            const cardPool = ALL_CARDS_DICTIONARY;
+
+            Object.values(cardPool).forEach((card) => {
+                if (card.name === secondaryCardName) {
+                    cardToMake = card;
+                }
+            });
+
+            if (!cardToMake) return clonedBoard;
+
+            playerTargets.forEach((player) => {
+                let cardsToSample: ResourceCard[] = [];
+                if (cardName) {
+                    cardsToSample = player.resources.filter(
+                        (card) => card.name === cardName
+                    );
+                } else {
+                    cardsToSample = player.resources.filter(
+                        (card) => card.name !== secondaryCardName
+                    );
+                }
+
+                const cardsToReplace = sampleSize(
+                    cardsToSample,
+                    effectStrength || cardsToSample.length
+                );
+                player.resources.forEach((resource, index) => {
+                    if (cardsToReplace.includes(resource)) {
+                        player.resources[index] = makeCard(
+                            cardToMake
+                        ) as ResourceCard;
+                    }
+                });
             });
             return clonedBoard;
         }
@@ -992,15 +1261,12 @@ export const resolveEffect = (
                     cardsToSample,
                     effectStrength || cardsToSample.length
                 );
-                for (
-                    let handIndex = 0;
-                    handIndex < player.hand.length;
-                    handIndex += 1
-                ) {
-                    if (cardsToReplace.includes(player.hand[handIndex])) {
-                        player.hand[handIndex] = makeCard(cardToMake);
+
+                player.hand.forEach((card, index) => {
+                    if (cardsToReplace.includes(card)) {
+                        player.hand[index] = makeCard(cardToMake);
                     }
-                }
+                });
             });
             return clonedBoard;
         }
@@ -1022,6 +1288,7 @@ export const resolveEffect = (
             return clonedBoard;
         }
         default:
+            assertUnreachable(effect.type);
             return clonedBoard;
     }
 };
