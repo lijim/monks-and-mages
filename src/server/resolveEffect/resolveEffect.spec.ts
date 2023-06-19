@@ -1789,6 +1789,34 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Reduce card costs, but not past a threshold', () => {
+        it('reduces card costs and respects the minimum cost', () => {
+            board.players[0].hand = [
+                makeCard(UnitCards.CANNON),
+                makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.REDUCE_CARDS_COSTING_OVER_AMOUNT,
+                        strength: 2,
+                        secondaryStrength: 4,
+                        target: TargetTypes.SELF_PLAYER,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect((newBoard.players[0].hand[0] as UnitCard).cost.Generic).toBe(
+                1
+            );
+            expect((newBoard.players[0].hand[1] as UnitCard).cost.Generic).toBe(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO.cost.Generic - 2
+            );
+        });
+    });
+
     describe('Return from cemetery', () => {
         it('returns from cemetery', () => {
             board.players[0].cemetery.push(makeCard(UnitCards.KNIGHT_TEMPLAR));

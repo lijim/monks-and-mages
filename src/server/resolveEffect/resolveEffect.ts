@@ -948,7 +948,35 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.REDUCE_CARDS_COSTING_OVER_AMOUNT: {
-            // TODO
+            playerTargets.forEach((player) => {
+                player.hand.forEach((card) => {
+                    if (card.cardType !== CardType.RESOURCE) {
+                        const totalCostForCard = getTotalCostForCard(card);
+                        const maxToReduceBy = Math.max(
+                            0,
+                            totalCostForCard - secondaryStrength
+                        );
+                        /**
+                         * Calculates how much to reduce the card by in consideration with
+                         * effect strength and 'amount to reduce to at max' (secondary strength)
+                         *
+                         * For instance: card costs 4 and a bamboo.  effect wants to reduce
+                         * the cost by 3, but can't go below 4 total.  maxToReduceBy is calculated
+                         * to be 1.  amountToReduceBy is the lower of 3 and 1, or 1, reducing
+                         * the cost of the card to 3 and a bamboo (4 total)
+                         */
+                        const amountToReduceBy = Math.min(
+                            effectStrength,
+                            maxToReduceBy
+                        );
+                        console.log(maxToReduceBy, effectStrength);
+                        card.cost.Generic = Math.max(
+                            0,
+                            (card.cost.Generic || 0) - amountToReduceBy
+                        );
+                    }
+                });
+            });
             return clonedBoard;
         }
         case EffectType.REDUCE_LEGENDARY_LEADER_COST: {
