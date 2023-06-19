@@ -198,6 +198,27 @@ describe('resolve effect', () => {
             expect(lastCardInHand.hpBuff).toEqual(0);
             expect(lastCardInHand.cost.Generic).toEqual(1);
         });
+
+        it('bounces units under an attack threshold', () => {
+            const squire = makeCard(UnitCards.SQUIRE);
+            const squire2 = makeCard(UnitCards.SQUIRE);
+            squire2.oneCycleAttackBuff = 1;
+            board.players[0].units = [squire, squire2];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK,
+                        target: TargetTypes.ALL_SELF_UNITS,
+                        strength: 2,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].units).toHaveLength(1);
+        });
     });
 
     describe('Buff hand attack', () => {

@@ -5,6 +5,7 @@ export * from './getColorsForCard';
 export * from './getDeckListFromSkeleton';
 export * from './getImgSrcForCard';
 export * from './getSkeletonFromDeckList';
+export * from './getTotalAttackForUnit';
 export * from './getTypeForUnitCard';
 export * from './isCardLegendary';
 export * from './isDeckValidForFomat';

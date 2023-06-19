@@ -34,6 +34,8 @@ import { SpellCards } from '@/cardDb/spells';
 import { Tokens, UnitCards } from '@/cardDb/units';
 import { ALL_CARDS_DICTIONARY } from '@/constants/deckLists';
 import { Resource } from '@/types/resources';
+import { getTotalAttackForUnit } from '@/transformers';
+// import { assertUnreachable } from '@/types/assertUnreachable';
 
 type PerformEffectRequirementParams = {
     addSystemChat?: (message: string) => void;
@@ -454,6 +456,17 @@ export const resolveEffect = (
     switch (effect.type) {
         case EffectType.BOUNCE: {
             unitTargets.forEach(({ player, unitCard }) => {
+                player.units = player.units.filter((card) => card !== unitCard);
+                player.hand.push(unitCard);
+                resetUnitCard(unitCard);
+            });
+            return clonedBoard;
+        }
+        case EffectType.BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK: {
+            unitTargets.forEach(({ player, unitCard }) => {
+                if (getTotalAttackForUnit(unitCard) > effectStrength) {
+                    return;
+                }
                 player.units = player.units.filter((card) => card !== unitCard);
                 player.hand.push(unitCard);
                 resetUnitCard(unitCard);
@@ -1022,6 +1035,7 @@ export const resolveEffect = (
             return clonedBoard;
         }
         default:
+            // assertUnreachable(effect.type);
             return clonedBoard;
     }
 };
