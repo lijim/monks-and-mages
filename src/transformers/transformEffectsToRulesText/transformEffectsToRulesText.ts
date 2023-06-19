@@ -315,11 +315,13 @@ export const transformEffectToRulesText = (
                 } attack of units in ${targetNamePossessive} hand by ${Math.abs(
                     strength
                 )}.`;
+                const subject =
+                    target === TargetTypes.ALL_OPPONENTS ? 'they' : 'you';
                 const failSafeText =
                     secondaryStrength !== 0
-                        ? ` If no units are changed this way, ${
+                        ? ` If ${subject} have no cards afected this way, ${subject} ${
                               secondaryStrength > 0 ? 'gain' : 'lose'
-                          } ${secondaryStrength} life`
+                          } ${Math.abs(secondaryStrength)} life`
                         : '';
                 return `${mainText}${failSafeText}`;
             }
@@ -533,7 +535,7 @@ export const transformEffectToRulesText = (
                 statsOrEffectsToGain = [
                     ...statsOrEffectsToGain,
                     ...passiveEffects.map(
-                        (passiveEffect) => `[${passiveEffect}]`
+                        (passiveEffect) => passiveEffect.split(' (')[0]
                     ),
                 ];
 

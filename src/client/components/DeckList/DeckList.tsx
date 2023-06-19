@@ -22,7 +22,7 @@ interface DeckListCardSlotProps {
 
 // controls positioning, hover of a CardGridItem in the deck list
 export const DeckListCardSlot = styled.div<DeckListCardSlotProps>`
-    height: 35px;
+    height: 33px;
     z-index: 0;
     transition: all 0.2s ease-in-out 0.1s;
     :hover:not(:last-of-type) {

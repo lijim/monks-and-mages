@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { CardRarity, UnitCard } from '@/types/cards';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -46,6 +46,33 @@ const LANCER: UnitCard = makeCard({
     isSoldier: true,
     passiveEffects: [],
     rarity: CardRarity.COMMON,
+});
+
+const DAVID_THE_DETERMINED: UnitCard = makeCard({
+    artistName: 'Jeff Jacobs',
+    artistUrl: 'https://pixabay.com/users/jeffjacobs1990-7438739/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/jesus-christ-god-holy-spirit-4779546/',
+    name: 'David the Determined',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/01/20/05/35/jesus-4779546_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.GAIN_STATS_EQUAL_TO_COST,
+        },
+    ],
+    totalHp: 0,
+    attack: 0,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const INFANTRY_OFFICER: UnitCard = makeCard({
@@ -109,6 +136,28 @@ const QUESTING_DUO: UnitCard = makeCard({
     totalHp: 2,
     attack: 1,
     numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const TOWN_TROOPS: UnitCard = makeCard({
+    artistName: 'kirill_makes_pics',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/king-charles-king-charles-3026472/',
+    name: 'Town Troops',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/12/18/16/13/king-charles-3026472_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 4,
+    attack: 1,
+    numAttacks: 0,
     isRanged: false,
     isMagical: false,
     isSoldier: true,
@@ -296,6 +345,40 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
     ],
     totalHp: 0,
     attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const EXPEDITION_LEADER: UnitCard = makeCard({
+    artistName: 'Elias (Schäferle)',
+    artistUrl: 'https://pixabay.com/users/sch%C3%A4ferle-3372715/',
+    originalImagePage:
+        'https://pixabay.com/photos/panorama-middle-ages-campaign-to-2962730/',
+    name: 'Expedition Leader',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/11/19/13/03/panorama-2962730_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_MINIMUM_ATTACK_ON_A_UNIT,
+                    strength: 4,
+                },
+            ],
+            type: EffectType.DRAW,
+            strength: 3,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
@@ -818,6 +901,8 @@ export const SOLDIERS = {
     QUESTING_DUO,
     UNHOLY_VETERAN,
     SPIRIT_GUARDIAN,
+    TOWN_TROOPS,
+    DAVID_THE_DETERMINED,
     // 2
     SWORDS_MASTER,
     ARDENT_SPIRITUALIST,
@@ -825,6 +910,7 @@ export const SOLDIERS = {
     ADVENTURER,
     ORCISH_CORPORAL,
     // 3
+    EXPEDITION_LEADER,
     MARTIAL_TRAINER,
     AMPHIBIOUS_SHINOBI,
     DRAGON_MIST_WARRIOR,

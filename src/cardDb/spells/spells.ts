@@ -739,6 +739,24 @@ const GALACTIC_HOWL = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const SCATTER_TO_SHREDS = makeCard({
+    artistName: 'Pixabay user 652234',
+    artistUrl: 'https://pixabay.com/users/652234-652234/',
+    originalImagePage:
+        'https://pixabay.com/photos/graveyard-dig-tombstone-figure-1670233/',
+    name: 'Scatter to Shreds',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/09/14/19/51/cemetery-1670233_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.MILL,
+            strength: 5,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const ZEN_STANCE = makeCard({
     name: 'Zen Stance',
     // https://pixabay.com/illustrations/meditation-spiritual-yoga-1384758/
@@ -950,13 +968,33 @@ const BESTOW_KNIGHTHOOD = makeCard({
             strength: 3,
             requirements: [
                 {
-                    type: EffectRequirementsType.RETURN_LOWEST_COST_UNIT_TO_HAND,
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    cardType: CardType.UNIT,
                     strength: 1,
                 },
             ],
         },
     ],
     rarity: CardRarity.COMMON,
+});
+
+const SABOTAGE = makeCard({
+    artistName: 'Michale Wuensch',
+    artistUrl: 'https://pixabay.com/users/michaelwuensch-4163668/',
+    originalImagePage:
+        'https://pixabay.com/photos/ninja-warrior-japan-assassin-sword-2007576/',
+    name: 'Sabotage',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/01/25/10/39/ninja-2007576_1280.jpg',
+    cost: { [Resource.IRON]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE,
+            target: TargetTypes.ALL_OPPONENTS,
+            strength: -1,
+            secondaryStrength: -3,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const BANDIT_AMBUSH = makeCard({
@@ -1038,6 +1076,24 @@ const POISON_MUSHROOM = makeCard({
     ],
     rarity: CardRarity.COMMON,
     isTokenOnly: true,
+});
+
+const SURROUND_WITH_VINES = makeCard({
+    artistName: 'congerdesign',
+    artistUrl: 'https://pixabay.com/users/congerdesign-509903/',
+    originalImagePage:
+        'https://pixabay.com/photos/wall-stone-wall-vine-leaves-1671848/',
+    name: 'Surround with Vines',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/09/15/15/26/wall-1671848_1280.jpg',
+    cost: { [Resource.BAMBOO]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.MODIFY_ATTACKS_PER_TURN,
+            strength: 0,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    rarity: CardRarity.COMMON,
 });
 
 const ARCHERY_AT_SUNSET = makeCard({
@@ -1981,6 +2037,7 @@ export const SpellCards = {
     ZEN_STANCE,
     BEAM_ME_UP,
     GALACTIC_HOWL,
+    SCATTER_TO_SHREDS,
     PRAY_TO_ORION,
     CATS_OUT_OF_THE_BAG,
     STARRY_ILLUSION,
@@ -1992,6 +2049,7 @@ export const SpellCards = {
     // Iron
     THROW_SHURIKEN,
     BESTOW_KNIGHTHOOD,
+    SABOTAGE,
     BANDIT_AMBUSH,
     PERSECUTE,
     MAJOR_EARTHQUAKE,
@@ -1999,6 +2057,7 @@ export const SpellCards = {
     // Bamboo
     TEA,
     POISON_MUSHROOM,
+    SURROUND_WITH_VINES,
     ARCHERY_AT_SUNSET,
     GENTLE_ENCOURAGEMENT,
     FEED_TEAM,

@@ -70,6 +70,41 @@ const MARKET_MAKER: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const THE_MAD_HATTER_AND_FRIENDS: UnitCard = makeCard({
+    artistName: 'Arthur Rackham',
+    artistUrl: 'https://pixabay.com/users/prawny-162579/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/vintage-book-illustration-1794705/',
+    name: 'The Mad Hatter and Friends',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/11/03/15/41/vintage-1794705_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            requirements: [
+                {
+                    type: EffectRequirementsType.ARE_HOLDING_A_SPECIFIC_CARDNAME,
+                    cardName: 'Tea',
+                    strength: 1,
+                },
+            ],
+            type: EffectType.EXTRACT_SPELL_CARDS,
+            strength: 2,
+        },
+    ],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
 const ALERT_FELINE: UnitCard = makeCard({
     name: 'Alert Feline',
     imgSrc: 'https://images.pexels.com/photos/10140329/pexels-photo-10140329.jpeg',
@@ -316,6 +351,41 @@ const NOVICE_ASTRONOMER: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const GURU_RIPONCHE: UnitCard = makeCard({
+    artistName: 'Dean Moriarty',
+    artistUrl: 'https://pixabay.com/users/terimakasih0-624267/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/snake-serpent-buddha-thailand-1055963/',
+    name: 'Guru Riponche',
+    imgSrc: 'https://cdn.pixabay.com/photo/2015/11/22/08/31/snake-1055963_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY,
+                    strength: 4,
+                },
+            ],
+            type: EffectType.SUMMON_UNITS,
+            summonType: Tokens.SERPENT,
+            strength: 2,
+        },
+    ],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
 const ENERGY_ENHANCER: UnitCard = makeCard({
     name: 'Energy Enhancer',
     imgSrc: 'https://images.pexels.com/photos/4646238/pexels-photo-4646238.jpeg',
@@ -361,6 +431,41 @@ const PEGASUS: UnitCard = makeCard({
     isSoldier: false,
     passiveEffects: [PassiveEffect.ETHEREAL],
     rarity: CardRarity.COMMON,
+});
+
+const STARDUST_SEEKER: UnitCard = makeCard({
+    artistName: 'Dylan Leagh',
+    artistUrl: 'https://pixabay.com/users/dylanleagh-22758146/',
+    originalImagePage:
+        'https://pixabay.com/photos/waterfall-mountains-fog-water-7468593/',
+    name: 'Stardust Seeker',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/09/20/19/13/waterfall-7468593_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY,
+                    strength: 4,
+                },
+            ],
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isLegendary: false,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const QUARRY_WORKER: UnitCard = makeCard({
@@ -815,6 +920,66 @@ const TUNDRA_FROST_PACK: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const CURIOUS_CATFISH: UnitCard = makeCard({
+    artistName: 'F. Muhammad',
+    artistUrl: 'https://pixabay.com/users/artisticoperations-4161274/',
+    originalImagePage:
+        'https://pixabay.com/photos/cat-fish-amphibious-sea-creature-4625313/',
+    name: 'Curious Catfish',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/11/14/04/53/cat-fish-4625313_1280.jpg',
+    cost: {
+        [Resource.WATER]: 4,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEPLOY_LEGENDARY_LEADER,
+            target: TargetTypes.ALL_PLAYERS,
+        },
+    ],
+    totalHp: 5,
+    attack: 4,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
+const ALGAE_HARVESTER: UnitCard = makeCard({
+    artistName: 'Quang NGUYEN DANG',
+    artistUrl: 'https://pixabay.com/users/dangquangn-16743885/',
+    originalImagePage:
+        'https://pixabay.com/photos/pink-algae-pink-algae-fisherman-5389441/',
+    name: 'Algae Harvester',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/07/10/04/06/pink-algae-5389441_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.TRANSFORM_RESOURCE,
+            target: TargetTypes.PLAYER,
+            strength: 2,
+            cardName: 'Water',
+            secondaryCardName: 'Bamboo',
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isLegendary: false,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const HUNGRY_GOAT: UnitCard = makeCard({
     artistName: '0fjd125gk87',
     artistUrl: 'https://pixabay.com/users/0fjd125gk87-51581/',
@@ -898,8 +1063,73 @@ const RUFOUS_HUMMINGBIRD: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const NEZHA_SCALE_HUNTER: UnitCard = makeCard({
+    artistName: 'Mystic Art Design',
+    artistUrl: 'https://pixabay.com/users/mysticsartdesign-322497/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/dragon-amazone-temple-fantasy-3345081/',
+    name: 'Nezha, Scale Hunter',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/04/23/18/12/dragon-3345081_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.RAMP_FOR_TURN,
+            strength: 1,
+            resourceType: Resource.FIRE,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isLegendary: true,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
+const NOMADIC_GUIDE: UnitCard = makeCard({
+    artistName: 'Mystic Art Design',
+    artistUrl: 'https://pixabay.com/users/mysticsartdesign-322497/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/dragon-amazone-temple-fantasy-3345081/',
+    name: 'Nomadic Guide',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/04/04/04/43/yak-5000817_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+            requirements: [
+                {
+                    type: EffectRequirementsType.CONTROL_A_GENERIC_PRODUCING_RESOURCE,
+                    strength: 1,
+                },
+            ],
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isLegendary: false,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const GRIFFIN_FRIEND: UnitCard = makeCard({
-    artistName: 'Prawny',
+    artistName: 'Arthur Rackham',
     artistUrl: 'https://pixabay.com/users/prawny-162579/',
     originalImagePage:
         'https://pixabay.com/illustrations/vintage-book-illustration-1794782/',
@@ -993,14 +1223,17 @@ export const MISC_UNITS = {
     SAMBAR_DEER,
     MARKET_MAKER,
     BAMBOO_FARMER,
+    THE_MAD_HATTER_AND_FRIENDS,
     TEA_FARMER,
     CITY_GUARD_WOLF,
     LAKE_ZOMBIE,
     PASTURE_EXPLORER,
     RELAXED_ROWBOATER,
     NOVICE_ASTRONOMER,
+    GURU_RIPONCHE,
     ENERGY_ENHANCER,
     PEGASUS,
+    STARDUST_SEEKER,
     QUARRY_WORKER,
     TEMPLE_DEVOTEE,
     ELITE_WEAPONS_MASTER,
@@ -1022,8 +1255,12 @@ export const MISC_UNITS = {
     HUNGRY_GOAT,
     RIVER_WANDERER,
     TUNDRA_FROST_PACK,
+    CURIOUS_CATFISH,
+    ALGAE_HARVESTER,
     INCONSPICUOUS_CRAB,
     RUFOUS_HUMMINGBIRD,
+    NEZHA_SCALE_HUNTER,
+    NOMADIC_GUIDE,
     GRIFFIN_FRIEND,
     PET_DEMON,
     RULER_OF_THE_JUNGLE,

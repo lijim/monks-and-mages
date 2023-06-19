@@ -105,7 +105,9 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
             >
                 {numEffectsToDisplay === 0 && <i>{description}</i>}
                 {passiveEffects.map((effect) => (
-                    <div key={effect}>{effect}</div>
+                    <div key={effect}>
+                        {card.omitReminderText ? effect.split(' (')[0] : effect}
+                    </div>
                 ))}{' '}
                 {numAttacks === 0 && <div>Cannot attack</div>}
                 {numAttacks > 1 && <div>{numAttacks} attacks per turn</div>}

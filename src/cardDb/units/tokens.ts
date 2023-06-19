@@ -76,6 +76,28 @@ const DEMON: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const SERPENT: UnitCard = makeCard({
+    artistName: 'Angela (ambquinn)',
+    artistUrl: 'https://pixabay.com/users/ambquinn-4464111/',
+    originalImagePage:
+        'https://pixabay.com/photos/green-tree-python-python-constrictor-7755160/',
+    name: 'Serpent',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/01/30/09/26/green-tree-python-7755160_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.ETHEREAL],
+    rarity: CardRarity.COMMON,
+});
+
 const FALCON: UnitCard = makeCard({
     name: 'Falcon',
     imgSrc: 'https://images.pexels.com/photos/3674987/pexels-photo-3674987.jpeg',
@@ -248,6 +270,7 @@ const OCTOPUS: UnitCard = makeCard({
 
 export const Tokens = {
     DEMON,
+    ELEPHANT,
     FALCON,
     FROG,
     FRIAR,
@@ -255,9 +278,9 @@ export const Tokens = {
     LION,
     MANTA_RAY,
     MANATEE,
-    ELEPHANT,
     OCTOPUS,
     PIRATE_PARROT,
+    SERPENT,
     SHARK,
     SCORPION,
 };

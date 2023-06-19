@@ -291,8 +291,9 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE: {
-            let hasACardBeenBuffed = false;
             playerTargets.forEach((player) => {
+                let hasACardBeenBuffed = false;
+
                 player.hand.forEach((card) => {
                     if (card.cardType !== CardType.UNIT) return;
                     if (card.passiveEffects.includes(PassiveEffect.STEADY)) {
@@ -310,10 +311,11 @@ export const resolveEffect = (
                         hasACardBeenBuffed = true;
                     }
                 });
+
+                if (!hasACardBeenBuffed) {
+                    player.health += secondaryStrength;
+                }
             });
-            if (!hasACardBeenBuffed) {
-                activePlayer.health += secondaryStrength;
-            }
             applyWinState(clonedBoard);
             return clonedBoard;
         }
@@ -364,6 +366,7 @@ export const resolveEffect = (
                     if (unit.passiveEffects.length > 0) return;
                     if (unit.enterEffects.length > 0) return;
                     if (unit.damagePlayerEffects?.length > 0) return;
+                    if (unit.numAttacks !== 1) return;
                     unit.hpBuff += effectStrength;
                     unit.attackBuff += effectStrength;
                 });

@@ -253,10 +253,11 @@ describe('resolve effect', () => {
             });
         });
 
-        it('buffs attack of units on your hand with a failsafe life change', () => {
+        it('deals damage to players who have no units to nerf', () => {
             const squire = makeCard(UnitCards.SQUIRE);
             squire.passiveEffects = [PassiveEffect.STEADY];
             board.players[0].hand = [squire];
+            board.players[1].hand = [];
 
             const newBoard = resolveEffect(
                 board,
@@ -264,8 +265,7 @@ describe('resolve effect', () => {
                     effect: {
                         type: EffectType.BUFF_HAND_ATTACK_WITH_FAILSAFE_LIFECHANGE,
                         strength: 2,
-                        secondaryStrength: 3,
-                        target: TargetTypes.SELF_PLAYER,
+                        secondaryStrength: -3,
                     },
                 },
                 'Timmy'
@@ -274,8 +274,8 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].hand[0]).toMatchObject({
                 attackBuff: 0,
             });
-            expect(newBoard.players[0].health).toEqual(
-                PlayerConstants.STARTING_HEALTH + 3
+            expect(newBoard.players[1].health).toEqual(
+                PlayerConstants.STARTING_HEALTH - 3
             );
         });
     });
