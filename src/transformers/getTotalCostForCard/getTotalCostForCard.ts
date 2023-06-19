@@ -1,5 +1,5 @@
-import { Card, CardType } from '@/types/cards';
 import { sum } from 'lodash';
+import { Card, CardType } from '@/types/cards';
 
 export const getTotalCostForCard = (card: Card): number => {
     if (card.cardType === CardType.RESOURCE) {

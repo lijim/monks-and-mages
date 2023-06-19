@@ -2,8 +2,8 @@ import { UnitCard } from '@/types/cards';
 import { PassiveEffect } from '@/types/effects';
 
 type Params = {
-    unitCard: UnitCard;
     passiveEffect: PassiveEffect;
+    unitCard: UnitCard;
 };
 
 /**

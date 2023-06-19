@@ -4,6 +4,7 @@ import difference from 'lodash.difference';
 import sampleSize from 'lodash.samplesize';
 
 import shuffle from 'lodash.shuffle';
+import { max } from 'lodash';
 import { ResolveEffectParams } from '@/types';
 import { Board, Player } from '@/types/board';
 import {
@@ -33,7 +34,6 @@ import {
 import { assertUnreachable } from '@/types/assertUnreachable';
 import { performEffectRequirement } from '../performEffectRequirement';
 import { LEGENDARY_LEADER_INCREMENTAL_TAX } from '@/constants/gameConstants';
-import { max } from 'lodash';
 
 export const resolveEffect = (
     board: Board,
@@ -509,6 +509,7 @@ export const resolveEffect = (
 
                 player.isLegendaryLeaderDeployed = true;
             });
+            return clonedBoard;
         }
         case EffectType.DESTROY_RESOURCE: {
             playerTargets.forEach((player) => {
@@ -856,10 +857,27 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.LOSE_MAGICAL_AND_RANGED: {
+            unitTargets.forEach(({ unitCard }) => {
+                unitCard.isMagical = false;
+                unitCard.isRanged = false;
+            });
+            return clonedBoard;
+        }
         case EffectType.MILL: {
             playerTargets.forEach((player) => {
                 player.cemetery = player.cemetery.concat(
                     player.deck.splice(-effectStrength)
+                );
+            });
+            return clonedBoard;
+        }
+        case EffectType.MODIFY_ATTACKS_PER_TURN: {
+            unitTargets.forEach(({ unitCard }) => {
+                unitCard.numAttacks = effectStrength;
+                unitCard.numAttacksLeft = Math.min(
+                    unitCard.numAttacksLeft,
+                    effectStrength
                 );
             });
             return clonedBoard;

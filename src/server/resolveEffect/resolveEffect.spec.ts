@@ -1606,6 +1606,23 @@ describe('resolve effect', () => {
         });
     });
 
+    describe('Losing magical / ranged', () => {
+        it('makes units lose magical / ranged', () => {
+            board.players[1].units = [makeUnitCard(UnitCards.FIRE_MAGE)];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.LOSE_MAGICAL_AND_RANGED,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].units[0].isMagical).toBe(false);
+            expect(newBoard.players[1].units[0].isRanged).toBe(false);
+        });
+    });
+
     describe('Mill', () => {
         it('mills from the top of the deck', () => {
             const expectedCardNameToMill =
@@ -1624,6 +1641,28 @@ describe('resolve effect', () => {
             expect(newBoard.players[0].cemetery[4].name).toBe(
                 expectedCardNameToMill
             );
+        });
+    });
+
+    describe('Modify attacks per turn', () => {
+        it('changes attacks per turn and removes attacks', () => {
+            const squire = makeUnitCard(UnitCards.SQUIRE);
+            board.players[1].units = [squire];
+            squire.numAttacksLeft = 1;
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.MODIFY_ATTACKS_PER_TURN,
+                        strength: 0,
+                        target: TargetTypes.ALL_OPPOSING_UNITS,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[1].units[0].numAttacks).toBe(0);
+            expect(newBoard.players[1].units[0].numAttacksLeft).toBe(0);
         });
     });
 
