@@ -35,10 +35,21 @@ const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.UNIT]: 'any unit',
 };
 
-const TARGET_TYPES_TO_CONTROLLED_BY = {
+const TARGET_TYPES_FOR_LEADOFF = {
     ...TARGET_TYPES_TO_RULES_TEXT,
-    [TargetTypes.SELF_PLAYER]: 'you',
-    [TargetTypes.ALL_OPPONENTS]: 'an opponent',
+    [TargetTypes.ALL_OPPONENTS]: 'each opponent',
+    [TargetTypes.ALL_OPPOSING_UNITS]: 'each opposing units',
+    [TargetTypes.ALL_PLAYERS]: 'each players',
+    [TargetTypes.ALL_SELF_UNITS_CEMETERY]: 'all units in your cemetery',
+    [TargetTypes.ALL_SELF_UNITS]: 'all your units',
+    [TargetTypes.ALL_UNITS]: 'all units',
+    [TargetTypes.ANY]: 'any target',
+    [TargetTypes.OPPONENT]: 'any opponent',
+    [TargetTypes.OPPOSING_UNIT]: 'any opposing unit',
+    [TargetTypes.OWN_UNIT]: 'any unit controlled by you',
+    [TargetTypes.PLAYER]: 'any player',
+    [TargetTypes.SELF_PLAYER]: 'yourself',
+    [TargetTypes.UNIT]: 'any unit',
 };
 
 const TARGET_TYPES_TO_RULES_TEXT_NON_SOLDIERS = {
@@ -263,7 +274,7 @@ export const transformEffectToRulesText = (
     } = effect;
     const targetOrDefault = target || getDefaultTargetForEffect(type);
     const targetName = TARGET_TYPES_TO_RULES_TEXT[targetOrDefault];
-    const controlledBySubject = TARGET_TYPES_TO_CONTROLLED_BY[targetOrDefault];
+    const leadOffForText = TARGET_TYPES_FOR_LEADOFF[targetOrDefault];
     const targetNamePossessive =
         TARGET_TYPES_TO_RULES_TEXT_POSSESIVE[targetOrDefault];
     const pluralizationEffectStrength = strength > 1 ? 's' : '';
@@ -673,11 +684,13 @@ export const transformEffectToRulesText = (
                 return `Swap ${strength} cards at random with ${targetName}.  If a player has fewer cards, swap up to ${strength} cards instead`;
             }
             case EffectType.TRANSFORM_RESOURCE: {
-                return `Turn ${strength || 'all'} ${
+                return `For ${leadOffForText}, turn ${
+                    strength || 'all'
+                } of their ${
                     cardName
                         ? `[${cardName}]`
                         : `non-[${secondaryCardName}] resource`
-                } cards controlled by ${controlledBySubject} into [${secondaryCardName}]${
+                } cards into [${secondaryCardName}]${
                     strength === undefined ? '' : ' at random'
                 }`;
             }

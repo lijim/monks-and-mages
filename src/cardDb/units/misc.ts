@@ -1122,6 +1122,37 @@ const NEZHA_SCALE_HUNTER: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const CAMEL_PACK: UnitCard = makeCard({
+    artistName: 'Mystic Art Design',
+    artistUrl: 'https://pixabay.com/users/mysticsartdesign-322497/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/dragon-amazone-temple-fantasy-3345081/',
+    name: 'Camel Pack',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/11/27/14/14/camel-7619884_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.TRANSFORM_RESOURCE,
+            strength: 1,
+            secondaryCardName: 'Treacherous Desert',
+            target: TargetTypes.ALL_PLAYERS,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isLegendary: false,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const NOMADIC_GUIDE: UnitCard = makeCard({
     artistName: 'Mystic Art Design',
     artistUrl: 'https://pixabay.com/users/mysticsartdesign-322497/',
@@ -1290,6 +1321,7 @@ export const MISC_UNITS = {
     INCONSPICUOUS_CRAB,
     RUFOUS_HUMMINGBIRD,
     NEZHA_SCALE_HUNTER,
+    CAMEL_PACK,
     NOMADIC_GUIDE,
     GRIFFIN_FRIEND,
     PET_DEMON,
