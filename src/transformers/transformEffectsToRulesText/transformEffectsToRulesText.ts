@@ -17,6 +17,7 @@ import {
     Resource,
 } from '@/types/resources';
 import { joinPhrases } from '../joinPhrases/joinPhrases';
+import { assertUnreachable } from '@/types/assertUnreachable';
 
 const TARGET_TYPES_TO_RULES_TEXT = {
     [TargetTypes.ALL_OPPONENTS]: 'all opponents',
@@ -687,6 +688,7 @@ export const transformEffectToRulesText = (
                 )} goes to the bottom of ${controllerPossessiveText} library.  For each unit returned this way, the unit's controller draw a card`;
             }
             default: {
+                assertUnreachable(effect.type);
                 return '';
             }
         }

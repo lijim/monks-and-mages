@@ -12,7 +12,7 @@
         "ci": "yarn lint && jest --maxWorkers=2",
         "dev": "npx webpack --watch & nodemon .",
         "heroku-cleanup": "yarn install --dev",
-        "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+        "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix && yarn tsc --skipLibCheck --noEmit",
         "start": "npx webpack & cp src/server/homepage.html dist/homepage.html & node .",
         "test": "yarn lint && jest --watchAll"
     },
