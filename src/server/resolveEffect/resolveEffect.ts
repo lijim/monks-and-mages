@@ -947,6 +947,14 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.REDUCE_CARDS_COSTING_OVER_AMOUNT: {
+            // TODO
+            return clonedBoard;
+        }
+        case EffectType.REDUCE_LEGENDARY_LEADER_COST: {
+            // TODO
+            return clonedBoard;
+        }
         case EffectType.RETURN_FROM_CEMETERY: {
             playerTargets.forEach((player) => {
                 const cardsToExtractPopulation = player.cemetery.filter(
@@ -962,6 +970,18 @@ export const resolveEffect = (
                 activePlayer.hand =
                     activePlayer.hand.concat(cardsToExtractSample);
             });
+            return clonedBoard;
+        }
+        case EffectType.RETURN_RESOURCES_FROM_CEMETERY: {
+            // TODO
+            return clonedBoard;
+        }
+        case EffectType.RETURN_SPELLS_AND_RESOURCES_FROM_CEMETERY: {
+            // TODO
+            return clonedBoard;
+        }
+        case EffectType.RETURN_SPELLS_FROM_CEMETERY: {
+            // TODO - make sure can't return itself
             return clonedBoard;
         }
         case EffectType.REVIVE: {
@@ -987,6 +1007,10 @@ export const resolveEffect = (
                 activePlayer.effectQueue.concat(effectsToAdd);
             return clonedBoard;
         }
+        case EffectType.SHUFFLE_CEMETERY_INTO_DECK: {
+            // TODO
+            return clonedBoard;
+        }
         case EffectType.SHUFFLE_FROM_HAND: {
             if (!playerTargets?.length) return clonedBoard;
             const cardsToSample = activePlayer.hand.filter(
@@ -1006,6 +1030,10 @@ export const resolveEffect = (
             );
             return clonedBoard;
         }
+        case EffectType.SHUFFLE_HAND_INTO_DECK: {
+            // TODO
+            return clonedBoard;
+        }
         case EffectType.SUMMON_UNITS: {
             const { summonType } = effect;
             if (!summonType) return clonedBoard;
@@ -1014,6 +1042,10 @@ export const resolveEffect = (
                     player.units.push(makeCard(summonType));
                 }
             });
+            return clonedBoard;
+        }
+        case EffectType.SWAP_CARDS: {
+            // TODO
             return clonedBoard;
         }
         case EffectType.TRANSMUTE: {
@@ -1048,6 +1080,10 @@ export const resolveEffect = (
             });
             return clonedBoard;
         }
+        case EffectType.TRANSFORM_RESOURCE: {
+            // TODO
+            return clonedBoard;
+        }
         case EffectType.TUCK: {
             unitTargets.forEach(({ player, unitCard }) => {
                 player.units = player.units.filter((card) => card !== unitCard);
@@ -1066,7 +1102,7 @@ export const resolveEffect = (
             return clonedBoard;
         }
         default:
-            // assertUnreachable(effect.type);
+            assertUnreachable(effect.type);
             return clonedBoard;
     }
 };
