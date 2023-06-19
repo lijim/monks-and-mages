@@ -1099,8 +1099,22 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.SHUFFLE_CEMETERY_INTO_DECK: {
-            // TODO
-            return clonedBoard;
+            playerTargets.forEach((player) => {
+                const cardsToSample = player.cemetery;
+                const cardsToShuffleBackIntoDeck = sampleSize(
+                    cardsToSample,
+                    effectStrength || cardsToSample.length
+                );
+
+                player.cemetery = player.cemetery.filter(
+                    (card) => !cardsToShuffleBackIntoDeck.includes(card)
+                );
+                // add and shuffle cards
+                player.deck = shuffle(
+                    player.deck.concat(cardsToShuffleBackIntoDeck)
+                );
+                return clonedBoard;
+            });
         }
         case EffectType.SHUFFLE_FROM_HAND: {
             if (!playerTargets?.length) return clonedBoard;
@@ -1122,7 +1136,21 @@ export const resolveEffect = (
             return clonedBoard;
         }
         case EffectType.SHUFFLE_HAND_INTO_DECK: {
-            // TODO
+            playerTargets.forEach((player) => {
+                const cardsToSample = player.hand;
+                const cardsToShuffleBackIntoDeck = sampleSize(
+                    cardsToSample,
+                    effectStrength || cardsToSample.length
+                );
+
+                player.hand = player.hand.filter(
+                    (card) => !cardsToShuffleBackIntoDeck.includes(card)
+                );
+                // add and shuffle cards
+                player.deck = shuffle(
+                    player.deck.concat(cardsToShuffleBackIntoDeck)
+                );
+            });
             return clonedBoard;
         }
         case EffectType.SUMMON_UNITS: {

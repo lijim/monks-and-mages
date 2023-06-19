@@ -1967,7 +1967,7 @@ describe('resolve effect', () => {
         });
     });
 
-    describe('Shuffle from hand', () => {
+    describe('Shuffle from hand into a players deck', () => {
         it('shuffles X cards from hand into a players deck', () => {
             board.players[0].hand = [
                 makeCard(UnitCards.CANNON),
@@ -1992,6 +1992,54 @@ describe('resolve effect', () => {
 
             expect(newBoard.players[0].hand).toHaveLength(1);
             expect(newBoard.players[1].deck).toHaveLength(deckLength + 2);
+        });
+    });
+
+    describe('Shuffling different areas into deck', () => {
+        it('shuffles cards from cemetery into deck', () => {
+            board.players[0].cemetery = [
+                makeUnitCard(UnitCards.ASSASSIN),
+                makeUnitCard(UnitCards.ASSASSIN),
+                makeUnitCard(UnitCards.ASSASSIN),
+            ];
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.SHUFFLE_CEMETERY_INTO_DECK,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].deck).toHaveLength(
+                PlayerConstants.STARTING_DECK_SIZE -
+                    PlayerConstants.STARTING_HAND_SIZE +
+                    3
+            );
+            expect(newBoard.players[1].deck).toHaveLength(
+                PlayerConstants.STARTING_DECK_SIZE -
+                    PlayerConstants.STARTING_HAND_SIZE
+            );
+        });
+
+        it('shuffles cards from hand into deck', () => {
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.SHUFFLE_HAND_INTO_DECK,
+                        target: TargetTypes.ALL_PLAYERS,
+                    },
+                },
+                'Timmy'
+            );
+
+            expect(newBoard.players[0].hand).toHaveLength(0);
+            expect(newBoard.players[1].deck).toHaveLength(
+                PlayerConstants.STARTING_DECK_SIZE
+            );
         });
     });
 
