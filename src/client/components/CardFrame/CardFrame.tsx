@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import styled, { CSSProp, CSSProperties } from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 import { COLORS_FOR_RARITY, Colors } from '@/constants/colors';
 import { CardRarity } from '@/types/cards';
 
