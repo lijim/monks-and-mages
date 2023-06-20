@@ -129,7 +129,10 @@ export const AdvancedResourceGridItem: React.FC<
                 <NameCell>{card.name}</NameCell>
             </CardHeader>
             <CardImageContainer>
-                <CardImage src={getImgSrcForCard(card)}></CardImage>
+                <CardImage
+                    src={getImgSrcForCard(card)}
+                    objectPosition={card.imgObjectPosition}
+                />
             </CardImageContainer>
 
             <TypesAndRarityLine rarity={card.rarity}>

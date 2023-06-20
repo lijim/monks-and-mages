@@ -94,7 +94,10 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 </CostHeaderCell>
             </CardHeader>
             <CardImageContainer>
-                <CardImage src={getImgSrcForCard(card)}></CardImage>
+                <CardImage
+                    src={getImgSrcForCard(card)}
+                    objectPosition={card.imgObjectPosition}
+                />
             </CardImageContainer>
             <TypesAndRarityLine rarity={card.rarity}>
                 Unit{unitType ? ` - ${unitType}` : ''}

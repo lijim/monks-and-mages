@@ -768,6 +768,14 @@ export const resolveEffect = (
                     0,
                     effectStrength - attackBefore
                 );
+            } else {
+                unitTargets.forEach(({ unitCard }) => {
+                    const attackBefore = getTotalAttackForUnit(unitCard);
+                    unitCard.attackBuff = Math.max(
+                        0,
+                        effectStrength - attackBefore
+                    );
+                });
             }
             return clonedBoard;
         }

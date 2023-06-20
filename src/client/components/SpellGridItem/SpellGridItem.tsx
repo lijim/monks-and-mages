@@ -56,7 +56,10 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
                 </CostHeaderCell>
             </CardHeader>
             <CardImageContainer>
-                <CardImage src={getImgSrcForCard(card)}></CardImage>
+                <CardImage
+                    src={getImgSrcForCard(card)}
+                    objectPosition={card.imgObjectPosition}
+                ></CardImage>
             </CardImageContainer>
             <TypesAndRarityLine rarity={card.rarity}>Spell</TypesAndRarityLine>
             <RulesTextArea shouldCenter={effects.length === 1}>

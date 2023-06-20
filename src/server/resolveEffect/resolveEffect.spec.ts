@@ -1438,6 +1438,27 @@ describe('resolve effect', () => {
             );
         });
 
+        it('gains attack until a threshold (for all units)', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            squire1.oneTurnAttackBuff = -1;
+            board.players[0].units = [squire1, makeUnitCard(UnitCards.SQUIRE)];
+
+            const newBoard = resolveEffect(
+                board,
+                {
+                    effect: {
+                        type: EffectType.GAIN_ATTACK_UNTIL,
+                        target: TargetTypes.ALL_SELF_UNITS,
+                        strength: 3,
+                    },
+                },
+                'Timmy'
+            );
+            expect(newBoard.players[0].units[0].attackBuff).toEqual(
+                3 - (UnitCards.SQUIRE.attack - 1)
+            );
+        });
+
         it('gains magical for units in hand and on board', () => {
             const squire1 = makeUnitCard(UnitCards.SQUIRE);
             const squire2 = makeUnitCard(UnitCards.SQUIRE);
