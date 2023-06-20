@@ -384,7 +384,7 @@ const EXPEDITION_LEADER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
-    rarity: CardRarity.COMMON,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const UNSTOPPABLE_BERSERKER: UnitCard = makeCard({

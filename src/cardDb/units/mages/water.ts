@@ -496,8 +496,11 @@ const THUNDER_SCHEDULER: UnitCard = makeCard({
 });
 
 const MAELSTROM_SEEKER: UnitCard = makeCard({
+    artistName: 'Lance (PhotoVision)',
+    artistUrl: 'https://pixabay.com/users/photovision-677333/',
+    originalImagePage:
+        'https://pixabay.com/photos/man-swirl-wormhole-mountain-top-5724867/',
     name: 'Maelstrom Seeker',
-    // https://pixabay.com/photos/man-swirl-wormhole-mountain-top-5724867/
     imgSrc: 'https://cdn.pixabay.com/photo/2020/11/08/20/06/man-5724867_1280.jpg',
     cost: {
         [Resource.WATER]: 2,

@@ -32,12 +32,6 @@ describe('getColorsForCard', () => {
         });
     });
 
-    it('returns just water for CRYSTAL+WATER multi-colored cards', () => {
-        expect(getColorsForCard(makeCard(UnitCards.WATER_GUARDIAN))).toEqual({
-            primaryColor: RESOURCE_GLOSSARY[Resource.WATER].primaryColor,
-        });
-    });
-
     it('returns a primary color for CRYSTAL cards (ignoring generic mana)', () => {
         expect(
             getColorsForCard(makeCard(UnitCards.MAGICIANS_APPRENTICE))

@@ -70,7 +70,7 @@ export enum EffectRequirementsType {
     ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD = 'Are at a life total below or equal to a threshold number',
     ARE_HOLDING_A_SPECIFIC_CARDNAME = 'Are holding a specific cardname',
     CONTROL_A_GENERIC_PRODUCING_RESOURCE = 'Control a generic producing resource',
-    CONTROL_A_LEGENDARY_LEADER = 'Control a specific card',
+    CONTROL_A_LEGENDARY_LEADER = 'Control a legendary leader',
     CONTROL_RANGED_AND_MAGICAL = 'Control a ranged unit and a magical unit',
     DISCARD_CARD = 'Discard card',
     HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY = 'Have at least a certain threshold of cards in cemetery',
