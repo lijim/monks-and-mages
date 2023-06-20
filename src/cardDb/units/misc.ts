@@ -1332,7 +1332,7 @@ const GOLIATH_OF_THE_SEA: UnitCard = makeCard({
     enterEffects: [
         {
             type: EffectType.BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK,
-            target: TargetTypes.ALL_PLAYERS,
+            target: TargetTypes.ALL_UNITS,
             strength: 2,
         },
         {
