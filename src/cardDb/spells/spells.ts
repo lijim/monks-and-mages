@@ -45,6 +45,42 @@ const EMBER_SPEAR = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const SPRING_FESTIVAL = makeCard({
+    artistName: 'Baggeb',
+    artistUrl: 'https://pixabay.com/users/baggeb-15600954/',
+    originalImagePage:
+        'https://pixabay.com/photos/samurai-warrior-lantern-grass-6492435/',
+    name: 'Spring Festival',
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/07/25/17/26/samurai-6492435_1280.jpg',
+    cost: { [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.RETURN_RESOURCES_FROM_CEMETERY,
+            strength: 2,
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
+const PREDICT_THE_FUTURE = makeCard({
+    artistName: 'Seoowoo Lee',
+    artistUrl: 'https://pixabay.com/users/seowoo_lee-21601663/',
+    originalImagePage:
+        'https://pixabay.com/photos/castle-portals-doors-magic-wizards-7696633/',
+    name: 'Predict the Future',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/01/04/12/26/castle-7696633_1280.jpg',
+    cost: { [Resource.FIRE]: 1 },
+    effects: [
+        {
+            type: EffectType.CURSE_HAND_RESOURCE_TYPE,
+            target: TargetTypes.SELF_PLAYER,
+            resourceType: Resource.FIRE,
+            strength: 1,
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const WARPATH = makeCard({
     name: 'Warpath',
     imgSrc: 'https://cdn.pixabay.com/photo/2018/10/03/16/42/fantasy-3721894_1280.jpg',
@@ -383,6 +419,34 @@ const WHALE_BREACH = makeCard({
     effects: [
         {
             type: EffectType.TUCK_BOTTOM_AND_DRAW,
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
+const CONSULT_THE_ORACLES = makeCard({
+    artistName: 'Angela (ang3law)',
+    artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/ai-generated-merman-myth-creature-7884482/',
+    name: 'Consult the Oracles',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/29/03/09/ai-generated-7884482_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            strength: 1,
+            requirements: [
+                {
+                    type: EffectRequirementsType.DISCARD_CARD,
+                    strength: 1,
+                    cardType: CardType.RESOURCE,
+                },
+            ],
+        },
+        {
+            type: EffectType.DRAW,
+            strength: 1,
         },
     ],
     rarity: CardRarity.COMMON,
@@ -888,6 +952,47 @@ const SCOUR_THE_LIBRARY = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const REWIND_THE_CLOCK = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-clock-statue-light-spiral-2879946/',
+    name: 'Rewind the Clock',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/10/23/02/22/fantasy-2879946_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 2 },
+    effects: [
+        {
+            type: EffectType.RETURN_SPELLS_FROM_CEMETERY,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 2,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const STARE_INTO_SPACE = makeCard({
+    artistName: 'Lance (PhotoVision)',
+    artistUrl: 'https://pixabay.com/users/photovision-677333/',
+    originalImagePage:
+        'https://pixabay.com/photos/ufo-space-stars-science-spaceship-2144977/',
+    name: 'Stare Into Space',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/03/15/02/47/ufo-2144977_1280.jpg',
+    cost: { [Resource.CRYSTAL]: 1, [Resource.GENERIC]: 3 },
+    effects: [
+        {
+            type: EffectType.DRAW,
+            target: TargetTypes.SELF_PLAYER,
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_NO_UNIT_CARDS_IN_DECK,
+                },
+            ],
+            strength: 5,
+        },
+    ],
+    rarity: CardRarity.RARE,
+});
+
 const NIGHT_TEMPEST = makeCard({
     artistName: 'Amy Art-Dreams',
     artistUrl: 'https://pixabay.com/users/art_dreams-5864742/',
@@ -997,6 +1102,29 @@ const SABOTAGE = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const IMPALE_FOE = makeCard({
+    artistName: 'wal_172619',
+    artistUrl: 'https://pixabay.com/users/wal_172619-12138562/',
+    originalImagePage:
+        'https://pixabay.com/photos/sculpture-warrior-equestrian-horse-4759437/',
+    name: 'Impale Foe',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/01/12/07/50/sculpture-4759437_1280.jpg',
+    cost: { [Resource.IRON]: 1, [Resource.GENERIC]: 1 },
+    effects: [
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.OPPOSING_UNIT,
+            requirements: [
+                {
+                    type: EffectRequirementsType.ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD,
+                    strength: 18,
+                },
+            ],
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const BANDIT_AMBUSH = makeCard({
     name: 'Bandit Ambush',
     imgSrc: 'https://images.unsplash.com/photo-1627732922021-e73df99d192e',
@@ -1096,9 +1224,30 @@ const SURROUND_WITH_VINES = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const QUICK_DRAW = makeCard({
+    artistName: 'https://pixabay.com/users/saltonnz-2412651/',
+    artistUrl: 'https://pixabay.com/users/saltonnz-2412651/',
+    originalImagePage:
+        'https://pixabay.com/photos/bhutan-archery-tradition-culture-2502777/',
+    name: 'Quick Draw',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/07/14/04/50/bhutan-2502777_1280.jpg',
+    cost: { [Resource.BAMBOO]: 1 },
+    effects: [
+        {
+            type: EffectType.DEAL_DAMAGE_TO_NON_SOLDIERS,
+            strength: 2,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    rarity: CardRarity.COMMON,
+});
+
 const ARCHERY_AT_SUNSET = makeCard({
+    artistName: 'Paul Barlow',
+    artistUrl: 'https://pixabay.com/users/paulsbarlow-4532995/',
     name: 'Archery at Sunset',
-    // https://pixabay.com/photos/archer-archery-sunset-arrow-bow-2345211/
+    originalImagePage:
+        'https://pixabay.com/photos/archer-archery-sunset-arrow-bow-2345211/',
     imgSrc: 'https://cdn.pixabay.com/photo/2017/05/26/05/36/archer-2345211_1280.jpg',
     cost: { [Resource.BAMBOO]: 1, [Resource.GENERIC]: 1 },
     effects: [
@@ -1987,6 +2136,8 @@ export const SpellCards = {
     // Fire
     SMOLDER,
     EMBER_SPEAR,
+    SPRING_FESTIVAL,
+    PREDICT_THE_FUTURE,
     WARPATH,
     INCINERATION,
     FURY_OF_THE_OWL,
@@ -2009,6 +2160,7 @@ export const SpellCards = {
     COLD_ISOLATION,
     OASIS_RITUAL,
     STIR,
+    CONSULT_THE_ORACLES,
     LIFTOFF,
     WHALE_BREACH,
     GENEROUS_GEYSER,
@@ -2043,12 +2195,15 @@ export const SpellCards = {
     STARRY_ILLUSION,
     SCOUR_THE_LIBRARY,
     HAT_AND_HALO,
+    REWIND_THE_CLOCK,
+    STARE_INTO_SPACE,
     NIGHT_TEMPEST,
     OPEN_NEBULA,
 
     // Iron
     THROW_SHURIKEN,
     BESTOW_KNIGHTHOOD,
+    IMPALE_FOE,
     SABOTAGE,
     BANDIT_AMBUSH,
     PERSECUTE,
@@ -2058,6 +2213,7 @@ export const SpellCards = {
     TEA,
     POISON_MUSHROOM,
     SURROUND_WITH_VINES,
+    QUICK_DRAW,
     ARCHERY_AT_SUNSET,
     GENTLE_ENCOURAGEMENT,
     FEED_TEAM,

@@ -267,7 +267,7 @@ const PASTURE_EXPLORER: UnitCard = makeCard({
             type: EffectType.EXTRACT_CARD,
             target: TargetTypes.SELF_PLAYER,
             cardName: 'Bamboo',
-            strength: 3,
+            strength: 2,
         },
     ],
     totalHp: 2,
@@ -1039,6 +1039,45 @@ const HUNGRY_GOAT: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const SUSPECT_SQUID: UnitCard = makeCard({
+    artistName: 'Baggeb',
+    artistUrl: 'https://pixabay.com/users/baggeb-15600954/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-clock-statue-light-spiral-2879946/',
+
+    name: 'Suspect Squid',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/07/26/20/46/squid-5440718_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 5,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SHUFFLE_HAND_INTO_DECK,
+            target: TargetTypes.ALL_PLAYERS,
+        },
+
+        {
+            type: EffectType.SHUFFLE_CEMETERY_INTO_DECK,
+            target: TargetTypes.ALL_PLAYERS,
+        },
+        {
+            type: EffectType.DRAW,
+            strength: 6,
+            target: TargetTypes.ALL_PLAYERS,
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
 const INCONSPICUOUS_CRAB: UnitCard = makeCard({
     name: 'Inconspicuous Crab',
     imgSrc: 'https://images.pexels.com/photos/4890161/pexels-photo-4890161.jpeg',
@@ -1318,6 +1357,7 @@ export const MISC_UNITS = {
     TUNDRA_FROST_PACK,
     CURIOUS_CATFISH,
     ALGAE_HARVESTER,
+    SUSPECT_SQUID,
     INCONSPICUOUS_CRAB,
     RUFOUS_HUMMINGBIRD,
     NEZHA_SCALE_HUNTER,

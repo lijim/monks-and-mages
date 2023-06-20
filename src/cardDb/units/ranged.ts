@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { CardRarity, UnitCard } from '@/types/cards';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from './tokens';
@@ -72,6 +72,41 @@ const LONGBOWMAN: UnitCard = makeCard({
     },
     description: '',
     enterEffects: [],
+    totalHp: 1,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const GRASSLAND_ARCHER: UnitCard = makeCard({
+    artistName: 'Buono Del Tesoro',
+    artistUrl: 'https://pixabay.com/users/buonodeltesoro-3125618/',
+    originalImagePage:
+        'https://pixabay.com/photos/archer-arc-arrow-archers-shooter-5339094/',
+    name: 'Grassland Archer',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/06/25/09/19/archer-5339094_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE_TO_NON_SOLDIERS,
+            target: TargetTypes.OPPOSING_UNIT,
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY,
+                    strength: 4,
+                },
+            ],
+            strength: 2,
+        },
+    ],
     totalHp: 1,
     attack: 3,
     numAttacks: 1,
@@ -404,6 +439,7 @@ export const RANGED_UNITS = {
     DRYAD,
     CANYON_ELITE,
     LONGBOWMAN,
+    GRASSLAND_ARCHER,
     SLY_HUNTER,
     SILENT_MARKSWOMAN,
     POLICY_UNDERWRITER,
