@@ -1316,6 +1316,186 @@ const RULER_OF_THE_JUNGLE: UnitCard = makeCard({
     rarity: CardRarity.MYTHIC,
 });
 
+// Goliath Cycle
+const GOLIATH_OF_THE_SEA: UnitCard = makeCard({
+    artistName: 'Silenced Artworks',
+    artistUrl: 'https://pixabay.com/users/silencedartworks-27135548/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/ai-generated-sea-dragon-kanagawa-7958432/',
+    name: 'Goliath of the Sea',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/04/29/12/02/ai-generated-7958432_1280.jpg',
+    cost: {
+        [Resource.WATER]: 2,
+        [Resource.GENERIC]: 5,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BOUNCE_UNITS_UNDER_THRESHOLD_ATTACK,
+            target: TargetTypes.ALL_UNITS,
+            strength: 2,
+        },
+        {
+            type: EffectType.RETURN_SPELLS_FROM_CEMETERY,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+    ],
+    totalHp: 7,
+    attack: 7,
+    numAttacks: 1,
+    imgObjectPosition: 'top',
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const GOLIATH_OF_THE_GROVES: UnitCard = makeCard({
+    artistName: 'Mike Singleton',
+    artistUrl: 'https://pixabay.com/users/mikeydred-27964498/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/dragon-baby-dragon-mother-dragon-7498745/',
+    name: 'Goliath of the Groves',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/10/04/17/41/dragon-7498745_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 2,
+        [Resource.GENERIC]: 5,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.GAIN_ATTACK_UNTIL,
+            target: TargetTypes.ALL_SELF_UNITS,
+            strength: 3,
+        },
+        {
+            type: EffectType.RETURN_RESOURCES_FROM_CEMETERY,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+    ],
+    totalHp: 7,
+    attack: 7,
+    numAttacks: 1,
+    imgObjectPosition: 'top',
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
+const GOLIATH_OF_THE_SKIES: UnitCard = makeCard({
+    artistName: 'Artie Navarre',
+    artistUrl: 'https://pixabay.com/users/artie_navarre-66276/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/dragon-monster-painting-fantasy-7832393/',
+    name: 'Goliath of the Skies',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/05/23/49/dragon-7832393_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 2,
+        [Resource.GENERIC]: 5,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.GAIN_MAGICAL_HAND_AND_BOARD,
+            target: TargetTypes.SELF_PLAYER,
+        },
+        {
+            type: EffectType.LOSE_MAGICAL_AND_RANGED,
+            target: TargetTypes.ALL_OPPONENTS,
+        },
+    ],
+    totalHp: 7,
+    attack: 7,
+    numAttacks: 1,
+    imgObjectPosition: 'top',
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
+const GOLIATH_OF_THE_FLAMES: UnitCard = makeCard({
+    artistName: 'Silenced Artworks',
+    artistUrl: 'https://pixabay.com/users/silencedartworks-27135548/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/ai-generated-demon-halloween-7958431/',
+    name: 'Goliath of the Flames',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/04/29/12/01/ai-generated-7958431_1280.png',
+    cost: {
+        [Resource.FIRE]: 2,
+        [Resource.GENERIC]: 5,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_NO_CARDS_IN_HAND,
+                },
+            ],
+            strength: 3,
+        },
+        {
+            type: EffectType.DRAW_UNTIL,
+            strength: 3,
+        },
+    ],
+    totalHp: 7,
+    attack: 7,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
+const GOLIATH_OF_THE_TEMPLES: UnitCard = makeCard({
+    artistName: 'Mike Singleton',
+    artistUrl: 'https://pixabay.com/users/mikeydred-27964498/',
+
+    originalImagePage:
+        'https://pixabay.com/illustrations/vampire-halloween-shadows-arrows-7525179/',
+    name: 'Goliath of the Temples',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/10/16/14/11/vampire-7525179_1280.jpg',
+    cost: {
+        [Resource.IRON]: 2,
+        [Resource.GENERIC]: 5,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.CURSE_HAND_RESOURCE_TYPE,
+            target: TargetTypes.SELF_PLAYER,
+            strength: -2,
+            resourceType: Resource.IRON,
+        },
+        {
+            type: EffectType.CURSE_HAND_SPELLS,
+            target: TargetTypes.ALL_OPPONENTS,
+            strength: 2,
+            resourceType: Resource.IRON,
+        },
+    ],
+    totalHp: 7,
+    attack: 7,
+    numAttacks: 1,
+    imgObjectPosition: 'top',
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
 export const MISC_UNITS = {
     ALERT_FELINE,
     ANGRY_HEN,
@@ -1366,4 +1546,9 @@ export const MISC_UNITS = {
     GRIFFIN_FRIEND,
     PET_DEMON,
     RULER_OF_THE_JUNGLE,
+    GOLIATH_OF_THE_FLAMES,
+    GOLIATH_OF_THE_GROVES,
+    GOLIATH_OF_THE_SEA,
+    GOLIATH_OF_THE_SKIES,
+    GOLIATH_OF_THE_TEMPLES,
 };

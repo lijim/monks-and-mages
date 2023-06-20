@@ -298,6 +298,7 @@ const THORNHELM: UnitCard = makeCard({
     isRanged: false,
     isMagical: false,
     isSoldier: false,
+    isLegendary: true,
     passiveEffects: [PassiveEffect.QUICK],
     rarity: CardRarity.MYTHIC,
 });

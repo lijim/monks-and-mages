@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 import { COLORS_FOR_RARITY, Colors } from '@/constants/colors';
 import { CardRarity } from '@/types/cards';
 
@@ -94,23 +94,28 @@ export const CardImageContainer = styled.div`
     overflow: hidden;
 `;
 
-const StretchedImage = styled.img`
+const StretchedImage = styled.img<CardImageProps>`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: ${({ objectPosition }) => objectPosition || 'center'};
 `;
 
 type CardImageProps = {
     src: string;
+    objectPosition?: CSSProperties['objectPosition'];
 };
 
-export const CardImage: React.FC<CardImageProps> = ({ src }) => {
+export const CardImage: React.FC<CardImageProps> = ({
+    src,
+    objectPosition,
+}) => {
     const webPSource = src.replace('avif', 'webp');
     return (
         <picture>
             <source srcSet={src} type="image/avif"></source>
             <source srcSet={webPSource} type="image/avif"></source>
-            <StretchedImage src={webPSource} />
+            <StretchedImage src={webPSource} objectPosition={objectPosition} />
         </picture>
     );
 };

@@ -1724,6 +1724,7 @@ const SAMURAIS_TEMPEST = makeCard({
         },
         {
             type: EffectType.HEAL,
+            target: TargetTypes.ALL_SELF_UNITS,
             strength: 2,
         },
         {
