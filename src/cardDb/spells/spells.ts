@@ -75,10 +75,10 @@ const PREDICT_THE_FUTURE = makeCard({
             type: EffectType.CURSE_HAND_RESOURCE_TYPE,
             target: TargetTypes.SELF_PLAYER,
             resourceType: Resource.FIRE,
-            strength: 1,
+            strength: -1,
         },
     ],
-    rarity: CardRarity.COMMON,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const WARPATH = makeCard({
@@ -522,7 +522,7 @@ const REFLECTION_OPPORTUNITY = makeCard({
             strength: 1,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SUMMON_SHARKS = makeCard({

@@ -114,7 +114,7 @@ const GRASSLAND_ARCHER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.COMMON,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SLY_HUNTER: UnitCard = makeCard({
@@ -352,7 +352,7 @@ const MERRY_RALLIER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.RARE,
 });
 
 const INFERNALIST: UnitCard = makeCard({

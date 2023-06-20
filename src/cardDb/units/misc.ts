@@ -225,7 +225,7 @@ const SPELLCULLER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.RARE,
 });
 
 const LAKE_ZOMBIE: UnitCard = makeCard({
@@ -277,7 +277,7 @@ const PASTURE_EXPLORER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.COMMON,
+    rarity: CardRarity.UNCOMMON,
 });
 
 const CONTENT_CAMEL: UnitCard = makeCard({
@@ -1260,7 +1260,7 @@ const GRIFFIN_FRIEND: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.RARE,
 });
 
 const PET_DEMON: UnitCard = makeCard({
