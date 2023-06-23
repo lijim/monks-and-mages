@@ -3,6 +3,44 @@ import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
+const BASHO_THE_POET: UnitCard = makeCard({
+    artistName: 'Tsukioka Yoshitoshi',
+    artistUrl: 'https://en.wikipedia.org/wiki/Tsukioka_Yoshitoshi',
+    originalImagePage:
+        'https://commons.wikimedia.org/wiki/File:Poet-Basho-and-Moon_Festival-Tsukioka-Yoshitoshi-1891.png',
+    name: 'Basho the Poet',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/5/53/Poet-Basho-and-Moon_Festival-Tsukioka-Yoshitoshi-1891.png',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    damagePlayerEffects: [
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Bamboo',
+            strength: 1,
+            target: TargetTypes.PLAYER,
+        },
+    ],
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'TEA',
+            strength: 1,
+        },
+    ],
+    totalHp: 3,
+    attack: 0,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
 const ASSASSIN: UnitCard = makeCard({
     imgSrc: 'https://images.unsplash.com/photo-1531386151447-fd76ad50012f',
     name: 'Assassin',
@@ -304,6 +342,7 @@ const THORNHELM: UnitCard = makeCard({
 });
 
 export const MONKS = {
+    BASHO_THE_POET,
     ASSASSIN,
     DISCIPLINED_WARRIOR,
     BOUNTY_COLLECTOR,

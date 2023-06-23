@@ -102,8 +102,8 @@ const StretchedImage = styled.img<CardImageProps>`
 `;
 
 type CardImageProps = {
-    src: string;
     objectPosition?: CSSProperties['objectPosition'];
+    src: string;
 };
 
 export const CardImage: React.FC<CardImageProps> = ({

@@ -159,6 +159,41 @@ const WIND_MAGE: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const MICHAEL_ARCHANGEL: UnitCard = makeCard({
+    artistName: 'Guido Reni',
+    artistUrl: 'https://en.wikipedia.org/wiki/Guido_Reni',
+    originalImagePage:
+        'https://commons.wikimedia.org/wiki/File:Guido_Reni_031.jpg',
+    name: 'Michael, Archangel',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Guido_Reni_031.jpg/802px-Guido_Reni_031.jpg?20170622235922',
+    cost: {
+        [Resource.FIRE]: 2,
+        [Resource.WATER]: 2,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.GRANT_PASSIVE_EFFECT,
+            target: TargetTypes.ALL_SELF_UNITS,
+            passiveEffects: [PassiveEffect.ETHEREAL],
+            strength: 6,
+        },
+    ],
+    damagePlayerEffects: [],
+    totalHp: 4,
+    attack: 4,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+    imgObjectPosition: 'top',
+    omitReminderText: true,
+});
+
 export const WIND_MAGES = {
     FERRY_OPERATOR,
     FLUX_FIGHTER,
@@ -166,4 +201,5 @@ export const WIND_MAGES = {
     HEAVENLY_FERRIER,
     ARCHANGEL,
     WIND_MAGE,
+    MICHAEL_ARCHANGEL,
 };

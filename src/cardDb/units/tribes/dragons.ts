@@ -297,6 +297,49 @@ const ARTI_THE_CHANNELER: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const TODD_THE_TOAD: UnitCard = makeCard({
+    artistName: 'Sophia Nel',
+    artistUrl: 'https://pixabay.com/users/sonel-30478/',
+    originalImagePage:
+        'https://pixabay.com/photos/african-red-toad-toad-south-africa-884466/',
+    name: 'Todd the Toad',
+    imgSrc: 'https://cdn.pixabay.com/photo/2015/08/11/13/03/african-red-toad-884466_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.FIRE]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DESTROY_RESOURCE,
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+        {
+            type: EffectType.RAMP_FROM_HAND,
+            strength: 1,
+            resourceType: Resource.BAMBOO,
+            target: TargetTypes.SELF_PLAYER,
+        },
+        {
+            type: EffectType.RAMP_FROM_HAND,
+            strength: 1,
+            resourceType: Resource.FIRE,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    damagePlayerEffects: [],
+    totalHp: 2,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
 const BOLD_DRAGON: UnitCard = makeCard({
     name: 'Bold Dragon',
     imgSrc: 'https://cdn.pixabay.com/photo/2014/01/05/01/19/dragon-238931_1280.jpg',
@@ -329,5 +372,6 @@ export const DRAGONS = {
     YELLOW_DRAGON,
     ICE_DRAGON,
     BOLD_DRAGON,
+    TODD_THE_TOAD,
     ARTI_THE_CHANNELER,
 };
