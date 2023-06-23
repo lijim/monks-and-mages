@@ -713,6 +713,35 @@ const DEEP_CORE_EXCAVATOR: UnitCard = makeCard({
     rarity: CardRarity.COMMON,
 });
 
+const NIBELUNG_DWARF_MASTER: UnitCard = makeCard({
+    artistName: 'Arthur Rackham',
+    artistUrl: 'https://en.wikipedia.org/wiki/Arthur_Rackham',
+    originalImagePage:
+        'https://en.wikipedia.org/wiki/Alberich#/media/File:Rhinegold_and_the_Valkyries_p_044.jpg',
+    name: 'Nibelung Dwarf Master',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Rhinegold_and_the_Valkyries_p_044.jpg/1024px-Rhinegold_and_the_Valkyries_p_044.jpg',
+    cost: {
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 1,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const RAVENOUS_VULTURE: UnitCard = makeCard({
     artistName: 'Amy - prettysleepy1',
     artistUrl: 'https://pixabay.com/users/prettysleepy1-2855492/',
@@ -739,6 +768,28 @@ const RAVENOUS_VULTURE: UnitCard = makeCard({
     isSoldier: false,
     passiveEffects: [],
     rarity: CardRarity.COMMON,
+});
+
+const CERBERUS: UnitCard = makeCard({
+    artistName: 'Giuseppe Arcimboldo',
+    artistUrl: 'https://en.wikipedia.org/wiki/Giuseppe_Arcimboldo',
+    originalImagePage:
+        'https://commons.wikimedia.org/wiki/File:Giuseppe_Arcimboldo_-_Sketch_for_a_Cerberus_-_WGA00875.jpg',
+    name: 'Cerberus',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Giuseppe_Arcimboldo_-_Sketch_for_a_Cerberus_-_WGA00875.jpg',
+    cost: {
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 3,
+    attack: 1,
+    numAttacks: 3,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const CONFUCIUS: UnitCard = makeCard({
@@ -839,6 +890,34 @@ const GENEROUS_BUDDHA: UnitCard = makeCard({
     attack: 5,
     numAttacks: 1,
     isLegendary: true,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const COUNTRYSIDE_GIANT: UnitCard = makeCard({
+    artistName: 'Arthur Rackham',
+    artistUrl: 'https://en.wikipedia.org/wiki/Arthur_Rackham',
+    originalImagePage:
+        'https://en.wikipedia.org/wiki/Arthur_Rackham#/media/File:Cormoran_-_Project_Gutenberg_eText_17034.jpg',
+    name: 'Countryside Giant',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/4/40/Cormoran_-_Project_Gutenberg_eText_17034.jpg',
+    cost: {
+        [Resource.GENERIC]: 5,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.LEARN,
+            cardName: 'RICHES',
+            strength: 1,
+        },
+    ],
+    totalHp: 5,
+    attack: 4,
+    numAttacks: 1,
     isRanged: false,
     isMagical: false,
     isSoldier: false,
@@ -1068,8 +1147,8 @@ const SUSPECT_SQUID: UnitCard = makeCard({
             target: TargetTypes.ALL_PLAYERS,
         },
     ],
-    totalHp: 3,
-    attack: 3,
+    totalHp: 4,
+    attack: 4,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
@@ -1524,12 +1603,15 @@ export const MISC_UNITS = {
     TORCH_BEARER,
     BANISHER_OF_MAGIC,
     DEEP_CORE_EXCAVATOR,
+    NIBELUNG_DWARF_MASTER,
     RAVENOUS_VULTURE,
+    CERBERUS,
     CONFUCIUS,
     CHARGING_CATTLE,
     SPELUNKER,
     KING_TUT,
     GENEROUS_BUDDHA,
+    COUNTRYSIDE_GIANT,
     SNOW_LION,
     HUNGRY_GOAT,
     RIVER_WANDERER,

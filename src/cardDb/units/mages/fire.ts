@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { CardRarity, UnitCard } from '@/types/cards';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
@@ -416,6 +416,49 @@ const LU_ZISHEN_FLOWERY_MONK: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const MALPHAS: UnitCard = makeCard({
+    artistName: 'Louis Le Breton',
+    artistUrl: 'https://en.wikipedia.org/wiki/Louis_Le_Breton',
+    originalImagePage: 'https://commons.wikimedia.org/wiki/File:Malthas.jpg',
+    name: 'Malphas',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Malthas.jpg?20171205230004',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 6,
+            summonType: Tokens.DEMON,
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY,
+                    strength: 7,
+                },
+                {
+                    type: EffectRequirementsType.ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD,
+                    strength: 13,
+                },
+            ],
+        },
+    ],
+    damagePlayerEffects: [],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+    imgObjectPosition: 'top',
+});
+
 const INFERNO_SORCEROR: UnitCard = makeCard({
     name: 'Inferno Sorceror',
     imgSrc: 'https://images.unsplash.com/photo-1476611550464-4b94f060e1c6',
@@ -468,5 +511,6 @@ export const FIRE_MAGES = {
     MIDNIGHT_HELLSPAWN,
     FLAME_PRESERVER,
     LU_ZISHEN_FLOWERY_MONK,
+    MALPHAS,
     INFERNO_SORCEROR,
 };

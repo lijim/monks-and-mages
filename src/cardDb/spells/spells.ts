@@ -69,7 +69,7 @@ const PREDICT_THE_FUTURE = makeCard({
         'https://pixabay.com/photos/castle-portals-doors-magic-wizards-7696633/',
     name: 'Predict the Future',
     imgSrc: 'https://cdn.pixabay.com/photo/2023/01/04/12/26/castle-7696633_1280.jpg',
-    cost: { [Resource.FIRE]: 1 },
+    cost: { [Resource.FIRE]: 1, [Resource.GENERIC]: 1 },
     effects: [
         {
             type: EffectType.CURSE_HAND_RESOURCE_TYPE,
@@ -711,7 +711,7 @@ const HOLY_REVIVAL = makeCard({
         [Resource.FIRE]: 1,
         [Resource.WATER]: 1,
         [Resource.CRYSTAL]: 2,
-        [Resource.GENERIC]: 2,
+        [Resource.GENERIC]: 4,
     },
     effects: [
         {
@@ -1685,8 +1685,12 @@ const FIRE_AWAY = makeCard({
 });
 
 const BESIEGE_THE_CASTLE = makeCard({
+    artistName: 'Anonymous',
+    artistUrl: 'https://commons.wikimedia.org/wiki/File:Siege_orleans.jpg',
+    originalImagePage:
+        'https://commons.wikimedia.org/wiki/File:Siege_orleans.jpg',
     name: 'Besiege the Castle',
-    imgSrc: 'https://images.pexels.com/photos/9738976/pexels-photo-9738976.jpeg',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Siege_orleans.jpg/1600px-Siege_orleans.jpg?20200501174001',
     cost: { [Resource.IRON]: 1, [Resource.FIRE]: 1, [Resource.GENERIC]: 2 },
     effects: [
         {

@@ -189,6 +189,42 @@ const HEAVY_ARTILLERY: UnitCard = makeCard({
     rarity: CardRarity.MYTHIC,
 });
 
+const JOAN_SIEGE_DEFENDER: UnitCard = makeCard({
+    artistName: 'Jean-Jacques Scherrer',
+    artistUrl: 'https://commons.wikimedia.org/wiki/File:Siege_orleans.jpg',
+    originalImagePage:
+        'https://commons.wikimedia.org/wiki/File:Scherrer_jeanne_enters_orlean.jpg',
+    name: 'Joan, Siege Defender',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Scherrer_jeanne_enters_orlean.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.EXTRACT_UNIT_AND_SET_COST,
+            cost: {
+                [Resource.FIRE]: 1,
+                [Resource.IRON]: 1,
+            },
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 4,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
 export const CANNONEERS = {
     SUNSET_SPARTAN,
     CUIRASEER,
@@ -196,4 +232,5 @@ export const CANNONEERS = {
     SKILLED_IRONWORKER,
     CANNON,
     HEAVY_ARTILLERY,
+    JOAN_SIEGE_DEFENDER,
 };

@@ -22,6 +22,9 @@ const cardMatchesText = (card: Card, text: string): boolean => {
             ...card.enterEffects.map((effect) =>
                 transformEffectToRulesText(effect)
             ),
+            ...(card.damagePlayerEffects || []).map((effect) =>
+                transformEffectToRulesText(effect)
+            ),
             ...card.passiveEffects,
         ];
     }

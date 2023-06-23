@@ -1,5 +1,5 @@
 import { makeCard } from '@/factories';
-import { cardMatchesResources } from './filterCards';
+import { cardMatchesResources, filterCards } from './filterCards';
 import { UnitCards } from '@/cardDb/units';
 import { Resource } from '@/types/resources';
 import { MatchStrategy } from '@/types/deckBuilder';
@@ -21,5 +21,25 @@ describe('filter cards', () => {
                 MatchStrategy.LOOSE
             )
         ).toEqual(true);
+    });
+
+    it('filters by on damage effects', () => {
+        expect(
+            filterCards(
+                [
+                    makeCard(UnitCards.SPIRIT_TENDER),
+                    makeCard(UnitCards.THIRD_YEAR_STUDENTS),
+                ],
+                {
+                    freeText: 'Spectral',
+                    isLegendary: null,
+                    rarities: [],
+                    resourceCosts: [],
+                    resourceMatchStrategy: MatchStrategy.EXACT,
+                    resources: [],
+                    unitTypes: [],
+                }
+            )
+        ).toHaveLength(1);
     });
 });

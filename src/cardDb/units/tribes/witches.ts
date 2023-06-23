@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { CardRarity, UnitCard } from '@/types/cards';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
@@ -146,6 +146,42 @@ const CASTAWAY_CONJURER: UnitCard = makeCard({
     rarity: CardRarity.RARE,
 });
 
+const DRAGON_OF_THE_ABYSS: UnitCard = makeCard({
+    artistName: 'Paolo Uccello',
+    artistUrl: 'https://en.wikipedia.org/wiki/Paolo_Uccello',
+    originalImagePage:
+        'https://commons.wikimedia.org/wiki/File:Paolo_Uccello_049.jpg',
+    name: 'Dragon of the Abyss',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/9/95/Paolo_Uccello_049.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 2,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            strength: 1,
+            target: TargetTypes.ALL_OPPONENTS,
+            requirements: [
+                {
+                    type: EffectRequirementsType.CONTROL_RANGED_AND_MAGICAL,
+                },
+            ],
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+    imgObjectPosition: 'bottom',
+});
+
 const FOREST_SPIRIT: UnitCard = makeCard({
     name: 'Forest Spirit',
     imgSrc: 'https://images.unsplash.com/photo-1572979129545-64c0741c3f84',
@@ -267,6 +303,7 @@ export const WITCHES = {
     MASTER_ENCHANTER,
     CASTAWAY_CONJURER,
     POTION_BREWER,
+    DRAGON_OF_THE_ABYSS,
     FOREST_SPIRIT,
     POWERFUL_CRONE,
     BOG_WARLOCK,
