@@ -194,11 +194,11 @@ const BLUE_WHALE: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
-const MISCHIEVIOUS_CRAB: UnitCard = makeCard({
+const MISCHIEVOUS_CRAB: UnitCard = makeCard({
     artistName: 'WikiImages',
     artistUrl: 'https://pixabay.com/users/wikiimages-1897/',
     originalImagePage: 'https://pixabay.com/photos/crab-animal-wildlife-63084/',
-    name: 'Mischievious Crab',
+    name: 'Mischievous Crab',
     imgSrc: 'https://cdn.pixabay.com/photo/2012/10/26/02/14/crab-63084_1280.jpg',
     cost: {
         [Resource.BAMBOO]: 1,
@@ -250,7 +250,7 @@ const SASSY_SALLY: UnitCard = makeCard({
     isSoldier: false,
     isLegendary: true,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 const DEEP_SEA_EXPLORER: UnitCard = makeCard({
@@ -307,8 +307,37 @@ const ICTHYOMANCER: UnitCard = makeCard({
     totalHp: 2,
     attack: 1,
     numAttacks: 1,
-    isRanged: false,
+    isRanged: true,
     isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
+const WORLDLY_TURTLE: UnitCard = makeCard({
+    artistName: 'Daniel Hannah',
+    artistUrl: 'https://pixabay.com/users/danielhannah-8058574/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/tortoise-giant-tortoise-tree-8043059/',
+    name: 'Worldly Turtle',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/06/05/18/40/tortoise-8043059_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.REDUCE_LEGENDARY_LEADER_COST,
+            strength: 2,
+        },
+    ],
+    totalHp: 4,
+    attack: 4,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
     isSoldier: false,
     passiveEffects: [],
     rarity: CardRarity.RARE,
@@ -319,11 +348,12 @@ export const DIVERS = {
     SEASONAL_CROPHAND,
     BELOVED_BUFFALO,
     CROP_HARVESTER,
-    MISCHIEVIOUS_CRAB,
+    MISCHIEVOUS_CRAB,
     ENTERPRISING_VENDOR,
     CALM_SUMMONER,
     BLUE_WHALE,
     SASSY_SALLY,
     DEEP_SEA_EXPLORER,
     ICTHYOMANCER,
+    WORLDLY_TURTLE,
 };

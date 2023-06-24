@@ -33,6 +33,29 @@ const FORTUNE_PREDICTOR: UnitCard = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const THORNY_DEVIL: UnitCard = makeCard({
+    artistName: 'Richard Lydekker',
+    artistUrl: 'https://en.wikipedia.org/wiki/Richard_Lydekker',
+    originalImagePage: 'https://commons.wikimedia.org/wiki/File:MolochLyd.jpg',
+    name: 'Thorny Devil',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/2/25/MolochLyd.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+    imgObjectPosition: 'right',
+});
+
 const CAPTAIN_OF_THE_GUARD: UnitCard = makeCard({
     name: 'Captain of the Guard',
     imgSrc: 'images/units/captain-of-the-guard.avif', // https://images.unsplash.com/photo-1554772279-37573acdd183
@@ -60,7 +83,7 @@ const CAPTAIN_OF_THE_GUARD: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.RARE,
 });
 
 const CHARIOT_ARCHER: UnitCard = makeCard({
@@ -166,6 +189,7 @@ const CORRUPTED_GENIE: UnitCard = makeCard({
 
 export const SAHARANS = {
     FORTUNE_PREDICTOR,
+    THORNY_DEVIL,
     CAPTAIN_OF_THE_GUARD,
     CHARIOT_ARCHER,
     ANUBIS_GOD_OF_DEATH,

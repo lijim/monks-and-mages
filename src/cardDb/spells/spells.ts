@@ -475,6 +475,25 @@ const LIFTOFF = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const SNOW_BLIND = makeCard({
+    artistName: 'Karin Henseler',
+    artistUrl: 'https://pixabay.com/users/sciencefreak-97947/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/beyond-death-life-after-death-602060/',
+    name: 'Snow Blind',
+    // https://pixabay.com/illustrations/gondolier-boat-moon-water-night-2018052/
+    imgSrc: 'https://cdn.pixabay.com/photo/2015/01/17/09/42/beyond-602060_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.GRANT_PASSIVE_EFFECT,
+            passiveEffects: [PassiveEffect.SNOW_BLINDED],
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const GENEROUS_GEYSER = makeCard({
     name: 'Generous Geyser',
     imgSrc: 'https://images.unsplash.com/photo-1567604130959-7ea7ab2a7807?',
@@ -1564,7 +1583,7 @@ const FORMIDABLE_STORM = makeCard({
             strength: 1,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 const DESERT_TRIALS = makeCard({
@@ -2060,6 +2079,24 @@ const RAISE_THE_MASTS = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const ICY_VOYAGE = makeCard({
+    artistName: 'Óscar CR',
+    artistUrl: 'https://pixabay.com/users/wolvie_74-19251019/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/viking-ship-drakkar-sailing-6366228/',
+    name: 'Icy Voyage',
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/06/26/13/27/viking-ship-6366228_1280.jpg',
+    cost: { [Resource.WATER]: 2, [Resource.IRON]: 1 },
+    effects: [
+        {
+            type: EffectType.SWAP_CARDS,
+            strength: 2,
+            target: TargetTypes.OPPONENT,
+        },
+    ],
+    rarity: CardRarity.MYTHIC,
+});
+
 const WRECK_SHIPS = makeCard({
     name: 'Wreck ships',
     imgSrc: 'https://cdn.pixabay.com/photo/2017/05/01/12/24/ship-2275399_1280.jpg',
@@ -2167,6 +2204,7 @@ export const SpellCards = {
     STIR,
     CONSULT_THE_ORACLES,
     LIFTOFF,
+    SNOW_BLIND,
     WHALE_BREACH,
     GENEROUS_GEYSER,
     MIDNIGHT_ROW,
@@ -2261,6 +2299,7 @@ export const SpellCards = {
     RAISE_THE_MASTS,
     WRECK_SHIPS,
     REST_AT_THE_TAVERN,
+    ICY_VOYAGE,
 
     // Multi-color misc.
     SAMURAIS_TEMPEST,
