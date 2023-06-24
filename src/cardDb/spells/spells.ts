@@ -475,6 +475,25 @@ const LIFTOFF = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const SNOW_BLIND = makeCard({
+    artistName: 'Karin Henseler',
+    artistUrl: 'https://pixabay.com/users/sciencefreak-97947/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/beyond-death-life-after-death-602060/',
+    name: 'Snow Blind',
+    // https://pixabay.com/illustrations/gondolier-boat-moon-water-night-2018052/
+    imgSrc: 'https://cdn.pixabay.com/photo/2015/01/17/09/42/beyond-602060_1280.jpg',
+    cost: { [Resource.WATER]: 1, [Resource.CRYSTAL]: 1 },
+    effects: [
+        {
+            type: EffectType.GRANT_PASSIVE_EFFECT,
+            passiveEffects: [PassiveEffect.SNOW_BLINDED],
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    rarity: CardRarity.UNCOMMON,
+});
+
 const GENEROUS_GEYSER = makeCard({
     name: 'Generous Geyser',
     imgSrc: 'https://images.unsplash.com/photo-1567604130959-7ea7ab2a7807?',
@@ -2185,6 +2204,7 @@ export const SpellCards = {
     STIR,
     CONSULT_THE_ORACLES,
     LIFTOFF,
+    SNOW_BLIND,
     WHALE_BREACH,
     GENEROUS_GEYSER,
     MIDNIGHT_ROW,

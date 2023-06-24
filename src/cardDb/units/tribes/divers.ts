@@ -250,7 +250,7 @@ const SASSY_SALLY: UnitCard = makeCard({
     isSoldier: false,
     isLegendary: true,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 const DEEP_SEA_EXPLORER: UnitCard = makeCard({
@@ -315,7 +315,11 @@ const ICTHYOMANCER: UnitCard = makeCard({
 });
 
 const WORLDLY_TURTLE: UnitCard = makeCard({
-    name: 'Icthyomancer',
+    artistName: 'Daniel Hannah',
+    artistUrl: 'https://pixabay.com/users/danielhannah-8058574/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/tortoise-giant-tortoise-tree-8043059/',
+    name: 'Worldly Turtle',
     imgSrc: 'https://cdn.pixabay.com/photo/2023/06/05/18/40/tortoise-8043059_1280.jpg',
     cost: {
         [Resource.BAMBOO]: 1,

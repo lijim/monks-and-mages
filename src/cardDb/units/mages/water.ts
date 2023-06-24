@@ -239,7 +239,7 @@ const FRENZIED_SIREN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.UNCOMMON,
+    rarity: CardRarity.RARE,
 });
 
 const MOUNTAIN_SENTINEL: UnitCard = makeCard({
@@ -549,7 +549,7 @@ const CHAD_THE_AQUAPHILE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 const SEA_DRAGON: UnitCard = makeCard({
