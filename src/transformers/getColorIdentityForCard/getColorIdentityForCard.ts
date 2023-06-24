@@ -2,6 +2,14 @@ import { uniq } from 'lodash';
 import { Card, CardType, Effect } from '@/types/cards';
 import { Resource } from '@/types/resources';
 import { getAssociatedCards } from '../getAssociatedCards';
+import { EffectType } from '@/types/effects';
+
+// Effects where having a 'resourceType' indicates the rules text will use a
+// symbol for the resource type, making it change the color identity of the card
+const EFFECTS_WITH_RESOURCE_TYPE_SYMBOLS = [
+    EffectType.RAMP_FOR_TURN,
+    EffectType.EXTRACT_UNIT_AND_SET_COST,
+];
 
 /**
  *
@@ -53,7 +61,10 @@ export const getColorIdentityForCard = (
 
     // Add effect-specific colors
     effects.forEach((effect) => {
-        if (effect.resourceType) {
+        if (
+            effect.resourceType &&
+            EFFECTS_WITH_RESOURCE_TYPE_SYMBOLS.includes(effect.type)
+        ) {
             resourceTypes.push(effect.resourceType);
         }
     });
