@@ -2060,6 +2060,24 @@ const RAISE_THE_MASTS = makeCard({
     rarity: CardRarity.UNCOMMON,
 });
 
+const ICY_VOYAGE = makeCard({
+    artistName: 'Óscar CR',
+    artistUrl: 'https://pixabay.com/users/wolvie_74-19251019/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/viking-ship-drakkar-sailing-6366228/',
+    name: 'Icy Voyage',
+    imgSrc: 'https://cdn.pixabay.com/photo/2021/06/26/13/27/viking-ship-6366228_1280.jpg',
+    cost: { [Resource.WATER]: 2, [Resource.IRON]: 1 },
+    effects: [
+        {
+            type: EffectType.SWAP_CARDS,
+            strength: 2,
+            target: TargetTypes.OPPONENT,
+        },
+    ],
+    rarity: CardRarity.MYTHIC,
+});
+
 const WRECK_SHIPS = makeCard({
     name: 'Wreck ships',
     imgSrc: 'https://cdn.pixabay.com/photo/2017/05/01/12/24/ship-2275399_1280.jpg',
@@ -2261,6 +2279,7 @@ export const SpellCards = {
     RAISE_THE_MASTS,
     WRECK_SHIPS,
     REST_AT_THE_TAVERN,
+    ICY_VOYAGE,
 
     // Multi-color misc.
     SAMURAIS_TEMPEST,
