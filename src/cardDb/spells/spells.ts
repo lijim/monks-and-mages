@@ -1583,7 +1583,7 @@ const FORMIDABLE_STORM = makeCard({
             strength: 1,
         },
     ],
-    rarity: CardRarity.RARE,
+    rarity: CardRarity.MYTHIC,
 });
 
 const DESERT_TRIALS = makeCard({
