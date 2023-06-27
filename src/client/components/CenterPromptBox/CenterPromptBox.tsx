@@ -102,8 +102,8 @@ const CenterPromptBoxContainer = styled.div`
     height: 0;
     display: grid;
     place-items: baseline;
-    top: calc(50% - 50px);
-    left: 50%;
+    top: calc(50% - 112.5px);
+    left: calc(50% - 45px);
     text-align: center;
 `;
 

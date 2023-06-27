@@ -24,7 +24,9 @@ const PlayerBriefContainer = styled.div<PlayerBriefContainerProps>`
         displayLegendaryLeader ? 420 : 220}px;
     border: 6px solid
         ${({ isActivePlayer }) =>
-            isActivePlayer ? Colors.FOCUS_BLUE : Colors.DARK_BROWN};
+            isActivePlayer
+                ? Colors.FIRE_ORANGE_EMPHASIZED
+                : Colors.COMMON_GREY};
     display: grid;
     grid-auto-rows: ${({ displayLegendaryLeader }) =>
         displayLegendaryLeader ? 'auto auto auto auto' : 'auto 1fr auto'};

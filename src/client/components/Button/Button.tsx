@@ -5,6 +5,7 @@ import { Colors } from '@/constants/colors';
 interface ButtonProps {
     backgroundColor: string;
     borderColor?: string;
+    disabledBackgroundColor: string;
     emoji?: string;
     fontSize?: string;
     hoverBackgroundColor: string;
@@ -19,6 +20,7 @@ export const Button = styled.button.attrs(
         hoverBackgroundColor,
         zoom = 1,
         fontSize = '22px',
+        disabledBackgroundColor,
     }: ButtonProps) => ({
         backgroundColor,
         borderColor,
@@ -26,6 +28,7 @@ export const Button = styled.button.attrs(
         hoverBackgroundColor,
         zoom,
         fontSize,
+        disabledBackgroundColor,
     })
 )`
     ::before {
@@ -36,13 +39,13 @@ export const Button = styled.button.attrs(
     :not(:disabled):hover {
         background: ${({ hoverBackgroundColor }) => hoverBackgroundColor};
     }
-    :active {
+    :active:not(:disabled) {
         top: 2px;
         left: 2px;
         box-shadow: none;
     }
     :disabled {
-        opacity: 0.4;
+        background: ${({ disabledBackgroundColor }) => disabledBackgroundColor};
     }
     position: relative;
     cursor: pointer;
@@ -60,9 +63,11 @@ export const Button = styled.button.attrs(
 export const PrimaryColorButton = styled(Button).attrs({
     backgroundColor: Colors.FIRE_ORANGE,
     hoverBackgroundColor: Colors.FIRE_ORANGE_EMPHASIZED,
+    disabledBackgroundColor: Colors.FIRE_ORANGE_MUTED,
 })``;
 
 export const SecondaryColorButton = styled(Button).attrs({
     backgroundColor: Colors.SECONDARY_GREEN,
     hoverBackgroundColor: Colors.SECONDARY_GREEN_EMPHASIZED,
+    disabledBackgroundcolor: Colors.SECONDARY_GREEN_MUTED,
 })``;
