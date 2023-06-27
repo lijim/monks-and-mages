@@ -9,17 +9,24 @@ import { Card } from '@/types/cards';
 import { canPlayerPayForCard } from '@/transformers/canPlayerPayForCard';
 import { Player } from '@/types/board';
 
+interface HandContainerProps {
+    handSize: number;
+}
+
 /**
  * We use a dynamically recalculated grid-template-columns property in order to get
  * the appropriate size for how much space each card should take up in the HandOfCards
  * component.  We want the rightmost card to be 100% visible, with each subsequent card
  * taking equal space
  */
-const HandContainer = styled.div`
+const HandContainer = styled.div<HandContainerProps>`
     display: grid;
-    grid-template-columns: repeat(auto-fill, 199px);
-    grid-auto-flow: column;
-    overflow-x: auto;
+    grid-template-columns:
+        repeat(
+            ${({ handSize }) => Math.max(1, handSize - 1)},
+            minmax(5px, 160px)
+        )
+        260px;
     overflow-y: hidden;
     padding-top: 8px;
 `;
@@ -50,6 +57,7 @@ const CardInHand: React.FC<CardInHandProps> = ({ card, isDeployable }) => {
                 hasOnClick
                 hasTooltip
                 isHighlighted={isDeployable}
+                zoomLevel={0.8}
             />
         </motion.div>
     );
@@ -59,11 +67,10 @@ export const HandOfCards: React.FC = () => {
     const selfPlayer = useSelector(getSelfPlayer);
     const handSize = selfPlayer?.hand?.length;
 
-    if (!handSize) return <></>;
     return (
-        <HandContainer className={`hand-of-cards`}>
+        <HandContainer className={`hand-of-cards`} handSize={handSize}>
             <AnimatePresence>
-                {selfPlayer.hand.map((card) => (
+                {selfPlayer?.hand?.map((card) => (
                     <CardInHand
                         key={card.id}
                         card={card}

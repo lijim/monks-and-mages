@@ -20,6 +20,7 @@ const ChatContainer = styled.div`
     display: grid;
     grid-template-rows: 1fr auto;
     overflow-y: hidden;
+    padding: 2px;
 `;
 
 const ChatMessages = styled.div`
@@ -29,7 +30,6 @@ const ChatMessages = styled.div`
     align-content: flex-end;
     align-items: flex-end;
     flex-direction: column;
-    padding: 20px 4px;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
     scroll-snap-type: y proximity;
@@ -37,6 +37,17 @@ const ChatMessages = styled.div`
     div:last-child {
         scroll-snap-align: end;
     }
+`;
+
+const ChatForm = styled.form`
+    display: grid;
+    gap: 4px;
+`;
+
+const ChatLabel = styled.label`
+    color: ${Colors.VANTA_BLACK};
+    background: white;
+    padding: 3px;
 `;
 
 export const GameChatMessages: React.FC = () => {
@@ -62,8 +73,10 @@ export const GameChatMessages: React.FC = () => {
                     </ChatBox>
                 ))}
             </ChatMessages>
-            <form onSubmit={submitPlayerMessage}>
+            <ChatForm onSubmit={submitPlayerMessage}>
+                <ChatLabel htmlFor="chat">Enter Chat Messages:</ChatLabel>
                 <input
+                    id="chat"
                     type="text"
                     role="textbox"
                     value={playerMessage}
@@ -72,9 +85,9 @@ export const GameChatMessages: React.FC = () => {
                     }}
                 />
                 <button type="submit" role="button">
-                    Submit
+                    Send
                 </button>
-            </form>
+            </ChatForm>
         </ChatContainer>
     );
 };

@@ -48,11 +48,10 @@ export const CardFrame = styled.div<CardFrameProps>`
         auto;
     width: 260px;
     height: 360px;
-    border: 8px solid
-        ${({ isHighlighted }) =>
-            isHighlighted ? Colors.FOCUS_BLUE : '#240503'};
+    border: ${({ isHighlighted }) =>
+        isHighlighted ? `6px solid ${Colors.FOCUS_BLUE}` : '2px solid white'};
     border-radius: 4%;
-    padding: 10px;
+    padding: ${({ isHighlighted }) => (isHighlighted ? '8px' : '12px')};
     color: white;
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     ${({ isRotated }) => (isRotated ? 'transform: rotate(90deg)' : '')};

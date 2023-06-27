@@ -29,9 +29,17 @@ const GameGrid = styled.div`
     width: 100%;
     min-height: 700px;
     height: 100vh;
+    background-image: url(/images/ingame-background.avif),
+        url(/images/ingame-background.webp);
+    background-size: cover;
+    background-position: center;
+`;
+
+const GameGridInnerLay = styled.div`
     display: grid;
-    grid-template-columns: 1fr 185px;
-    background-color: gainsboro;
+    grid-template-columns: 1fr 215px;
+    backdrop-filter: grayscale(0.6) brightness(45%);
+    height: 100%;
 `;
 
 type CenterColumnsProps = {
@@ -41,7 +49,7 @@ type CenterColumnsProps = {
 const CenterColumn = styled.div<CenterColumnsProps>`
     display: grid;
     grid-template-rows: 1fr ${({ isSpectating }) =>
-            isSpectating ? '100px' : ''};
+            isSpectating ? '' : '225px'};
 
     section {
         zoom: 0.7;
@@ -317,46 +325,49 @@ export const GameDisplay: React.FC = () => {
 
     return (
         <GameGrid>
-            {gameState === GameState.DRAFTING && <DraftingTable />}
-            {gameState === GameState.DECKBUILDING && (
-                <div>
-                    <DeckBuilder
-                        cardPool={deckbuildingPool}
-                        format={gameFormat}
-                    />
-                </div>
-            )}
-            {[
-                GameState.MULLIGANING,
-                GameState.PLAYING,
-                GameState.TIE,
-                GameState.WIN,
-            ].includes(gameState) && (
-                <CenterColumn isSpectating={!!selfPlayer}>
-                    {selfPlayer ? (
-                        <GameBoard
-                            otherPlayers={otherPlayers}
-                            selfPlayer={selfPlayer}
+            <GameGridInnerLay>
+                {gameState === GameState.DRAFTING && <DraftingTable />}
+                {gameState === GameState.DECKBUILDING && (
+                    <div>
+                        <DeckBuilder
+                            cardPool={deckbuildingPool}
+                            format={gameFormat}
                         />
-                    ) : (
-                        <SpectatorBoard otherPlayers={otherPlayers} />
-                    )}
+                    </div>
+                )}
+                {[
+                    GameState.MULLIGANING,
+                    GameState.PLAYING,
+                    GameState.TIE,
+                    GameState.WIN,
+                ].includes(gameState) && (
+                    <CenterColumn isSpectating={!selfPlayer}>
+                        {selfPlayer ? (
+                            <GameBoard
+                                otherPlayers={otherPlayers}
+                                selfPlayer={selfPlayer}
+                            />
+                        ) : (
+                            <SpectatorBoard otherPlayers={otherPlayers} />
+                        )}
 
-                    <CenterPromptBox />
-                    <HandOfCards />
-                </CenterColumn>
-            )}
-            <RightColumn>
-                <LastPlayedCard />
-                <div>
-                    {lastEffect && (
-                        <EmphText>
-                            Resolving: {transformEffectToRulesText(lastEffect)}
-                        </EmphText>
-                    )}
-                </div>
-                <GameChatMessages />
-            </RightColumn>
+                        <CenterPromptBox />
+                        <HandOfCards />
+                    </CenterColumn>
+                )}
+                <RightColumn>
+                    <LastPlayedCard />
+                    <div>
+                        {lastEffect && (
+                            <EmphText>
+                                Resolving:{' '}
+                                {transformEffectToRulesText(lastEffect)}
+                            </EmphText>
+                        )}
+                    </div>
+                    <GameChatMessages />
+                </RightColumn>
+            </GameGridInnerLay>
         </GameGrid>
     );
 };

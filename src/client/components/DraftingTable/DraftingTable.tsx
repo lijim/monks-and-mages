@@ -22,7 +22,7 @@ import { Card } from '@/types/cards';
 import { Colors } from '@/constants/colors';
 
 const DeckListCardSlot = styled(motion.div)`
-    height: 33px;
+    height: 31px;
     z-index: 0;
     transition: all 0.2s ease-in-out 0.1s;
     :hover:not(:last-of-type) {
