@@ -338,7 +338,9 @@ export const applyGameAction = ({
                         index === clonedBoard.startingPlayerIndex;
                     if (!player.isActivePlayer) {
                         const positionAfterStartingPlayer =
-                            (index - clonedBoard.startingPlayerIndex) %
+                            (index -
+                                clonedBoard.startingPlayerIndex +
+                                clonedBoard.players.length) %
                             clonedBoard.players.length;
                         if (
                             clonedBoard.players.length === 2 ||
