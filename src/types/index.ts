@@ -50,3 +50,13 @@ export type DetailedRoom = {
     roomName: string;
     spectators: string[];
 };
+
+export type ErrorMessage = {
+    message: string;
+};
+
+export type EmptyObj = Record<string, never>;
+
+export type SuccessMessage = {
+    message: 'Success';
+};

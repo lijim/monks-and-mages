@@ -2,7 +2,12 @@ import 'dotenv/config';
 import express from 'express';
 import http from 'http';
 import path from 'path';
+import { PrismaClient } from '@prisma/client';
 import { configureIo } from './sockets';
+import { initializeUserEndpoints } from './endpoints/users';
+import { initializeSavedDeckEndpoints } from './endpoints/savedDecks';
+
+const prisma = new PrismaClient();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -47,6 +52,9 @@ app.get('/', (_, res) => {
 app.get('*', (_, res) => {
     res.redirect('/');
 });
+
+initializeUserEndpoints(app, prisma);
+initializeSavedDeckEndpoints(app, prisma);
 
 configureIo(server);
 
