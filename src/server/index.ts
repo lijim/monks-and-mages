@@ -44,6 +44,9 @@ app.get('/healthz', (_, res) => {
     res.status(200).send('Ok');
 });
 
+initializeUserEndpoints(app, prisma);
+initializeSavedDeckEndpoints(app, prisma);
+
 // Serves the base page
 app.get('/', (_, res) => {
     res.sendFile(path.join(__dirname, 'public/js/index.html'));
@@ -52,9 +55,6 @@ app.get('/', (_, res) => {
 app.get('*', (_, res) => {
     res.redirect('/');
 });
-
-initializeUserEndpoints(app, prisma);
-initializeSavedDeckEndpoints(app, prisma);
 
 configureIo(server);
 
