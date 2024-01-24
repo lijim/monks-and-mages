@@ -6,7 +6,7 @@ import { makeCard, makeResourceCard } from '@/factories/cards';
 import { ResourceCard } from '@/types/cards';
 import { Resource } from '@/types/resources';
 
-import { CardGridItem } from './CardGridItem';
+import { CardGridItem, HelperText } from './CardGridItem';
 import { UnitCards } from '@/cardDb/units';
 import { SpellCards } from '@/cardDb/spells';
 import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
@@ -33,6 +33,26 @@ describe('Card (Grid Item)', () => {
         expect(screen.getByText('Temple Guardian')).toBeInTheDocument();
         expect(screen.getByText('6 ⚔️')).toBeInTheDocument(); // attack
         expect(screen.getByText('7 💙')).toBeInTheDocument(); // health
+    });
+
+    it('renders help text', () => {
+        // difficult to mock hover action on card, so testing the component directly
+        render(<HelperText card={makeCard(UnitCards.TEMPLE_GUARDIAN)} />);
+        expect(
+            screen.getByText(
+                'Soldiers must be attacked by non-magical units first'
+            )
+        ).toBeInTheDocument();
+    });
+
+    it('renders help text for legends', () => {
+        // difficult to mock hover action on card, so testing the component directly
+        render(<HelperText card={makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO)} />);
+        expect(
+            screen.getByText(
+                'If you control two legendary units with the same name, the least recent one goes to the cemetery'
+            )
+        ).toBeInTheDocument();
     });
 
     it('renders a spell card', () => {

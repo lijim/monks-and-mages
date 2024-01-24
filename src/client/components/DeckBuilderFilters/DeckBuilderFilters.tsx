@@ -4,6 +4,8 @@ import {
     clearFreeTextFilter,
     searchFreeTextFilter,
     selectResourceMatchStrategy,
+    toggleIsLegendaryFilter,
+    toggleRarityFilter,
     toggleResourceCardFilter,
     toggleResourceFilter,
     toggleUnitTypeFilter,
@@ -16,16 +18,24 @@ import {
     RESOURCE_GLOSSARY,
 } from '@/types/resources';
 import { CastingCostFrame } from '../CastingCost';
-import { UnitType } from '@/types/cards';
+import { CardRarity, UnitType } from '@/types/cards';
+import { COLORS_FOR_RARITY } from '@/constants/colors';
 
-export const FreeTextFilters: React.FC = () => {
+const FreeTextFilters: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { freeText } = useSelector<RootState, Filters>(
         (state) => state.deckBuilderFilters
     );
 
     return (
-        <div style={{ marginBottom: '4px', zoom: 1.5 }}>
+        <div
+            style={{
+                marginBottom: '4px',
+                zoom: 1.5,
+                display: 'flex',
+                gap: '4px',
+            }}
+        >
             <input
                 type="text"
                 value={freeText}
@@ -46,7 +56,7 @@ export const FreeTextFilters: React.FC = () => {
     );
 };
 
-export const ResourceFilter: React.FC = () => {
+const ResourceFilter: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { resources, resourceMatchStrategy } = useSelector<
         RootState,
@@ -87,7 +97,6 @@ export const ResourceFilter: React.FC = () => {
                 data-testid={`Filters-ResourcesMatchStrategy`}
             >
                 <option>{MatchStrategy.EXACT}</option>
-                <option>{MatchStrategy.STRICT}</option>
                 <option>{MatchStrategy.LOOSE}</option>
             </select>
         </div>
@@ -96,7 +105,7 @@ export const ResourceFilter: React.FC = () => {
 
 const RESOURCE_COST_FILTERS: ResourceCost[] = [1, 2, 3, 4, 5, 6, '7+'];
 
-export const ResourceCostFilter: React.FC = () => {
+const ResourceCostFilter: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { resourceCosts } = useSelector<RootState, Filters>(
         (state) => state.deckBuilderFilters
@@ -162,6 +171,96 @@ export const UnitTypeFilter: React.FC = () => {
     );
 };
 
+const ALL_RARITIES = [
+    CardRarity.COMMON,
+    CardRarity.UNCOMMON,
+    CardRarity.RARE,
+    CardRarity.MYTHIC,
+];
+
+const RaritiesFilter: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const rarities = useSelector<RootState, CardRarity[]>(
+        (state) => state.deckBuilderFilters.rarities
+    );
+
+    return (
+        <div>
+            <span style={{ zoom: 2, fontSize: '72%' }}>
+                {ALL_RARITIES.map((rarity) => (
+                    <CastingCostFrame
+                        key={rarity}
+                        hasNoMargin
+                        isMuted={!rarities.includes(rarity)}
+                        onClick={() => {
+                            dispatch(toggleRarityFilter(rarity));
+                        }}
+                        style={{ cursor: 'pointer' }}
+                        data-testid={`Filters-RarityType-${rarity}`}
+                        tabIndex={0}
+                    >
+                        <svg width="14" height="14">
+                            <polygon
+                                points="7,1 13,7 7,13 1,7"
+                                fill={COLORS_FOR_RARITY[rarity]}
+                                stroke="white"
+                                strokeWidth="1"
+                            />
+                        </svg>
+                    </CastingCostFrame>
+                ))}
+            </span>
+        </div>
+    );
+};
+
+const LEGENDARY_STATUSES = [
+    {
+        legendaryStatus: true,
+        icon: '🎖️',
+        altText: 'Legendary only',
+    },
+    {
+        legendaryStatus: false,
+        icon: '🚫',
+        altText: 'Non-legendary only',
+    },
+];
+
+const LegendaryStatusFilter: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const isLegendaryStatus = useSelector<RootState, boolean | null>(
+        (state) => state.deckBuilderFilters.isLegendary
+    );
+
+    return (
+        <div>
+            <span style={{ zoom: 2, fontSize: '72%' }}>
+                {LEGENDARY_STATUSES.map(
+                    ({ legendaryStatus, icon, altText }) => (
+                        <CastingCostFrame
+                            key={altText}
+                            hasNoMargin
+                            isMuted={isLegendaryStatus !== legendaryStatus}
+                            onClick={() => {
+                                dispatch(
+                                    toggleIsLegendaryFilter(legendaryStatus)
+                                );
+                            }}
+                            style={{ cursor: 'pointer' }}
+                            data-testid={`Filters-LegendaryStatus-${altText}`}
+                            title={altText}
+                            tabIndex={0}
+                        >
+                            {icon}
+                        </CastingCostFrame>
+                    )
+                )}
+            </span>
+        </div>
+    );
+};
+
 /**
  * Note: unit tests omitted temporarily in favor of an integration test on DeckBuilder
  * @returns Filters component for DeckBuilder
@@ -173,6 +272,8 @@ export const DeckBuilderFilters: React.FC = () => {
             <ResourceFilter />
             <ResourceCostFilter />
             <UnitTypeFilter />
+            <RaritiesFilter />
+            <LegendaryStatusFilter />
         </>
     );
 };

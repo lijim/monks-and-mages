@@ -59,27 +59,7 @@ describe('Self Player Board', () => {
         };
         const { dispatch, webSocket } = render(<SelfPlayerInfo />, {
             preloadedState,
-        });
-        fireEvent.click(screen.getByText('Pass Turn'));
-        expect(dispatch).toHaveBeenCalledWith(passTurn());
-        expect(dispatch).toHaveBeenCalledWith(passTurn());
-        expect(webSocket.takeGameAction).toHaveBeenCalledWith({
-            type: GameActionTypes.PASS_TURN,
-        });
-    });
-
-    it("passes the turn if you're the active player", () => {
-        const preloadedState: Partial<RootState> = {
-            user: {
-                name: 'Melvin',
-            },
-            board: makeNewBoard({
-                playerNames: ['Melvin', 'Melissa'],
-                startingPlayerIndex: 0,
-            }),
-        };
-        const { dispatch, webSocket } = render(<SelfPlayerInfo />, {
-            preloadedState,
+            useRealDispatch: false,
         });
         fireEvent.click(screen.getByText('Pass Turn'));
         expect(dispatch).toHaveBeenCalledWith(passTurn());

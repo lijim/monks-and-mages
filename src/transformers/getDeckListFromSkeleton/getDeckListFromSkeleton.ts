@@ -9,12 +9,27 @@ type GetDeckListFromSkeltonReturn = {
 export const getDeckListFromSkeleton = (
     skeleton: Skeleton
 ): GetDeckListFromSkeltonReturn => {
-    const decklist: DeckList = [];
+    const decklist: DeckList = { mainBoard: [], sideBoard: [] };
     const errors: string[] = [];
-    skeleton.forEach(({ card, quantity }) => {
-        const matchingEntry = ALL_CARDS.find((c) => c.card.name === card);
+    skeleton.mainBoard.forEach(({ card, quantity }) => {
+        const matchingEntry = ALL_CARDS.mainBoard.find(
+            (c) => c.card.name === card
+        );
         if (matchingEntry) {
-            decklist.push({
+            decklist.mainBoard.push({
+                card: matchingEntry.card,
+                quantity,
+            });
+        } else {
+            errors.push(`Could not read "${card}"`);
+        }
+    });
+    skeleton.sideBoard.forEach(({ card, quantity }) => {
+        const matchingEntry = ALL_CARDS.mainBoard.find(
+            (c) => c.card.name === card
+        );
+        if (matchingEntry) {
+            decklist.sideBoard.push({
                 card: matchingEntry.card,
                 quantity,
             });

@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
@@ -9,7 +9,7 @@ const COVEN_NOVICE: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/1548743/pexels-photo-1548743.jpeg',
     cost: {
         [Resource.CRYSTAL]: 1,
-        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
     },
     description: '',
     enterEffects: [
@@ -26,6 +26,7 @@ const COVEN_NOVICE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FAIRY_QUEEN: UnitCard = makeCard({
@@ -56,6 +57,7 @@ const FAIRY_QUEEN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const INGREDIENT_HUNTER: UnitCard = makeCard({
@@ -85,6 +87,7 @@ const INGREDIENT_HUNTER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const POTION_BREWER: UnitCard = makeCard({
@@ -110,6 +113,73 @@ const POTION_BREWER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const CASTAWAY_CONJURER: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/fantasy-magician-ship-wreck-sun-4382556/',
+    name: 'Castaway Conjurer',
+    imgSrc: 'https://cdn.pixabay.com/photo/2019/08/03/19/59/fantasy-4382556_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.POLYMORPH,
+            target: TargetTypes.UNIT,
+            summonType: Tokens.MANTA_RAY,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
+const DRAGON_OF_THE_ABYSS: UnitCard = makeCard({
+    artistName: 'Paolo Uccello',
+    artistUrl: 'https://en.wikipedia.org/wiki/Paolo_Uccello',
+    originalImagePage:
+        'https://commons.wikimedia.org/wiki/File:Paolo_Uccello_049.jpg',
+    name: 'Dragon of the Abyss',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/9/95/Paolo_Uccello_049.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 2,
+        [Resource.BAMBOO]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DISCARD_HAND,
+            strength: 1,
+            target: TargetTypes.ALL_OPPONENTS,
+            requirements: [
+                {
+                    type: EffectRequirementsType.CONTROL_RANGED_AND_MAGICAL,
+                },
+            ],
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+    imgObjectPosition: 'bottom',
 });
 
 const FOREST_SPIRIT: UnitCard = makeCard({
@@ -135,6 +205,7 @@ const FOREST_SPIRIT: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const POWERFUL_CRONE: UnitCard = makeCard({
@@ -160,6 +231,7 @@ const POWERFUL_CRONE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const MASTER_ENCHANTER: UnitCard = makeCard({
@@ -190,6 +262,7 @@ const MASTER_ENCHANTER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const BOG_WARLOCK: UnitCard = makeCard({
@@ -220,6 +293,7 @@ const BOG_WARLOCK: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const WITCHES = {
@@ -227,7 +301,9 @@ export const WITCHES = {
     FAIRY_QUEEN,
     INGREDIENT_HUNTER,
     MASTER_ENCHANTER,
+    CASTAWAY_CONJURER,
     POTION_BREWER,
+    DRAGON_OF_THE_ABYSS,
     FOREST_SPIRIT,
     POWERFUL_CRONE,
     BOG_WARLOCK,

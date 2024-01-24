@@ -1,7 +1,8 @@
-import { GameState, Player } from '@/types/board';
-import { Effect } from '@/types/cards';
-import { TargetTypes } from '@/types/effects';
+import { DraftPile, GameState, Player } from '@/types/board';
+import { Card, Effect } from '@/types/cards';
+import { TargetTypes, getDefaultTargetForEffect } from '@/types/effects';
 import { RootState } from '../store';
+import { Format } from '@/types/games';
 
 export const isUserInitialized = (state: Partial<RootState>): boolean =>
     !!state.user.name;
@@ -16,6 +17,39 @@ export const getSelfPlayer = (state: Partial<RootState>): Player | null => {
     return (state.board.players || []).find(
         (player) => player.name === state.user.name
     );
+};
+
+export const getGameState = (state: RootState): GameState =>
+    state.board.gameState;
+
+export const getGameFormat = (state: RootState): Format => state.board?.format;
+
+export const getDraftPiles = (state: RootState): DraftPile[] =>
+    state.board.draftPiles;
+
+export const getDeckbuildingPoolForPlayer =
+    (playerName: string) =>
+    (state: RootState): Card[] => {
+        if (!state.board?.players) return [];
+
+        const matchingPlayer = (state.board.players || []).find(
+            (player) => player.name === playerName
+        );
+        if (!matchingPlayer) {
+            return [];
+        }
+        return matchingPlayer.deckBuildingPool;
+    };
+
+export const getDraftPoolSize = (state: RootState): number =>
+    state.board.draftPoolSize;
+
+export const isActivePlayer = (state: RootState): boolean => {
+    const self = getSelfPlayer(state);
+    if (!self) {
+        return false;
+    }
+    return self.isActivePlayer;
 };
 
 export const getAuth0Id = (state: RootState) => state.user.auth0Id;
@@ -74,7 +108,7 @@ export const shouldLastEffectFizzle = (state: Partial<RootState>): boolean => {
     const selfPlayer = getSelfPlayer(state);
     const players = [...otherPlayers, selfPlayer];
 
-    switch (lastEffect.target) {
+    switch (lastEffect.target || getDefaultTargetForEffect(lastEffect.type)) {
         case TargetTypes.OPPOSING_UNIT: {
             return otherPlayers.every((player) => player.units.length === 0);
         }

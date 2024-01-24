@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';
 import styled from 'styled-components';
@@ -9,11 +9,15 @@ import { RootState } from '@/client/redux/store';
 import { WebSocketContext } from '../WebSockets';
 import { DetailedRoom } from '@/types';
 import { PrimaryColorButton } from '../Button';
-import { MAX_ROOM_NAME_LENGTH } from '@/constants/lobbyConstants';
+import {
+    MAX_ROOM_NAME_LENGTH,
+    PLAYER_ROOM_PREFIX,
+} from '@/constants/lobbyConstants';
 import { Colors } from '@/constants/colors';
 import { DeckListSelector } from '../DeckListSelector';
 import { LatestWinners } from '../LatestWinners';
 import { getCleanName } from '@/client/redux/selectors';
+import { useLoggedInPlayerInfo } from '@/client/hooks';
 
 const RoomsContainer = styled.div`
     display: grid;
@@ -29,11 +33,10 @@ const LeftColumn = styled.div`
     grid-template-rows: auto auto 1fr;
     grid-gap: 10px;
     padding: 16px;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(5px);
     color: white;
     box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
-    height: 45%;
 
     label {
         margin-bottom: 4px;
@@ -80,7 +83,8 @@ const RoomsTab = styled.h1`
 `;
 
 const normalizeRoomName = (roomName: string): string => {
-    if (roomName.startsWith('public-')) return roomName.slice('public-'.length);
+    if (roomName.startsWith(PLAYER_ROOM_PREFIX))
+        return roomName.slice(PLAYER_ROOM_PREFIX.length);
     return roomName;
 };
 
@@ -105,12 +109,21 @@ export const Rooms: React.FC = () => {
         roomA.roomName.toLowerCase().localeCompare(roomB.roomName.toLowerCase())
     );
     const [newRoomName, setNewRoomName] = useState('Room 1 🥑');
+    const loggedInPlayerInfo = useLoggedInPlayerInfo();
     const webSocket = useContext(WebSocketContext);
 
     const joinRoom = (roomName: string) => {
         const normalizedRoomName = normalizeRoomName(roomName);
-        webSocket.joinRoom(normalizedRoomName);
+        webSocket.joinRoom({
+            roomName: normalizedRoomName,
+        });
     };
+
+    useEffect(() => {
+        if (loggedInPlayerInfo?.data?.avatarUrl) {
+            webSocket.chooseAvatar(loggedInPlayerInfo?.data?.avatarUrl);
+        }
+    }, [loggedInPlayerInfo]);
 
     const spectateRoom = (roomName: string) => {
         const normalizedRoomName = normalizeRoomName(roomName);
@@ -119,6 +132,7 @@ export const Rooms: React.FC = () => {
 
     const rejoinRoom = () => {
         dispatch(push('/ingame'));
+        webSocket.rejoinGame();
     };
 
     const startGame = () => {

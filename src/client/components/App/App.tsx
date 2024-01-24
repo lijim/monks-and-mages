@@ -8,6 +8,8 @@ import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 
 import { isUserInitialized } from '@/client/redux/selectors';
 import { history, RootState, store } from '@/client/redux/store';
+import { SelfProfilePage } from '../SelfProfilePage';
+import { Format } from '@/types/games';
 
 const IntroScreen = React.lazy(() =>
     import('../IntroScreen').then((module) => ({
@@ -104,6 +106,30 @@ export const RouterRoutes: React.FC = () => {
                     </LobbyBackground>
                 }
             />
+            <Route
+                path="/customize/singleton"
+                element={
+                    <LobbyBackground>
+                        <DeckBuilder format={Format.SINGLETON} />
+                    </LobbyBackground>
+                }
+            />
+            <Route
+                path="/customize/legendary_league"
+                element={
+                    <LobbyBackground>
+                        <DeckBuilder format={Format.LEGENDARY_LEAGUE} />
+                    </LobbyBackground>
+                }
+            />
+            <Route
+                path="/me"
+                element={
+                    <LobbyBackground>
+                        <SelfProfilePage />
+                    </LobbyBackground>
+                }
+            />
         </Routes>
     );
 };
@@ -136,6 +162,7 @@ export const App: React.FC = () => {
             domain={process.env.AUTH0_DOMAIN}
             clientId={process.env.AUTH0_CLIENT_ID}
             redirectUri={window.location.origin}
+            audience={process.env.AUTH0_AUDIENCE}
         >
             <Provider store={store}>
                 <Main />

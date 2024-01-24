@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -18,6 +18,7 @@ const FROG: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FRIAR: UnitCard = makeCard({
@@ -36,6 +37,7 @@ const FRIAR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const PIRATE_PARROT: UnitCard = makeCard({
@@ -53,6 +55,7 @@ const PIRATE_PARROT: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const DEMON: UnitCard = makeCard({
@@ -70,6 +73,29 @@ const DEMON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const SERPENT: UnitCard = makeCard({
+    artistName: 'Angela (ambquinn)',
+    artistUrl: 'https://pixabay.com/users/ambquinn-4464111/',
+    originalImagePage:
+        'https://pixabay.com/photos/green-tree-python-python-constrictor-7755160/',
+    name: 'Serpent',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/01/30/09/26/green-tree-python-7755160_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.ETHEREAL],
+    rarity: CardRarity.COMMON,
 });
 
 const FALCON: UnitCard = makeCard({
@@ -87,6 +113,7 @@ const FALCON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const MANTA_RAY: UnitCard = makeCard({
@@ -104,6 +131,7 @@ const MANTA_RAY: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const MANATEE: UnitCard = makeCard({
@@ -121,6 +149,7 @@ const MANATEE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const LION: UnitCard = makeCard({
@@ -138,6 +167,7 @@ const LION: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const SCORPION: UnitCard = makeCard({
@@ -155,6 +185,7 @@ const SCORPION: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED],
+    rarity: CardRarity.COMMON,
 });
 
 const SHARK: UnitCard = makeCard({
@@ -173,6 +204,7 @@ const SHARK: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const GOLEM_DRAGON: UnitCard = makeCard({
@@ -191,6 +223,30 @@ const GOLEM_DRAGON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const ELEPHANT: UnitCard = makeCard({
+    artistName: 'Sasin Tipchai',
+    artistUrl: 'https://pixabay.com/users/sasint-3639875/',
+    originalImagePage:
+        'https://pixabay.com/photos/elephant-trunk-tusks-forest-jungle-1822636/',
+    name: 'Elephant',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/11/14/04/45/elephant-1822636_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 4,
+    attack: 4,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const OCTOPUS: UnitCard = makeCard({
@@ -209,10 +265,12 @@ const OCTOPUS: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 export const Tokens = {
     DEMON,
+    ELEPHANT,
     FALCON,
     FROG,
     FRIAR,
@@ -222,6 +280,7 @@ export const Tokens = {
     MANATEE,
     OCTOPUS,
     PIRATE_PARROT,
+    SERPENT,
     SHARK,
     SCORPION,
 };

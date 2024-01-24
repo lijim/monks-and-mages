@@ -5,14 +5,13 @@ import styled from 'styled-components';
 
 import { DeckList } from '../DeckList';
 import { TopNavBar } from '../TopNavBar';
-import { getPremadeDeckList } from '@/client/redux/selectors/getPremadeDeckList';
-import {
-    deckListMappings,
-    DeckListSelections,
-    PREMADE_DECKLIST_DEFAULT,
-} from '@/constants/lobbyConstants';
 import { RootState } from '@/client/redux/store';
 import { makeDeck } from '@/factories/deck';
+import { DeckList as DeckListType } from '@/types/cards';
+import {
+    getCurrentDeckName,
+    getCurrentDeckList,
+} from '@/client/redux/selectors';
 
 const DeckListBackDrop = styled.div`
     background: rgba(255, 255, 255, 0.8);
@@ -26,18 +25,16 @@ const DeckListBackDrop = styled.div`
 `;
 
 export const DeckManager: React.FC = () => {
-    const premadeDeckList =
-        useSelector<RootState, DeckListSelections>(getPremadeDeckList) ||
-        PREMADE_DECKLIST_DEFAULT;
-    const deckList = deckListMappings[premadeDeckList];
+    const deckList = useSelector<RootState, DeckListType>(getCurrentDeckList);
+    const deckName = useSelector<RootState, string>(getCurrentDeckName);
     const deck = makeDeck(deckList);
     return (
         <>
             <TopNavBar>
-                <b>Viewing Deck:</b> {premadeDeckList} <Link to="/">Back</Link>
+                <b>Viewing Deck:</b> {deckName} <Link to="/">Back</Link>
             </TopNavBar>
             <DeckListBackDrop>
-                <DeckList deck={deck} />
+                <DeckList deck={deck} isDisplayOnly />
             </DeckListBackDrop>
         </>
     );

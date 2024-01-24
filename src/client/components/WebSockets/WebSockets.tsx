@@ -1,9 +1,10 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { ReactNode, createContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 
 import { push } from 'redux-first-history';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useCookies } from 'react-cookie';
 import {
     chooseName as chooseNameReducer,
     confirmAuth0Id,
@@ -17,11 +18,15 @@ import { AppDispatch } from '@/client/redux/store';
 import { addChatLog, clearChat, updateBoardState } from '@/client/redux/board';
 import {
     ClientToServerEvents,
+    JoinRoomParams,
     ResolveEffectParams,
     ServerToClientEvents,
 } from '@/types';
 import { GameAction } from '@/types/gameActions';
-import { DeckListSelections } from '@/constants/lobbyConstants';
+import {
+    DeckListSelections,
+    GUEST_NAME_PREFIX,
+} from '@/constants/lobbyConstants';
 import {
     confirmCustomDeckList,
     confirmPremadeDecklist,
@@ -33,11 +38,23 @@ import {
     receiveLastPlayedCard,
     startGame as startGameAction,
 } from '@/client/redux/clientSideGameExtras';
+import { Format } from '@/types/games';
 
 export const WebSocketContext = createContext<WebSocketValue>(null);
 
+export interface CustomSocket
+    extends Socket<ServerToClientEvents, ClientToServerEvents> {
+    sessionID: string;
+    userID: string;
+}
+
 export interface WebSocketValue extends Partial<ClientToServerEvents> {
-    socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+    logout: () => void;
+    socket: CustomSocket;
+}
+
+interface Props {
+    children: ReactNode;
 }
 
 /**
@@ -53,10 +70,10 @@ export interface WebSocketValue extends Partial<ClientToServerEvents> {
  * Based on this guide:
  * https://www.pluralsight.com/guides/using-web-sockets-in-your-reactredux-app
  * */
-export const WebSocketProvider: React.FC = ({ children }) => {
-    const [socket, setSocket] =
-        useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
+export const WebSocketProvider = ({ children }: Props) => {
+    const [socket, setSocket] = useState<CustomSocket>(null);
     const [ws, setWs] = useState<WebSocketValue>(null);
+    const [, setCookie] = useCookies();
 
     const { user, getAccessTokenWithPopup, getAccessTokenSilently } =
         useAuth0();
@@ -64,19 +81,21 @@ export const WebSocketProvider: React.FC = ({ children }) => {
     useEffect(() => {
         const authToken = async () => {
             if (!user) return;
-            if (process.env.ENVIRONMENT !== 'production') {
-                const accessToken = await getAccessTokenWithPopup({
-                    audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
-                    scope: 'read:users_app_metadata',
-                });
-                socket.emit('login', `Bearer ${accessToken}`);
-            } else {
-                const accessToken = await getAccessTokenSilently({
-                    audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
-                    scope: 'read:users_app_metadata',
-                });
-                socket.emit('login', `Bearer ${accessToken}`);
-            }
+            const getAccessToken =
+                process.env.ENVIRONMENT === 'production'
+                    ? getAccessTokenSilently
+                    : getAccessTokenWithPopup;
+            const accessToken = await getAccessToken({
+                audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
+                scope: 'read:users_app_metadata',
+            });
+            setCookie('accessToken', accessToken, {
+                maxAge: 86400, // 1 day
+            });
+            socket.auth = { ...socket.auth, username: user.name };
+            socket.connect();
+            socket.emit('login', `Bearer ${accessToken}`);
+            setSocket(socket);
         };
         authToken();
     }, [user]);
@@ -85,8 +104,20 @@ export const WebSocketProvider: React.FC = ({ children }) => {
     const dispatch = useDispatch<AppDispatch>();
 
     if (!socket) {
-        const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> =
-            io();
+        const newSocket: CustomSocket = io() as CustomSocket;
+
+        const sessionIDFromCache = localStorage.getItem('sessionID');
+        if (typeof sessionIDFromCache === 'string') {
+            newSocket.auth = { sessionID: sessionIDFromCache };
+            newSocket.connect();
+        }
+
+        newSocket.on('session', ({ sessionID, userID, username }) => {
+            dispatch(chooseNameReducer({ name: username }));
+            newSocket.auth = { ...newSocket.auth, sessionID };
+            localStorage.setItem('sessionID', sessionID);
+            newSocket.userID = userID;
+        });
 
         // Server-to-client events
         newSocket.on('confirmCustomDeck', (skeleton: Skeleton) => {
@@ -109,7 +140,7 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         );
 
         newSocket.on('connect', () => {
-            dispatch(initializeUser({ id: newSocket.id }));
+            dispatch(initializeUser({ id: newSocket.userID }));
         });
 
         newSocket.on('displayLastPlayedCard', (card: Card) => {
@@ -144,16 +175,27 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('authorizeToken', token);
         };
 
-        const joinRoom = (roomName: string) => {
-            newSocket.emit('joinRoom', roomName);
+        const joinRoom = (params: JoinRoomParams) => {
+            newSocket.emit('joinRoom', params);
         };
 
         const leaveRoom = () => {
             newSocket.emit('leaveRoom');
         };
 
+        const logout = () => {
+            localStorage.removeItem('sessionID');
+            dispatch(chooseNameReducer({ name: '' }));
+            newSocket.auth = {};
+            newSocket.disconnect();
+        };
+
         const spectateRoom = (roomName: string) => {
             newSocket.emit('spectateRoom', roomName);
+        };
+
+        const chooseAvatar = (avatarUrl: string) => {
+            newSocket.emit('chooseAvatar', avatarUrl);
         };
 
         const chooseCustomDeck = (deckListSelection: Skeleton) => {
@@ -164,8 +206,21 @@ export const WebSocketProvider: React.FC = ({ children }) => {
             newSocket.emit('chooseDeck', deckListSelection);
         };
 
+        const chooseGameFormat = (format: Format) => {
+            newSocket.emit('chooseGameFormat', format);
+        };
+
         const chooseName = (name: string) => {
+            newSocket.auth = {
+                ...newSocket.auth,
+                username: `${GUEST_NAME_PREFIX}${name}`,
+            };
+            newSocket.connect();
             newSocket.emit('chooseName', name);
+        };
+
+        const rejoinGame = () => {
+            newSocket.emit('rejoinGame');
         };
 
         const resolveEffect = (params: ResolveEffectParams) => {
@@ -188,13 +243,17 @@ export const WebSocketProvider: React.FC = ({ children }) => {
         setWs({
             socket: newSocket,
             authorizeToken,
+            chooseAvatar,
             chooseCustomDeck,
+            chooseGameFormat,
             chooseDeck,
             chooseName,
             joinRoom,
             leaveRoom,
+            logout,
             resolveEffect,
             sendChatMessage,
+            rejoinGame,
             spectateRoom,
             startGame,
             takeGameAction,

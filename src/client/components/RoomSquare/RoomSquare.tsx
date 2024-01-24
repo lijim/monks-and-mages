@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { DetailedRoom } from '@/types';
 import { SecondaryColorButton } from '../Button';
+import { Format } from '@/types/games';
+import { WebSocketContext } from '../WebSockets';
+import { PLAYER_ROOM_PREFIX } from '@/constants/lobbyConstants';
 
 type RoomSquareProps = {
     detailedRoom: DetailedRoom;
@@ -23,7 +26,7 @@ const PlayerList = styled.ul`
  * Rooms component.  Should show the name of the group + players
  */
 export const RoomSquare: React.FC<RoomSquareProps> = ({
-    detailedRoom: { hasStartedGame, roomName, players, spectators },
+    detailedRoom: { hasStartedGame, roomName, players, spectators, format },
     hasJoined,
     isSpectacting,
     joinRoom,
@@ -31,7 +34,8 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
     rejoinRoom,
     spectateRoom,
 }) => {
-    const normalizedRoomName = roomName.replace('public-', '');
+    const webSocket = useContext(WebSocketContext);
+    const normalizedRoomName = roomName.replace(PLAYER_ROOM_PREFIX, '');
     const shouldShowSpectate = !hasStartedGame && !isSpectacting;
     const shouldShowJoin = !hasJoined && !hasStartedGame && players.length < 4;
     return (
@@ -59,6 +63,27 @@ export const RoomSquare: React.FC<RoomSquareProps> = ({
                         <SecondaryColorButton onClick={spectateRoom}>
                             {hasJoined ? 'Switch to spectating' : 'Spectate'}
                         </SecondaryColorButton>
+                    )}{' '}
+                    {hasJoined ? (
+                        <select
+                            value={format}
+                            onChange={(event) => {
+                                webSocket.chooseGameFormat(
+                                    event.target.value as Format
+                                );
+                            }}
+                            style={{ zoom: 1.7 }}
+                        >
+                            <option value={Format.STANDARD}>Standard</option>
+                            <option value={Format.SINGLETON}>Singleton</option>
+                            <option value={Format.DRAFT}>Draft</option>
+                            <option value={Format.SEALED}>Sealed</option>
+                            <option value={Format.LEGENDARY_LEAGUE}>
+                                Legendary League 🎖️
+                            </option>
+                        </select>
+                    ) : (
+                        format
                     )}
                 </span>
             </h2>

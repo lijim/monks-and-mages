@@ -6,8 +6,9 @@ import { ResourceCardGridItem } from '../ResourceCardGridItem';
 import { SpellGridItem } from '../SpellGridItem';
 import { UnitGridItem } from '../UnitGridItem';
 import { GameManagerContext } from '../GameManager';
-import { AdvancedResourceGridItem } from '../AdvancedResourceGridItem.tsx';
+import { AdvancedResourceGridItem } from '../AdvancedResourceGridItem';
 import { HandleClickOnCardParams } from '../GameManager/handleClickOnCard';
+import { getAssociatedCards, modifyCardForTooltip } from '@/transformers';
 
 interface CardGridItemProps {
     card: Card;
@@ -15,7 +16,9 @@ interface CardGridItemProps {
     hasTooltip?: boolean;
     isHighlighted?: boolean;
     isOnBoard?: boolean;
-    onClick?: () => void; // if provided overrides the default one from hasOnClick
+    onClick?: () => void;
+    opacity?: number;
+    // if provided overrides the default one from hasOnClick
     zoomLevel?: number;
 }
 
@@ -79,12 +82,58 @@ export const CardGridSingleItem: React.FC<CardGridItemProps> = ({
     return undefined;
 };
 
+interface HelperTextProps {
+    card: Card;
+}
+
+export const HelperText = ({ card }: HelperTextProps): JSX.Element => {
+    if (card.cardType === CardType.UNIT) {
+        return (
+            <div
+                style={{
+                    width: 185,
+                    fontSize: 12,
+                    textAlign: 'center',
+                    display: 'grid',
+                    gap: '12px',
+                }}
+            >
+                {card.isSoldier && (
+                    <div>
+                        Soldiers must be attacked by non-magical units first
+                    </div>
+                )}
+                {card.isMagical && (
+                    <div>
+                        Magical units are a special type of ranged unit that do
+                        not have to attack soldiers first
+                    </div>
+                )}
+                {card.isRanged && !card.isMagical && (
+                    <div>
+                        Ranged units do not take damage from attacking units on
+                        your turn (except other ranged + magical units)
+                    </div>
+                )}
+                {card.isLegendary && (
+                    <div>
+                        If you control two legendary units with the same name,
+                        the least recent one goes to the cemetery
+                    </div>
+                )}
+            </div>
+        );
+    }
+    return null;
+};
+
 export const CardGridItem: React.FC<CardGridItemProps> = ({
     card,
     hasTooltip,
     hasOnClick,
     isHighlighted,
     isOnBoard,
+    opacity = 1,
     onClick,
     zoomLevel = 1,
 }) => {
@@ -98,14 +147,13 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
         trigger: ['focus', 'hover'],
     });
 
-    const cardModifiedForTooltip =
-        card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;
+    const associatedCards = getAssociatedCards(card);
 
     return (
         <>
             {/* The card itself */}
             <div
-                style={{ display: 'inline-grid' }}
+                style={{ display: 'inline-grid', opacity }}
                 ref={hasTooltip && setTriggerRef}
             >
                 <CardGridSingleItem
@@ -125,10 +173,33 @@ export const CardGridItem: React.FC<CardGridItemProps> = ({
                         className: 'tooltip-container',
                     })}
                 >
-                    <CardGridSingleItem
-                        isOnBoard={isOnBoard}
-                        card={cardModifiedForTooltip}
-                    />
+                    <div>
+                        <div
+                            style={{
+                                display: 'grid',
+                                gap: '4px',
+                                gridAutoFlow: 'column',
+                            }}
+                        >
+                            <CardGridSingleItem
+                                isOnBoard={isOnBoard}
+                                card={modifyCardForTooltip(card)}
+                            />
+                            {!isOnBoard &&
+                                associatedCards.map(
+                                    (associatedCard) =>
+                                        associatedCard && (
+                                            <CardGridSingleItem
+                                                isOnBoard={false}
+                                                card={modifyCardForTooltip(
+                                                    associatedCard
+                                                )}
+                                            />
+                                        )
+                                )}
+                        </div>
+                        {isOnBoard && <HelperText card={card} />}
+                    </div>
                     <div
                         {...getArrowProps({
                             className: 'tooltip-arrow',

@@ -1,6 +1,6 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
@@ -20,6 +20,7 @@ const DRAGON_TAMER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FIRE_TECHNICIAN: UnitCard = makeCard({
@@ -43,6 +44,7 @@ const FIRE_TECHNICIAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const AUTUMN_SHAMAN: UnitCard = makeCard({
@@ -68,6 +70,7 @@ const AUTUMN_SHAMAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const PYROCALLER: UnitCard = makeCard({
@@ -91,6 +94,30 @@ const PYROCALLER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const BREWING_ILLUMINATOR: UnitCard = makeCard({
+    artistName: 'Angela (ang3law)',
+    artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/mage-wizard-magic-fantasy-fire-7522249/',
+    name: 'Brewing Illuminator',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/10/15/00/07/mage-7522249_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.ETHEREAL],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const MYSTICAL_FIGURE: UnitCard = makeCard({
@@ -116,6 +143,7 @@ const MYSTICAL_FIGURE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const LA_CATRINA: UnitCard = makeCard({
@@ -141,6 +169,7 @@ const LA_CATRINA: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ZEALOUS_ACOLYTE: UnitCard = makeCard({
@@ -166,6 +195,7 @@ const ZEALOUS_ACOLYTE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const IMPRESSIVE_DANCER: UnitCard = makeCard({
@@ -190,6 +220,7 @@ const IMPRESSIVE_DANCER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FIRE_MAGE: UnitCard = makeCard({
@@ -214,6 +245,7 @@ const FIRE_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const DEMON_CALLER: UnitCard = makeCard({
@@ -240,6 +272,7 @@ const DEMON_CALLER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FIRE_STARTER: UnitCard = makeCard({
@@ -266,6 +299,7 @@ const FIRE_STARTER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const FLAME_PRESERVER: UnitCard = makeCard({
@@ -289,6 +323,40 @@ const FLAME_PRESERVER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
+const PROFICIENT_CHANNELER: UnitCard = makeCard({
+    artistName: 'Gordon Taylor',
+    artistUrl: 'https://pixabay.com/users/gbtaylor-2058304/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-sorceress-magic-light-7766005/',
+    name: 'Proficient Channeler',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/02/03/22/34/fantasy-7766005_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+        [Resource.CRYSTAL]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 2,
+        },
+        {
+            type: EffectType.DEAL_DAMAGE,
+            strength: 1,
+        },
+    ],
+    totalHp: 3,
+    attack: 0,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 const MIDNIGHT_HELLSPAWN: UnitCard = makeCard({
@@ -314,6 +382,81 @@ const MIDNIGHT_HELLSPAWN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const LU_ZISHEN_FLOWERY_MONK: UnitCard = makeCard({
+    artistName: 'Artie_Navarre',
+    artistUrl: 'https://pixabay.com/users/artie_navarre-66276/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/sorcerer-magician-d-and-d-7832390/',
+    name: 'Lu Zishen, Flowery Monk',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/03/05/23/46/sorcerer-7832390_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE,
+            target: TargetTypes.OPPOSING_UNIT,
+            strength: 2,
+        },
+    ],
+    totalHp: 3,
+    attack: 2,
+    numAttacks: 2,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
+const MALPHAS: UnitCard = makeCard({
+    artistName: 'Louis Le Breton',
+    artistUrl: 'https://en.wikipedia.org/wiki/Louis_Le_Breton',
+    originalImagePage: 'https://commons.wikimedia.org/wiki/File:Malthas.jpg',
+    name: 'Malphas',
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Malthas.jpg?20171205230004',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.SUMMON_UNITS,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 6,
+            summonType: Tokens.DEMON,
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY,
+                    strength: 7,
+                },
+                {
+                    type: EffectRequirementsType.ARE_AT_LIFE_BELOW_OR_EQUAL_THRESHOLD,
+                    strength: 13,
+                },
+            ],
+        },
+    ],
+    damagePlayerEffects: [],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+    imgObjectPosition: 'top',
 });
 
 const INFERNO_SORCEROR: UnitCard = makeCard({
@@ -348,6 +491,7 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const FIRE_MAGES = {
@@ -356,13 +500,17 @@ export const FIRE_MAGES = {
     FIRE_TECHNICIAN,
     PYROCALLER,
     MYSTICAL_FIGURE,
+    BREWING_ILLUMINATOR,
     LA_CATRINA,
     ZEALOUS_ACOLYTE,
     IMPRESSIVE_DANCER,
+    PROFICIENT_CHANNELER,
     FIRE_MAGE,
     DEMON_CALLER,
     FIRE_STARTER,
     MIDNIGHT_HELLSPAWN,
     FLAME_PRESERVER,
+    LU_ZISHEN_FLOWERY_MONK,
+    MALPHAS,
     INFERNO_SORCEROR,
 };

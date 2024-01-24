@@ -2,13 +2,14 @@ import { SpellCards } from '@/mocks/spells';
 import { UnitCards } from '@/mocks/units';
 import { PlayerConstants } from '@/constants/gameConstants';
 import { makeNewBoard } from '@/factories/board';
-import { makeCard, makeResourceCard } from '@/factories/cards';
+import { makeCard, makeResourceCard, makeUnitCard } from '@/factories/cards';
 import { Board, GameState } from '@/types/board';
 import { GameActionTypes } from '@/types/gameActions';
 import { Resource } from '@/types/resources';
 import { applyGameAction } from './gameEngine';
 import { AdvancedResourceCards } from '@/cardDb/resources/advancedResources';
 import { EffectType, PassiveEffect } from '@/types/effects';
+import { Format } from '@/types/games';
 
 describe('Game Action', () => {
     let board: Board;
@@ -105,6 +106,11 @@ describe('Game Action', () => {
             });
             newBoardState = applyGameAction({
                 board: newBoardState,
+                gameAction: { type: GameActionTypes.REJECT_MULLIGAN },
+                playerName: 'Tommy',
+            });
+            newBoardState = applyGameAction({
+                board: newBoardState,
                 gameAction: { type: GameActionTypes.ACCEPT_MULLIGAN },
                 playerName: 'Tommy',
             });
@@ -113,13 +119,40 @@ describe('Game Action', () => {
                 newBoardState.players.filter((player) => player.readyToStart)
             ).toHaveLength(3);
             expect(newBoardState.players[1].hand).toHaveLength(
-                PlayerConstants.STARTING_HAND_SIZE - 2
+                PlayerConstants.STARTING_HAND_SIZE - 1 // Tommy mulligans 3 away, but draws 1 + has a landmark in his hand
             );
             expect(newBoardState.gameState).toEqual(GameState.PLAYING);
         });
     });
 
     describe('Pass Turn', () => {
+        it('resets attack buffs', () => {
+            const squire1 = makeUnitCard(UnitCards.SQUIRE);
+            squire1.oneTurnAttackBuff = 3;
+            squire1.oneCycleAttackBuff = 1;
+            board.players[0].units = [squire1];
+
+            const squire2 = makeUnitCard(UnitCards.SQUIRE);
+            squire1.oneCycleAttackBuff = 1;
+            board.players[1].units = [squire2];
+
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: { type: GameActionTypes.PASS_TURN },
+                playerName: 'Timmy',
+            });
+            expect(
+                newBoardState.players[0].units[0].oneCycleAttackBuff
+            ).toEqual(1);
+            expect(newBoardState.players[0].units[0].oneTurnAttackBuff).toEqual(
+                0
+            );
+
+            expect(
+                newBoardState.players[1].units[0].oneCycleAttackBuff
+            ).toEqual(0);
+        });
+
         it("resets the active player's resource pool", () => {
             board.players[0].resourcePool = { [Resource.CRYSTAL]: 1 };
             const newBoardState = applyGameAction({
@@ -356,6 +389,68 @@ describe('Game Action', () => {
         });
     });
 
+    describe('Legendary Leader', () => {
+        it('deploys the legendary leader', () => {
+            const legendaryLeader = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            board.players[0].legendaryLeader = legendaryLeader;
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.IRON]: 5,
+            };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_LEGENDARY_LEADER,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].units[0].name).toBe(
+                'Joan of Arc, Folk Hero'
+            );
+            expect(newBoardState.players[0].units[0].isLegendaryLeader).toBe(
+                true
+            );
+            expect(newBoardState.players[0].legendaryLeaderExtraCost).toBe(2);
+            expect(newBoardState.players[0].legendaryLeader.cost.Generic).toBe(
+                7
+            );
+            expect(newBoardState.players[0].isLegendaryLeaderDeployed).toBe(
+                true
+            );
+        });
+
+        it('returns the legendary leader after going to cemetery through combat', () => {
+            const attacker = makeCard(UnitCards.BOUNTY_COLLECTOR);
+            attacker.numAttacksLeft = 1;
+            const legendaryLeader = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            legendaryLeader.isLegendaryLeader = true;
+            board.players[0].units = [attacker];
+            board.players[1].units = [legendaryLeader];
+            board.players[1].legendaryLeader = makeCard(
+                UnitCards.JOAN_OF_ARC_FOLK_HERO
+            );
+            board.players[1].isLegendaryLeaderDeployed = true;
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.PERFORM_ATTACK,
+                    cardId: attacker.id,
+                    unitTarget: legendaryLeader.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].cemetery[0].name).toEqual(
+                attacker.name
+            );
+            expect(newBoardState.players[0].units).toHaveLength(0);
+            expect(newBoardState.players[1].cemetery).toHaveLength(0);
+            expect(newBoardState.players[1].units).toHaveLength(0);
+            expect(newBoardState.players[1].isLegendaryLeaderDeployed).toBe(
+                false
+            );
+        });
+    });
+
     describe('Deploy Unit', () => {
         it('deploys a unit', () => {
             const unitCard = makeCard(UnitCards.CANNON);
@@ -417,7 +512,10 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
             expect(newBoardState.players[0].effectQueue).toEqual(
-                unitCard.enterEffects.reverse()
+                unitCard.enterEffects.reverse().map((effect) => ({
+                    ...effect,
+                    sourceId: unitCard.id,
+                }))
             );
         });
 
@@ -440,6 +538,30 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].hand).toEqual([unitCard]);
             expect(newBoardState.players[0].numCardsInHand).toBe(1);
             expect(newBoardState.players[0].units).toHaveLength(0);
+        });
+
+        it('destroys previous legendary units', () => {
+            const unitCard = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            const unitCard2 = makeCard(UnitCards.JAVELINEER);
+            const previousUnitCard = makeCard(UnitCards.JOAN_OF_ARC_FOLK_HERO);
+            board.players[0].hand = [unitCard];
+            board.players[0].units = [previousUnitCard, unitCard2];
+            board.players[0].numCardsInHand = 1;
+            board.players[0].resourcePool = {
+                [Resource.FIRE]: 2,
+                [Resource.IRON]: 6,
+            };
+            const newBoardState = applyGameAction({
+                board,
+                gameAction: {
+                    type: GameActionTypes.DEPLOY_UNIT,
+                    cardId: unitCard.id,
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState.players[0].hand).toEqual([]);
+            expect(newBoardState.players[0].units[1]).toEqual(unitCard);
+            expect(newBoardState.players[0].units).toHaveLength(2);
         });
     });
 
@@ -812,7 +934,7 @@ describe('Game Action', () => {
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });
 
-        it('attacks the opposing player', () => {
+        it('causes an on damage effect on attacking opposing player', () => {
             const attacker = makeCard(UnitCards.WATER_GUARDIAN);
             attacker.damagePlayerEffects = [
                 { type: EffectType.BLOOM, resourceType: Resource.WATER },
@@ -828,9 +950,10 @@ describe('Game Action', () => {
                 },
                 playerName: 'Timmy',
             });
-            expect(newBoardState.players[0].effectQueue).toEqual([
-                { type: EffectType.BLOOM, resourceType: Resource.WATER },
-            ]);
+            expect(newBoardState.players[0].effectQueue[0]).toMatchObject({
+                type: EffectType.BLOOM,
+                resourceType: Resource.WATER,
+            });
         });
 
         it('deals zero damage if buffed below 0 attack', () => {
@@ -878,6 +1001,8 @@ describe('Game Action', () => {
         it('attacks the opposing player (attack buff)', () => {
             const attacker = makeCard(UnitCards.WATER_GUARDIAN);
             attacker.attackBuff = 3;
+            attacker.oneTurnAttackBuff = 4;
+            attacker.oneCycleAttackBuff = 7;
             attacker.numAttacksLeft = 1;
             board.players[0].units = [attacker];
             const newBoardState = applyGameAction({
@@ -892,7 +1017,9 @@ describe('Game Action', () => {
             expect(newBoardState.players[1].health).toEqual(
                 PlayerConstants.STARTING_HEALTH -
                     attacker.attack -
-                    attacker.attackBuff
+                    attacker.attackBuff -
+                    attacker.oneCycleAttackBuff -
+                    attacker.oneTurnAttackBuff
             );
             expect(newBoardState.players[0].units[0].numAttacksLeft).toEqual(0);
         });
@@ -1012,10 +1139,10 @@ describe('Game Action', () => {
                 playerName: 'Timmy',
             });
 
-            expect(newBoardState.players[0].effectQueue[0]).toEqual(
+            expect(newBoardState.players[0].effectQueue[0]).toMatchObject(
                 spellCard.effects[1]
             );
-            expect(newBoardState.players[0].effectQueue[1]).toEqual(
+            expect(newBoardState.players[0].effectQueue[1]).toMatchObject(
                 spellCard.effects[0]
             );
             expect(newBoardState.players[0].cemetery).toEqual([spellCard]);
@@ -1131,6 +1258,147 @@ describe('Game Action', () => {
                 ).toEqual([PassiveEffect.POISONED, PassiveEffect.QUICK]);
                 expect(newBoardState.players[0].units[0].hp).toEqual(1);
             });
+        });
+
+        describe('Snow Blinded', () => {
+            it('disallows player attcks', () => {
+                const attacker = makeCard(UnitCards.BOUNTY_COLLECTOR);
+                attacker.passiveEffects.push(PassiveEffect.SNOW_BLINDED);
+                board.players[0].units = [attacker];
+                const newBoardState = applyGameAction({
+                    board,
+                    gameAction: {
+                        type: GameActionTypes.PERFORM_ATTACK,
+                        cardId: attacker.id,
+                        playerTarget: 'Tommy',
+                    },
+                    playerName: 'Timmy',
+                });
+                expect(newBoardState).toEqual(board);
+            });
+        });
+    });
+
+    describe('Draft mode', () => {
+        it('takes a pile', () => {
+            const draftBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.DRAFT,
+                startingPlayerIndex: 1,
+            });
+            board.gameState = GameState.DRAFTING;
+            const newBoardState = applyGameAction({
+                board: draftBoard,
+                gameAction: {
+                    type: GameActionTypes.TAKE_DRAFT_PILE,
+                    draftPileIndex: 0,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.players[0].isActivePlayer).toBe(true);
+            expect(newBoardState.players[1].deckBuildingPool).toHaveLength(3);
+            expect(newBoardState.draftPiles[0]).toHaveLength(1);
+            expect(newBoardState.draftPiles[2]).toHaveLength(4);
+        });
+
+        it('starts deckbuilding', () => {
+            const draftBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.DRAFT,
+                startingPlayerIndex: 1,
+            });
+            draftBoard.gameState = GameState.DRAFTING;
+            draftBoard.draftPiles = [[], [], [], []];
+            draftBoard.draftPoolSize = 0;
+            const newBoardState = applyGameAction({
+                board: draftBoard,
+                gameAction: {
+                    type: GameActionTypes.START_DECKBUILDING,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.gameState).toBe(GameState.DECKBUILDING);
+        });
+
+        it('does not start deckbuilding if there are still draft piles', () => {
+            const draftBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.DRAFT,
+                startingPlayerIndex: 1,
+            });
+            draftBoard.gameState = GameState.DRAFTING;
+            draftBoard.draftPiles = [
+                [makeCard(UnitCards.ASSASSIN)],
+                [],
+                [],
+                [],
+            ];
+            draftBoard.draftPoolSize = 0;
+            const newBoardState = applyGameAction({
+                board: draftBoard,
+                gameAction: {
+                    type: GameActionTypes.START_DECKBUILDING,
+                },
+                playerName: 'Timmy',
+            });
+
+            expect(newBoardState.gameState).toBe(GameState.DRAFTING);
+        });
+
+        it('submits a decklist', () => {
+            const sealedBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.SEALED,
+                startingPlayerIndex: 1,
+            });
+            sealedBoard.gameState = GameState.DECKBUILDING;
+            const newBoardState = applyGameAction({
+                board: sealedBoard,
+                gameAction: {
+                    type: GameActionTypes.SUBMIT_DECK,
+                    skeleton: {
+                        mainBoard: [{ card: 'Bamboo', quantity: 40 }],
+                        sideBoard: [],
+                    },
+                },
+                playerName: 'Tommy',
+            });
+            expect(newBoardState.players[0].hand[0].name).toEqual('Bamboo');
+            expect(newBoardState.players[0].hand[6].name).toEqual('Bamboo');
+        });
+
+        it('starts a game when the last player submits their decklist', () => {
+            const sealedBoard = makeNewBoard({
+                playerNames: ['Tommy', 'Timmy'],
+                format: Format.SEALED,
+                startingPlayerIndex: 1,
+            });
+            sealedBoard.gameState = GameState.DECKBUILDING;
+            const newBoardState = applyGameAction({
+                board: sealedBoard,
+                gameAction: {
+                    type: GameActionTypes.SUBMIT_DECK,
+                    skeleton: {
+                        mainBoard: [{ card: 'Bamboo', quantity: 40 }],
+                        sideBoard: [],
+                    },
+                },
+                playerName: 'Tommy',
+            });
+            const newBoardState2 = applyGameAction({
+                board: newBoardState,
+                gameAction: {
+                    type: GameActionTypes.SUBMIT_DECK,
+                    skeleton: {
+                        mainBoard: [{ card: 'Bamboo', quantity: 40 }],
+                        sideBoard: [],
+                    },
+                },
+                playerName: 'Timmy',
+            });
+            expect(newBoardState2.gameState).toEqual(GameState.MULLIGANING);
         });
     });
 });

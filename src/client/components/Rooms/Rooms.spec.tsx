@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from '@/test-utils';
 import { Rooms } from './Rooms';
 import { RootState } from '@/client/redux/store';
 import { DeckListSelections } from '@/constants/lobbyConstants';
+import { Format } from '@/types/games';
 
 describe('Rooms', () => {
     it('creates a new room', () => {
@@ -14,11 +15,15 @@ describe('Rooms', () => {
                         roomName: 'Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
                         spectators: [],
+                        avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                 ],
                 latestGameResults: [],
@@ -28,7 +33,9 @@ describe('Rooms', () => {
 
         fireEvent.click(screen.getByText('Create'));
 
-        expect(webSocket.joinRoom).toHaveBeenCalledWith('Room 1 🥑');
+        expect(webSocket.joinRoom).toHaveBeenCalledWith({
+            roomName: 'Room 1 🥑',
+        });
     });
 
     it('renders multiple rooms', () => {
@@ -39,11 +46,15 @@ describe('Rooms', () => {
                         roomName: 'Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
                         spectators: [],
+                        avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                 ],
                 latestGameResults: [],
@@ -63,11 +74,15 @@ describe('Rooms', () => {
                         roomName: 'Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                     {
                         roomName: 'Room 7',
                         players: ['Peter', 'Paul', 'Mary'],
                         spectators: [],
+                        avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     },
                 ],
                 latestGameResults: [],

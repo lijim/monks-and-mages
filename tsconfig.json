@@ -6,6 +6,7 @@
     "target": "es2021",
     "jsx": "react",
     "noImplicitAny": true,
+    "noImplicitReturns": true,
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",

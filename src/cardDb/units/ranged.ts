@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from './tokens';
@@ -19,6 +19,7 @@ const STONE_SLINGER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const JAVELINEER: UnitCard = makeCard({
@@ -36,11 +37,15 @@ const JAVELINEER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const DRYAD: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/composing-woman-fantasy-face-2391033/',
     name: 'Dryad',
-    // https://pixabay.com/illustrations/composing-woman-fantasy-face-2391033/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/06/10/22/58/composing-2391033_1280.jpg',
     cost: {
         [Resource.CRYSTAL]: 1,
@@ -55,6 +60,7 @@ const DRYAD: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const LONGBOWMAN: UnitCard = makeCard({
@@ -73,6 +79,42 @@ const LONGBOWMAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const GRASSLAND_ARCHER: UnitCard = makeCard({
+    artistName: 'Buono Del Tesoro',
+    artistUrl: 'https://pixabay.com/users/buonodeltesoro-3125618/',
+    originalImagePage:
+        'https://pixabay.com/photos/archer-arc-arrow-archers-shooter-5339094/',
+    name: 'Grassland Archer',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/06/25/09/19/archer-5339094_1280.jpg',
+    cost: {
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DEAL_DAMAGE_TO_NON_SOLDIERS,
+            target: TargetTypes.OPPOSING_UNIT,
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_AT_LEAST_THRESHOLD_CARDS_IN_CEMETERY,
+                    strength: 4,
+                },
+            ],
+            strength: 2,
+        },
+    ],
+    totalHp: 1,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SLY_HUNTER: UnitCard = makeCard({
@@ -91,6 +133,7 @@ const SLY_HUNTER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SILENT_MARKSWOMAN: UnitCard = makeCard({
@@ -115,6 +158,7 @@ const SILENT_MARKSWOMAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const CANYON_ELITE: UnitCard = makeCard({
@@ -144,6 +188,7 @@ const CANYON_ELITE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const CAVALRY_ARCHER: UnitCard = makeCard({
@@ -162,6 +207,36 @@ const CAVALRY_ARCHER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
+});
+
+const POLICY_UNDERWRITER: UnitCard = makeCard({
+    artistName: 'Gordon Taylor',
+    artistUrl: 'https://pixabay.com/users/gbtaylor-2058304/',
+    originalImagePage: 'https://pixabay.com/users/gbtaylor-2058304/',
+    name: 'Policy Underwriter',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/02/26/20/23/ai-generated-7816932_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: false,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 const WINGED_SAVIOR: UnitCard = makeCard({
@@ -182,6 +257,7 @@ const WINGED_SAVIOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.RARE,
 });
 
 const THE_MONKEY_KING: UnitCard = makeCard({
@@ -204,10 +280,12 @@ const THE_MONKEY_KING: UnitCard = makeCard({
     totalHp: 1,
     attack: 2,
     numAttacks: 1,
+    isLegendary: true,
     isRanged: true,
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.MYTHIC,
 });
 
 const FALCON_RIDER: UnitCard = makeCard({
@@ -232,6 +310,7 @@ const FALCON_RIDER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const EXCELLENT_EQUESTRIAN: UnitCard = makeCard({
@@ -250,6 +329,7 @@ const EXCELLENT_EQUESTRIAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const MERRY_RALLIER: UnitCard = makeCard({
@@ -257,7 +337,7 @@ const MERRY_RALLIER: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/9935713/pexels-photo-9935713.jpeg',
     cost: {
         [Resource.BAMBOO]: 2,
-        [Resource.GENERIC]: 4,
+        [Resource.GENERIC]: 3,
     },
     description: '',
     enterEffects: [
@@ -272,31 +352,7 @@ const MERRY_RALLIER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
-});
-
-const CANNON: UnitCard = makeCard({
-    name: 'Cannon',
-    imgSrc: 'https://images.unsplash.com/flagged/photo-1573757613724-3fa205049a78',
-    cost: {
-        [Resource.FIRE]: 1,
-        [Resource.IRON]: 2,
-        [Resource.GENERIC]: 2,
-    },
-    description: '',
-    enterEffects: [
-        {
-            type: EffectType.DEAL_DAMAGE,
-            strength: 3,
-            target: TargetTypes.ANY,
-        },
-    ],
-    totalHp: 5,
-    attack: 3,
-    numAttacks: 1,
-    isRanged: true,
-    isMagical: false,
-    isSoldier: false,
-    passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const INFERNALIST: UnitCard = makeCard({
@@ -320,6 +376,7 @@ const INFERNALIST: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ELITE_ARCHER: UnitCard = makeCard({
@@ -344,6 +401,7 @@ const ELITE_ARCHER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const MAHADEV: UnitCard = makeCard({
@@ -367,10 +425,12 @@ const MAHADEV: UnitCard = makeCard({
     totalHp: 3,
     attack: 6,
     numAttacks: 1,
+    isLegendary: true,
     isRanged: true,
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const RANGED_UNITS = {
@@ -379,15 +439,16 @@ export const RANGED_UNITS = {
     DRYAD,
     CANYON_ELITE,
     LONGBOWMAN,
+    GRASSLAND_ARCHER,
     SLY_HUNTER,
     SILENT_MARKSWOMAN,
+    POLICY_UNDERWRITER,
     CAVALRY_ARCHER,
     WINGED_SAVIOR,
     THE_MONKEY_KING,
     FALCON_RIDER,
     EXCELLENT_EQUESTRIAN,
     MERRY_RALLIER,
-    CANNON,
     INFERNALIST,
     ELITE_ARCHER,
     MAHADEV,

@@ -1,16 +1,28 @@
 import sampleSize from 'lodash.samplesize';
-import { SAMPLE_DECKLIST_0, SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
+import shuffle from 'lodash.shuffle';
+import { MONKS_DECKLIST, SAMPLE_DECKLIST_1 } from '@/constants/deckLists';
 import {
-    deckListMappings,
+    DECKLIST_MAPPINGS,
     DeckListSelections,
 } from '@/constants/lobbyConstants';
-import { Board, GameState } from '@/types/board';
+import { Board, DraftPile, GameState } from '@/types/board';
 import { makeNewPlayer } from '../player';
-import { Skeleton } from '@/types/cards';
+import { Card, Skeleton } from '@/types/cards';
 import { getDeckListFromSkeleton } from '@/transformers/getDeckListFromSkeleton/getDeckListFromSkeleton';
 import { isDeckValidForFormat } from '@/transformers/isDeckValidForFomat';
+import { Format, isFormatConstructed } from '@/types/games';
+import { makePack } from '../pack';
+import {
+    DRAFT_PACKS_BY_PLAYER_COUNT,
+    DRAFT_PILE_QUANTITY,
+    DRAFT_PILE_STARTING_SIZE,
+    SEALED_PACK_QUANTITY,
+} from '@/constants/gameConstants';
 
 export type MakeNewBoardParams = {
+    avatarsForPlayers?: Record<string, string>;
+    // player name to avatar mapping
+    format?: Format;
     nameToCustomDeckSkeleton?: Map<string, Skeleton>;
     playerDeckListSelections?: DeckListSelections[];
     playerNames: string[];
@@ -22,37 +34,83 @@ export const makeNewBoard = ({
     playerDeckListSelections,
     playerNames,
     startingPlayerIndex = Math.floor(Math.random() * playerNames.length),
+    avatarsForPlayers = {},
+    format = Format.STANDARD,
 }: MakeNewBoardParams): Board => {
-    let i = 0;
-    const players = playerNames.map((playerName) => {
+    const players = playerNames.map((playerName, playerIndex) => {
         const skeleton = nameToCustomDeckSkeleton?.get(playerName);
-        if (skeleton) {
+        if (skeleton && isFormatConstructed(format)) {
             const { decklist } = getDeckListFromSkeleton(skeleton);
             if (isDeckValidForFormat(decklist)) {
-                return makeNewPlayer(playerName, decklist);
+                return makeNewPlayer({ name: playerName, decklist, format });
             }
         }
 
-        const selection = playerDeckListSelections?.[i];
-        let deckList =
-            (selection && deckListMappings[selection]) || SAMPLE_DECKLIST_0;
+        const selection = playerDeckListSelections?.[playerIndex];
+        let decklist =
+            (selection && DECKLIST_MAPPINGS[selection]) || MONKS_DECKLIST;
         if (selection === DeckListSelections.RANDOM) {
-            [deckList] = sampleSize(
-                Object.values(deckListMappings).filter(
+            [decklist] = sampleSize(
+                Object.values(DECKLIST_MAPPINGS).filter(
                     (deck) => deck !== SAMPLE_DECKLIST_1
                 ),
                 1
             );
         }
-        i += 1;
-        return makeNewPlayer(playerName, deckList);
+        const avatarUrl = avatarsForPlayers[playerName];
+        const player = makeNewPlayer({
+            name: playerName,
+            decklist,
+            avatarUrl,
+            format,
+        });
+
+        if (format === Format.SEALED) {
+            [...Array(SEALED_PACK_QUANTITY)].forEach(() => {
+                player.deckBuildingPool = [
+                    ...player.deckBuildingPool,
+                    ...makePack(),
+                ];
+            });
+        }
+
+        if (!isFormatConstructed(format)) {
+            player.hand = [];
+            player.deck = [];
+        }
+
+        return player;
     });
 
     players[startingPlayerIndex].isActivePlayer = true;
+
+    let draftPool: Card[] = [];
+    const draftPiles: DraftPile[] = [...Array(DRAFT_PILE_QUANTITY)].map(
+        () => []
+    );
+
+    if (format === Format.DRAFT) {
+        const numberOfPacks = DRAFT_PACKS_BY_PLAYER_COUNT[playerNames.length];
+        [...Array(numberOfPacks)].forEach(() => {
+            draftPool = [...draftPool, ...makePack()];
+        });
+        draftPool = shuffle(draftPool);
+
+        draftPiles.forEach((pile) => {
+            [...Array(DRAFT_PILE_STARTING_SIZE)].forEach(() => {
+                pile.push(draftPool.pop());
+            });
+        });
+    }
+
     return {
         chatLog: [],
         gameState: GameState.PLAYING,
         players,
         startingPlayerIndex,
+        format,
+        draftPool,
+        draftPoolSize: draftPool.length,
+        draftPiles,
     };
 };

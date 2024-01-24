@@ -1,9 +1,16 @@
-import { SAMPLE_DECKLIST_2 } from '@/constants/deckLists';
-import { PlayerConstants } from '@/constants/gameConstants';
+import { FIRE_MAGES_DECKLIST } from '@/constants/deckLists';
+import {
+    DRAFT_PACKS_BY_PLAYER_COUNT,
+    DRAFT_PILE_QUANTITY,
+    DRAFT_PILE_STARTING_SIZE,
+    PlayerConstants,
+    SEALED_PACK_QUANTITY,
+} from '@/constants/gameConstants';
 import { DeckListSelections } from '@/constants/lobbyConstants';
 import { Skeleton } from '@/types/cards';
 import { makeDeck } from '../deck';
 import { makeNewBoard } from './makeNewBoard';
+import { Format } from '@/types/games';
 
 describe('Make New Board', () => {
     it('makes a new board with players', () => {
@@ -18,6 +25,17 @@ describe('Make New Board', () => {
         );
     });
 
+    it('makes a new board with avatars', () => {
+        const board = makeNewBoard({
+            playerNames: ['Hal', 'Orin'],
+            avatarsForPlayers: {
+                Hal: 'example.com/halgif1',
+            },
+        });
+        expect(board.players[0].avatar).toEqual('example.com/halgif1');
+        expect(board.players[1].avatar).toEqual('');
+    });
+
     it('makes a new board with preferred starting decks', () => {
         const board = makeNewBoard({
             playerNames: ['Hal', 'Orin'],
@@ -28,7 +46,7 @@ describe('Make New Board', () => {
                 .map((card) => card.name)
                 .sort()
         ).toEqual(
-            makeDeck(SAMPLE_DECKLIST_2)
+            makeDeck(FIRE_MAGES_DECKLIST)
                 .map((card) => card.name)
                 .sort()
         );
@@ -50,9 +68,10 @@ describe('Make New Board', () => {
 
     it('makes a board with custom decklists', () => {
         const nameToCustomDeckSkeleton = new Map<string, Skeleton>();
-        nameToCustomDeckSkeleton.set('Hal', [
-            { card: 'Assassin', quantity: 4 },
-        ]);
+        nameToCustomDeckSkeleton.set('Hal', {
+            mainBoard: [{ card: 'Assassin', quantity: 4 }],
+            sideBoard: [],
+        });
         const board = makeNewBoard({
             playerNames: ['Hal', 'Orin', 'Samus'],
             nameToCustomDeckSkeleton,
@@ -60,5 +79,26 @@ describe('Make New Board', () => {
         expect(board.players[0].hand[0].name).toEqual('Assassin');
     });
 
-    it.todo('caps at 4 players and makes everyone else a spectator');
+    it('makes a draft game', () => {
+        const board = makeNewBoard({
+            playerNames: ['Hal', 'Orin', 'Samus'],
+            format: Format.DRAFT,
+        });
+        expect(board.draftPoolSize).toEqual(
+            DRAFT_PACKS_BY_PLAYER_COUNT[3] * 15 -
+                DRAFT_PILE_QUANTITY * DRAFT_PILE_STARTING_SIZE
+        );
+        expect(board.draftPiles).toHaveLength(DRAFT_PILE_QUANTITY);
+        expect(board.draftPiles[0]).toHaveLength(DRAFT_PILE_STARTING_SIZE);
+    });
+
+    it('makes a sealed game', () => {
+        const board = makeNewBoard({
+            playerNames: ['Hal', 'Orin', 'Samus'],
+            format: Format.SEALED,
+        });
+        expect(board.players[0].deckBuildingPool).toHaveLength(
+            SEALED_PACK_QUANTITY * 15
+        );
+    });
 });

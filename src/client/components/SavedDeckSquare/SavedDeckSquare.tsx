@@ -1,22 +1,38 @@
 import axios from 'axios';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useSWRConfig } from 'swr';
 
+import useSWRMutation from 'swr/mutation';
+import { useCookies } from 'react-cookie';
 import { SavedDeck } from '@/types/deckBuilder';
 import { Colors } from '@/constants/colors';
-import { Skeleton } from '@/types/cards';
-import { getCleanName } from '@/client/redux/selectors';
+import {
+    getCleanName,
+    getCurrentSavedDeckId,
+    getCurrentSavedDeckName,
+    getIsSavedDeckAltered,
+    getSkeleton,
+} from '@/client/redux/selectors';
 import { RootState } from '@/client/redux/store';
+import { chooseSavedDeck, saveOldDeck } from '@/client/redux/deckBuilder';
+import { Skeleton } from '@/types/cards';
+import { swrPatch } from '@/apiHelpers';
+import { ErrorMessage } from '@/types/api';
 
 type SavedDeckSquareProps = {
     savedDeck: SavedDeck;
-    setSkeleton: (decklist: Skeleton) => void;
 };
 
-const SavedDeckOutline = styled.div`
-    border: 1px solid ${Colors.LIGHT_GREY};
+type OutlineProps = {
+    isHighlighted: boolean;
+};
+
+const SavedDeckOutline = styled.div<OutlineProps>`
+    border: ${({ isHighlighted }) => (isHighlighted ? 3 : 1)}px solid
+        ${({ isHighlighted }) =>
+            isHighlighted ? Colors.FOCUS_BLUE : Colors.LIGHT_GREY};
     :not(:last-child) {
         border-right: none;
     }
@@ -26,28 +42,79 @@ const SavedDeckOutline = styled.div`
 
 const HStack = styled.div`
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
 `;
 
-const deleteDeckFn = async (username: string, deckId: string) =>
-    axios.delete('/api/saved_decks', { data: { username, deckId } });
+const deleteDeckFn = async (username: string, deckId: string, token: string) =>
+    axios.delete('/api/saved_decks', {
+        data: { username, deckId },
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+const isSaveResponseError = (
+    response: SavedDeck | ErrorMessage
+): response is ErrorMessage => {
+    return (response as ErrorMessage).message !== undefined;
+};
 
 export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
-    savedDeck: { name, skeleton, id },
-    setSkeleton,
+    savedDeck,
 }) => {
+    const { name, id } = savedDeck;
+    const [cookies] = useCookies();
+    const { accessToken } = cookies;
     const username = useSelector<RootState, string | undefined>(getCleanName);
-
+    const dispatch = useDispatch();
+    const currentSavedDeckName = useSelector<RootState, string>(
+        getCurrentSavedDeckName
+    );
+    const currentSavedDeckId = useSelector<RootState, string>(
+        getCurrentSavedDeckId
+    );
+    const isSavedDeckAltered = useSelector<RootState, boolean>(
+        getIsSavedDeckAltered
+    );
+    const skeleton = useSelector<RootState, Skeleton>(getSkeleton);
     const { mutate } = useSWRConfig();
+    const { trigger } = useSWRMutation<
+        SavedDeck | ErrorMessage,
+        unknown,
+        [string, string],
+        { deckId: string; skeleton: Skeleton }
+    >(accessToken ? [`/saved_decks`, accessToken] : null, swrPatch);
+
+    const isHighlighted = currentSavedDeckName === name;
 
     const deleteDeck = async () => {
         try {
-            await deleteDeckFn(username, id);
+            await deleteDeckFn(username, id, accessToken);
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);
         } finally {
-            mutate(`/api/saved_decks/${username}`);
+            mutate([`/api/saved_decks/${username}`, accessToken]);
+        }
+    };
+
+    const onClickSave = async () => {
+        try {
+            const savedDeckResponse = await trigger({
+                deckId: currentSavedDeckId,
+                skeleton,
+            });
+            if (isSaveResponseError(savedDeckResponse)) {
+                // eslint-disable-next-line no-alert
+                window.alert(savedDeckResponse.message);
+                return;
+            }
+            dispatch(saveOldDeck(savedDeckResponse));
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        } finally {
+            mutate([`/api/saved_decks/${username}`, accessToken]);
         }
     };
 
@@ -56,12 +123,26 @@ export const SavedDeckSquare: React.FC<SavedDeckSquareProps> = ({
             <SavedDeckOutline
                 tabIndex={0}
                 onClick={() => {
-                    setSkeleton(skeleton);
+                    dispatch(chooseSavedDeck(savedDeck));
                 }}
+                isHighlighted={isHighlighted}
             >
                 <b>{name}</b>
             </SavedDeckOutline>
-            <SavedDeckOutline tabIndex={0} onClick={deleteDeck}>
+            {isSavedDeckAltered && isHighlighted && (
+                <SavedDeckOutline
+                    tabIndex={0}
+                    isHighlighted={isHighlighted}
+                    onClick={onClickSave}
+                >
+                    💾
+                </SavedDeckOutline>
+            )}
+            <SavedDeckOutline
+                tabIndex={0}
+                onClick={deleteDeck}
+                isHighlighted={isHighlighted}
+            >
                 🗑
             </SavedDeckOutline>
         </HStack>

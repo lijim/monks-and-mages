@@ -2,6 +2,7 @@ import { makeCard } from '@/cardDb/spells';
 import { EffectType, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from './units';
+import { CardRarity } from '@/types/cards';
 
 // Fire Magic
 const EMBER_SPEAR = makeCard({
@@ -14,6 +15,7 @@ const EMBER_SPEAR = makeCard({
             strength: 3,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const LIGHTNING_SLICK = makeCard({
@@ -27,6 +29,7 @@ const LIGHTNING_SLICK = makeCard({
             strength: 5,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const CURSE_HAND = makeCard({
@@ -40,6 +43,7 @@ const CURSE_HAND = makeCard({
             target: TargetTypes.ALL_OPPONENTS,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const SUMMON_DEMONS = makeCard({
@@ -53,6 +57,7 @@ const SUMMON_DEMONS = makeCard({
             summonType: Tokens.DEMON,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 // Water Magic
@@ -67,6 +72,7 @@ const BUBBLE_BLAST = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const GENEROUS_GEYSER = makeCard({
@@ -79,6 +85,7 @@ const GENEROUS_GEYSER = makeCard({
             strength: 2,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const SUMMON_SHARKS = makeCard({
@@ -92,6 +99,7 @@ const SUMMON_SHARKS = makeCard({
             summonType: Tokens.SHARK,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const CONSTANT_REFILL = makeCard({
@@ -104,6 +112,7 @@ const CONSTANT_REFILL = makeCard({
             strength: 4,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 // Wind Magic
@@ -125,6 +134,7 @@ const A_GENTLE_GUST = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const A_THOUSAND_WINDS = makeCard({
@@ -142,6 +152,7 @@ const A_THOUSAND_WINDS = makeCard({
             strength: 1,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 const HOLY_REVIVAL = makeCard({
@@ -154,6 +165,7 @@ const HOLY_REVIVAL = makeCard({
             target: TargetTypes.ALL_SELF_UNITS_CEMETERY,
         },
     ],
+    rarity: CardRarity.COMMON,
 });
 
 export const SpellCards = {

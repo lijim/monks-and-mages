@@ -1,4 +1,4 @@
-import { CardType, UnitBase } from '@/types/cards';
+import { CardRarity, CardType, UnitBase } from '@/types/cards';
 import { EffectType, PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { makeUnitCard as makeCard } from '@/factories/cards';
@@ -24,7 +24,8 @@ describe('Unit Cards', () => {
             isRanged: true,
             isMagical: true,
             isSoldier: false,
-            passiveEffects: [],
+            passiveEffects: [PassiveEffect.ETHEREAL],
+            rarity: CardRarity.COMMON,
         };
         const unitCard = makeCard(unitBase);
         expect(unitCard.name).toBe(unitBase.name);
@@ -33,7 +34,10 @@ describe('Unit Cards', () => {
         expect(unitCard.numAttacksLeft).toBe(0);
         expect(unitCard.hp).toBe(10);
         expect(unitCard.hpBuff).toBe(0);
-        expect(unitCard.originalCost).toEqual(unitBase.cost);
+        expect(unitCard.originalAttributes.cost).toEqual(unitBase.cost);
+        expect(unitCard.originalAttributes.passiveEffects).toEqual(
+            unitBase.passiveEffects
+        );
         expect(unitCard.cardType).toBe(CardType.UNIT);
         expect(unitCard.isSelected).toBe(false);
     });
@@ -54,6 +58,7 @@ describe('Unit Cards', () => {
             isMagical: true,
             isSoldier: false,
             passiveEffects: [PassiveEffect.QUICK],
+            rarity: CardRarity.COMMON,
         };
         const unitCard = makeCard(unitBase);
         expect(unitCard.numAttacksLeft).toBe(3);

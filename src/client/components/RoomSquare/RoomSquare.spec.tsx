@@ -2,18 +2,20 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { RoomSquare } from './RoomSquare';
+import { Format } from '@/types/games';
+import { DetailedRoom } from '@/types';
+
+const detailedRoom: DetailedRoom = {
+    roomName: 'Room 6',
+    players: ['Kimmy', 'Jimmy', 'Timmy'],
+    spectators: [],
+    avatarsForPlayers: {},
+    format: Format.STANDARD,
+};
 
 describe('Room Square', () => {
     it('renders a room name + players', () => {
-        render(
-            <RoomSquare
-                detailedRoom={{
-                    roomName: 'Room 6',
-                    players: ['Kimmy', 'Jimmy', 'Timmy'],
-                    spectators: [],
-                }}
-            />
-        );
+        render(<RoomSquare detailedRoom={detailedRoom} />);
         expect(screen.getByText('Room 6')).toBeInTheDocument();
         expect(screen.getByText('Kimmy')).toBeInTheDocument();
         expect(screen.getByText('Jimmy')).toBeInTheDocument();
@@ -21,15 +23,7 @@ describe('Room Square', () => {
     });
 
     it('truncates "public-"', () => {
-        render(
-            <RoomSquare
-                detailedRoom={{
-                    roomName: 'public-Room 6',
-                    players: ['Kimmy', 'Jimmy', 'Timmy'],
-                    spectators: [],
-                }}
-            />
-        );
+        render(<RoomSquare detailedRoom={detailedRoom} />);
         expect(screen.getByText('Room 6')).toBeInTheDocument();
     });
 
@@ -38,12 +32,7 @@ describe('Room Square', () => {
             const mockRejoinGame = jest.fn();
             render(
                 <RoomSquare
-                    detailedRoom={{
-                        hasStartedGame: true,
-                        roomName: 'public-Room 6',
-                        players: ['Kimmy', 'Jimmy', 'Timmy'],
-                        spectators: [],
-                    }}
+                    detailedRoom={{ ...detailedRoom, hasStartedGame: true }}
                     rejoinRoom={mockRejoinGame}
                     hasJoined
                 />
@@ -56,12 +45,7 @@ describe('Room Square', () => {
             const mockRejoinGame = jest.fn();
             render(
                 <RoomSquare
-                    detailedRoom={{
-                        hasStartedGame: true,
-                        roomName: 'public-Room 6',
-                        players: ['Kimmy', 'Jimmy', 'Timmy'],
-                        spectators: [],
-                    }}
+                    detailedRoom={detailedRoom}
                     rejoinRoom={mockRejoinGame}
                 />
             );
@@ -72,11 +56,7 @@ describe('Room Square', () => {
             const mockRejoinGame = jest.fn();
             render(
                 <RoomSquare
-                    detailedRoom={{
-                        roomName: 'public-Room 6',
-                        players: ['Kimmy', 'Jimmy', 'Timmy'],
-                        spectators: [],
-                    }}
+                    detailedRoom={detailedRoom}
                     rejoinRoom={mockRejoinGame}
                     hasJoined
                 />
@@ -90,11 +70,7 @@ describe('Room Square', () => {
             const mockSpectateRoom = jest.fn();
             render(
                 <RoomSquare
-                    detailedRoom={{
-                        roomName: 'public-Room 6',
-                        players: ['Kimmy', 'Jimmy', 'Timmy'],
-                        spectators: [],
-                    }}
+                    detailedRoom={detailedRoom}
                     spectateRoom={mockSpectateRoom}
                 />
             );
@@ -103,16 +79,7 @@ describe('Room Square', () => {
         });
 
         it('hides the spectate button if the game is already spectated', () => {
-            render(
-                <RoomSquare
-                    detailedRoom={{
-                        roomName: 'public-Room 6',
-                        players: ['Kimmy', 'Jimmy', 'Timmy'],
-                        spectators: [],
-                    }}
-                    isSpectacting
-                />
-            );
+            render(<RoomSquare detailedRoom={detailedRoom} isSpectacting />);
             expect(screen.queryByText('Spectate')).not.toBeInTheDocument();
         });
 
@@ -120,9 +87,7 @@ describe('Room Square', () => {
             render(
                 <RoomSquare
                     detailedRoom={{
-                        roomName: 'public-Room 6',
-                        players: ['Kimmy', 'Jimmy', 'Timmy'],
-                        spectators: [],
+                        ...detailedRoom,
                         hasStartedGame: true,
                     }}
                 />
@@ -136,11 +101,7 @@ describe('Room Square', () => {
             const mockJoinRoom = jest.fn();
             render(
                 <RoomSquare
-                    detailedRoom={{
-                        roomName: 'public-Room 6',
-                        players: ['Kimmy', 'Jimmy', 'Timmy'],
-                        spectators: [],
-                    }}
+                    detailedRoom={detailedRoom}
                     joinRoom={mockJoinRoom}
                 />
             );
@@ -156,6 +117,8 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy'],
                         spectators: [],
+                        avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     }}
                     hasJoined
                     joinRoom={mockJoinRoom}
@@ -172,6 +135,8 @@ describe('Room Square', () => {
                         roomName: 'public-Room 6',
                         players: ['Kimmy', 'Jimmy', 'Timmy', 'Player 4'],
                         spectators: [],
+                        avatarsForPlayers: {},
+                        format: Format.STANDARD,
                     }}
                     joinRoom={mockJoinRoom}
                 />
@@ -183,12 +148,7 @@ describe('Room Square', () => {
     it('renders Started if a game has started', () => {
         render(
             <RoomSquare
-                detailedRoom={{
-                    roomName: 'Room 6',
-                    players: ['Kimmy', 'Jimmy', 'Timmy'],
-                    spectators: [],
-                    hasStartedGame: true,
-                }}
+                detailedRoom={{ ...detailedRoom, hasStartedGame: true }}
             />
         );
         expect(screen.getByText('Started')).toBeInTheDocument();
@@ -203,6 +163,8 @@ describe('Room Square', () => {
                     players: ['Kimmy'],
                     spectators: [],
                     hasStartedGame: false,
+                    avatarsForPlayers: {},
+                    format: Format.STANDARD,
                 }}
                 hasJoined
                 onStartGameClicked={mockStartGame}
@@ -216,12 +178,7 @@ describe('Room Square', () => {
         const mockStartGame = jest.fn();
         render(
             <RoomSquare
-                detailedRoom={{
-                    roomName: 'Room 6',
-                    players: ['Kimmy', 'Jimmy'],
-                    spectators: [],
-                    hasStartedGame: true,
-                }}
+                detailedRoom={{ ...detailedRoom, hasStartedGame: true }}
                 hasJoined
                 onStartGameClicked={mockStartGame}
             />
@@ -235,9 +192,7 @@ describe('Room Square', () => {
         render(
             <RoomSquare
                 detailedRoom={{
-                    roomName: 'Room 6',
-                    players: ['Kimmy', 'Jimmy', 'Timmy'],
-                    spectators: [],
+                    ...detailedRoom,
                     hasStartedGame: false,
                 }}
                 hasJoined

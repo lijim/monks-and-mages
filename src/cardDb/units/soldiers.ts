@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -27,6 +27,7 @@ const FLAME_FORGED_HOPLITE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const LANCER: UnitCard = makeCard({
@@ -44,6 +45,34 @@ const LANCER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const DAVID_THE_DETERMINED: UnitCard = makeCard({
+    artistName: 'Jeff Jacobs',
+    artistUrl: 'https://pixabay.com/users/jeffjacobs1990-7438739/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/jesus-christ-god-holy-spirit-4779546/',
+    name: 'David the Determined',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/01/20/05/35/jesus-4779546_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.GAIN_STATS_EQUAL_TO_COST,
+        },
+    ],
+    totalHp: 0,
+    attack: 0,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const INFANTRY_OFFICER: UnitCard = makeCard({
@@ -61,6 +90,7 @@ const INFANTRY_OFFICER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const PIKEMAN: UnitCard = makeCard({
@@ -85,6 +115,7 @@ const PIKEMAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const QUESTING_DUO: UnitCard = makeCard({
@@ -109,6 +140,29 @@ const QUESTING_DUO: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const TOWN_TROOPS: UnitCard = makeCard({
+    artistName: 'kirill_makes_pics',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/king-charles-king-charles-3026472/',
+    name: 'Town Troops',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/12/18/16/13/king-charles-3026472_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 4,
+    attack: 1,
+    numAttacks: 0,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const UNHOLY_VETERAN: UnitCard = makeCard({
@@ -133,6 +187,7 @@ const UNHOLY_VETERAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const SPIRIT_GUARDIAN: UnitCard = makeCard({
@@ -151,6 +206,7 @@ const SPIRIT_GUARDIAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.COMMON,
 });
 
 /* 2 total cost */
@@ -170,6 +226,7 @@ const SWORDS_MASTER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ARDENT_SPIRITUALIST: UnitCard = makeCard({
@@ -194,6 +251,7 @@ const ARDENT_SPIRITUALIST: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const SQUIRE: UnitCard = makeCard({
@@ -212,6 +270,7 @@ const SQUIRE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const ADVENTURER: UnitCard = makeCard({
@@ -242,6 +301,7 @@ const ADVENTURER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const ORCISH_CORPORAL: UnitCard = makeCard({
@@ -261,6 +321,7 @@ const ORCISH_CORPORAL: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.UNCOMMON,
 });
 
 /* 3 total cost */
@@ -283,12 +344,75 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
         },
     ],
     totalHp: 0,
-    attack: 0,
+    attack: 1,
     numAttacks: 1,
     isRanged: false,
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const EXPEDITION_LEADER: UnitCard = makeCard({
+    artistName: 'Elias (Schäferle)',
+    artistUrl: 'https://pixabay.com/users/sch%C3%A4ferle-3372715/',
+    originalImagePage:
+        'https://pixabay.com/photos/panorama-middle-ages-campaign-to-2962730/',
+    name: 'Expedition Leader',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/11/19/13/03/panorama-2962730_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            requirements: [
+                {
+                    type: EffectRequirementsType.HAVE_MINIMUM_ATTACK_ON_A_UNIT,
+                    strength: 4,
+                },
+            ],
+            type: EffectType.DRAW,
+            strength: 3,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const UNSTOPPABLE_BERSERKER: UnitCard = makeCard({
+    artistName: 'Gioele Fazzeri',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/viking-warrior-vikings-sword-5164299/',
+    name: 'Unstoppable Berserker',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/05/12/18/14/viking-5164299_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_ATTACK_FOR_TURN,
+            strength: 2,
+        },
+    ],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 2,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const VILLAGE_DEFENDER: UnitCard = makeCard({
@@ -313,11 +437,15 @@ const VILLAGE_DEFENDER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const FROST_WALKER: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-walker-sculpture-monument-2925250/',
     name: 'Frost Walker',
-    // https://pixabay.com/photos/fantasy-walker-sculpture-monument-2925250/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/11/07/00/07/fantasy-2925250_1280.jpg',
     cost: {
         [Resource.GENERIC]: 2,
@@ -332,6 +460,7 @@ const FROST_WALKER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const DRAGON_MIST_WARRIOR: UnitCard = makeCard({
@@ -356,6 +485,7 @@ const DRAGON_MIST_WARRIOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.MYTHIC,
 });
 
 const AMPHIBIOUS_SHINOBI: UnitCard = makeCard({
@@ -380,6 +510,7 @@ const AMPHIBIOUS_SHINOBI: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 const CELESTIAL_MERCENARY: UnitCard = makeCard({
@@ -400,9 +531,101 @@ const CELESTIAL_MERCENARY: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY, PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
+});
+
+const GLADIATOR: UnitCard = makeCard({
+    artistName: 'WikiImages',
+    artistUrl: 'https://pixabay.com/users/wikiimages-1897/',
+    originalImagePage:
+        'https://pixabay.com/photos/romans-gladiator-spear-hoplite-60601/',
+    name: 'Gladiator',
+    imgSrc: 'https://cdn.pixabay.com/photo/2012/10/10/10/49/romans-60601_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [],
+    totalHp: 1,
+    attack: 5,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 /* 4 total cost */
+const RUSTED_GUARDIAN: UnitCard = makeCard({
+    artistName: 'Amy Art-Dreams',
+    artistUrl: 'https://pixabay.com/users/art_dreams-5864742/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/steampunk-rust-grunge-metal-gears-7623597/',
+    name: 'Rusted Guardian',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/11/29/04/04/steampunk-7623597_1280.jpg',
+    cost: {
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+        {
+            type: EffectType.DISCARD_HAND,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 1,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const DRAGON_SLAYER: UnitCard = makeCard({
+    artistName: 'Michael Seibt',
+    artistUrl: 'https://pixabay.com/users/fantasticpicture-1560299/',
+    originalImagePage:
+        'https://pixabay.com/photos/people-a-adult-waters-smoke-3075152/',
+    name: 'Dragon Slayer',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/01/11/00/36/human-3075152_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_ATTACK_FOR_TURN,
+            strength: 2,
+        },
+        {
+            type: EffectType.BUFF_MAGIC,
+            target: TargetTypes.ALL_OPPOSING_UNITS,
+            strength: -2,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
 const MAGI_RIDER: UnitCard = makeCard({
     name: 'Magi Rider',
     // https://pixabay.com/illustrations/pyramids-giza-night-caravan-camel-3913843/
@@ -427,6 +650,7 @@ const MAGI_RIDER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.RARE,
 });
 
 const WARRIOR_OF_THE_LAKE: UnitCard = makeCard({
@@ -450,6 +674,7 @@ const WARRIOR_OF_THE_LAKE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const KNIGHT_TEMPLAR: UnitCard = makeCard({
@@ -468,6 +693,39 @@ const KNIGHT_TEMPLAR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
+});
+
+const FIREBRAND_NOBLE: UnitCard = makeCard({
+    artistName: 'Gordon Taylor',
+    artistUrl: 'https://pixabay.com/users/gbtaylor-2058304/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/fire-magic-sorcerer-wizard-mage-7695518/',
+    name: 'Firebrand Noble',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/01/03/22/55/fire-7695518_1280.jpg',
+    cost: {
+        [Resource.FIRE]: 1,
+        [Resource.IRON]: 1,
+        [Resource.BAMBOO]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.DESTROY_RESOURCE,
+            target: TargetTypes.OPPONENT,
+            strength: 1,
+        },
+    ],
+    totalHp: 6,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 const WU_SONG_PILGRIM: UnitCard = makeCard({
@@ -499,10 +757,12 @@ const WU_SONG_PILGRIM: UnitCard = makeCard({
     totalHp: 4,
     attack: 4,
     numAttacks: 1,
+    isLegendary: true,
     isRanged: false,
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 /* 5 total cost */
@@ -528,6 +788,39 @@ const ARMORED_CAVALRY: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
+const SUNRISE_RIDER: UnitCard = makeCard({
+    artistName: 'ha11ok',
+    artistUrl: 'https://pixabay.com/users/ha11ok-1785462/',
+    originalImagePage:
+        'https://pixabay.com/photos/knight-warrior-artillery-horse-2565957/',
+    name: 'Sunrise Rider',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/08/01/14/42/knight-2565957_1280.jpg',
+    cost: {
+        [Resource.IRON]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_ATTACK_FOR_CYCLE,
+            strength: 2,
+        },
+        {
+            type: EffectType.DESTROY_UNIT,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    totalHp: 3,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const RAVEN_KNIGHT: UnitCard = makeCard({
@@ -547,6 +840,7 @@ const RAVEN_KNIGHT: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.RARE,
 });
 
 /* 6 total cost */
@@ -566,6 +860,7 @@ const TEMPLE_GUARDIAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const JOAN_OF_ARC_FOLK_HERO: UnitCard = makeCard({
@@ -586,13 +881,15 @@ const JOAN_OF_ARC_FOLK_HERO: UnitCard = makeCard({
             strength: 2,
         },
     ],
-    totalHp: 3,
-    attack: 3,
+    totalHp: 5,
+    attack: 4,
     numAttacks: 1,
+    isLegendary: true,
     isRanged: false,
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const SOLDIERS = {
@@ -604,6 +901,8 @@ export const SOLDIERS = {
     QUESTING_DUO,
     UNHOLY_VETERAN,
     SPIRIT_GUARDIAN,
+    TOWN_TROOPS,
+    DAVID_THE_DETERMINED,
     // 2
     SWORDS_MASTER,
     ARDENT_SPIRITUALIST,
@@ -611,20 +910,27 @@ export const SOLDIERS = {
     ADVENTURER,
     ORCISH_CORPORAL,
     // 3
+    EXPEDITION_LEADER,
     MARTIAL_TRAINER,
     AMPHIBIOUS_SHINOBI,
     DRAGON_MIST_WARRIOR,
     VILLAGE_DEFENDER,
     FROST_WALKER,
     CELESTIAL_MERCENARY,
+    UNSTOPPABLE_BERSERKER,
+    GLADIATOR,
     // 4
+    RUSTED_GUARDIAN,
+    DRAGON_SLAYER,
     MAGI_RIDER,
     WARRIOR_OF_THE_LAKE,
     KNIGHT_TEMPLAR,
+    FIREBRAND_NOBLE,
     WU_SONG_PILGRIM,
     // 5
     ARMORED_CAVALRY,
     RAVEN_KNIGHT,
+    SUNRISE_RIDER,
     // 6
     TEMPLE_GUARDIAN,
     // 7

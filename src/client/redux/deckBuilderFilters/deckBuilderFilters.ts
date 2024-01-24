@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
 import { Filters, MatchStrategy, ResourceCost } from '@/types/deckBuilder';
 import { Resource } from '@/types/resources';
-import { UnitType } from '@/types/cards';
+import { CardRarity, UnitType } from '@/types/cards';
 
 const initialState: Filters = {
     freeText: '',
+    rarities: [],
     resources: [],
     resourceCosts: [],
     resourceMatchStrategy: MatchStrategy.EXACT,
     unitTypes: [],
+    isLegendary: null,
 };
 
 export const deckBuilderFiltersSlice = createSlice({
@@ -22,7 +24,7 @@ export const deckBuilderFiltersSlice = createSlice({
             state.freeText = '';
         },
         toggleResourceCardFilter(state, action: PayloadAction<ResourceCost>) {
-            if (state.resourceCosts.indexOf(action.payload) > -1) {
+            if (state.resourceCosts.includes(action.payload)) {
                 // deselect the resource
                 state.resourceCosts = state.resourceCosts.filter(
                     (r) => r !== action.payload
@@ -33,7 +35,7 @@ export const deckBuilderFiltersSlice = createSlice({
             state.resourceCosts.push(action.payload);
         },
         toggleResourceFilter(state, action: PayloadAction<Resource>) {
-            if (state.resources.indexOf(action.payload) > -1) {
+            if (state.resources.includes(action.payload)) {
                 // deselect the resource
                 state.resources = state.resources.filter(
                     (r) => r !== action.payload
@@ -50,7 +52,7 @@ export const deckBuilderFiltersSlice = createSlice({
             state.resourceMatchStrategy = action.payload;
         },
         toggleUnitTypeFilter(state, action: PayloadAction<UnitType>) {
-            if (state.unitTypes.indexOf(action.payload) > -1) {
+            if (state.unitTypes.includes(action.payload)) {
                 // deselect the unit type
                 state.unitTypes = state.unitTypes.filter(
                     (r) => r !== action.payload
@@ -59,6 +61,32 @@ export const deckBuilderFiltersSlice = createSlice({
             }
             // select the unit type
             state.unitTypes.push(action.payload);
+        },
+        toggleRarityFilter(state, action: PayloadAction<CardRarity>) {
+            if (state.rarities.includes(action.payload)) {
+                // deselect the unit type
+                state.rarities = state.rarities.filter(
+                    (r) => r !== action.payload
+                );
+                return;
+            }
+            // select the unit type
+            state.rarities.push(action.payload);
+        },
+        toggleIsLegendaryFilter(state, action: PayloadAction<boolean | null>) {
+            // case 1: nothing is set yet
+            if (state.isLegendary === null) {
+                state.isLegendary = action.payload;
+                return;
+            }
+            // case 2: something is selected
+            // subcase: toggling it off because we're deactivating current filter
+            if (state.isLegendary === action.payload) {
+                state.isLegendary = null;
+                // subcase: toggling it on because we're switching to this filter
+            } else {
+                state.isLegendary = action.payload;
+            }
         },
     },
 });
@@ -72,5 +100,7 @@ export const {
     toggleResourceFilter,
     selectResourceMatchStrategy,
     toggleUnitTypeFilter,
+    toggleRarityFilter,
+    toggleIsLegendaryFilter,
     toggleResourceCardFilter,
 } = deckBuilderFiltersSlice.actions;

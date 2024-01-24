@@ -7,7 +7,6 @@ import {
 
 export const RESOURCE_COLOR = 'rgb(200, 180, 210)'; // resources are generic brown
 export const GOLD_COLOR = '#bf9c50'; // having two makes something gold
-const MAGIC_COSTS = [Resource.WATER, Resource.FIRE];
 
 type ColorPair = {
     primaryColor: string;
@@ -37,14 +36,6 @@ export const getColorsForCard = (card: Card): ColorPair => {
     if (nonZeroCosts.length === 2) {
         const firstResource = nonZeroCosts[0].resource;
         const secondResource = nonZeroCosts[1].resource;
-        if (
-            firstResource === Resource.CRYSTAL &&
-            MAGIC_COSTS.indexOf(secondResource) > -1
-        ) {
-            return {
-                primaryColor: RESOURCE_GLOSSARY[secondResource].primaryColor,
-            };
-        }
         return {
             primaryColor: RESOURCE_GLOSSARY[firstResource].primaryColor,
             secondaryColor: RESOURCE_GLOSSARY[secondResource].primaryColor,

@@ -1,9 +1,10 @@
 import isEqual from 'lodash.isequal';
-import { Card, CardType, UnitType } from '@/types/cards';
+import { Card, CardRarity, CardType, UnitType } from '@/types/cards';
 import { Filters, MatchStrategy, ResourceCost } from '@/types/deckBuilder';
 import { ORDERED_RESOURCES, Resource } from '@/types/resources';
 import { getTypeForUnitCard } from '../getTypeForUnitCard';
 import { transformEffectToRulesText } from '../transformEffectsToRulesText';
+import { isCardLegendary } from '../isCardLegendary';
 
 const cardMatchesText = (card: Card, text: string): boolean => {
     const nameIncludes = card.name.toLowerCase().includes(text.toLowerCase());
@@ -21,6 +22,9 @@ const cardMatchesText = (card: Card, text: string): boolean => {
             ...card.enterEffects.map((effect) =>
                 transformEffectToRulesText(effect)
             ),
+            ...(card.damagePlayerEffects || []).map((effect) =>
+                transformEffectToRulesText(effect)
+            ),
             ...card.passiveEffects,
         ];
     }
@@ -31,9 +35,14 @@ const cardMatchesText = (card: Card, text: string): boolean => {
 
 const getResourcesForCard = (card: Card): Resource[] => {
     if (card.cardType === CardType.RESOURCE) {
-        if (!card.isAdvanced || !card.secondaryResourceType)
-            return [card.resourceType];
-        return [card.resourceType, card.secondaryResourceType];
+        if (!card.isAdvanced || !card.secondaryResourceType) {
+            return [card.resourceType].filter(
+                (resource) => resource !== Resource.GENERIC
+            );
+        }
+        return [card.resourceType, card.secondaryResourceType].filter(
+            (resource) => resource !== Resource.GENERIC
+        );
     }
     const toReturn: Resource[] = [];
     ORDERED_RESOURCES.forEach((r) => {
@@ -43,7 +52,7 @@ const getResourcesForCard = (card: Card): Resource[] => {
     return toReturn;
 };
 
-const cardMatchesResources = (
+export const cardMatchesResources = (
     card: Card,
     resourcesToMatch: Resource[],
     resourceMatchStrategy: MatchStrategy
@@ -58,21 +67,11 @@ const cardMatchesResources = (
                 resources.slice().sort()
             );
         }
-        // all filtered resources match
-        case MatchStrategy.STRICT: {
-            let toReturn = true;
-            resourcesToMatch.forEach((r) => {
-                if (resources.indexOf(r) === -1) toReturn = false;
-            });
-            return toReturn;
-        }
         // At least one color matches on the card
         case MatchStrategy.LOOSE: {
-            let toReturn = false;
-            resourcesToMatch.forEach((r) => {
-                if (resources.indexOf(r) > -1) toReturn = true;
-            });
-            return toReturn;
+            return resources.every((resource) =>
+                resourcesToMatch.includes(resource)
+            );
         }
         default: {
             return true;
@@ -99,8 +98,21 @@ const cardMatchesUnitTypes = (card: Card, unitTypes: UnitType[]): boolean => {
     return unitTypes.includes(getTypeForUnitCard(card));
 };
 
+const cardMatchesRarities = (card: Card, rarities: CardRarity[]): boolean => {
+    if (rarities.length === 0) return true;
+    return rarities.includes(card.rarity);
+};
+
+const cardMatchesLegendaryStatus = (
+    card: Card,
+    isLegendaryFilter: boolean | null
+): boolean => {
+    if (isLegendaryFilter === null) return true;
+    const isLegend = isCardLegendary(card);
+    return isLegendaryFilter ? isLegend : !isLegend;
+};
+
 /**
- * Note: unit tests omitted temporarily in favor of an integration test on DeckBuilder
  * @param cards - cards to filter
  * @param filters - see @/types/Filters
  * @returns - cards that match the criteria
@@ -113,6 +125,8 @@ export const filterCards = (
         resources,
         resourceMatchStrategy,
         unitTypes,
+        rarities,
+        isLegendary,
     }: Filters
 ): Card[] => {
     const cardsFilteredByFreeText = freeText
@@ -129,5 +143,11 @@ export const filterCards = (
     const cardsFilteredByResourceCosts = cardsFilteredByUnitType.filter(
         (card) => cardMatchesResourceCosts(card, resourceCosts)
     );
-    return cardsFilteredByResourceCosts;
+    const cardsFilteredByRarities = cardsFilteredByResourceCosts.filter(
+        (card) => cardMatchesRarities(card, rarities)
+    );
+    const cardsFilteredByLegendaryStatus = cardsFilteredByRarities.filter(
+        (card) => cardMatchesLegendaryStatus(card, isLegendary)
+    );
+    return cardsFilteredByLegendaryStatus;
 };

@@ -1,5 +1,6 @@
 import React, {
     createContext,
+    ReactNode,
     useCallback,
     useContext,
     useEffect,
@@ -20,7 +21,7 @@ import {
     shouldLastEffectFizzle,
 } from '@/client/redux/selectors';
 import {
-    AutoResolvingTargets,
+    AUTO_RESOLVING_TARGETS,
     getDefaultTargetForEffect,
 } from '@/types/effects';
 import { AUTO_RESOLVE_LINGER_DURATION } from '@/constants/gameConstants';
@@ -35,7 +36,11 @@ interface GameManagerContextValue {
 
 export const GameManagerContext = createContext<GameManagerContextValue>(null);
 
-export const GameManager: React.FC = ({ children }) => {
+interface Props {
+    children?: ReactNode;
+}
+
+export const GameManager = ({ children }: Props) => {
     const { socket } = useContext(WebSocketContext) || {};
     const dispatch = useDispatch();
     const rootState = useSelector<RootState, RootState>((state) => state);
@@ -53,14 +58,7 @@ export const GameManager: React.FC = ({ children }) => {
         if (!target) target = getDefaultTargetForEffect(lastEffect.type);
         // if the target of the effect auto-resolves, e.g. (ALL OPPONENTS),
         // then resolve the effect automatically
-        if (AutoResolvingTargets.indexOf(target) > -1) {
-            setTimeout(() => {
-                socket.emit('resolveEffect', {
-                    effect: lastEffect,
-                });
-            }, AUTO_RESOLVE_LINGER_DURATION);
-        }
-        if (willLastEffectFizzle) {
+        if (AUTO_RESOLVING_TARGETS.includes(target) || willLastEffectFizzle) {
             setTimeout(() => {
                 socket.emit('resolveEffect', {
                     effect: lastEffect,

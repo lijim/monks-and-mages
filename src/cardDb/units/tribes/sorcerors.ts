@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -22,19 +22,20 @@ const ALADDIN: UnitCard = makeCard({
     totalHp: 1,
     attack: 2,
     numAttacks: 1,
+    isLegendary: true,
     isRanged: true,
     isMagical: true,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.MYTHIC,
 });
 
 const CURIOUS_RESEARCHER: UnitCard = makeCard({
     name: 'Curious Researcher',
     imgSrc: 'https://images.pexels.com/photos/4256852/pexels-photo-4256852.jpeg',
     cost: {
-        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 3,
         [Resource.FIRE]: 1,
-        [Resource.WATER]: 1,
     },
     description: '',
     enterEffects: [
@@ -58,6 +59,7 @@ const CURIOUS_RESEARCHER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const BRIGHT_SCHOLAR: UnitCard = makeCard({
@@ -65,9 +67,7 @@ const BRIGHT_SCHOLAR: UnitCard = makeCard({
     imgSrc: 'https://images.pexels.com/photos/8390504/pexels-photo-8390504.jpeg',
     cost: {
         [Resource.FIRE]: 1,
-        [Resource.WATER]: 1,
-        [Resource.CRYSTAL]: 1,
-        [Resource.GENERIC]: 2,
+        [Resource.GENERIC]: 4,
     },
     description: '',
     enterEffects: [
@@ -87,13 +87,14 @@ const BRIGHT_SCHOLAR: UnitCard = makeCard({
             strength: 1,
         },
     ],
-    totalHp: 2,
+    totalHp: 3,
     attack: 2,
     numAttacks: 1,
     isRanged: true,
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
 });
 
 export const SORCERORS = {

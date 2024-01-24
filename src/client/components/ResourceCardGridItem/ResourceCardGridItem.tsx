@@ -2,7 +2,13 @@ import React from 'react';
 
 import { ResourceCard } from '@/types/cards';
 import { RESOURCE_GLOSSARY } from '@/types/resources';
-import { CardFrame, CardHeader, NameCell, RulesTextArea } from '../CardFrame';
+import {
+    CardFrame,
+    CardHeader,
+    NameCell,
+    RulesTextArea,
+    TypesAndRarityLine,
+} from '../CardFrame';
 import { CastingCostFrame } from '../CastingCost';
 
 interface ResourceCardGridItemProps {
@@ -46,7 +52,9 @@ export const ResourceCardGridItem: React.FC<ResourceCardGridItemProps> = ({
             >
                 <CastingCostFrame hasNoMargin>{icon}</CastingCostFrame>
             </div>
-            <div>Resource</div>
+            <TypesAndRarityLine rarity={card.rarity}>
+                Resource
+            </TypesAndRarityLine>
             <RulesTextArea shouldCenter>
                 Tap to add{' '}
                 <CastingCostFrame hasNoMargin>{icon}</CastingCostFrame> to your

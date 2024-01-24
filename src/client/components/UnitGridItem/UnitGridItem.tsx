@@ -15,6 +15,7 @@ import {
     NameCell,
     RulesTextArea,
     SleepyCell,
+    TypesAndRarityLine,
 } from '../CardFrame';
 import { getColorsForCard } from '@/transformers/getColorsForCard';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
@@ -47,13 +48,16 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
         hp,
         hpBuff,
         id,
+        isLegendary,
         isMagical,
         isRanged,
         isSoldier,
         name,
         numAttacks,
         numAttacksLeft,
-        originalCost,
+        oneCycleAttackBuff,
+        oneTurnAttackBuff,
+        originalAttributes: { cost: originalCost },
         passiveEffects,
         totalHp,
     } = card;
@@ -61,6 +65,7 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
     if (isRanged) unitType = 'Ranged';
     if (isMagical) unitType = 'Magical';
     if (isSoldier) unitType = 'Soldier';
+    if (isLegendary) unitType += ' (Legendary)';
     const { primaryColor, secondaryColor } = getColorsForCard(card);
 
     const numEffectsToDisplay =
@@ -89,21 +94,29 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 </CostHeaderCell>
             </CardHeader>
             <CardImageContainer>
-                <CardImage src={getImgSrcForCard(card)}></CardImage>
+                <CardImage
+                    src={getImgSrcForCard(card)}
+                    objectPosition={card.imgObjectPosition}
+                />
             </CardImageContainer>
-            <div>Unit{unitType ? ` - ${unitType}` : ''}</div>
+            <TypesAndRarityLine rarity={card.rarity}>
+                Unit{unitType ? ` - ${unitType}` : ''}
+            </TypesAndRarityLine>
             <RulesTextArea
                 shouldCenter={numEffectsToDisplay === 1}
                 shouldFade={numEffectsToDisplay === 0}
             >
                 {numEffectsToDisplay === 0 && <i>{description}</i>}
                 {passiveEffects.map((effect) => (
-                    <div key={effect}>{effect}</div>
+                    <div key={effect}>
+                        {card.omitReminderText ? effect.split(' (')[0] : effect}
+                    </div>
                 ))}{' '}
+                {numAttacks === 0 && <div>Cannot attack</div>}
                 {numAttacks > 1 && <div>{numAttacks} attacks per turn</div>}
                 {enterEffects.length > 0 && <b>Upon entering the board:</b>}
-                {enterEffects.map((effect) => (
-                    <div key={transformEffectToRulesText(effect)}>
+                {enterEffects.map((effect, index) => (
+                    <div key={`${index}-${transformEffectToRulesText(effect)}`}>
                         {transformEffectToRulesText(effect)}
                     </div>
                 ))}
@@ -119,8 +132,17 @@ export const UnitGridItem: React.FC<UnitGridItemProps> = ({
                 )}
             </RulesTextArea>
             <AttackHPFooter>
-                <AttackCell data-testid="attack" buffAmount={attackBuff}>
-                    {attack + attackBuff} ⚔️
+                <AttackCell
+                    data-testid="attack"
+                    buffAmount={
+                        attackBuff + oneCycleAttackBuff + oneTurnAttackBuff
+                    }
+                >
+                    {attack +
+                        attackBuff +
+                        oneCycleAttackBuff +
+                        oneTurnAttackBuff}{' '}
+                    ⚔️
                 </AttackCell>
                 <SleepyCell>
                     {isOnBoard && numAttacksLeft === 0 && '💤'}

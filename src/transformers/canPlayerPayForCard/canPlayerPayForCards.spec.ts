@@ -7,7 +7,10 @@ import { makeCard } from '@/factories/cards';
 
 describe('can player pay for card', () => {
     it('returns true if the player has enough resources (including for the generic cost)', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.FIRE]: 3,
             [Resource.IRON]: 2,
@@ -18,7 +21,10 @@ describe('can player pay for card', () => {
     });
 
     it('returns true if the player has exactly enough resources (including for the generic cost)', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.BAMBOO]: 1,
             [Resource.IRON]: 1,
@@ -29,7 +35,10 @@ describe('can player pay for card', () => {
     });
 
     it('returns false if the player lacks the resources', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.FIRE]: 4,
             [Resource.IRON]: 1,
@@ -40,7 +49,10 @@ describe('can player pay for card', () => {
     });
 
     it('returns false if the player lacks the resources (test case 2)', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.FIRE]: 2,
             [Resource.IRON]: 2,
@@ -51,7 +63,10 @@ describe('can player pay for card', () => {
     });
 
     it('returns true if the player pays with generic resources', () => {
-        const player = makeNewPlayer('Georgia', SAMPLE_DECKLIST_1);
+        const player = makeNewPlayer({
+            name: 'Georgia',
+            decklist: SAMPLE_DECKLIST_1,
+        });
         player.resourcePool = {
             [Resource.FIRE]: 1,
             [Resource.IRON]: 2,

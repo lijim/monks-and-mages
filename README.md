@@ -62,12 +62,14 @@ Linting on this project is done via a combination of typescript, [prettier](http
 
 Unit testing is covered via [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 
-# Game rules
+# Gameplay
 
--   Players come with a deck of at least 50 cards
+## Game rules
+
+-   Players come with a deck of at least 60 cards
 -   2-4 players can play against each other
 -   7 cards to start, 1 card drawn per turn (unless starting player)
--   Players start with 15 life
+-   Players start with 20 life
 -   Players lose when they either reach 0 or less life or attempt to draw from an empty deck
 -   Cards come in 3 flavors: _Resources_, _Units_, and _Spells_
     -   **Resources** are the basis for paying for the other two types of cards. When a player deploys a resource card (one per turn can be deployed), they add that resource to their casting pool. This casting pool refills every turn.
@@ -83,7 +85,7 @@ Unit testing is covered via [Jest](https://jestjs.io/) and [React Testing Librar
         -   Ember Spear (🔥) deal 3 damage to any target
         -   A gentle gust (🔥)(🌊) buffs the team's stats by 1
 
-# Game philosophy
+## Game philosophy
 
 -   the game has 5 resources with separate identities:
 

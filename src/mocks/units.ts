@@ -1,5 +1,5 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
+import { CardRarity, UnitCard } from '@/types/cards';
 import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 
@@ -27,6 +27,7 @@ const DEMON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const MANTA_RAY: UnitCard = makeCard({
@@ -44,6 +45,7 @@ const MANTA_RAY: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const SHARK: UnitCard = makeCard({
@@ -62,6 +64,7 @@ const SHARK: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const GOLEM_DRAGON: UnitCard = makeCard({
@@ -80,6 +83,7 @@ const GOLEM_DRAGON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 export const Tokens = {
@@ -111,6 +115,7 @@ const MAGICIANS_APPRENTICE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FIRE_TECHNICIAN: UnitCard = makeCard({
@@ -134,6 +139,7 @@ const FIRE_TECHNICIAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const FIRE_MAGE: UnitCard = makeCard({
@@ -158,6 +164,7 @@ const FIRE_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const INFERNO_SORCEROR: UnitCard = makeCard({
@@ -187,6 +194,7 @@ const INFERNO_SORCEROR: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const MANTA_RAY_CONJURER: UnitCard = makeCard({
@@ -211,6 +219,7 @@ const MANTA_RAY_CONJURER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const WATER_MAGE: UnitCard = makeCard({
@@ -235,6 +244,7 @@ const WATER_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const WATER_GUARDIAN: UnitCard = makeCard({
@@ -264,6 +274,7 @@ const WATER_GUARDIAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const WIND_MAGE: UnitCard = makeCard({
@@ -292,6 +303,7 @@ const WIND_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 // Soldiers
@@ -310,6 +322,7 @@ const LANCER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const SQUIRE: UnitCard = makeCard({
@@ -328,6 +341,7 @@ const SQUIRE: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const MARTIAL_TRAINER: UnitCard = makeCard({
@@ -355,6 +369,7 @@ const MARTIAL_TRAINER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const KNIGHT_TEMPLAR: UnitCard = makeCard({
@@ -373,6 +388,7 @@ const KNIGHT_TEMPLAR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const TEMPLE_GUARDIAN: UnitCard = makeCard({
@@ -391,6 +407,7 @@ const TEMPLE_GUARDIAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: true,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 // Ninjas
@@ -410,6 +427,7 @@ const ASSASSIN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED],
+    rarity: CardRarity.COMMON,
 });
 
 const BOUNTY_COLLECTOR: UnitCard = makeCard({
@@ -428,6 +446,7 @@ const BOUNTY_COLLECTOR: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED, PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const SHADOW_STRIKER: UnitCard = makeCard({
@@ -446,6 +465,7 @@ const SHADOW_STRIKER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.POISONED, PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 // Ranged Units
@@ -464,6 +484,7 @@ const STONE_SLINGER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const JAVELINEER: UnitCard = makeCard({
@@ -481,6 +502,7 @@ const JAVELINEER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const LONGBOWMAN: UnitCard = makeCard({
@@ -499,6 +521,7 @@ const LONGBOWMAN: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const CAVALRY_ARCHER: UnitCard = makeCard({
@@ -516,6 +539,7 @@ const CAVALRY_ARCHER: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [PassiveEffect.QUICK],
+    rarity: CardRarity.COMMON,
 });
 
 const CANNON: UnitCard = makeCard({
@@ -535,6 +559,36 @@ const CANNON: UnitCard = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const JOAN_OF_ARC_FOLK_HERO: UnitCard = makeCard({
+    name: 'Joan of Arc, Folk Hero',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/07/05/00/19/joan-of-arc-5371198_1280.jpg',
+    cost: {
+        [Resource.IRON]: 2,
+        [Resource.GENERIC]: 5,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.BUFF_TEAM_ATTACK,
+            strength: 2,
+        },
+        {
+            type: EffectType.BUFF_TEAM_HP,
+            strength: 2,
+        },
+    ],
+    totalHp: 5,
+    attack: 4,
+    numAttacks: 1,
+    isLegendary: true,
+    isRanged: false,
+    isMagical: false,
+    isSoldier: true,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 export const UnitCards = {
@@ -555,6 +609,7 @@ export const UnitCards = {
     MARTIAL_TRAINER,
     KNIGHT_TEMPLAR,
     TEMPLE_GUARDIAN,
+    JOAN_OF_ARC_FOLK_HERO,
     // ASSASSINS
     ASSASSIN,
     BOUNTY_COLLECTOR,

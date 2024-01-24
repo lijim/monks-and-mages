@@ -1,12 +1,15 @@
 import { makeUnitCard as makeCard } from '@/factories/cards';
-import { UnitCard } from '@/types/cards';
-import { EffectType, TargetTypes } from '@/types/effects';
+import { CardRarity, EffectRequirementsType, UnitCard } from '@/types/cards';
+import { EffectType, PassiveEffect, TargetTypes } from '@/types/effects';
 import { Resource } from '@/types/resources';
 import { Tokens } from '../tokens';
 
 const GIANT_JELLY: UnitCard = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-beach-children-jellyfish-3281842/',
     name: 'Giant Jelly',
-    // https://pixabay.com/photos/fantasy-beach-children-jellyfish-3281842/
     imgSrc: 'https://cdn.pixabay.com/photo/2018/04/01/19/15/fantasy-3281842_1280.jpg',
     cost: {
         [Resource.WATER]: 1,
@@ -20,6 +23,43 @@ const GIANT_JELLY: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
+});
+
+const AITHOUSA: UnitCard = makeCard({
+    artistName: 'Arthur Rackham',
+    artistUrl: 'https://pixabay.com/users/prawny-162579/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/vintage-arthur-rackham-victorian-1722361/',
+    name: 'Aithousa',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/10/07/18/43/vintage-1722361_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.GAIN_STATS_AND_EFFECTS,
+            strength: 2,
+            passiveEffects: [PassiveEffect.ETHEREAL],
+            requirements: [
+                {
+                    type: EffectRequirementsType.ARE_AT_LIFE_AT_OR_ABOVE_THRESHOLD,
+                    strength: 22,
+                },
+            ],
+        },
+    ],
+    totalHp: 1,
+    attack: 1,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    omitReminderText: true,
+    rarity: CardRarity.RARE,
 });
 
 const FROST_WYRM: UnitCard = makeCard({
@@ -44,6 +84,7 @@ const FROST_WYRM: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const MEDITATION_EXPERT: UnitCard = makeCard({
@@ -67,6 +108,7 @@ const MEDITATION_EXPERT: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const MANTA_RAY_CONJURER: UnitCard = makeCard({
@@ -91,6 +133,7 @@ const MANTA_RAY_CONJURER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const TINY_MERMAID: UnitCard = makeCard({
@@ -115,6 +158,7 @@ const TINY_MERMAID: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const RAIN_CHANNELER: UnitCard = makeCard({
@@ -138,6 +182,7 @@ const RAIN_CHANNELER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const WAVING_FISHERMAN: UnitCard = makeCard({
@@ -164,11 +209,75 @@ const WAVING_FISHERMAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const FRENZIED_SIREN: UnitCard = makeCard({
+    artistName: 'Sergei Tokmakov',
+    artistUrl: 'https://pixabay.com/users/sergeitokmakov-3426571/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/mermaid-underwater-sea-fantasy-4770904/',
+    name: 'Frenzied Siren',
+    imgSrc: 'https://cdn.pixabay.com/photo/2020/01/16/15/18/mermaid-4770904_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.CRYSTAL]: 1,
+        [Resource.GENERIC]: 1,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.MILL,
+            strength: 7,
+            target: TargetTypes.PLAYER,
+        },
+    ],
+    totalHp: 1,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
+});
+
+const MOUNTAIN_SENTINEL: UnitCard = makeCard({
+    artistName: 'Gioele Fazzeri',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/witch-gothic-forest-horror-goth-7487743/',
+    name: 'Mountain Sentinel',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/02/04/18/49/water-3130542_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 2,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.ALL_UNITS,
+            strength: 3,
+        },
+    ],
+    totalHp: 2,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const MISBEGOTTEN_MISTWALKER = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-spirit-nightmare-dream-2847724/',
     name: 'Misbegotten Mistwalker',
-    // https://pixabay.com/photos/fantasy-spirit-nightmare-dream-2847724/
     imgSrc: 'https://cdn.pixabay.com/photo/2017/10/13/14/15/fantasy-2847724_1280.jpg',
     cost: {
         [Resource.WATER]: 2,
@@ -194,6 +303,7 @@ const MISBEGOTTEN_MISTWALKER = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const WATER_MAGE: UnitCard = makeCard({
@@ -218,6 +328,7 @@ const WATER_MAGE: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const PELAGIC_PREDATOR = makeCard({
@@ -242,11 +353,15 @@ const PELAGIC_PREDATOR = makeCard({
     isMagical: false,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const PEACE_BRINGER = makeCard({
+    artistName: 'Stefan Keller',
+    artistUrl: 'https://pixabay.com/users/kellepics-4893063/',
+    originalImagePage:
+        'https://pixabay.com/photos/fantasy-girl-sea-spray-gull-water-5369086/',
     name: 'Peace Bringer',
-    // https://pixabay.com/photos/fantasy-girl-sea-spray-gull-water-5369086/
     imgSrc: 'https://cdn.pixabay.com/photo/2020/07/04/10/36/fantasy-5369086_1280.jpg',
     cost: {
         [Resource.WATER]: 1,
@@ -267,6 +382,36 @@ const PEACE_BRINGER = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
+});
+
+const FROZEN_PATHFINDER: UnitCard = makeCard({
+    artistName: 'Gioele Fazzeri',
+    artistUrl: 'https://pixabay.com/users/gioelefazzeri-16466931/',
+    originalImagePage:
+        'https://pixabay.com/photos/witch-gothic-forest-horror-goth-7487743/',
+    name: 'Frozen Pathfinder',
+    imgSrc: 'https://cdn.pixabay.com/photo/2022/12/27/18/08/lonely-7681509_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 3,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.BOUNCE,
+            target: TargetTypes.OPPOSING_UNIT,
+        },
+    ],
+    totalHp: 2,
+    attack: 3,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [],
+    rarity: CardRarity.COMMON,
 });
 
 const CURSED_CHIEFTAIN: UnitCard = makeCard({
@@ -296,6 +441,7 @@ const CURSED_CHIEFTAIN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const AQUARIAN_ADEPT: UnitCard = makeCard({
@@ -315,6 +461,7 @@ const AQUARIAN_ADEPT: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const THUNDER_SCHEDULER: UnitCard = makeCard({
@@ -345,11 +492,15 @@ const THUNDER_SCHEDULER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const MAELSTROM_SEEKER: UnitCard = makeCard({
+    artistName: 'Lance (PhotoVision)',
+    artistUrl: 'https://pixabay.com/users/photovision-677333/',
+    originalImagePage:
+        'https://pixabay.com/photos/man-swirl-wormhole-mountain-top-5724867/',
     name: 'Maelstrom Seeker',
-    // https://pixabay.com/photos/man-swirl-wormhole-mountain-top-5724867/
     imgSrc: 'https://cdn.pixabay.com/photo/2020/11/08/20/06/man-5724867_1280.jpg',
     cost: {
         [Resource.WATER]: 2,
@@ -370,6 +521,7 @@ const MAELSTROM_SEEKER: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 const CHAD_THE_AQUAPHILE: UnitCard = makeCard({
@@ -392,10 +544,42 @@ const CHAD_THE_AQUAPHILE: UnitCard = makeCard({
     totalHp: 5,
     attack: 4,
     numAttacks: 1,
+    isLegendary: true,
     isRanged: true,
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
+const SEA_DRAGON: UnitCard = makeCard({
+    artistName: 'Angela (ang3law)',
+    artistUrl: 'https://pixabay.com/users/ang3law-11692607/',
+    originalImagePage:
+        'https://pixabay.com/illustrations/sea-monster-creature-fantasy-7930215/',
+    name: 'Sea Dragon',
+    imgSrc: 'https://cdn.pixabay.com/photo/2023/04/16/13/42/sea-7930215_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [],
+    damagePlayerEffects: [
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 3,
+        },
+    ],
+    totalHp: 4,
+    attack: 2,
+    numAttacks: 1,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    passiveEffects: [PassiveEffect.HEARTY],
+    rarity: CardRarity.UNCOMMON,
 });
 
 const WATER_GUARDIAN: UnitCard = makeCard({
@@ -426,9 +610,51 @@ const WATER_GUARDIAN: UnitCard = makeCard({
     isMagical: true,
     isSoldier: false,
     passiveEffects: [],
+    rarity: CardRarity.MYTHIC,
+});
+
+const PENELOPE_THE_TORTOISE: UnitCard = makeCard({
+    artistName: 'Alan (AD_Images)',
+    artistUrl: 'https://pixabay.com/users/ad_images-6663717/',
+    originalImagePage:
+        'https://pixabay.com/photos/water-sea-nature-summer-ocean-3184711/',
+    name: 'Penelope the Tortoise',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/02/27/05/02/water-3184711_1280.jpg',
+    cost: {
+        [Resource.WATER]: 1,
+        [Resource.GENERIC]: 4,
+    },
+    description: '',
+    enterEffects: [
+        {
+            type: EffectType.DRAW,
+            strength: 2,
+        },
+        {
+            type: EffectType.HEAL,
+            target: TargetTypes.SELF_PLAYER,
+            strength: 4,
+        },
+        {
+            type: EffectType.EXTRACT_CARD,
+            cardName: 'Bubble Blast',
+            strength: 1,
+            target: TargetTypes.SELF_PLAYER,
+        },
+    ],
+    totalHp: 5,
+    attack: 5,
+    numAttacks: 0,
+    isRanged: true,
+    isMagical: true,
+    isSoldier: false,
+    isLegendary: true,
+    passiveEffects: [],
+    rarity: CardRarity.RARE,
 });
 
 export const WATER_MAGES = {
+    AITHOUSA,
     GIANT_JELLY,
     FROST_WYRM,
     MEDITATION_EXPERT,
@@ -436,14 +662,19 @@ export const WATER_MAGES = {
     TINY_MERMAID,
     RAIN_CHANNELER,
     WAVING_FISHERMAN,
+    FRENZIED_SIREN,
+    MOUNTAIN_SENTINEL,
     MISBEGOTTEN_MISTWALKER,
     PELAGIC_PREDATOR,
     WATER_MAGE,
     PEACE_BRINGER,
     THUNDER_SCHEDULER,
+    FROZEN_PATHFINDER,
     MAELSTROM_SEEKER,
     CURSED_CHIEFTAIN,
     AQUARIAN_ADEPT,
     CHAD_THE_AQUAPHILE,
+    SEA_DRAGON,
+    PENELOPE_THE_TORTOISE,
     WATER_GUARDIAN,
 };

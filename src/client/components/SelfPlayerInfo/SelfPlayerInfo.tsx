@@ -28,7 +28,7 @@ export const SelfPlayerInfo: React.FC = () => {
     };
     if (!selfPlayer) return null;
     return (
-        <>
+        <div style={{ display: 'grid', gap: '4px' }}>
             <PlayerBriefInfo player={selfPlayer} />
             {selfPlayer.isActivePlayer && (
                 <PrimaryColorButton
@@ -41,6 +41,6 @@ export const SelfPlayerInfo: React.FC = () => {
                     Pass Turn
                 </PrimaryColorButton>
             )}
-        </>
+        </div>
     );
 };

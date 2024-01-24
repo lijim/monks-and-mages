@@ -20,6 +20,7 @@ export const ORDERED_RESOURCES = [
 ];
 
 type GlossaryEntry = {
+    explicitColorName: string;
     icon: string;
     name: string;
     primaryColor: string;
@@ -30,26 +31,36 @@ export const RESOURCE_GLOSSARY: Record<Resource, GlossaryEntry> = {
         icon: '1',
         name: 'Generic',
         primaryColor: '#050426',
+        explicitColorName: 'generic',
     },
-    [Resource.BAMBOO]: { icon: '🎋', name: 'Bamboo', primaryColor: '#136313' },
+    [Resource.BAMBOO]: {
+        icon: '🎋',
+        name: 'Bamboo',
+        primaryColor: '#136313',
+        explicitColorName: 'green',
+    },
     [Resource.CRYSTAL]: {
         icon: '🔮',
         name: 'Crystal',
         primaryColor: Colors.CRYSTAL_PURPLE,
+        explicitColorName: 'purple',
     },
     [Resource.FIRE]: {
         icon: '🔥',
         name: 'Fire',
         primaryColor: Colors.FIRE_ORANGE,
+        explicitColorName: 'orange',
     },
     [Resource.IRON]: {
         icon: '🛠️',
         name: 'Iron',
         primaryColor: Colors.IRON_GREY,
+        explicitColorName: 'grey',
     },
     [Resource.WATER]: {
         icon: '🌊',
         name: 'Water',
         primaryColor: Colors.WATER_BLUE,
+        explicitColorName: 'blue',
     },
 };

@@ -10,6 +10,7 @@ import {
     CostHeaderCell,
     NameCell,
     RulesTextArea,
+    TypesAndRarityLine,
 } from '../CardFrame';
 import { transformEffectToRulesText } from '@/transformers/transformEffectsToRulesText';
 import { getColorsForCard } from '@/transformers/getColorsForCard';
@@ -28,7 +29,12 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
     onClick,
     zoomLevel,
 }) => {
-    const { cost, name, effects, originalCost } = card;
+    const {
+        cost,
+        name,
+        effects,
+        originalAttributes: { cost: originalCost },
+    } = card;
     const { primaryColor, secondaryColor } = getColorsForCard(card);
 
     return (
@@ -50,9 +56,12 @@ export const SpellGridItem: React.FC<SpellGridItemProps> = ({
                 </CostHeaderCell>
             </CardHeader>
             <CardImageContainer>
-                <CardImage src={getImgSrcForCard(card)}></CardImage>
+                <CardImage
+                    src={getImgSrcForCard(card)}
+                    objectPosition={card.imgObjectPosition}
+                ></CardImage>
             </CardImageContainer>
-            <div>Spell</div>
+            <TypesAndRarityLine rarity={card.rarity}>Spell</TypesAndRarityLine>
             <RulesTextArea shouldCenter={effects.length === 1}>
                 {effects.map((effect, i) => (
                     <div key={`${transformEffectToRulesText(effect)}-${i}`}>

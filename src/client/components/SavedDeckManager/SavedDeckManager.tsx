@@ -1,17 +1,20 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useSWR, { useSWRConfig } from 'swr';
 
+import { useCookies } from 'react-cookie';
 import { RootState } from '@/client/redux/store';
 import { getCleanName } from '@/client/redux/selectors';
 import { SavedDeck } from '@/types/deckBuilder';
 import { getSkeletonFromDeckList } from '@/transformers/getSkeletonFromDeckList';
 import { fetcher } from '@/apiHelpers';
 import { SavedDeckSquare } from '@/client/components/SavedDeckSquare';
-import { DeckList, Skeleton } from '@/types/cards';
+import { DeckList } from '@/types/cards';
 import { PrimaryColorButton } from '../Button';
+import { saveNewDeck } from '@/client/redux/deckBuilder';
+import { useLoggedInPlayerInfo } from '@/client/hooks';
 
 const Backdrop = styled.div`
     background: rgba(255, 255, 255, 0.8);
@@ -31,34 +34,51 @@ const DeckListGrid = styled.div`
 
 type SavedDeckManagerProps = {
     decklist: DeckList;
-    setSkeleton: (decklist: Skeleton) => void;
 };
 
 export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
     decklist,
-    setSkeleton,
 }) => {
     const { mutate } = useSWRConfig();
+    const dispatch = useDispatch();
+    const [cookies] = useCookies();
+    const { accessToken } = cookies;
+    const loggedInPlayerInfo = useLoggedInPlayerInfo();
 
     const [deckName, setDeckName] = useState('');
     const username = useSelector<RootState, string | undefined>(getCleanName);
-    const { data: savedDecks } = useSWR<SavedDeck[]>(
-        `/api/saved_decks/${username}`,
+
+    const { data: savedDecks } = useSWR<SavedDeck[], unknown, [string, string]>(
+        loggedInPlayerInfo?.data.username && accessToken
+            ? [
+                  `/api/saved_decks/${loggedInPlayerInfo.data.username}`,
+                  accessToken,
+              ]
+            : null,
         fetcher
     );
 
     const createDeck = async () => {
         try {
-            await axios.post('/api/saved_decks', {
-                username,
-                deckName,
-                skeleton: getSkeletonFromDeckList(decklist),
-            });
+            const savedDeck = await axios.post<SavedDeck>(
+                '/api/saved_decks',
+                {
+                    username,
+                    deckName,
+                    skeleton: getSkeletonFromDeckList(decklist),
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+            dispatch(saveNewDeck(savedDeck.data));
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);
         } finally {
-            mutate(`/api/saved_decks/${username}`);
+            mutate([`/api/saved_decks/${username}`, accessToken]);
         }
     };
 
@@ -79,7 +99,7 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
             </PrimaryColorButton>
             <hr />
             <DeckListGrid>
-                {savedDecks
+                {(savedDecks || ([] as SavedDeck[]))
                     ?.sort((deckA, deckB) =>
                         deckA.name
                             .toLowerCase()
@@ -89,7 +109,6 @@ export const SavedDeckManager: React.FC<SavedDeckManagerProps> = ({
                         <SavedDeckSquare
                             key={savedDeck.id}
                             savedDeck={savedDeck}
-                            setSkeleton={setSkeleton}
                         />
                     ))}
             </DeckListGrid>

@@ -6,23 +6,30 @@ import { Colors } from '@/constants/colors';
 import { CastingCostFrame } from '../CastingCost';
 import { Resource, RESOURCE_GLOSSARY } from '@/types/resources';
 import { GameManagerContext } from '../GameManager';
+import { DEFAULT_AVATAR } from '@/types/players';
+import { LegendaryLeaderZone } from '../LegendaryLeaderZone';
 
 interface PlayerBriefInfoProps {
     player: Player;
 }
 
 interface PlayerBriefContainerProps {
+    displayLegendaryLeader: boolean;
     isActivePlayer: boolean;
 }
 
 const PlayerBriefContainer = styled.div<PlayerBriefContainerProps>`
     width: 170px;
-    height: 220px;
+    height: ${({ displayLegendaryLeader }) =>
+        displayLegendaryLeader ? 420 : 220}px;
     border: 6px solid
         ${({ isActivePlayer }) =>
-            isActivePlayer ? Colors.FOCUS_BLUE : Colors.DARK_BROWN};
+            isActivePlayer
+                ? Colors.FIRE_ORANGE_EMPHASIZED
+                : Colors.COMMON_GREY};
     display: grid;
-    grid-auto-rows: auto 1fr auto;
+    grid-auto-rows: ${({ displayLegendaryLeader }) =>
+        displayLegendaryLeader ? 'auto auto auto auto' : 'auto 1fr auto'};
     cursor: pointer;
     background-color: whitesmoke;
 `;
@@ -34,7 +41,11 @@ const UpperSection = styled.div`
     display: grid;
 `;
 
-const MiddleSection = styled.div`
+interface MiddleSectionProps {
+    avatarUrl: string;
+}
+
+const MiddleSection = styled.div<MiddleSectionProps>`
     position: relative;
     height: 100px;
     margin: 5px;
@@ -51,15 +62,17 @@ const MiddleSection = styled.div`
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.1);
         z-index: -1;
     }
     ::after {
         content: '';
         position: absolute;
         inset: 0;
-        background-image: url('https://images.unsplash.com/photo-1509587961360-de7aff9a662a');
-        background-size: contain;
+        background-image: url('${({ avatarUrl }) =>
+            avatarUrl || DEFAULT_AVATAR}');
+        background-size: cover;
+        background-position: center;
         z-index: -2;
     }
 `;
@@ -77,6 +90,7 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
         health,
         name,
         isActivePlayer,
+        avatar,
     } = player;
 
     const { handleClickPlayer } = useContext(GameManagerContext) || {};
@@ -88,11 +102,13 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
     return (
         <PlayerBriefContainer
             isActivePlayer={isActivePlayer}
-            onClick={() => {
-                handleClickPlayer(player);
-            }}
+            displayLegendaryLeader={!!player.legendaryLeader}
         >
-            <UpperSection>
+            <UpperSection
+                onClick={() => {
+                    handleClickPlayer(player);
+                }}
+            >
                 <div>
                     <b>{numCardsInDeck}</b> <span>🂡 (Deck)</span>
                 </div>
@@ -123,8 +139,20 @@ export const PlayerBriefInfo: React.FC<PlayerBriefInfoProps> = ({ player }) => {
                     </div>
                 )}
             </UpperSection>
-            <MiddleSection>{`${health}`}</MiddleSection>
-            <LowerSection>{name}</LowerSection>
+            <MiddleSection
+                avatarUrl={avatar}
+                onClick={() => {
+                    handleClickPlayer(player);
+                }}
+            >{`${health}`}</MiddleSection>
+            <LowerSection
+                onClick={() => {
+                    handleClickPlayer(player);
+                }}
+            >
+                {name}
+            </LowerSection>
+            <LegendaryLeaderZone player={player} />
         </PlayerBriefContainer>
     );
 };

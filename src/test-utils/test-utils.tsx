@@ -19,6 +19,7 @@ import {
     RootState,
 } from '@/client/redux/store';
 import {
+    CustomSocket,
     WebSocketContext,
     WebSocketValue,
 } from '@/client/components/WebSockets';
@@ -32,6 +33,7 @@ type ReduxRenderOptions = {
 };
 
 interface WebSocketContextMockProviderProps {
+    children: ReactNode;
     ws: WebSocketValue;
 }
 
@@ -50,6 +52,7 @@ interface RenderValue {
         chooseName: jest.Mock;
         joinRoom: jest.Mock;
         leaveRoom: jest.Mock;
+        logout: jest.Mock;
         resolveEffect: jest.Mock;
         sendChatMessage: jest.Mock;
         socket: Socket<ServerToClientEvents, ClientToServerEvents>;
@@ -65,7 +68,7 @@ export function render(
     ui: ReactElement,
     {
         preloadedState = {},
-        useRealDispatch = false,
+        useRealDispatch = true,
         ...renderOptions
     }: ReduxRenderOptions = {}
 ): RenderValue {
@@ -94,7 +97,7 @@ export function render(
     if (!useRealDispatch) {
         store.dispatch = jest.fn();
     }
-    const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
+    const newSocket = io() as CustomSocket;
 
     const mockWebSocket = {
         socket: newSocket,
@@ -103,6 +106,7 @@ export function render(
         chooseName: jest.fn(),
         joinRoom: jest.fn(),
         leaveRoom: jest.fn(),
+        logout: jest.fn(),
         sendChatMessage: jest.fn(),
         spectateRoom: jest.fn(),
         resolveEffect: jest.fn(),
@@ -111,6 +115,7 @@ export function render(
     };
 
     mockWebSocket.socket.emit = jest.fn();
+    mockWebSocket.socket.userID = '';
 
     function Wrapper({ children }: { children?: ReactNode }): ReactElement {
         useEffect(() => {

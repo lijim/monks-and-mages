@@ -19,6 +19,9 @@ export const boardSlice = createSlice({
         updateBoardState(state, action: PayloadAction<Board>) {
             state.gameState = action.payload.gameState;
             state.players = action.payload.players;
+            state.draftPiles = action.payload.draftPiles;
+            state.draftPoolSize = action.payload.draftPoolSize;
+            state.format = action.payload.format;
         },
     },
 });

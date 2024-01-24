@@ -3,26 +3,41 @@ import { createPortal } from 'react-dom';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import styled from 'styled-components';
 
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardType } from '@/types/cards';
-import { splitDeckListToPiles } from '@/transformers/splitDeckListToPiles';
-import { QuantitySelector } from '../QuantitySelector';
-import { CastingCost } from '../CastingCost';
 import {
+    splitDeckListToPiles,
     getColorsForCard,
     getSecondaryColorForCard,
-} from '@/transformers/getColorsForCard';
+    modifyCardForTooltip,
+    getAssociatedCards,
+} from '@/transformers';
+import { QuantitySelector } from '../QuantitySelector';
+import { CastingCost } from '../CastingCost';
 import { RESOURCE_GLOSSARY } from '@/types/resources';
 import { CardGridSingleItem } from '../CardGridItem';
 import { Colors } from '@/constants/colors';
+import { addCard } from '@/client/redux/deckBuilder';
+import {
+    getGameFormat,
+    getGameState,
+    getNumberLeft,
+} from '@/client/redux/selectors';
+import { GameState } from '@/types/board';
+import { RootState } from '@/client/redux/store';
+import { ALL_BASIC_RESOURCES } from '@/constants/deckLists';
+import { isFormatConstructed } from '@/types/games';
 
 interface CompactDeckListProps {
     deck: Card[];
+    isDisplayOnly?: boolean;
     onClickCard?: (card: Card) => void;
     shouldShowQuantity?: boolean;
 }
 
 type MiniCardFrameProps = {
     hasOnClick: boolean;
+    isDisplayOnly?: boolean;
     primaryColor: string;
     secondaryColor: string;
 };
@@ -79,17 +94,18 @@ const CostCell = styled.div`
 
 type MiniCardProps = {
     card: Card;
-    onClickCard: (card: Card) => void;
+    isDisplayOnly: boolean;
     quantity: number;
     shouldShowQuantity: boolean;
 };
 
 const MiniCard: React.FC<MiniCardProps> = ({
     card,
-    onClickCard,
     quantity,
     shouldShowQuantity,
+    isDisplayOnly,
 }) => {
+    const dispatch = useDispatch();
     const {
         getArrowProps,
         getTooltipProps,
@@ -101,25 +117,66 @@ const MiniCard: React.FC<MiniCardProps> = ({
         placement: 'right',
     });
 
-    const cardModifiedForTooltip =
-        card.cardType === CardType.RESOURCE ? { ...card, isUsed: false } : card;
+    const gameFormat = useSelector(getGameFormat);
+    const gameState = useSelector(getGameState);
+    const numberLeft = useSelector(getNumberLeft(card));
 
+    const associatedCards = getAssociatedCards(card);
     const { primaryColor, secondaryColor } = getColorsForCard(card);
+
+    let quantityToDisplay = 0;
+    if (isFormatConstructed(gameFormat)) {
+        quantityToDisplay = quantity;
+    } else if (
+        quantity !== Number.MAX_SAFE_INTEGER &&
+        gameState === GameState.DECKBUILDING
+    ) {
+        quantityToDisplay = numberLeft;
+    } else {
+        quantityToDisplay = quantity;
+    }
+
+    const hasOnClick = () => {
+        if (isDisplayOnly) {
+            return false;
+        }
+        if (
+            gameFormat &&
+            !isFormatConstructed(gameFormat) &&
+            quantityToDisplay <= 0
+        ) {
+            return false;
+        }
+        return true;
+    };
+
+    const onAddCard = () => {
+        if (hasOnClick()) {
+            dispatch(addCard(card));
+        }
+    };
 
     return (
         <>
             <MiniCardFrame
-                hasOnClick={!!onClickCard}
+                style={{
+                    opacity:
+                        hasOnClick() || gameState === GameState.DRAFTING
+                            ? '1'
+                            : '.7',
+                }}
+                hasOnClick={hasOnClick()}
                 primaryColor={primaryColor}
                 secondaryColor={secondaryColor}
-                onClick={() => {
-                    onClickCard(card);
-                }}
+                onClick={onAddCard}
                 tabIndex={0}
                 ref={setTriggerRef}
             >
                 {shouldShowQuantity && (
-                    <QuantitySelector hasNoBorder quantity={quantity} />
+                    <QuantitySelector
+                        hasNoBorder
+                        quantity={quantityToDisplay}
+                    />
                 )}
                 <div>
                     <NameCell
@@ -151,10 +208,29 @@ const MiniCard: React.FC<MiniCardProps> = ({
                             className: 'tooltip-container',
                         })}
                     >
-                        <CardGridSingleItem
-                            isOnBoard={false}
-                            card={cardModifiedForTooltip}
-                        />
+                        <div
+                            style={{
+                                display: 'grid',
+                                gap: '4px',
+                                gridAutoFlow: 'column',
+                            }}
+                        >
+                            <CardGridSingleItem
+                                isOnBoard={false}
+                                card={modifyCardForTooltip(card)}
+                            />
+                            {associatedCards.map(
+                                (associatedCard) =>
+                                    associatedCard && (
+                                        <CardGridSingleItem
+                                            isOnBoard={false}
+                                            card={modifyCardForTooltip(
+                                                associatedCard
+                                            )}
+                                        />
+                                    )
+                            )}
+                        </div>
                         <div
                             {...getArrowProps({
                                 className: 'tooltip-arrow',
@@ -169,10 +245,38 @@ const MiniCard: React.FC<MiniCardProps> = ({
 
 export const CompactDeckList: React.FC<CompactDeckListProps> = ({
     deck,
-    onClickCard,
     shouldShowQuantity = true,
+    isDisplayOnly = false,
 }) => {
-    const piles = splitDeckListToPiles(deck);
+    let piles = splitDeckListToPiles(deck);
+    const gameState = useSelector<RootState, GameState>(getGameState);
+
+    const shouldShowBasicResources = gameState === GameState.DECKBUILDING;
+
+    if (shouldShowBasicResources) {
+        const basicResourceCards = new Map(
+            ALL_BASIC_RESOURCES.mainBoard.map(({ card }) => [
+                card,
+                Number.MAX_SAFE_INTEGER,
+            ])
+        );
+        const resources = piles.find((pile) => pile.title === 'Resources');
+        if (!resources) {
+            piles = [
+                {
+                    title: 'Resources',
+                    cards: basicResourceCards,
+                },
+                ...piles,
+            ];
+        } else {
+            resources.cards = new Map([
+                ...basicResourceCards.entries(),
+                ...resources.cards.entries(),
+            ]);
+        }
+    }
+
     return (
         <>
             {piles.map((pile) => (
@@ -183,8 +287,8 @@ export const CompactDeckList: React.FC<CompactDeckListProps> = ({
                             card={card}
                             quantity={quantity}
                             shouldShowQuantity={shouldShowQuantity}
-                            onClickCard={onClickCard}
                             key={card.name}
+                            isDisplayOnly={isDisplayOnly}
                         />
                     ))}
                 </div>

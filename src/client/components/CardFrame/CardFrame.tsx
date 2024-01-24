@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Colors } from '@/constants/colors';
+import React, { ReactNode } from 'react';
+import styled, { CSSProperties } from 'styled-components';
+import { COLORS_FOR_RARITY, Colors } from '@/constants/colors';
+import { CardRarity } from '@/types/cards';
 
 interface CardFrameProps {
     isHighlighted?: boolean;
@@ -47,11 +48,10 @@ export const CardFrame = styled.div<CardFrameProps>`
         auto;
     width: 260px;
     height: 360px;
-    border: 10px solid
-        ${({ isHighlighted }) =>
-            isHighlighted ? Colors.FOCUS_BLUE : '#240503'};
+    border: ${({ isHighlighted }) =>
+        isHighlighted ? `6px solid ${Colors.FOCUS_BLUE}` : '2px solid white'};
     border-radius: 4%;
-    padding: 10px;
+    padding: ${({ isHighlighted }) => (isHighlighted ? '8px' : '12px')};
     color: white;
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     ${({ isRotated }) => (isRotated ? 'transform: rotate(90deg)' : '')};
@@ -93,24 +93,63 @@ export const CardImageContainer = styled.div`
     overflow: hidden;
 `;
 
-const StretchedImage = styled.img`
+const StretchedImage = styled.img<CardImageProps>`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: ${({ objectPosition }) => objectPosition || 'center'};
 `;
 
 type CardImageProps = {
+    objectPosition?: CSSProperties['objectPosition'];
     src: string;
 };
 
-export const CardImage: React.FC<CardImageProps> = ({ src }) => {
+export const CardImage: React.FC<CardImageProps> = ({
+    src,
+    objectPosition,
+}) => {
     const webPSource = src.replace('avif', 'webp');
     return (
         <picture>
             <source srcSet={src} type="image/avif"></source>
             <source srcSet={webPSource} type="image/avif"></source>
-            <StretchedImage src={webPSource} />
+            <StretchedImage src={webPSource} objectPosition={objectPosition} />
         </picture>
+    );
+};
+
+type TypesAndRarityLineProps = {
+    children: ReactNode;
+    rarity: CardRarity;
+};
+
+export const TypesAndRarityLine = ({
+    rarity,
+    children,
+}: TypesAndRarityLineProps) => {
+    return (
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontSize: '12px',
+            }}
+        >
+            <span>{children}</span>
+            <span style={{ display: 'flex', gap: '2px', alignItems: 'center' }}>
+                <svg width="14" height="14">
+                    <polygon
+                        points="7,1 13,7 7,13 1,7"
+                        fill={COLORS_FOR_RARITY[rarity]}
+                        stroke="white"
+                        strokeWidth="1"
+                    />
+                </svg>
+                {rarity}
+            </span>
+        </div>
     );
 };
 

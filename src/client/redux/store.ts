@@ -9,6 +9,7 @@ import { userReducer, userSlice } from './user';
 import { clientSideGameExtrasReducer } from './clientSideGameExtras';
 import { deckListReducer, deckListSlice } from './deckList';
 import { deckBuilderFiltersReducer } from './deckBuilderFilters';
+import { deckBuilderReducer, deckBuilderSlice } from './deckBuilder';
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
     createReduxHistoryContext({
@@ -20,6 +21,7 @@ export const createRootReducer = () =>
         board: boardReducer,
         clientSideGameExtras: clientSideGameExtrasReducer,
         deckBuilderFilters: deckBuilderFiltersReducer,
+        deckBuilder: deckBuilderReducer,
         deckList: deckListReducer,
         router: routerReducer,
         lobby: lobbyReducer,
@@ -29,6 +31,7 @@ export const createRootReducer = () =>
 const preloadedState = {
     user: userSlice.getInitialState(),
     deckList: deckListSlice.getInitialState(),
+    deckBuilder: deckBuilderSlice.getInitialState(),
 };
 
 // Used for production
