@@ -8,11 +8,15 @@ generator client {
 }
 
 model User {
-  uid         String       @id @db.VarChar(255)
-  username    String       @db.VarChar(255) // auth0-provided username
-  SavedDeck   SavedDeck[]
-  playedGames GameResult[] @relation("PlayedGames")
-  wonGames    GameResult[] @relation("WonGames")
+  uid              String       @id @db.VarChar(255)
+  username         String       @unique @db.VarChar(255) // auth0-provided username
+  createdAt        DateTime     @default(now())
+  SavedDeck        SavedDeck[]
+  playedGames      GameResult[] @relation("PlayedGames")
+  wonGames         GameResult[] @relation("WonGames")
+  numberOfGamesWon Int          @default(0)
+  exp              Int          @default(0)
+  avatarUrl        String       @default("")
 }
 
 model SavedDeck {

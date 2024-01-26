@@ -6,10 +6,13 @@ import { PrismaClient } from '@prisma/client';
 import { configureIo } from './sockets';
 import { initializeUserEndpoints } from './endpoints/users';
 import { initializeSavedDeckEndpoints } from './endpoints/savedDecks';
+import { initializeGameResultsEndpoints } from './endpoints/gameResults';
+import { initializeLevelEndpoints } from './endpoints/levels';
 
 const prisma = new PrismaClient();
 
 const app = express();
+app.use(express.json());
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
@@ -46,6 +49,8 @@ app.get('/healthz', (_, res) => {
 
 initializeUserEndpoints(app, prisma);
 initializeSavedDeckEndpoints(app, prisma);
+initializeGameResultsEndpoints(app, prisma);
+initializeLevelEndpoints(app);
 
 // Serves the base page
 app.get('/', (_, res) => {
