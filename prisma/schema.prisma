@@ -1,0 +1,39 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  uid              String       @id @db.VarChar(255)
+  username         String       @unique @db.VarChar(255) // auth0-provided username
+  createdAt        DateTime     @default(now())
+  SavedDeck        SavedDeck[]
+  playedGames      GameResult[] @relation("PlayedGames")
+  wonGames         GameResult[] @relation("WonGames")
+  numberOfGamesWon Int          @default(0)
+  exp              Int          @default(0)
+  avatarUrl        String       @default("")
+}
+
+model SavedDeck {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  user      User     @relation(fields: [userUid], references: [uid])
+  userUid   String   @db.VarChar(255)
+  skeleton  Json
+}
+
+model GameResult {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  userPlayers   User[]   @relation("PlayedGames")
+  guests        String[]
+  winningUsers  User[]   @relation("WonGames")
+  winningGuests String[]
+}
